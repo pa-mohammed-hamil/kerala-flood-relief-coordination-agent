@@ -1,0 +1,1657 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Hospital Capacity</title></head><body><h1>Hospital Capacity</h1><p>Scaffold only — not operational.</p></body></html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#090b10">
+<title>Hospital Capacity | Kerala Flood AI</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#090b10;
+ --side:#0d1017;
+ --panel:#151922;
+ --panel2:#1b202b;
+ --gold:#d8b671;
+ --gold2:#f5daa0;
+ --text:#f4f1e9;
+ --muted:#9399a7;
+ --line:rgba(255,255,255,.085);
+ --green:#54d6a4;
+ --orange:#ffb66e;
+ --red:#ff777d;
+ --blue:#82adff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--text);
+ font:13px "DM Sans",sans-serif;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+ outline:2px solid var(--gold);
+ outline-offset:3px;
+}
+.app{
+ display:grid;
+ grid-template-columns:252px minmax(0,1fr);
+ min-height:100vh;
+}
+.sidebar{
+ position:sticky;
+ top:0;
+ height:100vh;
+ display:flex;
+ flex-direction:column;
+ background:var(--side);
+ border-right:1px solid var(--line);
+ z-index:40;
+}
+.brand{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ padding:24px 18px;
+ border-bottom:1px solid var(--line);
+}
+.brand-icon{
+ width:43px;
+ height:43px;
+ display:grid;
+ place-items:center;
+ border-radius:13px;
+ background:linear-gradient(135deg,#f5daa0,#a47c3b);
+ color:#20170a;
+ font-size:23px;
+ font-weight:900;
+}
+.brand strong{
+ font:800 13px Manrope,sans-serif;
+ letter-spacing:.4px;
+}
+.brand small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ letter-spacing:1.2px;
+ margin-top:5px;
+}
+.nav{padding:20px 13px;overflow:auto;flex:1}
+.nav-label{
+ font-size:10px;
+ letter-spacing:1.6px;
+ color:#777e8d;
+ font-weight:800;
+ margin:14px 12px;
+}
+.nav a{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ padding:12px 13px;
+ margin-bottom:5px;
+ border:1px solid transparent;
+ border-radius:10px;
+ color:#a2a8b4;
+ font-size:12px;
+ font-weight:600;
+ transition:.2s;
+}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{
+ background:#d8b67119;
+ border-color:#d8b67130;
+ color:var(--gold2);
+}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.side-footer{
+ padding:17px;
+ border-top:1px solid var(--line);
+ display:flex;
+ align-items:center;
+ gap:10px;
+}
+.avatar{
+ height:38px;
+ width:38px;
+ border-radius:11px;
+ background:#383023;
+ color:var(--gold2);
+ display:grid;
+ place-items:center;
+ font-weight:800;
+}
+.side-footer strong{font-size:11px}
+.side-footer small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ margin-top:5px;
+}
+.main{
+ min-width:0;
+ background:radial-gradient(ellipse at 65% -5%,#d8b67112,transparent 38%),var(--bg);
+}
+.topbar{
+ min-height:82px;
+ padding:17px 30px;
+ border-bottom:1px solid var(--line);
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:14px;
+}
+.top-left,.top-actions{
+ display:flex;
+ align-items:center;
+ gap:12px;
+}
+.page-icon{
+ width:43px;
+ height:43px;
+ border-radius:12px;
+ background:#d8b67119;
+ border:1px solid #d8b67133;
+ color:var(--gold);
+ display:grid;
+ place-items:center;
+ font-size:20px;
+}
+.top-left h1{
+ font:800 18px Manrope,sans-serif;
+ letter-spacing:-.5px;
+ margin:0;
+}
+.top-left p{
+ margin:5px 0 0;
+ color:var(--muted);
+ font-size:11px;
+}
+.badge,.tag{
+ display:inline-flex;
+ align-items:center;
+ gap:7px;
+ padding:9px 11px;
+ background:#d8b67112;
+ border:1px solid #d8b67130;
+ color:var(--gold2);
+ border-radius:9px;
+ font-size:10px;
+ font-weight:800;
+}
+.dot{
+ height:7px;
+ width:7px;
+ background:var(--gold);
+ border-radius:50%;
+ animation:pulse 2s infinite;
+}
+.btn{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ gap:8px;
+ padding:11px 15px;
+ border-radius:10px;
+ border:1px solid var(--line);
+ background:#1a1f29;
+ color:#e1e3e8;
+ font-size:11px;
+ font-weight:800;
+ transition:.2s;
+}
+.btn:hover{
+ border-color:#d8b67166;
+ transform:translateY(-1px);
+}
+.btn.gold{
+ background:linear-gradient(120deg,#c6a15e,#f1d49a);
+ color:#1b160e;
+ border:0;
+}
+.btn:disabled{
+ opacity:.45;
+ cursor:not-allowed;
+ transform:none;
+}
+.content{
+ max-width:1700px;
+ margin:auto;
+ padding:28px 30px 42px;
+}
+.eyebrow{
+ color:var(--gold);
+ font-size:10px;
+ letter-spacing:2px;
+ font-weight:800;
+ margin-bottom:10px;
+}
+.heading{
+ display:flex;
+ justify-content:space-between;
+ align-items:flex-end;
+ gap:15px;
+ flex-wrap:wrap;
+ margin-bottom:24px;
+}
+.heading h2{
+ font:800 28px Manrope,sans-serif;
+ letter-spacing:-1px;
+ margin:0;
+}
+.heading p{
+ color:var(--muted);
+ font-size:12px;
+ line-height:1.8;
+ margin:9px 0 0;
+}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{
+ min-width:0;
+ background:linear-gradient(150deg,#181c26,#12161e);
+ border:1px solid var(--line);
+ border-radius:16px;
+ box-shadow:0 14px 35px #0002;
+ animation:rise .5s ease both;
+}
+.kpi{
+ padding:21px;
+ position:relative;
+ overflow:hidden;
+}
+.kpi:before{
+ content:"";
+ position:absolute;
+ width:115px;
+ height:115px;
+ right:-50px;
+ top:-55px;
+ background:#d8b67109;
+ border-radius:50%;
+}
+.kpi-head{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ color:#a7adba;
+ font-size:11px;
+ font-weight:700;
+}
+.kpi-icon{
+ width:36px;
+ height:36px;
+ border-radius:10px;
+ background:#d8b67119;
+ color:var(--gold);
+ display:grid;
+ place-items:center;
+ font-size:18px;
+}
+.kpi-number{
+ font:800 30px Manrope,sans-serif;
+ letter-spacing:-1px;
+ margin:15px 0 7px;
+}
+.kpi-caption{font-size:10px;color:var(--muted)}
+.kpi-caption b{color:var(--gold)}
+.columns{
+ grid-template-columns:minmax(0,1.55fr) minmax(310px,1fr);
+ margin-top:17px;
+}
+.panel{padding:22px}
+.panel-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:flex-start;
+ gap:12px;
+ margin-bottom:20px;
+}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{
+ color:var(--muted);
+ font-size:10px;
+ line-height:1.7;
+ margin-top:7px;
+}
+.hero{
+ padding:28px;
+ border:1px solid #d8b67138;
+ border-radius:17px;
+ background:
+  radial-gradient(circle at 85% 15%,#d8b67120,transparent 35%),
+  linear-gradient(120deg,#252017,#151922);
+}
+.hero h3{
+ font:800 26px Manrope,sans-serif;
+ letter-spacing:-.8px;
+ margin:12px 0;
+}
+.hero p{
+ max-width:850px;
+ color:#b9b5ae;
+ font-size:12px;
+ line-height:1.9;
+}
+.hero-actions{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-top:18px;
+}
+.filters{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-bottom:18px;
+}
+.search,.select{
+ padding:11px 12px;
+ border-radius:10px;
+ border:1px solid #303541;
+ background:#191e28;
+ color:#e8e8e8;
+ outline:0;
+}
+.search{flex:1;min-width:180px}
+.search:focus,.select:focus{border-color:var(--gold)}
+.table-wrap{overflow:auto}
+table{
+ width:100%;
+ border-collapse:collapse;
+ white-space:nowrap;
+ text-align:left;
+}
+th{
+ padding:14px 12px;
+ color:#8d94a2;
+ font-size:10px;
+ letter-spacing:.7px;
+ border-bottom:1px solid var(--line);
+}
+td{
+ padding:15px 12px;
+ color:#d7dbe2;
+ font-size:11px;
+ border-bottom:1px solid #ffffff0b;
+}
+tbody tr:hover{background:#d8b67108}
+.id{color:var(--gold2);font-family:monospace;font-weight:800}
+.pill{
+ display:inline-flex;
+ padding:6px 9px;
+ border-radius:7px;
+ font-size:10px;
+ font-weight:800;
+}
+.pill.available,.pill.low{
+ background:#54d6a419;
+ color:var(--green);
+}
+.pill.limited,.pill.medium{
+ background:#ffb66e19;
+ color:var(--orange);
+}
+.pill.full,.pill.high{
+ background:#ff777d19;
+ color:var(--red);
+}
+.pill.pending{
+ background:#82adff19;
+ color:var(--blue);
+}
+.pill.reviewed{
+ background:#54d6a419;
+ color:var(--green);
+}
+.pill.closed{
+ background:#aab0bd19;
+ color:#aab0bd;
+}
+.small-btn{
+ padding:8px 10px;
+ border-radius:8px;
+ border:1px solid #d8b67133;
+ background:#d8b67116;
+ color:var(--gold2);
+ font-size:10px;
+ font-weight:800;
+}
+.small-btn:hover{background:#d8b6712d}
+.capacity-card{
+ padding:15px;
+ border:1px solid var(--line);
+ background:#1b202b;
+ border-radius:11px;
+ margin-bottom:11px;
+}
+.capacity-head{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:10px;
+}
+.capacity-head strong{font-size:11px}
+.capacity-head span{
+ color:var(--gold2);
+ font-size:12px;
+ font-weight:800;
+}
+.capacity-card small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ margin-top:7px;
+}
+.progress{
+ height:8px;
+ background:#303642;
+ border-radius:10px;
+ overflow:hidden;
+ margin-top:13px;
+}
+.progress span{
+ display:block;
+ height:100%;
+ border-radius:10px;
+ background:linear-gradient(90deg,#a68145,#f1d69c);
+ transition:width .3s;
+}
+.progress.red span{background:linear-gradient(90deg,#b95558,#ff777d)}
+.progress.green span{background:linear-gradient(90deg,#30896e,#54d6a4)}
+.form-grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:14px;
+}
+.field{display:grid;gap:8px;min-width:0}
+.field.full{grid-column:1/-1}
+.field label{
+ color:#aeb4c0;
+ font-size:11px;
+ font-weight:700;
+}
+.field input,.field select,.field textarea{
+ width:100%;
+ background:#1e2430;
+ color:var(--text);
+ border:1px solid #343a46;
+ border-radius:10px;
+ padding:12px;
+ outline:0;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+ border-color:var(--gold);
+}
+.field textarea{
+ min-height:95px;
+ resize:vertical;
+}
+.field input::placeholder,.field textarea::placeholder{color:#7a818e}
+.form-actions{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-top:18px;
+}
+.resource{
+ display:flex;
+ align-items:center;
+ gap:13px;
+ padding:15px;
+ background:#1b202b;
+ border:1px solid var(--line);
+ border-radius:11px;
+ margin-bottom:10px;
+}
+.resource-icon{
+ width:42px;
+ height:42px;
+ flex-shrink:0;
+ display:grid;
+ place-items:center;
+ background:#d8b67118;
+ color:var(--gold);
+ border-radius:11px;
+ font-size:20px;
+}
+.resource-info{flex:1}
+.resource-info strong{font-size:11px}
+.resource-info small{
+ display:block;
+ margin-top:6px;
+ color:var(--muted);
+ font-size:10px;
+ line-height:1.6;
+}
+.resource-value{
+ color:var(--gold2);
+ font:800 15px Manrope,sans-serif;
+}
+.timeline{display:grid;gap:15px}
+.event{display:flex;gap:12px}
+.event-icon{
+ width:32px;
+ height:32px;
+ flex-shrink:0;
+ display:grid;
+ place-items:center;
+ border-radius:10px;
+ background:#d8b67118;
+ color:var(--gold);
+}
+.event strong{font-size:11px}
+.event p{
+ color:var(--muted);
+ font-size:10px;
+ line-height:1.7;
+ margin:7px 0;
+}
+.event small{color:#777e8d;font-size:10px}
+.notice{
+ padding:16px;
+ background:#d8b6710e;
+ border:1px solid #d8b67130;
+ border-radius:12px;
+ color:#bbb4a5;
+ font-size:11px;
+ line-height:1.9;
+ margin-top:17px;
+}
+.notice strong{color:var(--gold2)}
+.footer{
+ padding-top:27px;
+ text-align:center;
+ color:#69707e;
+ font-size:10px;
+}
+.modal-backdrop{
+ position:fixed;
+ inset:0;
+ z-index:100;
+ display:none;
+ align-items:center;
+ justify-content:center;
+ padding:18px;
+ background:#000c;
+ backdrop-filter:blur(7px);
+}
+.modal-backdrop.open{display:flex}
+.modal{
+ width:min(680px,100%);
+ max-height:90vh;
+ overflow:auto;
+ padding:25px;
+ background:#171b24;
+ border:1px solid #d8b6714b;
+ border-radius:18px;
+ box-shadow:0 30px 100px #0008;
+}
+.modal-head{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:12px;
+ margin-bottom:18px;
+}
+.modal-head h3{
+ font:800 17px Manrope,sans-serif;
+ margin:0;
+}
+.close{
+ width:35px;
+ height:35px;
+ border:1px solid var(--line);
+ background:#282d38;
+ color:white;
+ border-radius:9px;
+ font-size:19px;
+}
+.details{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:11px;
+}
+.detail{
+ background:#1d222d;
+ border:1px solid var(--line);
+ border-radius:10px;
+ padding:14px;
+ overflow-wrap:anywhere;
+}
+.detail.full{grid-column:1/-1}
+.detail small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ margin-bottom:8px;
+}
+.detail strong{font-size:12px}
+.modal-actions{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-top:17px;
+}
+.toast{
+ position:fixed;
+ right:22px;
+ bottom:22px;
+ z-index:200;
+ padding:14px 17px;
+ background:#252b35;
+ border:1px solid #d8b67166;
+ color:var(--gold2);
+ border-radius:11px;
+ box-shadow:0 15px 45px #0008;
+}
+.menu-btn{display:none}
+@keyframes rise{
+ from{opacity:0;transform:translateY(14px)}
+ to{opacity:1;transform:translateY(0)}
+}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1250px){
+ .kpis{grid-template-columns:repeat(2,1fr)}
+ .columns{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+ .app{grid-template-columns:1fr}
+ .sidebar{
+  position:fixed;
+  width:260px;
+  transform:translateX(-100%);
+  transition:.3s;
+ }
+ .sidebar.open{transform:translateX(0)}
+ .menu-btn{display:inline-flex}
+ .topbar{padding:15px 20px}
+ .content{padding:20px}
+}
+@media(max-width:560px){
+ .kpis,.form-grid,.details{grid-template-columns:1fr}
+ .field.full,.detail.full{grid-column:auto}
+ .heading h2{font-size:23px}
+ .panel{padding:17px}
+ .hero{padding:20px}
+ .top-actions .badge{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{
+  animation-duration:.01ms!important;
+  transition-duration:.01ms!important;
+ }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-icon">✦</div>
+  <div>
+   <strong>KERALA FLOOD AI</strong>
+   <small>INTELLIGENCE PLATFORM</small>
+  </div>
+ </div>
+
+ <nav class="nav">
+  <div class="nav-label">WORKSPACE</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="agent-command-center.html"><span class="nav-icon">✦</span>Agent Command Center</a>
+  <a href="ai-copilot.html"><span class="nav-icon">◇</span>AI Copilot</a>
+  <a href="analytics.html"><span class="nav-icon">▥</span>Analytics</a>
+
+  <div class="nav-label" style="margin-top:24px">MEDICAL RESPONSE</div>
+  <a class="active" href="hospital-capacity.html"><span class="nav-icon">✚</span>Hospital Capacity</a>
+  <a href="ambulance-dispatch.html"><span class="nav-icon">✧</span>Ambulance Dispatch</a>
+  <a href="emergency-sos.html"><span class="nav-icon">⚑</span>Emergency SOS</a>
+  <a href="rescue-dashboard.html"><span class="nav-icon">◉</span>Rescue Operations</a>
+  <a href="family-reunification.html"><span class="nav-icon">♡</span>Family Reunification</a>
+
+  <div class="nav-label" style="margin-top:24px">FLOOD INTELLIGENCE</div>
+  <a href="flood-prediction.html"><span class="nav-icon">◈</span>Flood Prediction</a>
+  <a href="flood-alerts.html"><span class="nav-icon">⚑</span>Flood Alerts</a>
+  <a href="district-dashboard.html"><span class="nav-icon">▦</span>District Dashboard</a>
+
+  <div class="nav-label" style="margin-top:24px">GOVERNANCE</div>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+  <a href="reports.html"><span class="nav-icon">▤</span>Reports</a>
+ </nav>
+
+ <div class="side-footer">
+  <div class="avatar">MD</div>
+  <div>
+   <strong>Medical Coordination</strong>
+   <small>Simulation Workspace</small>
+  </div>
+ </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-left">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="page-icon">✚</div>
+  <div>
+   <h1>Hospital Capacity Intelligence</h1>
+   <p>Bed monitoring · Medical resources · Referral review</p>
+  </div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>DEMO DATA</span>
+  <button class="btn" id="resetBtn">↻ Reset</button>
+  <button class="btn gold" id="exportBtn">↓ Export CSV</button>
+ </div>
+</header>
+
+<div class="content">
+
+ <div class="heading">
+  <div>
+   <div class="eyebrow">MEDICAL EMERGENCY COORDINATION</div>
+   <h2>Hospital Capacity Command Center</h2>
+   <p>Explore synthetic hospital bed availability, emergency resources and referral workflows.</p>
+  </div>
+  <span class="tag">NO VERIFIED HOSPITAL FEED</span>
+ </div>
+
+ <section class="hero">
+  <div class="eyebrow">HEALTHCARE RESOURCE INTELLIGENCE</div>
+  <h3>Coordinate medical resources with clarity.</h3>
+  <p>
+   Review fictional general and ICU bed inventories, simulated oxygen supply,
+   ambulance availability and referral scenarios. All capacity figures are
+   synthetic and must not be used for actual patient placement.
+  </p>
+  <div class="hero-actions">
+   <button class="btn gold" id="newReferralBtn">＋ Create Demo Referral</button>
+   <a href="ambulance-dispatch.html" class="btn">✧ Ambulance Coordination</a>
+  </div>
+ </section>
+
+ <section class="grid kpis" style="margin-top:17px">
+  <div class="card kpi">
+   <div class="kpi-head">Demo Hospitals<div class="kpi-icon">✚</div></div>
+   <div class="kpi-number" id="kpiHospitals">0</div>
+   <div class="kpi-caption"><b>DEMO</b> · Fictional facilities</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">General Beds Available<div class="kpi-icon">▤</div></div>
+   <div class="kpi-number" id="kpiBeds">0</div>
+   <div class="kpi-caption"><b>DEMO</b> · Synthetic bed count</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">ICU Beds Available<div class="kpi-icon">♡</div></div>
+   <div class="kpi-number" id="kpiICU">0</div>
+   <div class="kpi-caption"><b>DEMO</b> · Not clinically verified</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Demo Ambulances Available<div class="kpi-icon">✧</div></div>
+   <div class="kpi-number" id="kpiAmbulances">0</div>
+   <div class="kpi-caption"><b>DEMO</b> · No dispatch capability</div>
+  </div>
+ </section>
+
+ <section class="grid columns">
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Hospital Capacity Registry</div>
+     <div class="panel-sub">Fictional facilities with generated capacity figures</div>
+    </div>
+    <span class="tag">CAPACITY MONITOR</span>
+   </div>
+
+   <div class="filters">
+    <input id="searchInput" class="search" placeholder="Search demo hospital or district..." aria-label="Search hospitals">
+    <select id="districtFilter" class="select">
+     <option value="all">All Districts</option>
+    </select>
+    <select id="statusFilter" class="select">
+     <option value="all">All Capacity States</option>
+     <option value="available">Available</option>
+     <option value="limited">Limited</option>
+     <option value="full">Full</option>
+    </select>
+   </div>
+
+   <div class="table-wrap">
+    <table>
+     <thead>
+      <tr>
+       <th>Facility</th>
+       <th>District</th>
+       <th>General</th>
+       <th>ICU</th>
+       <th>Oxygen</th>
+       <th>Capacity</th>
+       <th>Details</th>
+      </tr>
+     </thead>
+     <tbody id="hospitalTable"></tbody>
+    </table>
+   </div>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Resource Utilization</div>
+     <div class="panel-sub">Aggregate figures from fictional hospitals</div>
+    </div>
+    <span class="tag">RESOURCE OVERVIEW</span>
+   </div>
+
+   <div id="capacitySummary"></div>
+
+   <div class="notice">
+    <strong>Capacity ≠ Admission Guarantee</strong>
+    <div>
+     Real transfers require confirmation of clinical suitability,
+     staffing, equipment, infection-control requirements,
+     receiving-facility acceptance and transport readiness.
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <section class="grid columns">
+
+  <div class="card panel" id="referralPanel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Medical Referral Scenario Builder</div>
+     <div class="panel-sub">Training-only referrals with no patient identifiers</div>
+    </div>
+    <span class="tag">REFERRAL INTAKE</span>
+   </div>
+
+   <form id="referralForm">
+    <div class="form-grid">
+
+     <div class="field">
+      <label for="caseCode">Fictional Case Reference</label>
+      <input id="caseCode" maxlength="40" placeholder="Example: CASE-ALPHA" required>
+     </div>
+
+     <div class="field">
+      <label for="originDistrict">Origin District</label>
+      <select id="originDistrict" required>
+       <option value="">Select district</option>
+      </select>
+     </div>
+
+     <div class="field">
+      <label for="careLevel">Illustrative Care Requirement</label>
+      <select id="careLevel">
+       <option value="General Bed">General Bed</option>
+       <option value="ICU">ICU</option>
+       <option value="Emergency Assessment">Emergency Assessment</option>
+      </select>
+     </div>
+
+     <div class="field">
+      <label for="priority">Administrative Priority</label>
+      <select id="priority">
+       <option value="medium">Routine Review</option>
+       <option value="high">Priority Review</option>
+       <option value="low">Standard Coordination</option>
+      </select>
+     </div>
+
+     <div class="field full">
+      <label for="targetHospital">Fictional Receiving Facility</label>
+      <select id="targetHospital" required>
+       <option value="">Select demo hospital</option>
+      </select>
+     </div>
+
+     <div class="field full">
+      <label for="notes">Scenario Notes</label>
+      <textarea id="notes" maxlength="800" required placeholder="Enter a fictional administrative coordination scenario. Do not enter medical records or real patient details."></textarea>
+     </div>
+
+     <div class="field full">
+      <label style="display:flex;align-items:flex-start;gap:10px;line-height:1.7">
+       <input type="checkbox" id="fictionalConfirm" required style="width:auto;margin-top:3px;accent-color:var(--gold)">
+       I confirm that this is a fictional case without real patient or medical information.
+      </label>
+     </div>
+    </div>
+
+    <div class="form-actions">
+     <button class="btn gold" type="submit" style="flex:1">＋ Create Demo Referral</button>
+     <button class="btn" type="reset">Clear</button>
+    </div>
+   </form>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Medical Resource Network</div>
+     <div class="panel-sub">Illustrative coordination capabilities</div>
+    </div>
+    <span class="tag">SUPPORT SERVICES</span>
+   </div>
+
+   <div class="resource">
+    <div class="resource-icon">✚</div>
+    <div class="resource-info">
+     <strong>Emergency Departments</strong>
+     <small>Clinical triage and emergency stabilization</small>
+    </div>
+    <div class="resource-value">DEMO</div>
+   </div>
+
+   <div class="resource">
+    <div class="resource-icon">♡</div>
+    <div class="resource-info">
+     <strong>Critical Care Coordination</strong>
+     <small>ICU equipment, specialist and staffing verification</small>
+    </div>
+    <div class="resource-value">DEMO</div>
+   </div>
+
+   <div class="resource">
+    <div class="resource-icon">◈</div>
+    <div class="resource-info">
+     <strong>Medical Oxygen Logistics</strong>
+     <small>Supply status and authorized replenishment</small>
+    </div>
+    <div class="resource-value">DEMO</div>
+   </div>
+
+   <div class="resource">
+    <div class="resource-icon">✧</div>
+    <div class="resource-info">
+     <strong>Ambulance Coordination</strong>
+     <small>Transport availability and receiving-facility confirmation</small>
+    </div>
+    <div class="resource-value">DEMO</div>
+   </div>
+
+   <div class="resource">
+    <div class="resource-icon">✓</div>
+    <div class="resource-info">
+     <strong>Human Approval</strong>
+     <small>Clinical oversight before any real transfer</small>
+    </div>
+    <div class="resource-value">REQUIRED</div>
+   </div>
+  </div>
+ </section>
+
+ <section class="grid columns">
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Referral Review Queue</div>
+     <div class="panel-sub">Fictional referrals and local review status</div>
+    </div>
+    <span class="tag">CASE WORKFLOW</span>
+   </div>
+
+   <div class="table-wrap">
+    <table>
+     <thead>
+      <tr>
+       <th>Referral ID</th>
+       <th>Case Code</th>
+       <th>Receiving Facility</th>
+       <th>Care Level</th>
+       <th>Status</th>
+       <th>Review</th>
+      </tr>
+     </thead>
+     <tbody id="referralTable"></tbody>
+    </table>
+   </div>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Medical Coordination Activity</div>
+     <div class="panel-sub">Local demonstration event timeline</div>
+    </div>
+    <span class="tag">AUDIT PREVIEW</span>
+   </div>
+   <div class="timeline" id="timeline"></div>
+  </div>
+ </section>
+
+ <div class="notice">
+  <strong>⚠ Demonstration Only.</strong>
+  <div>
+   All facilities are fictional and all bed counts, ICU availability,
+   oxygen figures, ambulance counts and referral records are synthetic.
+   This interface does not contact hospitals, allocate beds, conduct medical
+   triage, dispatch ambulances or transfer patients. For actual emergencies,
+   contact authorized emergency medical services.
+  </div>
+ </div>
+
+ <footer class="footer">
+  KERALA FLOOD RELIEF COORDINATION AGENT · HOSPITAL CAPACITY · SYNTHETIC MEDICAL WORKSPACE
+ </footer>
+
+</div>
+</main>
+</div>
+
+<div class="modal-backdrop" id="hospitalModal" role="dialog" aria-modal="true" aria-labelledby="hospitalModalTitle">
+ <div class="modal">
+  <div class="modal-head">
+   <h3 id="hospitalModalTitle">Hospital Capacity Details</h3>
+   <button class="close" id="closeHospitalModal" aria-label="Close">×</button>
+  </div>
+  <div class="details" id="hospitalDetails"></div>
+  <div class="notice">
+   <strong>Unverified Demo Inventory</strong>
+   <div>Displayed beds and resources are fictional. Do not rely on these numbers for care decisions.</div>
+  </div>
+  <div class="modal-actions">
+   <button class="btn" id="dismissHospitalBtn">Close</button>
+  </div>
+ </div>
+</div>
+
+<div class="modal-backdrop" id="referralModal" role="dialog" aria-modal="true" aria-labelledby="referralModalTitle">
+ <div class="modal">
+  <div class="modal-head">
+   <h3 id="referralModalTitle">Referral Review</h3>
+   <button class="close" id="closeReferralModal" aria-label="Close">×</button>
+  </div>
+  <div class="details" id="referralDetails"></div>
+  <div class="notice">
+   <strong>Human Review Simulation</strong>
+   <div>Review actions only change the local demonstration record. They do not confirm medical suitability or hospital acceptance.</div>
+  </div>
+  <div class="modal-actions">
+   <button class="btn gold" id="reviewReferralBtn">✓ Mark Demo Reviewed</button>
+   <button class="btn" id="closeReferralBtn">Close Demo Referral</button>
+   <button class="btn" id="dismissReferralBtn">Dismiss</button>
+  </div>
+ </div>
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const DISTRICTS=[
+ "Thiruvananthapuram","Kollam","Pathanamthitta",
+ "Alappuzha","Kottayam","Idukki","Ernakulam",
+ "Thrissur","Palakkad","Malappuram","Kozhikode",
+ "Wayanad","Kannur","Kasaragod"
+];
+
+const INITIAL_HOSPITALS=[
+ {id:"HSP-001",name:"Demo Medical Center Alpha",district:"Thiruvananthapuram",generalTotal:180,generalUsed:136,icuTotal:24,icuUsed:17,oxygen:82,ambulances:4},
+ {id:"HSP-002",name:"Demo Medical Center Beta",district:"Ernakulam",generalTotal:210,generalUsed:180,icuTotal:30,icuUsed:26,oxygen:61,ambulances:3},
+ {id:"HSP-003",name:"Demo Medical Center Gamma",district:"Thrissur",generalTotal:145,generalUsed:97,icuTotal:20,icuUsed:12,oxygen:88,ambulances:5},
+ {id:"HSP-004",name:"Demo Medical Center Delta",district:"Wayanad",generalTotal:90,generalUsed:86,icuTotal:12,icuUsed:12,oxygen:37,ambulances:1},
+ {id:"HSP-005",name:"Demo Medical Center Epsilon",district:"Kozhikode",generalTotal:170,generalUsed:140,icuTotal:22,icuUsed:18,oxygen:70,ambulances:3},
+ {id:"HSP-006",name:"Demo Medical Center Zeta",district:"Alappuzha",generalTotal:115,generalUsed:82,icuTotal:15,icuUsed:10,oxygen:79,ambulances:2},
+ {id:"HSP-007",name:"Demo Medical Center Eta",district:"Idukki",generalTotal:75,generalUsed:69,icuTotal:10,icuUsed:9,oxygen:45,ambulances:1},
+ {id:"HSP-008",name:"Demo Medical Center Theta",district:"Kottayam",generalTotal:130,generalUsed:91,icuTotal:18,icuUsed:11,oxygen:84,ambulances:4}
+];
+
+const INITIAL_REFERRALS=[
+ {
+  id:"REF-DEMO-001",
+  caseCode:"CASE-ALPHA",
+  originDistrict:"Wayanad",
+  careLevel:"General Bed",
+  priority:"medium",
+  hospitalId:"HSP-004",
+  notes:"Synthetic general care coordination exercise.",
+  status:"pending"
+ },
+ {
+  id:"REF-DEMO-002",
+  caseCode:"CASE-BETA",
+  originDistrict:"Thrissur",
+  careLevel:"ICU",
+  priority:"high",
+  hospitalId:"HSP-003",
+  notes:"Synthetic critical care coordination exercise.",
+  status:"reviewed"
+ }
+];
+
+const state={
+ hospitals:structuredClone(INITIAL_HOSPITALS),
+ referrals:structuredClone(INITIAL_REFERRALS),
+ nextReferral:3,
+ selectedReferral:null,
+ search:"",
+ district:"all",
+ status:"all",
+ events:[
+  {title:"Medical capacity demo initialized",detail:"Fictional hospital resources loaded.",time:"Demo dataset"},
+  {title:"Referral review workflow available",detail:"No real patient transfer or bed reservation is enabled.",time:"Demo dataset"}
+ ]
+};
+
+function escapeHTML(value){
+ return String(value).replace(/[&<>"']/g,char=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ })[char]);
+}
+
+function available(total,used){
+ return Math.max(0,total-used);
+}
+
+function occupancy(total,used){
+ return total>0?Math.round(used/total*100):0;
+}
+
+function hospitalStatus(hospital){
+ const generalFree=available(hospital.generalTotal,hospital.generalUsed);
+ const icuFree=available(hospital.icuTotal,hospital.icuUsed);
+
+ if(generalFree===0&&icuFree===0)return "full";
+
+ const maxOccupancy=Math.max(
+  occupancy(hospital.generalTotal,hospital.generalUsed),
+  occupancy(hospital.icuTotal,hospital.icuUsed)
+ );
+
+ return maxOccupancy>=90?"limited":"available";
+}
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+
+ const node=document.createElement("div");
+ node.className="toast";
+ node.textContent=message;
+ document.body.appendChild(node);
+
+ setTimeout(()=>node.remove(),3000);
+}
+
+function addEvent(title,detail){
+ state.events.unshift({
+  title,
+  detail,
+  time:new Date().toLocaleTimeString("en-IN")
+ });
+
+ state.events=state.events.slice(0,8);
+ renderTimeline();
+}
+
+function renderKPIs(){
+ $("kpiHospitals").textContent=state.hospitals.length;
+
+ $("kpiBeds").textContent=state.hospitals.reduce(
+  (sum,hospital)=>sum+available(hospital.generalTotal,hospital.generalUsed),0
+ );
+
+ $("kpiICU").textContent=state.hospitals.reduce(
+  (sum,hospital)=>sum+available(hospital.icuTotal,hospital.icuUsed),0
+ );
+
+ $("kpiAmbulances").textContent=state.hospitals.reduce(
+  (sum,hospital)=>sum+hospital.ambulances,0
+ );
+}
+
+function filteredHospitals(){
+ return state.hospitals.filter(hospital=>{
+  const text=[hospital.name,hospital.district,hospital.id].join(" ").toLowerCase();
+
+  return text.includes(state.search.toLowerCase())&&
+   (state.district==="all"||hospital.district===state.district)&&
+   (state.status==="all"||hospitalStatus(hospital)===state.status);
+ });
+}
+
+function renderHospitals(){
+ const hospitals=filteredHospitals();
+
+ $("hospitalTable").innerHTML=hospitals.map(hospital=>{
+  const status=hospitalStatus(hospital);
+
+  return `
+   <tr>
+    <td>
+     <div style="font-weight:800;color:var(--gold2)">
+      ${escapeHTML(hospital.name)}
+     </div>
+     <div style="font-size:9px;color:var(--muted);margin-top:5px">
+      ${escapeHTML(hospital.id)}
+     </div>
+    </td>
+    <td>${escapeHTML(hospital.district)}</td>
+    <td>${available(hospital.generalTotal,hospital.generalUsed)}/${hospital.generalTotal}</td>
+    <td>${available(hospital.icuTotal,hospital.icuUsed)}/${hospital.icuTotal}</td>
+    <td>${hospital.oxygen}%</td>
+    <td><span class="pill ${status}">${status.toUpperCase()}</span></td>
+    <td>
+     <button class="small-btn" data-hospital="${hospital.id}">
+      Inspect →
+     </button>
+    </td>
+   </tr>
+  `;
+ }).join("");
+
+ if(!hospitals.length){
+  $("hospitalTable").innerHTML=
+   '<tr><td colspan="7" style="text-align:center;padding:30px">No matching demo hospitals.</td></tr>';
+ }
+
+ document.querySelectorAll("[data-hospital]").forEach(button=>{
+  button.addEventListener("click",()=>openHospital(button.dataset.hospital));
+ });
+}
+
+function renderCapacity(){
+ const totalGeneral=state.hospitals.reduce((sum,h)=>sum+h.generalTotal,0);
+ const usedGeneral=state.hospitals.reduce((sum,h)=>sum+h.generalUsed,0);
+
+ const totalICU=state.hospitals.reduce((sum,h)=>sum+h.icuTotal,0);
+ const usedICU=state.hospitals.reduce((sum,h)=>sum+h.icuUsed,0);
+
+ const avgOxygen=Math.round(
+  state.hospitals.reduce((sum,h)=>sum+h.oxygen,0)/state.hospitals.length
+ );
+
+ const items=[
+  {title:"General Bed Occupancy",value:occupancy(totalGeneral,usedGeneral),detail:`${usedGeneral} of ${totalGeneral} synthetic beds occupied`},
+  {title:"ICU Bed Occupancy",value:occupancy(totalICU,usedICU),detail:`${usedICU} of ${totalICU} synthetic ICU beds occupied`},
+  {title:"Illustrative Oxygen Supply",value:avgOxygen,detail:"Mean fictional oxygen inventory indicator"}
+ ];
+
+ $("capacitySummary").innerHTML=items.map(item=>`
+  <div class="capacity-card">
+   <div class="capacity-head">
+    <strong>${item.title}</strong>
+    <span>${item.value}%</span>
+   </div>
+   <small>${item.detail}</small>
+   <div class="progress ${item.value>=90?"red":item.value<=55?"green":""}">
+    <span style="width:${item.value}%"></span>
+   </div>
+  </div>
+ `).join("");
+}
+
+function renderReferrals(){
+ $("referralTable").innerHTML=state.referrals.map(referral=>{
+  const hospital=state.hospitals.find(h=>h.id===referral.hospitalId);
+
+  return `
+   <tr>
+    <td class="id">${escapeHTML(referral.id)}</td>
+    <td>${escapeHTML(referral.caseCode)}</td>
+    <td>${escapeHTML(hospital?.name||"Unknown demo facility")}</td>
+    <td>${escapeHTML(referral.careLevel)}</td>
+    <td>
+     <span class="pill ${referral.status}">
+      ${referral.status==="reviewed"?"DEMO REVIEWED":referral.status.toUpperCase()}
+     </span>
+    </td>
+    <td>
+     <button class="small-btn" data-referral="${escapeHTML(referral.id)}">
+      Review →
+     </button>
+    </td>
+   </tr>
+  `;
+ }).join("");
+
+ if(!state.referrals.length){
+  $("referralTable").innerHTML=
+   '<tr><td colspan="6" style="text-align:center;padding:25px">No fictional referrals.</td></tr>';
+ }
+
+ document.querySelectorAll("[data-referral]").forEach(button=>{
+  button.addEventListener("click",()=>openReferral(button.dataset.referral));
+ });
+}
+
+function renderTimeline(){
+ const container=$("timeline");
+ container.replaceChildren();
+
+ state.events.forEach(event=>{
+  const row=document.createElement("div");
+  row.className="event";
+
+  const icon=document.createElement("div");
+  icon.className="event-icon";
+  icon.textContent="✚";
+
+  const body=document.createElement("div");
+
+  const title=document.createElement("strong");
+  title.textContent=event.title;
+
+  const detail=document.createElement("p");
+  detail.textContent=event.detail;
+
+  const time=document.createElement("small");
+  time.textContent=event.time;
+
+  body.append(title,detail,time);
+  row.append(icon,body);
+  container.appendChild(row);
+ });
+}
+
+function populateSelectors(){
+ DISTRICTS.forEach(district=>{
+  const option=document.createElement("option");
+  option.value=district;
+  option.textContent=district;
+  $("originDistrict").appendChild(option);
+
+  const filter=document.createElement("option");
+  filter.value=district;
+  filter.textContent=district;
+  $("districtFilter").appendChild(filter);
+ });
+
+ state.hospitals.forEach(hospital=>{
+  const option=document.createElement("option");
+  option.value=hospital.id;
+  option.textContent=`${hospital.name} · ${hospital.district}`;
+  $("targetHospital").appendChild(option);
+ });
+}
+
+function createReferral(event){
+ event.preventDefault();
+
+ if(!$("fictionalConfirm").checked){
+  toast("Confirm the scenario contains no real patient data");
+  return;
+ }
+
+ const caseCode=$("caseCode").value.trim();
+ const originDistrict=$("originDistrict").value;
+ const hospitalId=$("targetHospital").value;
+ const notes=$("notes").value.trim();
+
+ if(!caseCode||!originDistrict||!hospitalId||!notes){
+  toast("Complete the fictional referral form");
+  return;
+ }
+
+ const id=`REF-DEMO-${String(state.nextReferral++).padStart(3,"0")}`;
+
+ state.referrals.unshift({
+  id,
+  caseCode,
+  originDistrict,
+  careLevel:$("careLevel").value,
+  priority:$("priority").value,
+  hospitalId,
+  notes,
+  status:"pending"
+ });
+
+ $("referralForm").reset();
+
+ addEvent(
+  "Fictional referral created",
+  `${id} added to the local review queue. No hospital contacted.`
+ );
+
+ renderReferrals();
+ toast("Demo referral created");
+}
+
+function buildDetails(containerId,fields){
+ const container=$(containerId);
+ container.replaceChildren();
+
+ fields.forEach(([label,value],index)=>{
+  const box=document.createElement("div");
+  box.className="detail"+(index===fields.length-1?" full":"");
+
+  const small=document.createElement("small");
+  small.textContent=label;
+
+  const strong=document.createElement("strong");
+  strong.textContent=value;
+
+  box.append(small,strong);
+  container.appendChild(box);
+ });
+}
+
+function openHospital(id){
+ const hospital=state.hospitals.find(h=>h.id===id);
+ if(!hospital)return;
+
+ buildDetails("hospitalDetails",[
+  ["Facility ID",hospital.id],
+  ["Fictional Facility",hospital.name],
+  ["District",hospital.district],
+  ["General Beds Available",String(available(hospital.generalTotal,hospital.generalUsed))],
+  ["General Bed Total",String(hospital.generalTotal)],
+  ["ICU Beds Available",String(available(hospital.icuTotal,hospital.icuUsed))],
+  ["ICU Bed Total",String(hospital.icuTotal)],
+  ["Demo Oxygen Indicator",hospital.oxygen+"%"],
+  ["Demo Ambulances",String(hospital.ambulances)],
+  ["Capacity State",hospitalStatus(hospital).toUpperCase()]
+ ]);
+
+ $("hospitalModal").classList.add("open");
+ $("closeHospitalModal").focus();
+}
+
+function openReferral(id){
+ const referral=state.referrals.find(r=>r.id===id);
+ if(!referral)return;
+
+ state.selectedReferral=id;
+
+ const hospital=state.hospitals.find(h=>h.id===referral.hospitalId);
+
+ buildDetails("referralDetails",[
+  ["Referral ID",referral.id],
+  ["Fictional Case Code",referral.caseCode],
+  ["Origin District",referral.originDistrict],
+  ["Care Requirement",referral.careLevel],
+  ["Administrative Priority",referral.priority.toUpperCase()],
+  ["Receiving Demo Facility",hospital?.name||"Unknown"],
+  ["Review Status",referral.status.toUpperCase()],
+  ["Scenario Notes",referral.notes]
+ ]);
+
+ $("reviewReferralBtn").disabled=referral.status!=="pending";
+ $("closeReferralBtn").disabled=referral.status==="closed";
+
+ $("referralModal").classList.add("open");
+ $("closeReferralModal").focus();
+}
+
+function closeModals(){
+ $("hospitalModal").classList.remove("open");
+ $("referralModal").classList.remove("open");
+ state.selectedReferral=null;
+}
+
+function updateReferral(status){
+ const referral=state.referrals.find(r=>r.id===state.selectedReferral);
+ if(!referral)return;
+
+ if(status==="reviewed"&&referral.status!=="pending")return;
+ if(status==="closed"&&referral.status==="closed")return;
+
+ referral.status=status;
+
+ addEvent(
+  `Demo referral marked ${status}`,
+  `${referral.id} updated locally. No bed reservation or patient transfer occurred.`
+ );
+
+ renderReferrals();
+ closeModals();
+ toast(`Referral status updated to ${status}`);
+}
+
+function exportCSV(){
+ const fields=[
+  "id","name","district","generalTotal","generalUsed",
+  "icuTotal","icuUsed","oxygen","ambulances"
+ ];
+
+ function csv(value){
+  let text=String(value??"");
+  if(/^\s*[=+\-@]/.test(text))text="'"+text;
+  return `"${text.replace(/"/g,'""')}"`;
+ }
+
+ const rows=[
+  fields.map(csv).join(","),
+  ...state.hospitals.map(hospital=>
+   fields.map(field=>csv(hospital[field])).join(",")
+  )
+ ];
+
+ const blob=new Blob(["\uFEFF"+rows.join("\r\n")],{
+  type:"text/csv;charset=utf-8"
+ });
+
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement("a");
+
+ link.href=url;
+ link.download="hospital-capacity-demo.csv";
+
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ toast("Fictional hospital capacity CSV exported");
+}
+
+function resetDemo(){
+ state.hospitals=structuredClone(INITIAL_HOSPITALS);
+ state.referrals=structuredClone(INITIAL_REFERRALS);
+ state.nextReferral=3;
+ state.search="";
+ state.district="all";
+ state.status="all";
+
+ state.events=[{
+  title:"Medical coordination demo reset",
+  detail:"Original fictional hospitals and referrals restored.",
+  time:new Date().toLocaleTimeString("en-IN")
+ }];
+
+ $("searchInput").value="";
+ $("districtFilter").value="all";
+ $("statusFilter").value="all";
+ $("referralForm").reset();
+
+ renderAll();
+ toast("Hospital capacity demo reset");
+}
+
+function renderAll(){
+ renderKPIs();
+ renderHospitals();
+ renderCapacity();
+ renderReferrals();
+ renderTimeline();
+}
+
+function initialize(){
+ populateSelectors();
+
+ $("searchInput").addEventListener("input",event=>{
+  state.search=event.target.value.trim();
+  renderHospitals();
+ });
+
+ $("districtFilter").addEventListener("change",event=>{
+  state.district=event.target.value;
+  renderHospitals();
+ });
+
+ $("statusFilter").addEventListener("change",event=>{
+  state.status=event.target.value;
+  renderHospitals();
+ });
+
+ $("referralForm").addEventListener("submit",createReferral);
+
+ $("newReferralBtn").addEventListener("click",()=>{
+  $("referralPanel").scrollIntoView({
+   behavior:"smooth",
+   block:"start"
+  });
+  $("caseCode").focus({preventScroll:true});
+ });
+
+ $("reviewReferralBtn").addEventListener("click",()=>{
+  updateReferral("reviewed");
+ });
+
+ $("closeReferralBtn").addEventListener("click",()=>{
+  updateReferral("closed");
+ });
+
+ [
+  "closeHospitalModal","dismissHospitalBtn",
+  "closeReferralModal","dismissReferralBtn"
+ ].forEach(id=>$(id).addEventListener("click",closeModals));
+
+ ["hospitalModal","referralModal"].forEach(id=>{
+  $(id).addEventListener("click",event=>{
+   if(event.target===$(id))closeModals();
+  });
+ });
+
+ document.addEventListener("keydown",event=>{
+  if(event.key==="Escape")closeModals();
+ });
+
+ $("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+ });
+
+ $("resetBtn").addEventListener("click",resetDemo);
+ $("exportBtn").addEventListener("click",exportCSV);
+
+ renderAll();
+}
+
+initialize();
+
+console.info(
+ "Hospital Capacity demo initialized. All facilities, resources and referrals are fictional."
+);
+</script>
+</body>
+</html>

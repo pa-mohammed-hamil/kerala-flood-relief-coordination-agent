@@ -1,0 +1,579 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b10">
+<title>Public Flood Dashboard | Kerala Flood AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#090b10;--sidebar:#0d1017;--panel:#151922;--panel2:#1b202b;
+ --gold:#d8b671;--gold2:#f5daa0;--text:#f4f1e9;--muted:#9399a7;
+ --line:rgba(255,255,255,.085);--green:#54d6a4;--orange:#ffb66e;
+ --red:#ff777d;--blue:#82adff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:13px "DM Sans",sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.app{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;background:var(--sidebar);border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:40}
+.brand{padding:24px 18px;display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--line)}
+.brand-icon{width:43px;height:43px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#f5daa0,#a47c3b);color:#20170a;font-size:23px}
+.brand strong{font:800 13px Manrope,sans-serif}
+.brand small{display:block;font-size:10px;letter-spacing:1.2px;color:var(--muted);margin-top:5px}
+.nav{padding:18px 13px;overflow:auto;flex:1}
+.nav-label{color:#777e8d;font-size:10px;letter-spacing:1.5px;font-weight:800;margin:17px 12px 9px}
+.nav a{display:flex;align-items:center;gap:12px;padding:12px 13px;margin-bottom:5px;border:1px solid transparent;border-radius:10px;color:#a2a8b4;font-size:12px;font-weight:600;transition:.2s}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{background:#d8b67119;border-color:#d8b67130;color:var(--gold2)}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.side-footer{padding:17px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:11px;background:#383023;color:var(--gold2);display:grid;place-items:center;font-weight:800}
+.side-footer strong{font-size:11px}
+.side-footer small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.main{min-width:0;background:radial-gradient(ellipse at 65% -5%,#d8b67112,transparent 38%),var(--bg)}
+.topbar{min-height:82px;padding:17px 30px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:14px}
+.top-left,.top-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.page-icon{width:43px;height:43px;border-radius:12px;background:#d8b67119;border:1px solid #d8b67133;color:var(--gold);display:grid;place-items:center;font-size:20px}
+.top-left h1{font:800 18px Manrope,sans-serif;margin:0}
+.top-left p{color:var(--muted);font-size:11px;margin:5px 0 0}
+.badge,.tag{display:inline-flex;align-items:center;gap:7px;padding:9px 11px;background:#d8b67112;border:1px solid #d8b67130;color:var(--gold2);border-radius:9px;font-size:10px;font-weight:800}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 15px;border-radius:10px;border:1px solid var(--line);background:#1a1f29;color:#e1e3e8;font-size:11px;font-weight:800;transition:.2s}
+.btn:hover{border-color:#d8b67166;transform:translateY(-1px)}
+.btn.gold{background:linear-gradient(120deg,#c6a15e,#f1d49a);color:#1b160e;border:0}
+.btn.red{color:var(--red);background:#ff777d12;border-color:#ff777d40}
+.btn.blue{color:var(--blue);background:#82adff12;border-color:#82adff40}
+.content{max-width:1700px;margin:auto;padding:28px 30px 45px}
+.eyebrow{color:var(--gold);font-size:10px;letter-spacing:2px;font-weight:800;margin-bottom:10px}
+.heading{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+.heading h2{font:800 28px Manrope,sans-serif;letter-spacing:-1px;margin:0}
+.heading p{color:var(--muted);font-size:12px;line-height:1.8;margin:9px 0 0}
+.hero{padding:28px;border-radius:18px;border:1px solid #d8b67138;background:radial-gradient(circle at 85% 15%,#d8b67120,transparent 35%),linear-gradient(120deg,#252017,#151922)}
+.hero h3{font:800 26px Manrope,sans-serif;letter-spacing:-.8px;margin:12px 0}
+.hero p{color:#b9b5ae;font-size:12px;line-height:1.9;max-width:850px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:17px}
+.card{min-width:0;background:linear-gradient(150deg,#181c26,#12161e);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 35px #0002;animation:rise .5s ease both}
+.kpi{padding:21px}
+.kpi-head{display:flex;justify-content:space-between;align-items:center;color:#a7adba;font-size:11px;font-weight:700}
+.kpi-icon{width:36px;height:36px;border-radius:10px;background:#d8b67119;color:var(--gold);display:grid;place-items:center;font-size:18px}
+.kpi-number{font:800 30px Manrope,sans-serif;letter-spacing:-1px;margin:15px 0 7px}
+.kpi-caption{font-size:10px;color:var(--muted);line-height:1.7}
+.kpi-caption b{color:var(--gold)}
+.section{margin-top:25px}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:15px}
+.section-head h3{font:800 19px Manrope,sans-serif;letter-spacing:-.5px;margin:0}
+.section-head p{color:var(--muted);font-size:11px;line-height:1.8;margin:7px 0 0}
+.panel{padding:21px}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{color:var(--muted);font-size:10px;line-height:1.8;margin-top:6px}
+.columns{grid-template-columns:minmax(0,1.4fr) minmax(310px,1fr)}
+.two-col{grid-template-columns:repeat(2,minmax(0,1fr))}
+.input,.select{width:100%;padding:12px 13px;border:1px solid #343a46;border-radius:10px;background:#1b202b;color:var(--text);outline:none}
+.input:focus,.select:focus{border-color:var(--gold)}
+.pill{display:inline-flex;align-items:center;padding:7px 10px;border-radius:8px;font-size:10px;font-weight:800;white-space:nowrap}
+.pill.critical{color:var(--red);background:#ff777d19}
+.pill.high{color:var(--orange);background:#ffb66e19}
+.pill.moderate{color:var(--blue);background:#82adff19}
+.pill.low{color:var(--green);background:#54d6a419}
+.district-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:15px}
+.district{padding:15px;background:#1b202b;border:1px solid var(--line);border-radius:11px;text-align:left;color:var(--text);transition:.2s}
+.district:hover,.district.selected{border-color:var(--gold);background:#d8b67113}
+.district strong{display:block;font-size:11px;margin-bottom:10px}
+.district small{display:block;color:var(--muted);margin-top:9px;font-size:10px}
+.progress{height:8px;background:#303642;border-radius:10px;overflow:hidden;margin-top:10px}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#a68145,#f1d69c);border-radius:10px}
+.metric{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
+.metric span{color:var(--muted);font-size:11px}
+.metric strong{font-size:13px}
+.chart{width:100%;height:220px;margin-top:16px}
+.chart text{font:10px "DM Sans",sans-serif;fill:#9098a6}
+.advisory{padding:15px;background:#1b202b;border:1px solid var(--line);border-radius:11px;margin-bottom:10px}
+.advisory-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.advisory strong{font-size:11px}
+.advisory p{font-size:10px;color:var(--muted);line-height:1.8;margin:10px 0}
+.shelter{padding:15px;background:#1b202b;border:1px solid var(--line);border-radius:11px;margin-bottom:10px}
+.shelter strong{font-size:11px}
+.shelter p{font-size:10px;color:var(--muted);line-height:1.8}
+.guide{display:flex;gap:13px;padding:15px;background:#1b202b;border:1px solid var(--line);border-radius:11px;margin-bottom:10px}
+.guide-icon{width:37px;height:37px;flex-shrink:0;display:grid;place-items:center;background:#d8b67118;color:var(--gold);border-radius:10px;font-size:18px}
+.guide strong{font-size:11px}
+.guide p{font-size:10px;color:var(--muted);line-height:1.8;margin:7px 0 0}
+.notice{padding:16px;background:#d8b6710e;border:1px solid #d8b67130;border-radius:12px;color:#bbb4a5;font-size:11px;line-height:1.9;margin-top:17px}
+.notice strong{color:var(--gold2)}
+.footer{padding-top:26px;text-align:center;color:#69707e;font-size:10px}
+.menu-btn{display:none}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1250px){.kpis{grid-template-columns:repeat(2,1fr)}.columns{grid-template-columns:1fr}}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:fixed;width:260px;transform:translateX(-100%);transition:.3s}.sidebar.open{transform:translateX(0)}.menu-btn{display:inline-flex}.topbar{padding:15px 20px}.content{padding:20px}}
+@media(max-width:560px){.kpis,.two-col{grid-template-columns:1fr}.district-grid{grid-template-columns:repeat(2,1fr)}.heading h2{font-size:23px}.panel{padding:16px}.top-actions .badge{display:none}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-icon">✦</div>
+  <div><strong>KERALA FLOOD AI</strong><small>INTELLIGENCE PLATFORM</small></div>
+ </div>
+ <nav class="nav">
+  <div class="nav-label">PUBLIC INFORMATION</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Project Overview</a>
+  <a class="active" href="public-dashboard.html"><span class="nav-icon">◈</span>Public Dashboard</a>
+  <a href="live-flood-map.html"><span class="nav-icon">◎</span>Flood Map</a>
+  <a href="district-dashboard.html"><span class="nav-icon">▦</span>District Explorer</a>
+  <a href="flood-alerts.html"><span class="nav-icon">☁</span>Flood Alerts</a>
+  <a href="flood-prediction.html"><span class="nav-icon">≈</span>Flood Prediction</a>
+  <a href="weather-monitoring.html"><span class="nav-icon">☀</span>Weather Monitoring</a>
+
+  <div class="nav-label">HELP & RELIEF</div>
+  <a href="emergency-sos.html"><span class="nav-icon">⚑</span>Emergency SOS Demo</a>
+  <a href="shelters.html"><span class="nav-icon">⌂</span>Shelters Demo</a>
+  <a href="medical-emergency.html"><span class="nav-icon">✚</span>Medical Coordination</a>
+  <a href="family-reunification.html"><span class="nav-icon">♡</span>Family Reunification</a>
+
+  <div class="nav-label">PLATFORM</div>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="notifications.html"><span class="nav-icon">♧</span>Notifications</a>
+ </nav>
+ <div class="side-footer">
+  <div class="avatar">PB</div>
+  <div><strong>Public Information</strong><small>Fictional Demo Data</small></div>
+ </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-left">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="page-icon">◈</div>
+  <div>
+   <h1 id="topTitle">Public Flood Dashboard</h1>
+   <p id="topSubtitle">District overview · Safety guidance · Public information</p>
+  </div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>SYNTHETIC DATA</span>
+  <button class="btn" id="languageBtn">മലയാളം</button>
+  <a class="btn red" href="tel:112">☎ 112</a>
+ </div>
+</header>
+
+<div class="content">
+<div class="heading">
+ <div>
+  <div class="eyebrow">KERALA PUBLIC INFORMATION PORTAL · DEMO</div>
+  <h2 id="mainTitle">Kerala Flood Information Dashboard</h2>
+  <p id="mainSubtitle">Explore illustrative district risk profiles, sample advisories and general flood safety guidance.</p>
+ </div>
+ <span class="tag">14 KERALA DISTRICTS</span>
+</div>
+
+<section class="hero">
+ <div class="eyebrow">PUBLIC SAFETY INFORMATION</div>
+ <h3 id="heroTitle">Stay Informed. Prepare Early. Follow Official Guidance.</h3>
+ <p id="heroDescription">
+  This dashboard demonstrates how verified public flood information could be presented.
+  Every risk score, rainfall value, river index, shelter count and advisory displayed
+  below is fictional and must not be used for real-world decisions.
+ </p>
+ <div class="hero-actions">
+  <a class="btn gold" href="https://sdma.kerala.gov.in/" target="_blank" rel="noopener noreferrer">Kerala SDMA ↗</a>
+  <a class="btn" href="https://mausam.imd.gov.in/" target="_blank" rel="noopener noreferrer">IMD Weather ↗</a>
+  <a class="btn blue" href="#districtExplorer" id="exploreLink">Explore Districts ↓</a>
+  <a class="btn red" href="tel:112">Emergency: 112</a>
+ </div>
+</section>
+
+<section class="grid kpis">
+ <div class="card kpi">
+  <div class="kpi-head">Districts Covered<div class="kpi-icon">▦</div></div>
+  <div class="kpi-number">14</div>
+  <div class="kpi-caption"><b>REFERENCE</b> · Kerala administrative districts</div>
+ </div>
+ <div class="card kpi">
+  <div class="kpi-head">Illustrative High / Critical<div class="kpi-icon">⚑</div></div>
+  <div class="kpi-number" id="kpiHigh">0</div>
+  <div class="kpi-caption"><b>SYNTHETIC</b> · Not real warnings</div>
+ </div>
+ <div class="card kpi">
+  <div class="kpi-head">Sample Shelter Capacity<div class="kpi-icon">⌂</div></div>
+  <div class="kpi-number" id="kpiCapacity">0</div>
+  <div class="kpi-caption"><b>FICTIONAL</b> · No verified availability</div>
+ </div>
+ <div class="card kpi">
+  <div class="kpi-head">Demo Advisories<div class="kpi-icon">☁</div></div>
+  <div class="kpi-number" id="kpiAdvisories">0</div>
+  <div class="kpi-caption"><b>NOT OFFICIAL</b> · Illustrative messages</div>
+ </div>
+</section>
+
+<section class="section grid columns" id="districtExplorer">
+ <div class="card panel">
+  <div class="section-head">
+   <div>
+    <div class="panel-title" id="districtHeading">District Risk Explorer</div>
+    <div class="panel-sub">Select a district to explore its fictional scenario profile.</div>
+   </div>
+   <span class="tag">INTERACTIVE</span>
+  </div>
+  <input class="input" id="districtSearch" placeholder="Search Kerala districts..." aria-label="Search districts">
+  <div class="district-grid" id="districtGrid"></div>
+ </div>
+
+ <div class="card panel">
+  <div class="section-head">
+   <div>
+    <div class="panel-title" id="selectedDistrictTitle">District Scenario Overview</div>
+    <div class="panel-sub">Illustrative figures, not measured environmental conditions.</div>
+   </div>
+   <span class="tag" id="selectedRiskLabel">DEMO</span>
+  </div>
+
+  <div class="metric"><span>Fictional Risk Index</span><strong id="metricRisk">—</strong></div>
+  <div class="metric"><span>Illustrative Rainfall</span><strong id="metricRain">—</strong></div>
+  <div class="metric"><span>Synthetic River Index</span><strong id="metricRiver">—</strong></div>
+  <div class="metric"><span>Sample Shelter Capacity</span><strong id="metricShelter">—</strong></div>
+  <div class="metric"><span>Demo Rescue Teams</span><strong id="metricTeams">—</strong></div>
+
+  <div class="panel-title" style="margin-top:22px">Synthetic Seven-Point Rainfall Trend</div>
+  <svg id="rainChart" class="chart" viewBox="0 0 540 220" role="img" aria-label="Illustrative rainfall trend chart">
+   <g id="chartGrid"></g>
+   <path id="chartArea" fill="#d8b67116"></path>
+   <path id="chartLine" fill="none" stroke="#d8b671" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+   <g id="chartDots"></g>
+  </svg>
+  <div class="notice"><strong>Not a forecast.</strong> The plotted values are deterministic fictional samples, not observations or predictions.</div>
+ </div>
+</section>
+
+<section class="section grid two-col">
+ <div class="card panel">
+  <div class="section-head">
+   <div><div class="panel-title">Sample Public Advisory Cards</div><div class="panel-sub">Examples of information layout only. Not issued by any authority.</div></div>
+   <a class="btn" href="flood-alerts.html">Alert Demo →</a>
+  </div>
+  <div id="advisoryList"></div>
+ </div>
+ <div class="card panel">
+  <div class="section-head">
+   <div><div class="panel-title">Fictional Shelter Directory</div><div class="panel-sub">These are invented facilities. Do not travel to them or rely on their capacities.</div></div>
+   <a class="btn" href="shelters.html">Shelter Demo →</a>
+  </div>
+  <div id="shelterList"></div>
+ </div>
+</section>
+
+<section class="section">
+ <div class="section-head">
+  <div><h3 id="guideHeading">General Flood Safety Guidance</h3><p>Basic preparedness information. Follow instructions from local emergency authorities.</p></div>
+  <span class="tag">PUBLIC AWARENESS</span>
+ </div>
+ <div class="card panel">
+  <div class="grid two-col" id="guidanceGrid"></div>
+ </div>
+</section>
+
+<div class="notice">
+ <strong>⚠ Important: This is not a live flood-warning service.</strong>
+ <div>
+  The dashboard is a portfolio demonstration using synthetic data. It does not connect to IMD, CWC, KSDMA, real river gauges, shelter registries or emergency dispatch. For actual warnings, use official government information. In a life-threatening emergency in India, call <a href="tel:112" style="color:var(--gold2);font-weight:800">112</a>.
+ </div>
+</div>
+
+<footer class="footer">KERALA FLOOD RELIEF COORDINATION AGENT · PUBLIC DASHBOARD · SYNTHETIC DEMONSTRATION</footer>
+</div>
+</main>
+</div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+
+const DISTRICTS=[
+ {name:"Thiruvananthapuram",risk:"low",score:24,rain:36,river:28,capacity:620,teams:11},
+ {name:"Kollam",risk:"moderate",score:44,rain:68,river:48,capacity:740,teams:12},
+ {name:"Pathanamthitta",risk:"high",score:76,rain:142,river:78,capacity:980,teams:16},
+ {name:"Alappuzha",risk:"high",score:79,rain:155,river:82,capacity:1200,teams:18},
+ {name:"Kottayam",risk:"moderate",score:57,rain:91,river:61,capacity:850,teams:13},
+ {name:"Idukki",risk:"critical",score:92,rain:196,river:91,capacity:1340,teams:21},
+ {name:"Ernakulam",risk:"high",score:74,rain:129,river:77,capacity:1560,teams:25},
+ {name:"Thrissur",risk:"moderate",score:59,rain:97,river:64,capacity:1100,teams:17},
+ {name:"Palakkad",risk:"moderate",score:53,rain:83,river:57,capacity:790,teams:14},
+ {name:"Malappuram",risk:"high",score:73,rain:133,river:75,capacity:1150,teams:19},
+ {name:"Kozhikode",risk:"high",score:71,rain:124,river:72,capacity:970,teams:16},
+ {name:"Wayanad",risk:"critical",score:95,rain:212,river:94,capacity:1280,teams:23},
+ {name:"Kannur",risk:"moderate",score:55,rain:88,river:59,capacity:890,teams:15},
+ {name:"Kasaragod",risk:"low",score:29,rain:49,river:32,capacity:590,teams:10}
+];
+
+const ADVISORIES=[
+ {title:"Fictional Flash Flood Scenario",district:"Wayanad",risk:"critical",message:"Illustrative advisory format for a high-severity flood scenario. Not an official warning."},
+ {title:"Synthetic River Level Scenario",district:"Alappuzha",risk:"high",message:"Demonstrates how river-related advisory information could be displayed."},
+ {title:"Sample Urban Flooding Scenario",district:"Ernakulam",risk:"moderate",message:"Fictional urban flood preparedness message for interface testing."},
+ {title:"Demo Rainfall Monitoring Notice",district:"Idukki",risk:"high",message:"Invented rainfall indicators. Consult IMD and KSDMA for real conditions."}
+];
+
+const SHELTERS=[
+ {name:"DEMO Shelter Alpha",district:"Wayanad",capacity:180},
+ {name:"DEMO Shelter Beta",district:"Alappuzha",capacity:240},
+ {name:"DEMO Shelter Gamma",district:"Thrissur",capacity:160},
+ {name:"DEMO Shelter Delta",district:"Ernakulam",capacity:300}
+];
+
+const GUIDANCE=[
+ ["⚑","Follow Official Alerts","Use information issued by authorized disaster management and weather agencies."],
+ ["≈","Avoid Floodwater","Do not walk, swim or drive through floodwater. Water can conceal hazards."],
+ ["▣","Prepare Essentials","Keep essential medicines, drinking water, documents and a charged phone accessible."],
+ ["⌂","Plan Safe Evacuation","Know official evacuation instructions and verified shelter arrangements."],
+ ["✚","Seek Medical Help","For injuries or urgent medical concerns, contact appropriate emergency services."],
+ ["☎","Emergency Contact","In India, dial 112 for emergency assistance when needed."]
+];
+
+const I18N={
+ en:{
+  top:"Public Flood Dashboard",
+  sub:"District overview · Safety guidance · Public information",
+  title:"Kerala Flood Information Dashboard",
+  subtitle:"Explore illustrative district risk profiles, sample advisories and general flood safety guidance.",
+  hero:"Stay Informed. Prepare Early. Follow Official Guidance.",
+  description:"This dashboard demonstrates how verified public flood information could be presented. Every risk score, rainfall value, river index, shelter count and advisory displayed below is fictional and must not be used for real-world decisions.",
+  district:"District Risk Explorer",
+  guide:"General Flood Safety Guidance"
+ },
+ ml:{
+  top:"പൊതു പ്രളയ ഡാഷ്ബോർഡ്",
+  sub:"ജില്ലാ വിവരങ്ങൾ · സുരക്ഷാ നിർദ്ദേശങ്ങൾ",
+  title:"കേരള പ്രളയ വിവര ഡാഷ്ബോർഡ്",
+  subtitle:"ജില്ലകളുടെ സാങ്കൽപ്പിക വിവരങ്ങളും പൊതുവായ സുരക്ഷാ നിർദ്ദേശങ്ങളും പരിശോധിക്കുക.",
+  hero:"വിവരങ്ങൾ അറിയുക. മുൻകരുതൽ സ്വീകരിക്കുക. ഔദ്യോഗിക നിർദ്ദേശങ്ങൾ പാലിക്കുക.",
+  description:"ഇത് ഒരു സോഫ്റ്റ്‌വെയർ മാതൃക മാത്രമാണ്. ഇവിടെ കാണുന്ന അപകടസാധ്യത, മഴ, നദീനിരപ്പ്, അഭയകേന്ദ്ര വിവരങ്ങൾ എന്നിവ യഥാർത്ഥ വിവരങ്ങളല്ല.",
+  district:"ജില്ലാ വിവരങ്ങൾ",
+  guide:"പൊതുവായ പ്രളയ സുരക്ഷാ നിർദ്ദേശങ്ങൾ"
+ }
+};
+
+let selectedDistrict="Thrissur";
+let language="en";
+
+function el(tag,className,text){
+ const node=document.createElement(tag);
+ if(className)node.className=className;
+ if(text!==undefined)node.textContent=String(text);
+ return node;
+}
+
+function riskPill(risk){
+ return el("span","pill "+risk,risk.toUpperCase()+" · DEMO");
+}
+
+function renderDistricts(){
+ const root=$("districtGrid");
+ root.replaceChildren();
+
+ const query=$("districtSearch").value.trim().toLowerCase();
+ const filtered=DISTRICTS.filter(d=>d.name.toLowerCase().includes(query));
+
+ if(!filtered.length){
+  root.appendChild(el("p","panel-sub","No matching districts."));
+  return;
+ }
+
+ filtered.forEach(d=>{
+  const button=el("button","district"+(selectedDistrict===d.name?" selected":""));
+  button.type="button";
+
+  button.append(
+   el("strong","",d.name),
+   riskPill(d.risk),
+   el("small","","Synthetic risk index: "+d.score+"/100")
+  );
+
+  button.addEventListener("click",()=>{
+   selectedDistrict=d.name;
+   renderDistricts();
+   renderSelectedDistrict();
+  });
+
+  root.appendChild(button);
+ });
+}
+
+function renderSelectedDistrict(){
+ const d=DISTRICTS.find(item=>item.name===selectedDistrict);
+ if(!d)return;
+
+ $("selectedDistrictTitle").textContent=d.name+" · Demo Overview";
+ $("selectedRiskLabel").textContent=d.risk.toUpperCase()+" · DEMO";
+ $("metricRisk").textContent=d.score+"/100";
+ $("metricRain").textContent=d.rain+" mm (demo)";
+ $("metricRiver").textContent=d.river+"/100 (demo)";
+ $("metricShelter").textContent=d.capacity.toLocaleString("en-IN")+" (demo)";
+ $("metricTeams").textContent=d.teams+" (demo)";
+
+ drawChart(d);
+}
+
+function svgEl(tag,attributes={}){
+ const node=document.createElementNS("http://www.w3.org/2000/svg",tag);
+ Object.entries(attributes).forEach(([key,value])=>node.setAttribute(key,String(value)));
+ return node;
+}
+
+function drawChart(d){
+ const grid=$("chartGrid");
+ const dots=$("chartDots");
+ grid.replaceChildren();
+ dots.replaceChildren();
+
+ const values=Array.from({length:7},(_,i)=>
+  Math.max(4,Math.round(d.rain*(0.55+0.11*i+0.13*Math.sin(i*1.7+d.score))))
+ );
+
+ const max=Math.max(...values)*1.2;
+ const x=i=>40+i*(470/6);
+ const y=value=>190-value/max*160;
+
+ for(let i=0;i<5;i++){
+  const yy=30+i*40;
+  grid.appendChild(svgEl("line",{
+   x1:40,y1:yy,x2:515,y2:yy,
+   stroke:"#ffffff18","stroke-dasharray":"4 6"
+  }));
+ }
+
+ const points=values.map((value,i)=>[x(i),y(value)]);
+ const path=points.map(([px,py],i)=>
+  `${i===0?"M":"L"}${px.toFixed(1)} ${py.toFixed(1)}`
+ ).join(" ");
+
+ $("chartLine").setAttribute("d",path);
+ $("chartArea").setAttribute(
+  "d",path+` L ${x(6)} 190 L ${x(0)} 190 Z`
+ );
+
+ points.forEach(([px,py],i)=>{
+  dots.appendChild(svgEl("circle",{
+   cx:px,cy:py,r:4,fill:"#f5daa0"
+  }));
+
+  const label=svgEl("text",{
+   x:px,y:211,"text-anchor":"middle"
+  });
+  label.textContent="P"+(i+1);
+  dots.appendChild(label);
+ });
+}
+
+function renderAdvisories(){
+ const root=$("advisoryList");
+ root.replaceChildren();
+
+ ADVISORIES.forEach(a=>{
+  const card=el("div","advisory");
+  const head=el("div","advisory-head");
+  head.append(el("strong","",a.title),riskPill(a.risk));
+  card.append(
+   head,
+   el("p","",a.message),
+   el("span","tag",a.district+" · FICTIONAL")
+  );
+  root.appendChild(card);
+ });
+}
+
+function renderShelters(){
+ const root=$("shelterList");
+ root.replaceChildren();
+
+ SHELTERS.forEach(s=>{
+  const card=el("div","shelter");
+  card.append(
+   el("strong","",s.name),
+   el("p","",s.district+" · Illustrative capacity: "+s.capacity),
+   el("span","tag","NOT A REAL FACILITY")
+  );
+  root.appendChild(card);
+ });
+}
+
+function renderGuidance(){
+ const root=$("guidanceGrid");
+ root.replaceChildren();
+
+ GUIDANCE.forEach(([icon,title,description])=>{
+  const card=el("div","guide");
+  const body=el("div");
+
+  body.append(
+   el("strong","",title),
+   el("p","",description)
+  );
+
+  card.append(el("div","guide-icon",icon),body);
+  root.appendChild(card);
+ });
+}
+
+function renderKPIs(){
+ $("kpiHigh").textContent=DISTRICTS.filter(d=>
+  ["high","critical"].includes(d.risk)
+ ).length;
+
+ $("kpiCapacity").textContent=DISTRICTS.reduce((sum,d)=>
+  sum+d.capacity,0
+ ).toLocaleString("en-IN");
+
+ $("kpiAdvisories").textContent=ADVISORIES.length;
+}
+
+function toggleLanguage(){
+ language=language==="en"?"ml":"en";
+ const t=I18N[language];
+
+ $("topTitle").textContent=t.top;
+ $("topSubtitle").textContent=t.sub;
+ $("mainTitle").textContent=t.title;
+ $("mainSubtitle").textContent=t.subtitle;
+ $("heroTitle").textContent=t.hero;
+ $("heroDescription").textContent=t.description;
+ $("districtHeading").textContent=t.district;
+ $("guideHeading").textContent=t.guide;
+ $("languageBtn").textContent=language==="en"?"മലയാളം":"English";
+ document.documentElement.lang=language;
+
+ // The data tables and technical labels remain in English.
+}
+
+function initialize(){
+ renderKPIs();
+ renderDistricts();
+ renderSelectedDistrict();
+ renderAdvisories();
+ renderShelters();
+ renderGuidance();
+
+ $("districtSearch").addEventListener("input",renderDistricts);
+ $("languageBtn").addEventListener("click",toggleLanguage);
+ $("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+ });
+}
+
+initialize();
+</script>
+</body>
+</html>

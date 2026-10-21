@@ -1,0 +1,886 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090b10">
+<title>Sign In | Kerala Flood AI</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#090b10;
+ --panel:#151922;
+ --panel2:#1b202b;
+ --gold:#d8b671;
+ --gold2:#f5daa0;
+ --text:#f4f1e9;
+ --muted:#9399a7;
+ --line:rgba(255,255,255,.085);
+ --green:#54d6a4;
+ --red:#ff777d;
+ --blue:#82adff;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ min-height:100vh;
+ background:var(--bg);
+ color:var(--text);
+ font:13px "DM Sans",sans-serif;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+button:focus-visible,input:focus-visible,
+select:focus-visible,a:focus-visible{
+ outline:2px solid var(--gold);
+ outline-offset:3px;
+}
+.auth-layout{
+ display:grid;
+ grid-template-columns:minmax(0,1.12fr) minmax(420px,.88fr);
+ min-height:100vh;
+}
+.showcase{
+ position:relative;
+ display:flex;
+ flex-direction:column;
+ justify-content:space-between;
+ overflow:hidden;
+ padding:40px clamp(30px,5vw,85px);
+ background:
+ radial-gradient(ellipse at 45% 40%,#d8b67113,transparent 55%),
+ linear-gradient(135deg,#171a20,#0b0e14);
+ border-right:1px solid var(--line);
+}
+.showcase:before{
+ content:"";
+ position:absolute;inset:0;
+ background-image:
+ linear-gradient(#ffffff05 1px,transparent 1px),
+ linear-gradient(90deg,#ffffff05 1px,transparent 1px);
+ background-size:42px 42px;
+ pointer-events:none;
+}
+.showcase>*{position:relative;z-index:1}
+.brand{
+ display:flex;align-items:center;gap:13px;
+ width:max-content;
+}
+.brand-icon{
+ width:48px;height:48px;
+ display:grid;place-items:center;
+ border-radius:14px;
+ background:linear-gradient(135deg,#f5daa0,#a47c3b);
+ color:#20170a;
+ font-size:25px;font-weight:900;
+ box-shadow:0 10px 30px #d8b67120;
+}
+.brand strong{
+ font:800 15px Manrope,sans-serif;
+ letter-spacing:.5px;
+}
+.brand small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ letter-spacing:1.5px;
+ margin-top:6px;
+}
+.showcase-center{
+ max-width:620px;
+ margin:40px 0;
+}
+.eyebrow{
+ color:var(--gold);
+ font-size:10px;
+ letter-spacing:2.2px;
+ font-weight:800;
+}
+.showcase h1{
+ font:800 clamp(35px,4vw,59px) Manrope,sans-serif;
+ letter-spacing:-2.4px;
+ line-height:1.13;
+ margin:20px 0;
+}
+.showcase h1 span{
+ color:var(--gold2);
+}
+.showcase-description{
+ max-width:550px;
+ font-size:13px;
+ color:#aeb3bd;
+ line-height:2;
+}
+.visual{
+ position:relative;
+ height:265px;
+ margin:35px 0 20px;
+ border:1px solid #d8b67125;
+ border-radius:20px;
+ overflow:hidden;
+ background:
+ radial-gradient(ellipse at center,#d8b67112,transparent 65%),
+ #111821;
+}
+.visual:before{
+ content:"";
+ position:absolute;inset:0;
+ background-image:
+ linear-gradient(#ffffff06 1px,transparent 1px),
+ linear-gradient(90deg,#ffffff06 1px,transparent 1px);
+ background-size:27px 27px;
+}
+.visual svg{
+ position:absolute;
+ width:100%;height:100%;
+}
+.ring{
+ fill:none;
+ stroke:#d8b671;
+ stroke-width:1;
+ opacity:.28;
+ transform-origin:center;
+ animation:ringPulse 4s ease-in-out infinite;
+}
+.ring:nth-child(2){animation-delay:1s}
+.ring:nth-child(3){animation-delay:2s}
+.map-dot{
+ fill:var(--gold);
+ filter:drop-shadow(0 0 7px #d8b671);
+}
+.visual-label{
+ position:absolute;
+ left:20px;top:18px;
+ color:var(--gold2);
+ font-size:10px;
+ font-weight:800;
+ letter-spacing:1.2px;
+}
+.visual-footer{
+ position:absolute;
+ bottom:16px;left:20px;right:20px;
+ display:flex;
+ justify-content:space-between;
+ gap:12px;
+ color:#919ba8;
+ font-size:10px;
+}
+.features{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:12px;
+ margin-top:30px;
+}
+.feature{
+ padding:16px;
+ border:1px solid var(--line);
+ border-radius:12px;
+ background:#ffffff05;
+}
+.feature-icon{
+ font-size:21px;
+ color:var(--gold);
+ margin-bottom:12px;
+}
+.feature strong{
+ display:block;
+ font-size:11px;
+ font-weight:800;
+}
+.feature small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ line-height:1.7;
+ margin-top:7px;
+}
+.showcase-bottom{
+ display:flex;
+ justify-content:space-between;
+ flex-wrap:wrap;
+ gap:15px;
+ color:#79808d;
+ font-size:10px;
+}
+.login-side{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:35px;
+ background:
+ radial-gradient(circle at 90% 5%,#d8b67109,transparent 35%),
+ #0c0f15;
+}
+.login-container{
+ width:100%;
+ max-width:440px;
+ animation:rise .65s ease both;
+}
+.login-top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:35px;
+}
+.login-top span{
+ color:var(--muted);
+ font-size:11px;
+}
+.login-top a{
+ color:var(--gold2);
+ font-weight:800;
+ font-size:11px;
+}
+.status{
+ display:inline-flex;
+ align-items:center;
+ gap:8px;
+ padding:9px 12px;
+ border-radius:9px;
+ border:1px solid #d8b67130;
+ background:#d8b67112;
+ color:var(--gold2);
+ font-size:10px;
+ font-weight:800;
+ letter-spacing:.6px;
+}
+.status-dot{
+ width:7px;height:7px;
+ border-radius:50%;
+ background:var(--gold);
+ animation:pulse 2s infinite;
+}
+.login-container h2{
+ font:800 33px Manrope,sans-serif;
+ letter-spacing:-1.2px;
+ margin:22px 0 10px;
+}
+.subtitle{
+ color:var(--muted);
+ font-size:12px;
+ line-height:1.9;
+ margin-bottom:30px;
+}
+.form-group{margin-bottom:19px}
+.form-label{
+ display:block;
+ margin-bottom:9px;
+ font-size:11px;
+ font-weight:800;
+ color:#c9ccd4;
+}
+.input-wrap{position:relative}
+.input{
+ width:100%;
+ padding:15px 15px;
+ background:#171c25;
+ border:1px solid #303641;
+ border-radius:11px;
+ outline:0;
+ color:var(--text);
+ transition:.2s;
+}
+.input::placeholder{color:#727a88}
+.input:focus{
+ border-color:var(--gold);
+ box-shadow:0 0 0 3px #d8b67110;
+}
+.password-input{padding-right:62px}
+.toggle-password{
+ position:absolute;
+ top:50%;right:10px;
+ transform:translateY(-50%);
+ padding:8px;
+ border:0;background:transparent;
+ color:var(--gold2);
+ font-size:10px;font-weight:800;
+}
+.form-row{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:10px;
+ margin:7px 0 24px;
+}
+.checkbox-label{
+ display:flex;align-items:center;gap:9px;
+ color:#b2b8c3;
+ font-size:11px;
+ cursor:pointer;
+}
+.checkbox-label input{
+ accent-color:var(--gold);
+ width:15px;height:15px;
+}
+.text-link{
+ color:var(--gold2);
+ font-size:11px;
+ font-weight:800;
+}
+.btn{
+ display:inline-flex;
+ justify-content:center;
+ align-items:center;
+ gap:10px;
+ padding:14px 16px;
+ border-radius:11px;
+ border:1px solid var(--line);
+ background:#1b202b;
+ color:var(--text);
+ font-weight:800;
+ font-size:12px;
+ transition:.2s;
+}
+.btn:hover{
+ transform:translateY(-1px);
+ border-color:#d8b67160;
+}
+.btn-primary{
+ width:100%;
+ background:linear-gradient(110deg,#c39e5b,#f1d49a);
+ border:0;
+ color:#20180d;
+ box-shadow:0 12px 30px #d8b67117;
+}
+.btn-primary:disabled{
+ opacity:.65;cursor:wait;transform:none;
+}
+.divider{
+ display:flex;align-items:center;gap:14px;
+ margin:24px 0;
+ color:#7d8492;
+ font-size:10px;
+}
+.divider:before,.divider:after{
+ content:"";height:1px;
+ background:var(--line);flex:1;
+}
+.demo-card{
+ padding:18px;
+ border-radius:13px;
+ background:#d8b6710b;
+ border:1px solid #d8b67130;
+}
+.demo-head{
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+ align-items:center;
+ margin-bottom:13px;
+}
+.demo-head strong{
+ color:var(--gold2);
+ font-size:12px;
+}
+.demo-head span{
+ color:#a89b7f;
+ font-size:9px;
+ font-weight:800;
+ letter-spacing:.8px;
+}
+.demo-card p{
+ color:#a8a9a9;
+ font-size:10px;
+ line-height:1.8;
+ margin:0 0 14px;
+}
+.demo-roles{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px;
+}
+.role-btn{
+ padding:11px 8px;
+ border:1px solid #d8b67130;
+ background:#171b23;
+ border-radius:9px;
+ color:#d5c4a4;
+ font-size:10px;
+ font-weight:800;
+ transition:.2s;
+}
+.role-btn:hover{
+ background:#d8b6711a;
+ border-color:var(--gold);
+}
+.notice{
+ display:flex;
+ gap:11px;
+ padding:14px;
+ background:#82adff0b;
+ border:1px solid #82adff28;
+ border-radius:11px;
+ color:#aab5c8;
+ font-size:10px;
+ line-height:1.8;
+ margin-top:21px;
+}
+.notice strong{color:#c3d6ff}
+.message{
+ display:none;
+ padding:12px 13px;
+ border-radius:10px;
+ font-size:11px;
+ line-height:1.7;
+ margin-bottom:18px;
+}
+.message.error{
+ display:block;
+ color:#ffb3b6;
+ background:#ff777d12;
+ border:1px solid #ff777d40;
+}
+.message.success{
+ display:block;
+ color:#a4e8cb;
+ background:#54d6a412;
+ border:1px solid #54d6a440;
+}
+.login-footer{
+ text-align:center;
+ color:#777f8c;
+ font-size:10px;
+ line-height:1.9;
+ margin-top:28px;
+}
+.login-footer a{color:var(--gold2)}
+@keyframes rise{
+ from{opacity:0;transform:translateY(20px)}
+ to{opacity:1;transform:translateY(0)}
+}
+@keyframes pulse{50%{opacity:.4}}
+@keyframes ringPulse{
+ 0%,100%{opacity:.12}
+ 50%{opacity:.4}
+}
+@media(max-width:1100px){
+ .auth-layout{grid-template-columns:1fr 1fr}
+ .showcase{padding:35px}
+ .features{grid-template-columns:1fr}
+ .feature{display:flex;gap:12px;align-items:center}
+ .feature-icon{margin:0}
+ .feature small{margin-top:4px}
+}
+@media(max-width:850px){
+ .auth-layout{grid-template-columns:1fr}
+ .showcase{min-height:auto;padding:26px}
+ .showcase-center{margin:30px 0}
+ .showcase h1{font-size:32px}
+ .visual{height:180px}
+ .features{grid-template-columns:repeat(3,1fr)}
+ .feature{display:block}
+ .feature-icon{margin-bottom:9px}
+ .login-side{padding:38px 22px}
+}
+@media(max-width:520px){
+ .features{grid-template-columns:1fr}
+ .feature{display:flex}
+ .visual{height:160px}
+ .login-container h2{font-size:28px}
+ .login-top{margin-bottom:24px}
+ .demo-roles{grid-template-columns:1fr 1fr}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{
+  animation-duration:.01ms!important;
+  transition-duration:.01ms!important;
+ }
+}
+</style>
+</head>
+
+<body>
+
+<div class="auth-layout">
+
+<section class="showcase">
+ <a href="index.html" class="brand">
+  <div class="brand-icon">✦</div>
+  <div>
+   <strong>KERALA FLOOD AI</strong>
+   <small>INTELLIGENCE PLATFORM</small>
+  </div>
+ </a>
+
+ <div class="showcase-center">
+  <div class="eyebrow">DISASTER INTELLIGENCE PLATFORM</div>
+
+  <h1>
+   Intelligence for<br>
+   <span>Every Critical Moment.</span>
+  </h1>
+
+  <p class="showcase-description">
+   A multi-agent flood monitoring and emergency coordination project
+   designed to bring together predictive intelligence, response planning,
+   humanitarian logistics and human-supervised AI.
+  </p>
+
+  <div class="visual">
+   <div class="visual-label">KERALA · INTELLIGENCE NETWORK CONCEPT</div>
+
+   <svg viewBox="0 0 600 265" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+     <linearGradient id="networkLine" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#d8b671" stop-opacity=".15"/>
+      <stop offset="100%" stop-color="#f5daa0" stop-opacity=".8"/>
+     </linearGradient>
+    </defs>
+
+    <g fill="none" stroke="url(#networkLine)" stroke-width="1.5">
+     <path d="M70 185L150 115L245 155L335 75L445 120L530 55"/>
+     <path d="M150 115L195 45L335 75L390 205L530 55"/>
+     <path d="M70 185L245 155L390 205L510 210"/>
+     <path d="M195 45L445 120L510 210"/>
+    </g>
+
+    <g>
+     <circle class="ring" cx="335" cy="75" r="25"/>
+     <circle class="ring" cx="335" cy="75" r="42"/>
+     <circle class="ring" cx="335" cy="75" r="62"/>
+    </g>
+
+    <g class="map-dot">
+     <circle cx="70" cy="185" r="4"/>
+     <circle cx="150" cy="115" r="5"/>
+     <circle cx="195" cy="45" r="4"/>
+     <circle cx="245" cy="155" r="5"/>
+     <circle cx="335" cy="75" r="7"/>
+     <circle cx="390" cy="205" r="4"/>
+     <circle cx="445" cy="120" r="5"/>
+     <circle cx="530" cy="55" r="4"/>
+     <circle cx="510" cy="210" r="4"/>
+    </g>
+
+    <g fill="#c8b68e" font-size="10" font-family="DM Sans">
+     <text x="347" y="65">AI SUPERVISOR</text>
+     <text x="85" y="205">RESPONSE</text>
+     <text x="454" y="142">FORECASTING</text>
+     <text x="400" y="228">LOGISTICS</text>
+    </g>
+   </svg>
+
+   <div class="visual-footer">
+    <span>✦ Multi-Agent Architecture</span>
+    <span>◈ Human-Supervised Decisions</span>
+   </div>
+  </div>
+
+  <div class="features">
+   <div class="feature">
+    <div class="feature-icon">≈</div>
+    <div>
+     <strong>Flood Intelligence</strong>
+     <small>Forecasting, monitoring and risk assessment.</small>
+    </div>
+   </div>
+   <div class="feature">
+    <div class="feature-icon">⚑</div>
+    <div>
+     <strong>Emergency Response</strong>
+     <small>Incident, rescue and evacuation planning.</small>
+    </div>
+   </div>
+   <div class="feature">
+    <div class="feature-icon">✦</div>
+    <div>
+     <strong>Agentic AI</strong>
+     <small>Coordinated AI with human approval gates.</small>
+    </div>
+   </div>
+  </div>
+ </div>
+
+ <div class="showcase-bottom">
+  <span>© 2026 Kerala Flood Relief Coordination Agent</span>
+  <span>PORTFOLIO DEMONSTRATION</span>
+ </div>
+</section>
+
+<section class="login-side">
+ <div class="login-container">
+
+  <div class="login-top">
+   <span>Secure access concept</span>
+   <a href="index.html">← Back to Project</a>
+  </div>
+
+  <div class="status">
+   <span class="status-dot"></span>
+   DEMONSTRATION ACCESS
+  </div>
+
+  <h2>Welcome Back</h2>
+
+  <p class="subtitle">
+   Sign in to explore the flood intelligence and coordination workspace.
+   Demo roles simulate different user experiences.
+  </p>
+
+  <div class="message" id="message" role="status" aria-live="polite"></div>
+
+  <form id="loginForm" novalidate>
+
+   <div class="form-group">
+    <label class="form-label" for="email">Email Address</label>
+    <div class="input-wrap">
+     <input
+      class="input"
+      id="email"
+      type="email"
+      placeholder="name@example.com"
+      autocomplete="username"
+      required>
+    </div>
+   </div>
+
+   <div class="form-group">
+    <label class="form-label" for="password">Password</label>
+    <div class="input-wrap">
+     <input
+      class="input password-input"
+      id="password"
+      type="password"
+      placeholder="Enter your password"
+      autocomplete="current-password"
+      required>
+     <button type="button" class="toggle-password" id="togglePassword">
+      SHOW
+     </button>
+    </div>
+   </div>
+
+   <div class="form-row">
+    <label class="checkbox-label">
+     <input type="checkbox" id="remember">
+     Remember demo role
+    </label>
+
+    <a class="text-link" href="#" id="forgotPassword">
+     Forgot password?
+    </a>
+   </div>
+
+   <button class="btn btn-primary" type="submit" id="loginBtn">
+    Sign In to Workspace →
+   </button>
+
+  </form>
+
+  <div class="divider">OR EXPLORE DEMO ROLES</div>
+
+  <div class="demo-card">
+   <div class="demo-head">
+    <strong>✦ Quick Demo Access</strong>
+    <span>NO REAL ACCOUNT</span>
+   </div>
+
+   <p>
+    Choose a fictional role to explore the interface.
+    Demo credentials are never authenticated against a server.
+    Do not enter a real password.
+   </p>
+
+   <div class="demo-roles">
+    <button class="role-btn" data-role="Admin">◈ Administrator</button>
+    <button class="role-btn" data-role="District Officer">▦ District Officer</button>
+    <button class="role-btn" data-role="Rescue Coordinator">⚑ Rescue Coordinator</button>
+    <button class="role-btn" data-role="Medical Coordinator">✚ Medical Coordinator</button>
+    <button class="role-btn" data-role="Volunteer Coordinator">♡ Volunteer Coordinator</button>
+    <button class="role-btn" data-role="Auditor">✓ Auditor</button>
+   </div>
+  </div>
+
+  <div class="notice">
+   <span style="font-size:18px;color:var(--blue)">ⓘ</span>
+   <div>
+    <strong>Frontend Demo Only</strong><br>
+    This page does not establish a secure session, verify identities or
+    enforce permissions. Production access requires backend authentication,
+    MFA, authorization and server-side session controls.
+   </div>
+  </div>
+
+  <div class="login-footer">
+   <div>Need to explore the project first?</div>
+   <a href="index.html">View Project Overview →</a>
+  </div>
+
+ </div>
+</section>
+
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const DEMO_ROLES=[
+ "Admin",
+ "District Officer",
+ "Rescue Coordinator",
+ "Medical Coordinator",
+ "Volunteer Coordinator",
+ "Auditor"
+];
+
+let selectedDemoRole=null;
+
+function showMessage(text,type="error"){
+ const box=$("message");
+ box.textContent=text;
+ box.className="message "+type;
+}
+
+function clearMessage(){
+ $("message").className="message";
+ $("message").textContent="";
+}
+
+function selectDemoRole(role){
+ if(!DEMO_ROLES.includes(role))return;
+
+ selectedDemoRole=role;
+
+ document.querySelectorAll(".role-btn").forEach(button=>{
+  const active=button.dataset.role===role;
+
+  button.style.background=active?"#d8b67125":"#171b23";
+  button.style.borderColor=active?"#d8b671":"#d8b67130";
+ });
+
+ $("email").value="";
+ $("password").value="";
+
+ showMessage(
+  `${role} demo selected. Click Sign In to explore the simulated workspace.`,
+  "success"
+ );
+}
+
+function isValidEmail(value){
+ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function handleLogin(event){
+ event.preventDefault();
+
+ const email=$("email").value.trim();
+ const password=$("password").value;
+
+ if(selectedDemoRole){
+  showMessage(
+   `Opening workspace in ${selectedDemoRole} demonstration mode...`,
+   "success"
+  );
+
+  // Store only a non-sensitive demonstration preference.
+  // This is NOT an authenticated session or an access token.
+  try{
+   if($("remember").checked){
+    sessionStorage.setItem("keralaFloodDemoRole",selectedDemoRole);
+   }else{
+    sessionStorage.removeItem("keralaFloodDemoRole");
+   }
+  }catch(error){
+   console.warn("Demo role preference could not be saved.");
+  }
+
+  setTimeout(()=>{
+   window.location.href="command-center.html";
+  },450);
+
+  return;
+ }
+
+ if(!email){
+  showMessage("Enter an email address or select a demo role.");
+  $("email").focus();
+  return;
+ }
+
+ if(!isValidEmail(email)){
+  showMessage("Enter a valid email address.");
+  $("email").focus();
+  return;
+ }
+
+ if(!password){
+  showMessage("Enter a password.");
+  $("password").focus();
+  return;
+ }
+
+ // Never accept arbitrary credentials locally as real authentication.
+ // No password is stored or transmitted by this demo.
+ showMessage(
+  "Real account sign-in is not configured. Please select a demo role, or connect a secure authentication backend."
+ );
+}
+
+function initialize(){
+ $("loginForm").addEventListener("submit",handleLogin);
+
+ $("togglePassword").addEventListener("click",()=>{
+  const input=$("password");
+  const visible=input.type==="password";
+
+  input.type=visible?"text":"password";
+  $("togglePassword").textContent=visible?"HIDE":"SHOW";
+  $("togglePassword").setAttribute(
+   "aria-label",
+   visible?"Hide password":"Show password"
+  );
+ });
+
+ $("forgotPassword").addEventListener("click",event=>{
+  event.preventDefault();
+
+  showMessage(
+   "Password recovery is not available in this standalone demo. Production recovery requires verified email delivery and secure reset tokens."
+  );
+ });
+
+ document.querySelectorAll(".role-btn").forEach(button=>{
+  button.addEventListener("click",()=>{
+   selectDemoRole(button.dataset.role);
+  });
+ });
+
+ $("email").addEventListener("input",()=>{
+  if(selectedDemoRole){
+   selectedDemoRole=null;
+   document.querySelectorAll(".role-btn").forEach(button=>{
+    button.style.background="#171b23";
+    button.style.borderColor="#d8b67130";
+   });
+  }
+
+  clearMessage();
+ });
+
+ $("password").addEventListener("input",clearMessage);
+
+ try{
+  const savedRole=sessionStorage.getItem("keralaFloodDemoRole");
+
+  if(DEMO_ROLES.includes(savedRole)){
+   selectDemoRole(savedRole);
+  }
+ }catch(error){
+  console.warn("Demo role preference unavailable.");
+ }
+}
+
+initialize();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1232 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090b10">
+<title>Kerala Flood AI | Project Overview & Operations Hub</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#090b10;
+ --sidebar:#0d1017;
+ --panel:#151922;
+ --panel2:#1b202b;
+ --gold:#d8b671;
+ --gold2:#f5daa0;
+ --text:#f4f1e9;
+ --muted:#9399a7;
+ --line:rgba(255,255,255,.085);
+ --green:#54d6a4;
+ --orange:#ffb66e;
+ --red:#ff777d;
+ --blue:#82adff;
+ --radius:16px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0;background:var(--bg);color:var(--text);
+ font:13px "DM Sans",sans-serif;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{
+ outline:2px solid var(--gold);outline-offset:3px;
+}
+.app{
+ display:grid;grid-template-columns:252px minmax(0,1fr);
+ min-height:100vh;
+}
+.sidebar{
+ position:sticky;top:0;height:100vh;background:var(--sidebar);
+ border-right:1px solid var(--line);display:flex;
+ flex-direction:column;z-index:40;
+}
+.brand{
+ padding:24px 18px;display:flex;align-items:center;gap:12px;
+ border-bottom:1px solid var(--line);
+}
+.brand-icon{
+ width:43px;height:43px;border-radius:13px;
+ display:grid;place-items:center;
+ background:linear-gradient(135deg,#f5daa0,#a47c3b);
+ color:#20170a;font-size:23px;font-weight:900;
+}
+.brand strong{
+ font:800 13px Manrope,sans-serif;letter-spacing:.4px;
+}
+.brand small{
+ display:block;font-size:10px;letter-spacing:1.2px;
+ color:var(--muted);margin-top:5px;
+}
+.nav{padding:20px 13px;overflow:auto;flex:1}
+.nav-label{
+ color:#777e8d;font-size:10px;letter-spacing:1.6px;
+ font-weight:800;margin:16px 12px 10px;
+}
+.nav a{
+ display:flex;align-items:center;gap:12px;
+ padding:12px 13px;margin-bottom:5px;
+ border:1px solid transparent;border-radius:10px;
+ color:#a2a8b4;font-size:12px;font-weight:600;
+ transition:.2s;
+}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{
+ background:#d8b67119;border-color:#d8b67130;color:var(--gold2);
+}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.side-footer{
+ padding:17px;border-top:1px solid var(--line);
+ display:flex;align-items:center;gap:10px;
+}
+.avatar{
+ width:38px;height:38px;border-radius:11px;
+ background:#383023;color:var(--gold2);
+ display:grid;place-items:center;font-weight:800;
+}
+.side-footer strong{font-size:11px}
+.side-footer small{
+ display:block;color:var(--muted);font-size:10px;margin-top:5px;
+}
+.main{
+ min-width:0;
+ background:radial-gradient(ellipse at 65% -5%,#d8b67112,transparent 38%),var(--bg);
+}
+.topbar{
+ min-height:82px;padding:17px 30px;
+ border-bottom:1px solid var(--line);
+ display:flex;justify-content:space-between;align-items:center;gap:14px;
+}
+.top-left,.top-actions{display:flex;align-items:center;gap:12px}
+.page-icon{
+ width:43px;height:43px;border-radius:12px;
+ background:#d8b67119;border:1px solid #d8b67133;
+ color:var(--gold);display:grid;place-items:center;font-size:20px;
+}
+.top-left h1{
+ font:800 18px Manrope,sans-serif;
+ letter-spacing:-.5px;margin:0;
+}
+.top-left p{
+ color:var(--muted);font-size:11px;margin:5px 0 0;
+}
+.badge,.tag{
+ display:inline-flex;align-items:center;gap:7px;
+ padding:9px 11px;background:#d8b67112;
+ border:1px solid #d8b67130;color:var(--gold2);
+ border-radius:9px;font-size:10px;font-weight:800;
+}
+.dot{
+ width:7px;height:7px;border-radius:50%;
+ background:var(--gold);animation:pulse 2s infinite;
+}
+.btn{
+ display:inline-flex;align-items:center;justify-content:center;gap:8px;
+ padding:11px 15px;border-radius:10px;
+ border:1px solid var(--line);background:#1a1f29;
+ color:#e1e3e8;font-size:11px;font-weight:800;transition:.2s;
+}
+.btn:hover{border-color:#d8b67166;transform:translateY(-1px)}
+.btn.gold{
+ background:linear-gradient(120deg,#c6a15e,#f1d49a);
+ color:#1b160e;border:0;
+}
+.btn.blue{
+ background:#82adff13;color:var(--blue);
+ border-color:#82adff50;
+}
+.btn.danger{
+ background:#ff777d13;color:var(--red);
+ border-color:#ff777d50;
+}
+.content{
+ max-width:1700px;margin:auto;padding:28px 30px 48px;
+}
+.eyebrow{
+ color:var(--gold);font-size:10px;
+ letter-spacing:2px;font-weight:800;margin-bottom:10px;
+}
+.heading{
+ display:flex;justify-content:space-between;
+ align-items:flex-end;gap:15px;flex-wrap:wrap;
+ margin-bottom:24px;
+}
+.heading h2{
+ font:800 28px Manrope,sans-serif;
+ letter-spacing:-1px;margin:0;
+}
+.heading p{
+ color:var(--muted);font-size:12px;
+ line-height:1.8;margin:9px 0 0;
+}
+.hero{
+ padding:35px;border-radius:20px;
+ border:1px solid #d8b67138;
+ background:
+ radial-gradient(circle at 85% 15%,#d8b67120,transparent 35%),
+ linear-gradient(120deg,#252017,#151922);
+ position:relative;overflow:hidden;
+}
+.hero:after{
+ content:"✦";position:absolute;right:7%;top:5%;
+ font-size:160px;color:#d8b67108;
+ pointer-events:none;
+}
+.hero>*{position:relative;z-index:1}
+.hero h3{
+ font:800 clamp(25px,3vw,40px) Manrope,sans-serif;
+ letter-spacing:-1.4px;line-height:1.22;
+ max-width:800px;margin:14px 0;
+}
+.hero p{
+ color:#b9b5ae;line-height:1.95;
+ max-width:790px;font-size:12px;
+}
+.hero-actions{
+ display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;
+}
+.grid{display:grid;gap:16px}
+.kpis{
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ margin-top:17px;
+}
+.card{
+ min-width:0;
+ background:linear-gradient(150deg,#181c26,#12161e);
+ border:1px solid var(--line);
+ border-radius:var(--radius);
+ box-shadow:0 14px 35px #0002;
+ animation:rise .5s ease both;
+}
+.kpi{padding:21px;position:relative;overflow:hidden}
+.kpi:before{
+ content:"";position:absolute;width:115px;height:115px;
+ right:-50px;top:-55px;background:#d8b67109;border-radius:50%;
+}
+.kpi-head{
+ display:flex;align-items:center;justify-content:space-between;
+ color:#a7adba;font-size:11px;font-weight:700;
+}
+.kpi-icon{
+ width:36px;height:36px;border-radius:10px;
+ background:#d8b67119;color:var(--gold);
+ display:grid;place-items:center;font-size:18px;
+}
+.kpi-number{
+ font:800 30px Manrope,sans-serif;
+ letter-spacing:-1px;margin:15px 0 7px;
+}
+.kpi-caption{font-size:10px;color:var(--muted);line-height:1.7}
+.kpi-caption b{color:var(--gold)}
+.section{margin-top:28px;scroll-margin-top:25px}
+.section-head{
+ display:flex;align-items:flex-end;justify-content:space-between;
+ flex-wrap:wrap;gap:14px;margin-bottom:17px;
+}
+.section-head h3{
+ font:800 19px Manrope,sans-serif;
+ letter-spacing:-.5px;margin:0;
+}
+.section-head p{
+ font-size:11px;color:var(--muted);
+ margin:7px 0 0;line-height:1.8;
+}
+.panel{padding:22px}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{
+ color:var(--muted);font-size:10px;
+ line-height:1.7;margin-top:7px;
+}
+.overview-grid{
+ grid-template-columns:repeat(3,minmax(0,1fr));
+}
+.feature-card{
+ padding:22px;transition:.25s;
+}
+.feature-card:hover{
+ transform:translateY(-4px);
+ border-color:#d8b67155;
+}
+.feature-icon{
+ width:43px;height:43px;border-radius:12px;
+ background:#d8b67116;border:1px solid #d8b67124;
+ display:grid;place-items:center;color:var(--gold);
+ font-size:21px;margin-bottom:17px;
+}
+.feature-card h4{
+ font:800 13px Manrope,sans-serif;margin:0 0 10px;
+}
+.feature-card p{
+ color:var(--muted);font-size:11px;
+ line-height:1.9;margin:0;
+}
+.feature-card a{
+ display:inline-block;color:var(--gold2);
+ margin-top:17px;font-size:11px;font-weight:800;
+}
+.step-grid{
+ grid-template-columns:repeat(4,minmax(0,1fr));
+}
+.step{
+ padding:20px;position:relative;
+}
+.step-number{
+ font:800 26px Manrope,sans-serif;
+ color:var(--gold);margin-bottom:17px;
+}
+.step h4{
+ font:800 12px Manrope,sans-serif;margin:0 0 10px;
+}
+.step p{
+ color:var(--muted);font-size:11px;line-height:1.85;
+ min-height:62px;
+}
+.step a{
+ display:inline-block;margin-top:9px;
+ color:var(--gold2);font-size:11px;font-weight:800;
+}
+.directory-controls{
+ display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;
+}
+.search,.select{
+ padding:12px;border-radius:10px;
+ border:1px solid #303541;background:#191e28;
+ color:#e8e8e8;outline:0;
+}
+.search{flex:1;min-width:220px}
+.search:focus,.select:focus{border-color:var(--gold)}
+.directory-grid{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:13px;
+}
+.directory-card{
+ display:flex;flex-direction:column;gap:10px;
+ background:#1a1f29;border:1px solid var(--line);
+ border-radius:12px;padding:17px;transition:.2s;
+}
+.directory-card:hover{
+ background:#222833;border-color:#d8b67155;
+ transform:translateY(-2px);
+}
+.directory-top{
+ display:flex;align-items:center;gap:10px;
+}
+.directory-icon{
+ width:37px;height:37px;border-radius:10px;
+ display:grid;place-items:center;background:#d8b67116;
+ color:var(--gold);font-size:17px;flex-shrink:0;
+}
+.directory-card strong{
+ font:800 12px Manrope,sans-serif;
+}
+.directory-card small{
+ color:var(--muted);font-size:10px;line-height:1.75;
+}
+.directory-bottom{
+ display:flex;align-items:center;justify-content:space-between;
+ margin-top:auto;padding-top:9px;
+ border-top:1px solid var(--line);
+ color:var(--gold2);font-size:10px;font-weight:800;
+}
+.category-label{
+ color:#858d9c;font-size:9px;letter-spacing:.8px;
+}
+.architecture{
+ display:grid;gap:12px;
+}
+.arch-row{
+ display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+}
+.arch-node{
+ flex:1;min-width:140px;
+ padding:16px;background:#1b202b;
+ border:1px solid #d8b67125;border-radius:11px;
+ text-align:center;
+}
+.arch-node strong{
+ display:block;color:var(--gold2);font-size:11px;
+}
+.arch-node small{
+ display:block;color:var(--muted);font-size:10px;
+ line-height:1.7;margin-top:7px;
+}
+.arch-arrow{
+ text-align:center;color:var(--gold);font-size:21px;
+}
+.tech-grid{
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:12px;
+}
+.tech-card{
+ padding:17px;background:#1b202b;
+ border:1px solid var(--line);border-radius:11px;
+}
+.tech-card strong{font-size:11px;color:var(--gold2)}
+.tech-card p{
+ font-size:10px;line-height:1.85;
+ color:var(--muted);margin:9px 0 0;
+}
+.checklist{
+ display:grid;grid-template-columns:1fr 1fr;gap:11px;
+}
+.check-item{
+ display:flex;gap:11px;align-items:flex-start;
+ padding:14px;background:#1b202b;
+ border:1px solid var(--line);border-radius:10px;
+}
+.check-item input{
+ accent-color:var(--gold);margin-top:3px;
+ width:15px;height:15px;
+}
+.check-item strong{font-size:11px}
+.check-item small{
+ display:block;color:var(--muted);
+ font-size:10px;line-height:1.7;margin-top:5px;
+}
+.progress{
+ height:9px;background:#303642;border-radius:10px;
+ overflow:hidden;margin-top:14px;
+}
+.progress span{
+ display:block;height:100%;
+ background:linear-gradient(90deg,#a68145,#f1d69c);
+ border-radius:10px;transition:width .3s;
+}
+.workflow{
+ display:flex;gap:12px;align-items:center;
+ padding:14px;background:#1b202b;
+ border:1px solid var(--line);border-radius:11px;
+ margin-bottom:10px;
+}
+.workflow-icon{
+ width:36px;height:36px;flex-shrink:0;
+ border-radius:10px;background:#d8b67118;
+ color:var(--gold);display:grid;place-items:center;
+ font-size:17px;
+}
+.workflow strong{font-size:11px}
+.workflow small{
+ display:block;color:var(--muted);font-size:10px;
+ margin-top:6px;line-height:1.6;
+}
+.columns{
+ grid-template-columns:minmax(0,1.4fr) minmax(300px,1fr);
+}
+.notice{
+ padding:17px;background:#d8b6710e;
+ border:1px solid #d8b67130;border-radius:12px;
+ color:#bbb4a5;font-size:11px;
+ line-height:1.9;margin-top:20px;
+}
+.notice strong{color:var(--gold2)}
+.footer{
+ padding-top:27px;text-align:center;
+ color:#69707e;font-size:10px;
+}
+.empty{
+ grid-column:1/-1;text-align:center;
+ padding:30px;color:var(--muted);
+ background:#1b202b;border-radius:12px;
+}
+.menu-btn{display:none}
+.toast{
+ position:fixed;right:22px;bottom:22px;z-index:200;
+ padding:14px 17px;background:#252b35;
+ border:1px solid #d8b67166;color:var(--gold2);
+ border-radius:11px;box-shadow:0 15px 45px #0008;
+}
+@keyframes rise{
+ from{opacity:0;transform:translateY(14px)}
+ to{opacity:1;transform:translateY(0)}
+}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1300px){
+ .overview-grid,.directory-grid{grid-template-columns:repeat(2,1fr)}
+ .step-grid,.tech-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:1000px){
+ .columns{grid-template-columns:1fr}
+ .kpis{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:900px){
+ .app{grid-template-columns:1fr}
+ .sidebar{
+  position:fixed;width:260px;
+  transform:translateX(-100%);transition:.3s;
+ }
+ .sidebar.open{transform:translateX(0)}
+ .menu-btn{display:inline-flex}
+ .topbar{padding:15px 20px}
+ .content{padding:20px}
+}
+@media(max-width:580px){
+ .kpis,.overview-grid,.directory-grid,
+ .step-grid,.tech-grid,.checklist{
+  grid-template-columns:1fr;
+ }
+ .hero{padding:23px}
+ .panel{padding:17px}
+ .top-actions .badge{display:none}
+ .heading h2{font-size:23px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{
+  animation-duration:.01ms!important;
+  transition-duration:.01ms!important;
+ }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-icon">✦</div>
+  <div>
+   <strong>KERALA FLOOD AI</strong>
+   <small>INTELLIGENCE PLATFORM</small>
+  </div>
+ </div>
+
+ <nav class="nav">
+  <div class="nav-label">MAIN WORKSPACE</div>
+  <a href="index.html" class="active"><span class="nav-icon">▦</span>Project Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="agent-command-center.html"><span class="nav-icon">✦</span>Agent Command Center</a>
+  <a href="ai-copilot.html"><span class="nav-icon">◇</span>AI Copilot</a>
+  <a href="analytics.html"><span class="nav-icon">▥</span>Analytics</a>
+
+  <div class="nav-label">EMERGENCY RESPONSE</div>
+  <a href="incident-management.html"><span class="nav-icon">◉</span>Incident Management</a>
+  <a href="emergency-sos.html"><span class="nav-icon">⚑</span>Emergency SOS</a>
+  <a href="rescue-dashboard.html"><span class="nav-icon">✧</span>Rescue Operations</a>
+  <a href="evacuation-planning.html"><span class="nav-icon">⌁</span>Evacuation Planning</a>
+  <a href="ambulance-dispatch.html"><span class="nav-icon">✚</span>Ambulance Dispatch</a>
+  <a href="hospital-capacity.html"><span class="nav-icon">✚</span>Hospital Capacity</a>
+
+  <div class="nav-label">FLOOD INTELLIGENCE</div>
+  <a href="district-dashboard.html"><span class="nav-icon">▦</span>District Dashboard</a>
+  <a href="flood-monitoring.html"><span class="nav-icon">≈</span>Flood Monitoring</a>
+  <a href="flood-alerts.html"><span class="nav-icon">☁</span>Flood Alerts</a>
+  <a href="flood-prediction.html"><span class="nav-icon">◈</span>Flood Prediction</a>
+  <a href="weather-monitoring.html"><span class="nav-icon">☀</span>Weather Monitoring</a>
+  <a href="river-monitoring.html"><span class="nav-icon">≈</span>River Monitoring</a>
+  <a href="dam-monitoring.html"><span class="nav-icon">▥</span>Dam Monitoring</a>
+
+  <div class="nav-label">COORDINATION</div>
+  <a href="shelters.html"><span class="nav-icon">⌂</span>Shelter Management</a>
+  <a href="family-reunification.html"><span class="nav-icon">♡</span>Family Reunification</a>
+  <a href="damage-assessment.html"><span class="nav-icon">▧</span>Damage Assessment</a>
+
+  <div class="nav-label">GOVERNANCE</div>
+  <a href="human-approval.html"><span class="nav-icon">✓</span>Human Approval</a>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+  <a href="reports.html"><span class="nav-icon">▤</span>Reports</a>
+ </nav>
+
+ <div class="side-footer">
+  <div class="avatar">KF</div>
+  <div>
+   <strong>Project Workspace</strong>
+   <small>Development & Demo</small>
+  </div>
+ </div>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+ <div class="top-left">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="page-icon">✦</div>
+  <div>
+   <h1>Kerala Flood Relief AI</h1>
+   <p>Project documentation · Navigation · Guided walkthrough</p>
+  </div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>DEMO PROJECT</span>
+  <button class="btn" id="guideBtn">☷ Guide</button>
+  <a href="command-center.html" class="btn gold">Open Workspace →</a>
+ </div>
+</header>
+
+<div class="content">
+
+<div class="heading">
+ <div>
+  <div class="eyebrow">AI-POWERED DISASTER RESPONSE PLATFORM</div>
+  <h2>Project Overview & Navigation Hub</h2>
+  <p>Explore the platform architecture, development workflow, simulated features and individual application pages.</p>
+ </div>
+ <span class="tag">PORTFOLIO PROJECT · DEMONSTRATION</span>
+</div>
+
+<section class="hero">
+ <div class="eyebrow">KERALA FLOOD RELIEF COORDINATION AGENT</div>
+ <h3>Intelligent Flood Monitoring, Emergency Coordination & Human-Supervised AI</h3>
+ <p>
+  A proposed multi-agent disaster management platform that brings together
+  flood forecasting, weather and river monitoring, emergency incident
+  management, rescue planning, evacuation coordination, shelter intelligence,
+  medical response, resource allocation and AI-assisted decision support.
+ </p>
+ <p>
+  Designed around Python, FastAPI, machine learning, deep learning,
+  computer vision, advanced RAG, multi-agent orchestration and human approval.
+  Current standalone frontend demonstrations use synthetic data and local interactions.
+ </p>
+ <div class="hero-actions">
+  <a class="btn gold" href="command-center.html">◈ Launch Command Center</a>
+  <a class="btn" href="agent-command-center.html">✦ Explore AI Agents</a>
+  <button class="btn" id="exploreBtn">▦ Explore All Pages</button>
+  <button class="btn blue" id="architectureBtn">⌘ System Architecture</button>
+ </div>
+</section>
+
+<section class="grid kpis">
+ <div class="card kpi">
+  <div class="kpi-head">Navigation Pages<div class="kpi-icon">▦</div></div>
+  <div class="kpi-number" id="pageCount">0</div>
+  <div class="kpi-caption"><b>Directory entries</b> · Not a deployment count</div>
+ </div>
+ <div class="card kpi">
+  <div class="kpi-head">AI Agent Modules<div class="kpi-icon">✦</div></div>
+  <div class="kpi-number">20</div>
+  <div class="kpi-caption"><b>Planned architecture</b> · Not validated runtime agents</div>
+ </div>
+ <div class="card kpi">
+  <div class="kpi-head">Kerala Districts<div class="kpi-icon">⌁</div></div>
+  <div class="kpi-number">14</div>
+  <div class="kpi-caption"><b>Geographic scope</b> · No live district data here</div>
+ </div>
+ <div class="card kpi">
+  <div class="kpi-head">Core Technology Areas<div class="kpi-icon">◇</div></div>
+  <div class="kpi-number">8</div>
+  <div class="kpi-caption"><b>Planned stack</b> · AI, backend, data and operations</div>
+ </div>
+</section>
+
+<section class="section" id="overview">
+ <div class="section-head">
+  <div>
+   <div class="eyebrow">PROJECT INTRODUCTION</div>
+   <h3>What This Project Is Designed to Do</h3>
+   <p>Major functional areas of the proposed platform.</p>
+  </div>
+ </div>
+
+ <div class="grid overview-grid">
+  <div class="card feature-card">
+   <div class="feature-icon">≈</div>
+   <h4>Flood Monitoring & Prediction</h4>
+   <p>Analyze rainfall, river-level trends, dam indicators and geographic risk signals using time-series ML/DL and explainable outputs.</p>
+   <a href="flood-prediction.html">Explore Prediction →</a>
+  </div>
+  <div class="card feature-card">
+   <div class="feature-icon">⚑</div>
+   <h4>Emergency Incident Coordination</h4>
+   <p>Structure SOS intake, incident verification, risk review, escalation and response planning with human accountability.</p>
+   <a href="incident-management.html">Explore Incidents →</a>
+  </div>
+  <div class="card feature-card">
+   <div class="feature-icon">✦</div>
+   <h4>Multi-Agent AI Orchestration</h4>
+   <p>Coordinate specialized forecasting, rescue, logistics, shelter, communication and verification agents through controlled workflows.</p>
+   <a href="agent-command-center.html">Explore Agents →</a>
+  </div>
+  <div class="card feature-card">
+   <div class="feature-icon">⌁</div>
+   <h4>Rescue & Evacuation Planning</h4>
+   <p>Develop decision-support scenarios for rescue prioritization, route planning, shelter placement and resource availability.</p>
+   <a href="evacuation-planning.html">Explore Evacuation →</a>
+  </div>
+  <div class="card feature-card">
+   <div class="feature-icon">✚</div>
+   <h4>Healthcare & Relief Logistics</h4>
+   <p>Support proposed workflows for medical referral coordination, hospital resource visibility, relief distribution and volunteer operations.</p>
+   <a href="hospital-capacity.html">Explore Healthcare →</a>
+  </div>
+  <div class="card feature-card">
+   <div class="feature-icon">✓</div>
+   <h4>Human Approval & AI Safety</h4>
+   <p>Keep consequential decisions under authorized human oversight with traceable approvals, escalation policies and audit records.</p>
+   <a href="human-approval.html">Explore Governance →</a>
+  </div>
+ </div>
+</section>
+
+<section class="section" id="guide">
+ <div class="section-head">
+  <div>
+   <div class="eyebrow">GETTING STARTED</div>
+   <h3>Step-by-Step Project Walkthrough</h3>
+   <p>Follow this suggested sequence to understand the complete project.</p>
+  </div>
+  <button class="btn" id="guideRestartBtn">↻ Restart Guide</button>
+ </div>
+
+ <div class="grid step-grid" id="guideSteps"></div>
+
+ <div class="card panel" style="margin-top:16px">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:15px">
+   <div>
+    <div class="panel-title">Guided Exploration Progress</div>
+    <div class="panel-sub">Tracks the guide buttons used during this browser session, not actual module completion.</div>
+   </div>
+   <span class="tag" id="guideProgressLabel">0 / 8</span>
+  </div>
+  <div class="progress"><span id="guideProgressBar" style="width:0%"></span></div>
+ </div>
+</section>
+
+<section class="section" id="directory">
+ <div class="section-head">
+  <div>
+   <div class="eyebrow">COMPLETE APPLICATION DIRECTORY</div>
+   <h3>Explore All Frontend Pages</h3>
+   <p>Search and open the project pages from one central location. Links require matching HTML files in the frontend folder.</p>
+  </div>
+  <span class="tag" id="visibleCount">0 PAGES</span>
+ </div>
+
+ <div class="directory-controls">
+  <input class="search" id="pageSearch" placeholder="Search pages, features, categories..." aria-label="Search project pages">
+  <select class="select" id="categoryFilter" aria-label="Filter page category">
+   <option value="all">All Categories</option>
+   <option value="Core Workspace">Core Workspace</option>
+   <option value="Flood Intelligence">Flood Intelligence</option>
+   <option value="Emergency Response">Emergency Response</option>
+   <option value="Relief & Coordination">Relief & Coordination</option>
+   <option value="Governance & Reporting">Governance & Reporting</option>
+  </select>
+  <button class="btn" id="clearSearchBtn">Clear Filters</button>
+ </div>
+
+ <div class="directory-grid" id="directoryGrid"></div>
+</section>
+
+<section class="section" id="architecture">
+ <div class="section-head">
+  <div>
+   <div class="eyebrow">SYSTEM DESIGN</div>
+   <h3>Proposed End-to-End Architecture</h3>
+   <p>Conceptual architecture showing how the frontend, APIs, data pipelines and AI services would connect.</p>
+  </div>
+  <span class="tag">PLANNED ARCHITECTURE</span>
+ </div>
+
+ <div class="card panel">
+  <div class="architecture">
+
+   <div class="arch-row">
+    <div class="arch-node">
+     <strong>Frontend Experience</strong>
+     <small>HTML · CSS · JavaScript · Dashboards · Review Interfaces</small>
+    </div>
+   </div>
+
+   <div class="arch-arrow">↓</div>
+
+   <div class="arch-row">
+    <div class="arch-node">
+     <strong>FastAPI Backend</strong>
+     <small>REST APIs · WebSocket · Authentication · RBAC</small>
+    </div>
+    <div class="arch-node">
+     <strong>Workflow & Safety Layer</strong>
+     <small>Approval Gates · Verification · Audit · Escalation</small>
+    </div>
+   </div>
+
+   <div class="arch-arrow">↓</div>
+
+   <div class="arch-row">
+    <div class="arch-node">
+     <strong>Multi-Agent Orchestration</strong>
+     <small>Supervisor · Rescue · Forecasting · Medical · Logistics</small>
+    </div>
+    <div class="arch-node">
+     <strong>Machine Learning / Deep Learning</strong>
+     <small>LSTM · Transformers · U-Net · Computer Vision</small>
+    </div>
+    <div class="arch-node">
+     <strong>Advanced RAG</strong>
+     <small>Hybrid Retrieval · Reranking · GraphRAG · Citations</small>
+    </div>
+   </div>
+
+   <div class="arch-arrow">↓</div>
+
+   <div class="arch-row">
+    <div class="arch-node">
+     <strong>Data & Messaging</strong>
+     <small>PostgreSQL · Redis · Kafka/MQTT · Object Storage</small>
+    </div>
+    <div class="arch-node">
+     <strong>Authorized Integrations</strong>
+     <small>IMD · CWC · KSDMA · Maps · Notifications</small>
+    </div>
+    <div class="arch-node">
+     <strong>Observability & MLOps</strong>
+     <small>MLflow · Model Monitoring · Logs · Evaluation</small>
+    </div>
+   </div>
+
+  </div>
+ </div>
+</section>
+
+<section class="section" id="agents">
+ <div class="section-head">
+  <div>
+   <div class="eyebrow">AGENTIC AI DESIGN</div>
+   <h3>Multi-Agent Decision Workflow</h3>
+   <p>How a hypothetical emergency incident moves through the proposed AI and human review system.</p>
+  </div>
+  <a href="agent-command-center.html" class="btn gold">Agent Dashboard →</a>
+ </div>
+
+ <div class="grid columns">
+  <div class="card panel">
+   <div class="workflow">
+    <div class="workflow-icon">01</div>
+    <div><strong>Incident or Sensor Input</strong><small>Receive a report or an authorized data-source event.</small></div>
+   </div>
+   <div class="workflow">
+    <div class="workflow-icon">02</div>
+    <div><strong>Verification Agent</strong><small>Check provenance, completeness, consistency and duplicates.</small></div>
+   </div>
+   <div class="workflow">
+    <div class="workflow-icon">03</div>
+    <div><strong>Supervisor Agent</strong><small>Select appropriate specialist agents and orchestrate tasks.</small></div>
+   </div>
+   <div class="workflow">
+    <div class="workflow-icon">04</div>
+    <div><strong>Risk & Prediction Agents</strong><small>Prepare evidence-based assessments with uncertainty estimates.</small></div>
+   </div>
+   <div class="workflow">
+    <div class="workflow-icon">05</div>
+    <div><strong>Rescue / Medical / Logistics Agents</strong><small>Draft response options based on verified resource information.</small></div>
+   </div>
+   <div class="workflow">
+    <div class="workflow-icon">06</div>
+    <div><strong>Human Approval Gate</strong><small>Authorized personnel review and approve consequential actions.</small></div>
+   </div>
+   <div class="workflow">
+    <div class="workflow-icon">07</div>
+    <div><strong>Authorized Execution & Audit</strong><small>Only approved production workflows may proceed with tracking and acknowledgment.</small></div>
+   </div>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-title">Core AI Agent Groups</div>
+   <div class="panel-sub" style="margin-bottom:18px">Planned roles, not verified running services.</div>
+
+   <div class="workflow">
+    <div class="workflow-icon">✦</div>
+    <div><strong>Orchestration Agents</strong><small>Supervisor, verification, human approval, communication.</small></div>
+   </div>
+   <div class="workflow">
+    <div class="workflow-icon">≈</div>
+    <div><strong>Flood Intelligence Agents</strong><small>Weather, flood prediction, risk assessment, alert intelligence.</small></div>
+   </div>
+   <div class="workflow">
+    <div class="workflow-icon">⚑</div>
+    <div><strong>Emergency Response Agents</strong><small>SOS triage, rescue coordination, evacuation, route planning.</small></div>
+   </div>
+   <div class="workflow">
+    <div class="workflow-icon">⌂</div>
+    <div><strong>Humanitarian Agents</strong><small>Shelter allocation, medical response, volunteer coordination, missing-person support.</small></div>
+   </div>
+   <div class="workflow">
+    <div class="workflow-icon">▥</div>
+    <div><strong>Recovery & Resource Agents</strong><small>Relief logistics, damage assessment, recovery planning.</small></div>
+   </div>
+
+   <div class="notice">
+    <strong>Safety-by-Design</strong>
+    <div>
+     AI outputs should be treated as decision support, never as independent
+     authorization to dispatch responders, direct evacuations, issue official
+     alerts or operate infrastructure.
+    </div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="section" id="technology">
+ <div class="section-head">
+  <div>
+   <div class="eyebrow">ENGINEERING STACK</div>
+   <h3>Technology & Infrastructure</h3>
+   <p>Tools and techniques proposed for the full project implementation.</p>
+  </div>
+ </div>
+
+ <div class="card panel">
+  <div class="tech-grid">
+   <div class="tech-card">
+    <strong>01 · Frontend</strong>
+    <p>HTML5, internal CSS, vanilla JavaScript, responsive dashboards, interactive visualizations.</p>
+   </div>
+   <div class="tech-card">
+    <strong>02 · Backend</strong>
+    <p>Python, FastAPI, Pydantic, REST, WebSocket, background workers, authentication.</p>
+   </div>
+   <div class="tech-card">
+    <strong>03 · Machine Learning</strong>
+    <p>Flood risk prediction, forecasting, classification, anomaly detection, feature engineering.</p>
+   </div>
+   <div class="tech-card">
+    <strong>04 · Deep Learning</strong>
+    <p>LSTM, Transformers, CNN, U-Net, satellite imagery, flood segmentation.</p>
+   </div>
+   <div class="tech-card">
+    <strong>05 · Agentic AI</strong>
+    <p>Supervisor orchestration, specialized agents, tool calling, state management, human review.</p>
+   </div>
+   <div class="tech-card">
+    <strong>06 · Advanced RAG</strong>
+    <p>Embeddings, vector databases, BM25, hybrid search, reranking, GraphRAG, grounding.</p>
+   </div>
+   <div class="tech-card">
+    <strong>07 · Data Engineering</strong>
+    <p>PostgreSQL, Redis, Kafka, MQTT, ETL pipelines, object storage and data validation.</p>
+   </div>
+   <div class="tech-card">
+    <strong>08 · Cloud & MLOps</strong>
+    <p>Docker, Kubernetes, AWS, CI/CD, MLflow, model evaluation, observability and security.</p>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="section" id="development">
+ <div class="section-head">
+  <div>
+   <div class="eyebrow">IMPLEMENTATION ROADMAP</div>
+   <h3>Project Development Checklist</h3>
+   <p>Use this interactive checklist to plan work. Checking an item does not verify implementation.</p>
+  </div>
+  <button class="btn" id="resetChecklistBtn">↻ Reset Checklist</button>
+ </div>
+
+ <div class="card panel">
+  <div class="checklist" id="checklist"></div>
+
+  <div style="display:flex;justify-content:space-between;gap:12px;margin-top:20px">
+   <strong style="font-size:11px">Planning Checklist Progress</strong>
+   <span class="tag" id="checklistProgress">0 / 12</span>
+  </div>
+  <div class="progress"><span id="checklistBar" style="width:0%"></span></div>
+ </div>
+</section>
+
+<div class="notice">
+ <strong>⚠ Demonstration & Emergency Safety Notice.</strong>
+ <div>
+  This is a portfolio-development interface. It does not display verified
+  live weather, rainfall, dam, hospital, rescue or shelter information.
+  The linked pages may be standalone synthetic demonstrations.
+  Navigation works when the corresponding HTML files are present in the
+  same frontend directory. For an actual emergency in India, call
+  <a href="tel:112" style="color:var(--gold2);font-weight:800">112</a>
+  and follow official authorities.
+ </div>
+</div>
+
+<footer class="footer">
+ KERALA FLOOD RELIEF COORDINATION AGENT · PROJECT OVERVIEW · DEVELOPMENT & DEMONSTRATION WORKSPACE
+</footer>
+
+</div>
+</main>
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const PAGES=[
+ {name:"Project Overview",file:"index.html",category:"Core Workspace",icon:"▦",description:"Homepage, project guide, architecture and navigation hub."},
+ {name:"Command Center",file:"command-center.html",category:"Core Workspace",icon:"◈",description:"Unified simulated emergency operations overview."},
+ {name:"Agent Command Center",file:"agent-command-center.html",category:"Core Workspace",icon:"✦",description:"Specialized AI agent monitoring and workflow exploration."},
+ {name:"AI Copilot",file:"ai-copilot.html",category:"Core Workspace",icon:"◇",description:"Conversational assistant interface and agent workflow demonstration."},
+ {name:"Analytics",file:"analytics.html",category:"Core Workspace",icon:"▥",description:"Synthetic disaster-response analytics and trends."},
+ {name:"District Dashboard",file:"district-dashboard.html",category:"Flood Intelligence",icon:"▦",description:"14-district overview and illustrative risk comparisons."},
+ {name:"Flood Monitoring",file:"flood-monitoring.html",category:"Flood Intelligence",icon:"≈",description:"Flood indicators and monitoring scenarios."},
+ {name:"Flood Alerts",file:"flood-alerts.html",category:"Flood Intelligence",icon:"☁",description:"Fictional warning drafts and alert review workflow."},
+ {name:"Flood Prediction",file:"flood-prediction.html",category:"Flood Intelligence",icon:"◈",description:"Forecast scenarios and predictive intelligence."},
+ {name:"Weather Monitoring",file:"weather-monitoring.html",category:"Flood Intelligence",icon:"☀",description:"Weather observations and illustrative forecast dashboard."},
+ {name:"River Monitoring",file:"river-monitoring.html",category:"Flood Intelligence",icon:"≈",description:"Synthetic river gauges and water-level trends."},
+ {name:"Dam Monitoring",file:"dam-monitoring.html",category:"Flood Intelligence",icon:"▥",description:"Synthetic reservoir indicators and safety review."},
+ {name:"Incident Management",file:"incident-management.html",category:"Emergency Response",icon:"◉",description:"Incident intake, severity tracking and simulated response planning."},
+ {name:"Emergency SOS",file:"emergency-sos.html",category:"Emergency Response",icon:"⚑",description:"Fictional SOS scenario registration and review."},
+ {name:"SOS Dashboard",file:"sos-dashboard.html",category:"Emergency Response",icon:"⚑",description:"Emergency case queue and triage overview."},
+ {name:"Rescue Dashboard",file:"rescue-dashboard.html",category:"Emergency Response",icon:"✧",description:"Rescue resources, missions and coordination scenarios."},
+ {name:"Evacuation Planning",file:"evacuation-planning.html",category:"Emergency Response",icon:"⌁",description:"Fictional route, transport and evacuation planning."},
+ {name:"Ambulance Dispatch",file:"ambulance-dispatch.html",category:"Emergency Response",icon:"✚",description:"Simulated medical transport coordination."},
+ {name:"Hospital Capacity",file:"hospital-capacity.html",category:"Emergency Response",icon:"✚",description:"Synthetic hospital resources and referral planning."},
+ {name:"Shelter Management",file:"shelters.html",category:"Relief & Coordination",icon:"⌂",description:"Shelter occupancy and resource allocation concepts."},
+ {name:"Family Reunification",file:"family-reunification.html",category:"Relief & Coordination",icon:"♡",description:"Fictional family tracing and safeguarding workflow."},
+ {name:"Damage Assessment",file:"damage-assessment.html",category:"Relief & Coordination",icon:"▧",description:"Damage scenario registration and human review."},
+ {name:"Human Approval",file:"human-approval.html",category:"Governance & Reporting",icon:"✓",description:"AI decision review and approval governance."},
+ {name:"Audit Logs",file:"audit-logs.html",category:"Governance & Reporting",icon:"◷",description:"Synthetic decision and activity log exploration."},
+ {name:"Reports",file:"reports.html",category:"Governance & Reporting",icon:"▤",description:"Reporting and documentation workspace."}
+];
+
+const GUIDE=[
+ {title:"Understand the Platform",description:"Start with the project overview, goals and module architecture.",file:"index.html"},
+ {title:"Explore Command Center",description:"Inspect the simulated district and incident operations dashboard.",file:"command-center.html"},
+ {title:"Review Flood Intelligence",description:"Understand forecasting, monitoring and alert workflows.",file:"flood-prediction.html"},
+ {title:"Inspect Incident Management",description:"Create and review a fictional incident case.",file:"incident-management.html"},
+ {title:"Explore Rescue Planning",description:"Inspect proposed rescue and evacuation workflows.",file:"evacuation-planning.html"},
+ {title:"Explore Humanitarian Support",description:"Review shelter, medical and relief coordination concepts.",file:"hospital-capacity.html"},
+ {title:"Inspect AI Agents",description:"Understand orchestration, retrieval and specialist agent roles.",file:"agent-command-center.html"},
+ {title:"Review Human Governance",description:"Understand decision gates, approvals and audit requirements.",file:"human-approval.html"}
+];
+
+const TASKS=[
+ ["Frontend Pages","Build and test responsive HTML/CSS/JS interfaces."],
+ ["FastAPI Backend","Implement API routers, schemas and services."],
+ ["Database Models","Design PostgreSQL schemas and migrations."],
+ ["Authentication & RBAC","Secure roles, sessions and sensitive endpoints."],
+ ["Official Data Integrations","Integrate authorized and validated sources."],
+ ["Forecasting Models","Train and evaluate flood prediction models."],
+ ["Computer Vision","Validate flood and damage analysis pipelines."],
+ ["Advanced RAG","Build grounded retrieval with citations."],
+ ["Multi-Agent Orchestration","Implement supervised and observable workflows."],
+ ["Human Approval","Enforce review gates for consequential decisions."],
+ ["Testing & Evaluation","Test safety, accuracy, security and reliability."],
+ ["Deployment & Monitoring","Set up CI/CD, logging, cloud and MLOps."]
+];
+
+const state={
+ search:"",
+ category:"all",
+ guideVisited:new Set(),
+ checklist:new Set()
+};
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+ const node=document.createElement("div");
+ node.className="toast";
+ node.textContent=message;
+ document.body.appendChild(node);
+ setTimeout(()=>node.remove(),3000);
+}
+
+function scrollToSection(id){
+ $(id).scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function renderDirectory(){
+ const filtered=PAGES.filter(page=>{
+  const searchable=[
+   page.name,page.file,page.category,page.description
+  ].join(" ").toLowerCase();
+
+  return searchable.includes(state.search.toLowerCase())&&
+   (state.category==="all"||page.category===state.category);
+ });
+
+ const container=$("directoryGrid");
+ container.replaceChildren();
+
+ if(!filtered.length){
+  const empty=document.createElement("div");
+  empty.className="empty";
+  empty.textContent="No matching pages. Try a different search or category.";
+  container.appendChild(empty);
+ }
+
+ filtered.forEach(page=>{
+  const card=document.createElement("a");
+  card.className="directory-card";
+  card.href=page.file;
+
+  const top=document.createElement("div");
+  top.className="directory-top";
+
+  const icon=document.createElement("div");
+  icon.className="directory-icon";
+  icon.textContent=page.icon;
+
+  const title=document.createElement("strong");
+  title.textContent=page.name;
+
+  top.append(icon,title);
+
+  const description=document.createElement("small");
+  description.textContent=page.description;
+
+  const bottom=document.createElement("div");
+  bottom.className="directory-bottom";
+
+  const category=document.createElement("span");
+  category.className="category-label";
+  category.textContent=page.category.toUpperCase();
+
+  const action=document.createElement("span");
+  action.textContent="OPEN PAGE →";
+
+  bottom.append(category,action);
+  card.append(top,description,bottom);
+  container.appendChild(card);
+ });
+
+ $("visibleCount").textContent=`${filtered.length} PAGES`;
+ $("pageCount").textContent=PAGES.length;
+}
+
+function renderGuide(){
+ const container=$("guideSteps");
+ container.replaceChildren();
+
+ GUIDE.forEach((step,index)=>{
+  const card=document.createElement("div");
+  card.className="card step";
+
+  const number=document.createElement("div");
+  number.className="step-number";
+  number.textContent=String(index+1).padStart(2,"0");
+
+  const title=document.createElement("h4");
+  title.textContent=step.title;
+
+  const description=document.createElement("p");
+  description.textContent=step.description;
+
+  const link=document.createElement("a");
+  link.href=step.file;
+  link.textContent=state.guideVisited.has(index)
+   ?"✓ Visited in guide →"
+   :"Explore This Step →";
+
+  link.addEventListener("click",()=>{
+   state.guideVisited.add(index);
+   updateGuideProgress();
+  });
+
+  card.append(number,title,description,link);
+  container.appendChild(card);
+ });
+
+ updateGuideProgress();
+}
+
+function updateGuideProgress(){
+ const count=state.guideVisited.size;
+ $("guideProgressLabel").textContent=`${count} / ${GUIDE.length}`;
+ $("guideProgressBar").style.width=`${count/GUIDE.length*100}%`;
+}
+
+function renderChecklist(){
+ const container=$("checklist");
+ container.replaceChildren();
+
+ TASKS.forEach(([title,description],index)=>{
+  const label=document.createElement("label");
+  label.className="check-item";
+
+  const checkbox=document.createElement("input");
+  checkbox.type="checkbox";
+  checkbox.checked=state.checklist.has(index);
+
+  checkbox.addEventListener("change",()=>{
+   if(checkbox.checked)state.checklist.add(index);
+   else state.checklist.delete(index);
+
+   updateChecklistProgress();
+  });
+
+  const body=document.createElement("div");
+
+  const strong=document.createElement("strong");
+  strong.textContent=title;
+
+  const small=document.createElement("small");
+  small.textContent=description;
+
+  body.append(strong,small);
+  label.append(checkbox,body);
+  container.appendChild(label);
+ });
+
+ updateChecklistProgress();
+}
+
+function updateChecklistProgress(){
+ const count=state.checklist.size;
+ $("checklistProgress").textContent=`${count} / ${TASKS.length}`;
+ $("checklistBar").style.width=`${count/TASKS.length*100}%`;
+}
+
+function initialize(){
+ $("pageSearch").addEventListener("input",event=>{
+  state.search=event.target.value.trim();
+  renderDirectory();
+ });
+
+ $("categoryFilter").addEventListener("change",event=>{
+  state.category=event.target.value;
+  renderDirectory();
+ });
+
+ $("clearSearchBtn").addEventListener("click",()=>{
+  state.search="";
+  state.category="all";
+  $("pageSearch").value="";
+  $("categoryFilter").value="all";
+  renderDirectory();
+ });
+
+ $("guideBtn").addEventListener("click",()=>scrollToSection("guide"));
+ $("exploreBtn").addEventListener("click",()=>scrollToSection("directory"));
+ $("architectureBtn").addEventListener("click",()=>scrollToSection("architecture"));
+
+ $("guideRestartBtn").addEventListener("click",()=>{
+  state.guideVisited.clear();
+  renderGuide();
+  toast("Guide progress restarted");
+ });
+
+ $("resetChecklistBtn").addEventListener("click",()=>{
+  state.checklist.clear();
+  renderChecklist();
+  toast("Planning checklist reset");
+ });
+
+ $("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+ });
+
+ renderDirectory();
+ renderGuide();
+ renderChecklist();
+}
+
+initialize();
+
+console.info(
+ "Kerala Flood AI project hub initialized. Navigation links require corresponding HTML files."
+);
+</script>
+
+</body>
+</html>

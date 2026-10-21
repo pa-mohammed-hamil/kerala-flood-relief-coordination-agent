@@ -1,0 +1,1926 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Command Center</title></head><body><h1>Command Center</h1><p>Scaffold only — not operational.</p></body></html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090b10">
+<title>Emergency Command Center | Kerala Flood AI</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#090b10;
+  --sidebar:#0d1017;
+  --panel:#151922;
+  --panel2:#1b202b;
+  --panel3:#222835;
+  --gold:#d8b671;
+  --gold-light:#f5daa0;
+  --text:#f4f1e9;
+  --muted:#9399a7;
+  --line:rgba(255,255,255,.085);
+  --green:#54d6a4;
+  --red:#ff777d;
+  --orange:#ffb66e;
+  --blue:#82adff;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:13px "DM Sans",sans-serif;
+}
+
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.45;cursor:not-allowed}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible{
+  outline:2px solid var(--gold);
+  outline-offset:3px;
+}
+
+::-webkit-scrollbar{width:7px}
+::-webkit-scrollbar-thumb{background:#343946;border-radius:10px}
+
+.app{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:252px minmax(0,1fr);
+}
+
+.sidebar{
+  position:sticky;
+  top:0;
+  height:100vh;
+  background:var(--sidebar);
+  border-right:1px solid var(--line);
+  display:flex;
+  flex-direction:column;
+  z-index:30;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:25px 19px;
+  border-bottom:1px solid var(--line);
+}
+
+.brand-logo{
+  height:43px;
+  width:43px;
+  border-radius:13px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#f3dba5,#a47c3b);
+  color:#17130b;
+  font-size:23px;
+  font-weight:900;
+  box-shadow:0 7px 25px rgba(216,182,113,.17);
+}
+
+.brand strong{
+  font:800 13px Manrope,sans-serif;
+  letter-spacing:.4px;
+}
+
+.brand small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  letter-spacing:1.2px;
+  margin-top:5px;
+}
+
+.nav{
+  padding:21px 13px;
+  overflow:auto;
+  flex:1;
+}
+
+.nav-label{
+  color:#777e8d;
+  font-size:10px;
+  letter-spacing:1.7px;
+  font-weight:800;
+  margin:13px 12px;
+}
+
+.nav a{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-decoration:none;
+  color:#a2a8b4;
+  padding:12px 13px;
+  margin-bottom:5px;
+  border-radius:10px;
+  border:1px solid transparent;
+  font-weight:600;
+  font-size:12px;
+  transition:.2s;
+}
+
+.nav a:hover{
+  color:white;
+  background:#1b202b;
+}
+
+.nav a.active{
+  color:var(--gold-light);
+  background:rgba(216,182,113,.1);
+  border-color:rgba(216,182,113,.19);
+}
+
+.nav-icon{
+  width:20px;
+  text-align:center;
+  font-size:17px;
+}
+
+.sidebar-footer{
+  padding:17px;
+  border-top:1px solid var(--line);
+}
+
+.profile{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.avatar{
+  height:38px;
+  width:38px;
+  display:grid;
+  place-items:center;
+  background:#383023;
+  color:var(--gold-light);
+  border-radius:11px;
+  font-weight:800;
+}
+
+.profile strong{font-size:11px}
+
+.profile small{
+  display:block;
+  font-size:10px;
+  color:var(--muted);
+  margin-top:5px;
+}
+
+.main{
+  min-width:0;
+  background:
+    radial-gradient(ellipse at 60% -5%,rgba(216,182,113,.07),transparent 38%),
+    var(--bg);
+}
+
+.topbar{
+  min-height:82px;
+  padding:17px 30px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+}
+
+.top-title{
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+
+.page-icon{
+  height:43px;
+  width:43px;
+  display:grid;
+  place-items:center;
+  color:var(--gold);
+  background:rgba(216,182,113,.1);
+  border:1px solid rgba(216,182,113,.2);
+  border-radius:12px;
+  font-size:20px;
+}
+
+.top-title h1{
+  font:800 18px Manrope,sans-serif;
+  letter-spacing:-.5px;
+  margin:0;
+}
+
+.top-title p{
+  margin:5px 0 0;
+  font-size:11px;
+  color:var(--muted);
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  border:1px solid rgba(216,182,113,.2);
+  color:var(--gold-light);
+  background:rgba(216,182,113,.075);
+  border-radius:9px;
+  padding:10px 12px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.dot{
+  height:7px;
+  width:7px;
+  border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 10px var(--gold);
+  animation:pulse 2s infinite;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:11px 15px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:#1a1f29;
+  color:#e1e3e8;
+  font-weight:700;
+  font-size:11px;
+  transition:.2s;
+}
+
+.btn:hover{
+  border-color:rgba(216,182,113,.4);
+  transform:translateY(-1px);
+}
+
+.btn.gold{
+  background:linear-gradient(120deg,#c6a15e,#f1d49a);
+  color:#1b160e;
+  border:0;
+}
+
+.content{
+  max-width:1700px;
+  margin:auto;
+  padding:28px 30px 42px;
+}
+
+.heading-row{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-bottom:24px;
+}
+
+.eyebrow{
+  color:var(--gold);
+  letter-spacing:2px;
+  font-size:10px;
+  font-weight:800;
+  margin-bottom:10px;
+}
+
+.heading-row h2{
+  font:800 28px Manrope,sans-serif;
+  letter-spacing:-1px;
+  margin:0;
+}
+
+.heading-row p{
+  color:var(--muted);
+  margin:9px 0 0;
+  font-size:12px;
+  line-height:1.7;
+}
+
+.grid{
+  display:grid;
+  gap:16px;
+}
+
+.kpi-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+.card{
+  background:linear-gradient(150deg,#181c26,#12161e);
+  border:1px solid var(--line);
+  border-radius:16px;
+  min-width:0;
+  box-shadow:0 14px 35px rgba(0,0,0,.1);
+  animation:rise .55s ease both;
+}
+
+.kpi{
+  padding:21px;
+  position:relative;
+  overflow:hidden;
+}
+
+.kpi::before{
+  content:"";
+  position:absolute;
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  background:rgba(216,182,113,.035);
+  top:-55px;
+  right:-45px;
+}
+
+.kpi-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color:#a7adba;
+  font-size:11px;
+  font-weight:700;
+}
+
+.kpi-icon{
+  height:36px;
+  width:36px;
+  display:grid;
+  place-items:center;
+  background:rgba(216,182,113,.1);
+  border-radius:10px;
+  color:var(--gold);
+  font-size:18px;
+}
+
+.kpi-value{
+  font:800 30px Manrope,sans-serif;
+  letter-spacing:-1px;
+  margin:15px 0 7px;
+}
+
+.kpi-bottom{
+  font-size:10px;
+  color:var(--muted);
+}
+
+.kpi-bottom b{
+  color:var(--gold);
+}
+
+.section-grid{
+  grid-template-columns:minmax(0,1.7fr) minmax(290px,1fr);
+  margin-top:17px;
+}
+
+.panel{padding:22px}
+
+.panel-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.panel-title{
+  font:800 14px Manrope,sans-serif;
+}
+
+.panel-sub{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:7px;
+}
+
+.panel-tag{
+  border:1px solid rgba(216,182,113,.16);
+  background:rgba(216,182,113,.06);
+  color:var(--gold-light);
+  border-radius:7px;
+  padding:7px 9px;
+  font-size:10px;
+  white-space:nowrap;
+}
+
+.map-stage{
+  position:relative;
+  height:375px;
+  border-radius:13px;
+  border:1px solid rgba(216,182,113,.11);
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(216,182,113,.065),transparent 48%),
+    linear-gradient(rgba(216,182,113,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(216,182,113,.035) 1px,transparent 1px),
+    #10141d;
+  background-size:auto,35px 35px,35px 35px,auto;
+}
+
+.map-stage::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(110deg,transparent 40%,rgba(216,182,113,.035) 50%,transparent 60%);
+  animation:scan 8s linear infinite;
+}
+
+.map-svg{
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+.map-path{
+  fill:rgba(216,182,113,.13);
+  stroke:rgba(216,182,113,.65);
+  stroke-width:2;
+  filter:drop-shadow(0 0 9px rgba(216,182,113,.12));
+}
+
+.map-point{
+  cursor:pointer;
+  outline:none;
+}
+
+.map-point circle:first-child{
+  fill:rgba(255,119,125,.13);
+  stroke:rgba(255,119,125,.3);
+  animation:markerPulse 2.8s infinite;
+  transform-box:fill-box;
+  transform-origin:center;
+}
+
+.map-point circle:nth-child(2){
+  fill:var(--red);
+  stroke:#ffdbdc;
+  stroke-width:1;
+}
+
+.map-point.medium circle:first-child{
+  fill:rgba(255,182,110,.13);
+  stroke:rgba(255,182,110,.3);
+}
+
+.map-point.medium circle:nth-child(2){
+  fill:var(--orange);
+  stroke:#ffe1c2;
+}
+
+.map-point.low circle:first-child{
+  fill:rgba(84,214,164,.13);
+  stroke:rgba(84,214,164,.3);
+}
+
+.map-point.low circle:nth-child(2){
+  fill:var(--green);
+  stroke:#c9ffeb;
+}
+
+.map-point:focus circle:nth-child(2){
+  stroke-width:3;
+}
+
+.map-point text{
+  fill:#dce0e8;
+  font-size:10px;
+  font-family:"DM Sans",sans-serif;
+  paint-order:stroke;
+  stroke:#10141d;
+  stroke-width:3px;
+  pointer-events:none;
+}
+
+.map-caption{
+  position:absolute;
+  left:15px;
+  bottom:13px;
+  color:#9299a7;
+  font-size:10px;
+  background:rgba(13,16,23,.88);
+  padding:8px 10px;
+  border-radius:7px;
+  border:1px solid var(--line);
+}
+
+.map-legend{
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+  margin-top:16px;
+  color:#a9aebb;
+  font-size:10px;
+}
+
+.map-legend span{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.map-legend i{
+  width:8px;
+  height:8px;
+  display:inline-block;
+  border-radius:50%;
+}
+
+.district-detail{
+  margin-top:15px;
+  padding:15px;
+  background:#1b202b;
+  border:1px solid var(--line);
+  border-radius:11px;
+}
+
+.district-detail strong{
+  color:var(--gold-light);
+}
+
+.district-detail p{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.8;
+  margin:8px 0 0;
+}
+
+.incident-list{
+  display:grid;
+  gap:10px;
+}
+
+.incident{
+  background:#1c212b;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px;
+  transition:.2s;
+}
+
+.incident:hover{
+  border-color:rgba(216,182,113,.3);
+}
+
+.incident-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.incident strong{
+  font-size:11px;
+}
+
+.incident p{
+  margin:9px 0;
+  color:#a7aebb;
+  font-size:11px;
+  line-height:1.6;
+}
+
+.incident-foot{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.incident small{
+  color:#7d8492;
+  font-size:10px;
+}
+
+.pill{
+  display:inline-flex;
+  padding:5px 8px;
+  border-radius:7px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.pill.high{
+  color:var(--red);
+  background:rgba(255,119,125,.1);
+}
+
+.pill.medium{
+  color:var(--orange);
+  background:rgba(255,182,110,.1);
+}
+
+.pill.low{
+  color:var(--green);
+  background:rgba(84,214,164,.1);
+}
+
+.pill.review{
+  color:var(--gold-light);
+  background:rgba(216,182,113,.1);
+}
+
+.link-btn{
+  color:var(--gold-light);
+  background:transparent;
+  border:0;
+  font-size:11px;
+  font-weight:800;
+}
+
+.link-btn:hover{text-decoration:underline}
+
+.table-wrap{overflow:auto}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  text-align:left;
+  white-space:nowrap;
+}
+
+th{
+  padding:13px 12px;
+  font-size:10px;
+  color:#8d94a2;
+  letter-spacing:.7px;
+  border-bottom:1px solid var(--line);
+}
+
+td{
+  padding:15px 12px;
+  font-size:11px;
+  color:#d7dbe2;
+  border-bottom:1px solid rgba(255,255,255,.045);
+}
+
+tbody tr:hover{
+  background:rgba(216,182,113,.03);
+}
+
+.status{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.status::before{
+  content:"";
+  height:7px;
+  width:7px;
+  border-radius:50%;
+  background:currentColor;
+}
+
+.status.available{color:var(--green)}
+.status.busy{color:var(--orange)}
+.status.offline{color:var(--muted)}
+
+.progress{
+  height:7px;
+  background:#292f3a;
+  border-radius:20px;
+  overflow:hidden;
+  min-width:100px;
+}
+
+.progress span{
+  display:block;
+  height:100%;
+  background:linear-gradient(90deg,#95713b,#f1d392);
+  border-radius:20px;
+}
+
+.agent-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+
+.agent-card{
+  background:#1b202b;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.agent-icon{
+  height:35px;
+  width:35px;
+  display:grid;
+  place-items:center;
+  background:rgba(216,182,113,.1);
+  color:var(--gold);
+  border-radius:10px;
+  font-size:17px;
+}
+
+.agent-card strong{
+  font-size:11px;
+}
+
+.agent-card small{
+  display:block;
+  color:var(--muted);
+  margin-top:5px;
+  font-size:10px;
+}
+
+.activity{
+  display:grid;
+  gap:0;
+}
+
+.activity-item{
+  display:flex;
+  gap:12px;
+  padding-bottom:20px;
+  position:relative;
+}
+
+.activity-item:not(:last-child)::before{
+  content:"";
+  position:absolute;
+  left:15px;
+  top:32px;
+  bottom:0;
+  width:1px;
+  background:#343a46;
+}
+
+.activity-icon{
+  width:31px;
+  height:31px;
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+  background:rgba(216,182,113,.1);
+  border:1px solid rgba(216,182,113,.15);
+  border-radius:9px;
+  color:var(--gold);
+}
+
+.activity-item strong{
+  font-size:11px;
+}
+
+.activity-item p{
+  margin:7px 0;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.6;
+}
+
+.activity-item small{
+  color:#737b89;
+  font-size:10px;
+}
+
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:rgba(0,0,0,.8);
+  backdrop-filter:blur(8px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+
+.modal-backdrop.open{display:flex}
+
+.modal{
+  width:min(570px,100%);
+  max-height:90vh;
+  overflow:auto;
+  padding:25px;
+  border-radius:18px;
+  background:#171b24;
+  border:1px solid rgba(216,182,113,.3);
+  box-shadow:0 30px 100px rgba(0,0,0,.5);
+  animation:rise .3s ease;
+}
+
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.modal-head h3{
+  font:800 17px Manrope,sans-serif;
+  margin:0;
+}
+
+.close-btn{
+  height:35px;
+  width:35px;
+  background:#272c37;
+  border:1px solid var(--line);
+  color:white;
+  border-radius:9px;
+  font-size:19px;
+}
+
+.field{
+  display:grid;
+  gap:8px;
+  margin-bottom:15px;
+}
+
+.field label{
+  color:#adb3bf;
+  font-size:11px;
+  font-weight:700;
+}
+
+.field input,
+.field select,
+.field textarea{
+  background:#1e2430;
+  border:1px solid #343a46;
+  border-radius:10px;
+  color:white;
+  padding:12px;
+  width:100%;
+  outline:0;
+}
+
+.field textarea{
+  resize:vertical;
+  min-height:95px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  border-color:var(--gold);
+}
+
+.safety-note{
+  border:1px solid rgba(216,182,113,.18);
+  background:rgba(216,182,113,.055);
+  padding:16px;
+  border-radius:12px;
+  color:#b6b1a6;
+  font-size:11px;
+  line-height:1.8;
+  margin-top:17px;
+}
+
+.safety-note strong{
+  color:var(--gold-light);
+}
+
+.footer{
+  text-align:center;
+  color:#69707e;
+  font-size:10px;
+  padding-top:27px;
+}
+
+.toast{
+  position:fixed;
+  right:24px;
+  bottom:24px;
+  z-index:150;
+  padding:14px 18px;
+  border-radius:11px;
+  background:#252b35;
+  border:1px solid rgba(216,182,113,.4);
+  color:var(--gold-light);
+  box-shadow:0 15px 45px #0008;
+  animation:rise .3s ease;
+}
+
+.menu-btn{display:none}
+
+@keyframes rise{
+  from{opacity:0;transform:translateY(15px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes pulse{
+  50%{opacity:.35}
+}
+
+@keyframes markerPulse{
+  50%{transform:scale(1.6);opacity:.35}
+}
+
+@keyframes scan{
+  from{transform:translateX(-110%)}
+  to{transform:translateX(110%)}
+}
+
+@media(max-width:1250px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .section-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:900px){
+  .app{grid-template-columns:1fr}
+
+  .sidebar{
+    position:fixed;
+    width:260px;
+    transform:translateX(-100%);
+    transition:.3s;
+  }
+
+  .sidebar.open{transform:translateX(0)}
+  .menu-btn{display:inline-flex}
+  .topbar{padding:15px 20px}
+  .content{padding:20px}
+}
+
+@media(max-width:560px){
+  .kpi-grid{grid-template-columns:1fr}
+  .heading-row h2{font-size:23px}
+  .panel{padding:17px}
+  .top-actions .badge{display:none}
+  .agent-grid{grid-template-columns:1fr}
+  .map-stage{height:300px}
+  .modal{padding:18px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="brand-logo">✦</div>
+    <div>
+      <strong>KERALA FLOOD AI</strong>
+      <small>INTELLIGENCE PLATFORM</small>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-label">WORKSPACE</div>
+
+    <a href="index.html">
+      <span class="nav-icon">▦</span>Overview
+    </a>
+
+    <a class="active" href="command-center.html">
+      <span class="nav-icon">◈</span>Command Center
+    </a>
+
+    <a href="agent-command-center.html">
+      <span class="nav-icon">✦</span>Agent Command Center
+    </a>
+
+    <a href="ai-copilot.html">
+      <span class="nav-icon">◇</span>AI Copilot
+    </a>
+
+    <a href="ambulance-dispatch.html">
+      <span class="nav-icon">✚</span>Ambulance Dispatch
+    </a>
+
+    <a href="analytics.html">
+      <span class="nav-icon">▥</span>Analytics
+    </a>
+
+    <div class="nav-label" style="margin-top:24px">
+      OPERATIONS
+    </div>
+
+    <a href="sos-dashboard.html">
+      <span class="nav-icon">⚑</span>SOS Management
+    </a>
+
+    <a href="rescue-dashboard.html">
+      <span class="nav-icon">⌁</span>Rescue Operations
+    </a>
+
+    <a href="shelters.html">
+      <span class="nav-icon">⌂</span>Shelter Management
+    </a>
+
+    <a href="audit-logs.html">
+      <span class="nav-icon">◷</span>Audit Logs
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="profile">
+      <div class="avatar">OP</div>
+      <div>
+        <strong>Operations Workspace</strong>
+        <small>Emergency Coordination</small>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+  <div class="top-title">
+    <button class="btn menu-btn" id="menuBtn">☰</button>
+    <div class="page-icon">◈</div>
+    <div>
+      <h1>Emergency Command Center</h1>
+      <p>Flood intelligence · Response coordination · AI oversight</p>
+    </div>
+  </div>
+
+  <div class="top-actions">
+    <div class="badge">
+      <span class="dot"></span>
+      DEMO MODE
+    </div>
+    <button class="btn" id="refreshBtn">↻ Refresh</button>
+    <button class="btn gold" id="reviewBtn">＋ Review Incident</button>
+  </div>
+</header>
+
+<div class="content">
+
+  <div class="heading-row">
+    <div>
+      <div class="eyebrow">UNIFIED EMERGENCY INTELLIGENCE</div>
+      <h2>Operational Command Overview</h2>
+      <p>
+        A unified demonstration of flood monitoring,
+        SOS coordination, rescue resources and AI assistance.
+      </p>
+    </div>
+
+    <div class="badge">
+      FICTIONAL RECORDS · NOT LIVE
+    </div>
+  </div>
+
+  <!-- KPI -->
+  <section class="grid kpi-grid">
+    <div class="card kpi">
+      <div class="kpi-top">
+        Open SOS Requests
+        <div class="kpi-icon">⚑</div>
+      </div>
+      <div class="kpi-value" id="kpiSOS">0</div>
+      <div class="kpi-bottom"><b>DEMO</b> · Pending cases</div>
+    </div>
+
+    <div class="card kpi">
+      <div class="kpi-top">
+        Available Rescue Teams
+        <div class="kpi-icon">⌁</div>
+      </div>
+      <div class="kpi-value" id="kpiRescue">0</div>
+      <div class="kpi-bottom"><b>DEMO</b> · Simulated team availability</div>
+    </div>
+
+    <div class="card kpi">
+      <div class="kpi-top">
+        Shelter Occupancy
+        <div class="kpi-icon">⌂</div>
+      </div>
+      <div class="kpi-value" id="kpiShelter">0%</div>
+      <div class="kpi-bottom"><b>DEMO</b> · Fictional capacity usage</div>
+    </div>
+
+    <div class="card kpi">
+      <div class="kpi-top">
+        Districts Under Review
+        <div class="kpi-icon">◉</div>
+      </div>
+      <div class="kpi-value" id="kpiDistricts">0</div>
+      <div class="kpi-bottom"><b>DEMO</b> · Illustrative risk labels</div>
+    </div>
+  </section>
+
+  <!-- MAP AND INCIDENTS -->
+  <section class="grid section-grid">
+
+    <div class="card panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Kerala District Intelligence</div>
+          <div class="panel-sub">
+            Stylized locator · Select a district marker
+          </div>
+        </div>
+        <div class="panel-tag">REGIONAL OVERVIEW</div>
+      </div>
+
+      <div class="map-stage">
+        <svg
+          class="map-svg"
+          viewBox="0 0 700 400"
+          role="img"
+          aria-label="Stylized Kerala district locator, not a geographic map"
+        >
+          <defs>
+            <linearGradient id="keralaFill" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#d8b671" stop-opacity=".25"/>
+              <stop offset="100%" stop-color="#d8b671" stop-opacity=".06"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Stylized illustrative outline, not GIS geometry -->
+          <path
+            class="map-path"
+            d="M215 34
+               C245 48 265 74 275 96
+               C287 119 295 145 318 162
+               C336 179 344 201 362 219
+               C380 241 390 263 412 281
+               C426 300 435 319 458 345
+               L445 363
+               C422 349 404 328 389 311
+               C365 291 353 268 336 249
+               C315 228 300 211 282 191
+               C261 169 250 149 239 129
+               C226 103 207 82 190 59
+               Z"
+            fill="url(#keralaFill)"
+          />
+
+          <g id="mapMarkers"></g>
+
+          <text x="495" y="64" fill="#717987" font-size="12">
+            KERALA
+          </text>
+          <text x="495" y="83" fill="#717987" font-size="9">
+            STYLIZED DISTRICT LOCATOR
+          </text>
+        </svg>
+
+        <div class="map-caption">
+          Not to scale · Synthetic indicators
+        </div>
+      </div>
+
+      <div class="map-legend">
+        <span><i style="background:var(--red)"></i>High demo risk</span>
+        <span><i style="background:var(--orange)"></i>Medium demo risk</span>
+        <span><i style="background:var(--green)"></i>Low demo risk</span>
+      </div>
+
+      <div class="district-detail" id="districtDetail">
+        <strong>Select a district marker</strong>
+        <p>
+          District details will appear here.
+          All values are synthetic.
+        </p>
+      </div>
+    </div>
+
+    <div class="card panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Priority Incident Queue</div>
+          <div class="panel-sub">
+            Fictional requests awaiting human review
+          </div>
+        </div>
+        <div class="panel-tag">SOS REVIEW</div>
+      </div>
+
+      <div class="incident-list" id="incidentList"></div>
+    </div>
+
+  </section>
+
+  <!-- RESCUE AND SHELTER -->
+  <section class="grid section-grid">
+
+    <div class="card panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Rescue Resource Overview</div>
+          <div class="panel-sub">
+            Synthetic teams and ambulance availability
+          </div>
+        </div>
+        <div class="panel-tag">RESOURCE STATUS</div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Resource ID</th>
+              <th>Type</th>
+              <th>District</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="resourceTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Shelter Capacity Intelligence</div>
+          <div class="panel-sub">
+            Fictional occupancy percentages
+          </div>
+        </div>
+        <div class="panel-tag">SHELTER MONITOR</div>
+      </div>
+
+      <div id="shelterList"></div>
+    </div>
+
+  </section>
+
+  <!-- AGENTS + ACTIVITY -->
+  <section class="grid section-grid">
+
+    <div class="card panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">AI Coordination Network</div>
+          <div class="panel-sub">
+            Configured demonstration agent profiles
+          </div>
+        </div>
+        <div class="panel-tag">MULTI-AGENT AI</div>
+      </div>
+
+      <div class="agent-grid" id="agentGrid"></div>
+    </div>
+
+    <div class="card panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Operations Activity</div>
+          <div class="panel-sub">
+            Local demonstration activity timeline
+          </div>
+        </div>
+        <div class="panel-tag">ACTIVITY</div>
+      </div>
+
+      <div class="activity" id="activityList"></div>
+    </div>
+
+  </section>
+
+  <div class="safety-note">
+    <strong>◇ Human-in-the-Loop Emergency Safety</strong>
+    <div style="margin-top:7px">
+      This dashboard does not perform real ambulance dispatch,
+      rescue assignments, evacuation orders, shelter admissions
+      or emergency notifications. All critical operations require
+      authenticated responders, verified information and
+      independent human authorization.
+    </div>
+  </div>
+
+  <footer class="footer">
+    KERALA FLOOD RELIEF COORDINATION AGENT
+    · UNIFIED COMMAND CENTER
+    · DEMONSTRATION ENVIRONMENT
+  </footer>
+
+</div>
+</main>
+</div>
+
+<!-- REVIEW MODAL -->
+<div
+  class="modal-backdrop"
+  id="reviewModal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modalTitle"
+>
+  <div class="modal">
+
+    <div class="modal-head">
+      <h3 id="modalTitle">Incident Review Workspace</h3>
+      <button class="close-btn" id="closeModal" aria-label="Close">×</button>
+    </div>
+
+    <form id="reviewForm">
+
+      <div class="field">
+        <label for="incidentSelect">Incident</label>
+        <select id="incidentSelect" required></select>
+      </div>
+
+      <div class="field">
+        <label for="reviewPriority">Suggested Priority</label>
+        <select id="reviewPriority">
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="reviewNotes">Review Notes</label>
+        <textarea
+          id="reviewNotes"
+          maxlength="1000"
+          placeholder="Enter verification gaps and proposed next steps..."
+          required
+        ></textarea>
+      </div>
+
+      <div class="safety-note" style="margin:0 0 17px">
+        Saving creates a local demonstration review note only.
+        It does not approve or dispatch resources.
+      </div>
+
+      <button class="btn gold" type="submit" style="width:100%">
+        Save Demo Review
+      </button>
+
+    </form>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* ==========================================================
+   COMMAND CENTER DEMONSTRATION
+========================================================== */
+
+const $ = id => document.getElementById(id);
+
+const DISTRICTS = [
+  {name:"Kasaragod",x:218,y:57,risk:"low",rain:24},
+  {name:"Kannur",x:235,y:80,risk:"medium",rain:48},
+  {name:"Wayanad",x:257,y:108,risk:"high",rain:88},
+  {name:"Kozhikode",x:270,y:133,risk:"medium",rain:57},
+  {name:"Malappuram",x:285,y:160,risk:"medium",rain:51},
+  {name:"Palakkad",x:306,y:183,risk:"low",rain:29},
+  {name:"Thrissur",x:321,y:204,risk:"high",rain:91},
+  {name:"Ernakulam",x:340,y:226,risk:"medium",rain:62},
+  {name:"Idukki",x:355,y:250,risk:"high",rain:97},
+  {name:"Kottayam",x:375,y:274,risk:"medium",rain:55},
+  {name:"Alappuzha",x:389,y:296,risk:"medium",rain:59},
+  {name:"Pathanamthitta",x:410,y:316,risk:"high",rain:83},
+  {name:"Kollam",x:427,y:337,risk:"low",rain:33},
+  {name:"Thiruvananthapuram",x:446,y:353,risk:"low",rain:26}
+];
+
+const INCIDENTS = [
+  {
+    id:"DEMO-SOS-001",
+    district:"Wayanad",
+    description:"Fictional household reporting rising floodwater.",
+    priority:"high",
+    status:"Awaiting verification"
+  },
+  {
+    id:"DEMO-SOS-002",
+    district:"Thrissur",
+    description:"Synthetic accessibility assistance request.",
+    priority:"high",
+    status:"Human review required"
+  },
+  {
+    id:"DEMO-SOS-003",
+    district:"Ernakulam",
+    description:"Fictional request for shelter information.",
+    priority:"medium",
+    status:"Pending assessment"
+  },
+  {
+    id:"DEMO-SOS-004",
+    district:"Idukki",
+    description:"Synthetic report of road access difficulty.",
+    priority:"medium",
+    status:"Awaiting verification"
+  }
+];
+
+const RESOURCES = [
+  {id:"DEMO-RSC-101",type:"Rescue Team",district:"Wayanad",status:"available"},
+  {id:"DEMO-RSC-102",type:"Rescue Boat",district:"Thrissur",status:"busy"},
+  {id:"DEMO-AMB-201",type:"Ambulance",district:"Ernakulam",status:"available"},
+  {id:"DEMO-RSC-103",type:"Rescue Team",district:"Idukki",status:"available"},
+  {id:"DEMO-AMB-202",type:"Ambulance",district:"Kottayam",status:"offline"}
+];
+
+const SHELTERS = [
+  {name:"Demo Shelter A",district:"Wayanad",occupancy:78},
+  {name:"Demo Shelter B",district:"Thrissur",occupancy:56},
+  {name:"Demo Shelter C",district:"Ernakulam",occupancy:41},
+  {name:"Demo Shelter D",district:"Idukki",occupancy:89}
+];
+
+const AGENTS = [
+  ["✦","Supervisor AI","Workflow routing"],
+  ["◉","Flood Prediction","Forecasting profile"],
+  ["⚑","SOS Triage","Priority assistance"],
+  ["⌁","Rescue Coordinator","Resource planning"],
+  ["⌂","Shelter Allocation","Capacity analysis"],
+  ["☁","Weather Intelligence","Weather ingestion"],
+  ["▤","Knowledge RAG","Document retrieval"],
+  ["◇","Human Oversight","Approval workflow"]
+];
+
+const state = {
+  selectedDistrict:null,
+  reviews:[],
+  activities:[
+    {
+      title:"Demo environment initialized",
+      detail:"Synthetic command center records loaded.",
+      time:"Local session"
+    },
+    {
+      title:"Review queue available",
+      detail:"Fictional incidents ready for inspection.",
+      time:"Demo dataset"
+    },
+    {
+      title:"Agent profiles loaded",
+      detail:"No backend agent execution performed.",
+      time:"Demo dataset"
+    }
+  ]
+};
+
+/* ==========================================================
+   UTILITIES
+========================================================== */
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,char=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[char]);
+}
+
+function toast(message){
+  document.querySelector(".toast")?.remove();
+
+  const node=document.createElement("div");
+  node.className="toast";
+  node.textContent=message;
+
+  document.body.appendChild(node);
+
+  setTimeout(()=>node.remove(),3200);
+}
+
+function animateCounter(element,target,suffix=""){
+  const start=performance.now();
+  const duration=650;
+
+  function frame(now){
+    const progress=Math.min(1,(now-start)/duration);
+    const eased=1-Math.pow(1-progress,3);
+
+    element.textContent=
+      Math.round(target*eased).toLocaleString("en-IN")+suffix;
+
+    if(progress<1)requestAnimationFrame(frame);
+  }
+
+  requestAnimationFrame(frame);
+}
+
+/* ==========================================================
+   KPI RENDERING
+========================================================== */
+
+function renderKPIs(){
+  animateCounter($("kpiSOS"),INCIDENTS.length);
+
+  animateCounter(
+    $("kpiRescue"),
+    RESOURCES.filter(item=>
+      item.type!=="Ambulance" &&
+      item.status==="available"
+    ).length
+  );
+
+  const occupancy=SHELTERS.reduce(
+    (sum,item)=>sum+item.occupancy,0
+  )/SHELTERS.length;
+
+  animateCounter($("kpiShelter"),occupancy,"%");
+
+  animateCounter(
+    $("kpiDistricts"),
+    DISTRICTS.filter(item=>item.risk==="high").length
+  );
+}
+
+/* ==========================================================
+   DISTRICT MAP
+========================================================== */
+
+function renderMap(){
+  const group=$("mapMarkers");
+  group.replaceChildren();
+
+  DISTRICTS.forEach((district,index)=>{
+    const svgNS="http://www.w3.org/2000/svg";
+
+    const marker=document.createElementNS(svgNS,"g");
+
+    marker.setAttribute(
+      "class",
+      `map-point ${district.risk}`
+    );
+
+    marker.setAttribute("tabindex","0");
+    marker.setAttribute("role","button");
+    marker.setAttribute(
+      "aria-label",
+      `${district.name}, synthetic ${district.risk} risk`
+    );
+
+    const halo=document.createElementNS(svgNS,"circle");
+    halo.setAttribute("cx",district.x);
+    halo.setAttribute("cy",district.y);
+    halo.setAttribute("r","11");
+
+    const dot=document.createElementNS(svgNS,"circle");
+    dot.setAttribute("cx",district.x);
+    dot.setAttribute("cy",district.y);
+    dot.setAttribute("r","4.5");
+
+    const label=document.createElementNS(svgNS,"text");
+
+    label.setAttribute(
+      "x",
+      district.x+(index%2===0?16:-16)
+    );
+
+    label.setAttribute("y",district.y+4);
+    label.setAttribute(
+      "text-anchor",
+      index%2===0?"start":"end"
+    );
+
+    label.textContent=district.name;
+
+    marker.append(halo,dot,label);
+
+    const activate=()=>selectDistrict(district.name);
+
+    marker.addEventListener("click",activate);
+
+    marker.addEventListener("keydown",event=>{
+      if(event.key==="Enter"||event.key===" "){
+        event.preventDefault();
+        activate();
+      }
+    });
+
+    group.appendChild(marker);
+  });
+}
+
+function selectDistrict(name){
+  const district=DISTRICTS.find(item=>item.name===name);
+
+  if(!district)return;
+
+  state.selectedDistrict=name;
+
+  const incidents=INCIDENTS.filter(
+    item=>item.district===name
+  ).length;
+
+  const shelters=SHELTERS.filter(
+    item=>item.district===name
+  ).length;
+
+  $("districtDetail").innerHTML=`
+    <strong>${escapeHTML(name)}</strong>
+    <p>
+      Illustrative risk:
+      <b>${district.risk.toUpperCase()}</b><br>
+      Synthetic rainfall indicator:
+      <b>${district.rain} mm</b><br>
+      Fictional SOS cases:
+      <b>${incidents}</b><br>
+      Demo shelter records:
+      <b>${shelters}</b>
+    </p>
+  `;
+}
+
+/* ==========================================================
+   INCIDENT QUEUE
+========================================================== */
+
+function renderIncidents(){
+  $("incidentList").innerHTML=INCIDENTS.map(item=>`
+    <div class="incident">
+      <div class="incident-head">
+        <strong>${escapeHTML(item.id)}</strong>
+        <span class="pill ${item.priority}">
+          ${item.priority.toUpperCase()}
+        </span>
+      </div>
+
+      <p>${escapeHTML(item.description)}</p>
+
+      <div class="incident-foot">
+        <small>
+          ${escapeHTML(item.district)} ·
+          ${escapeHTML(item.status)}
+        </small>
+
+        <button
+          class="link-btn"
+          data-review="${escapeHTML(item.id)}"
+        >
+          Review →
+        </button>
+      </div>
+    </div>
+  `).join("");
+
+  document.querySelectorAll("[data-review]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      openReview(button.dataset.review);
+    });
+  });
+}
+
+/* ==========================================================
+   RESOURCES
+========================================================== */
+
+function renderResources(){
+  $("resourceTable").innerHTML=RESOURCES.map(item=>`
+    <tr>
+      <td style="color:var(--gold-light);font-weight:800">
+        ${escapeHTML(item.id)}
+      </td>
+      <td>${escapeHTML(item.type)}</td>
+      <td>${escapeHTML(item.district)}</td>
+      <td>
+        <span class="status ${item.status}">
+          ${escapeHTML(item.status.toUpperCase())}
+        </span>
+      </td>
+      <td>
+        <button
+          class="link-btn"
+          data-resource="${escapeHTML(item.id)}"
+        >
+          Inspect
+        </button>
+      </td>
+    </tr>
+  `).join("");
+
+  document.querySelectorAll("[data-resource]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      toast(
+        `${button.dataset.resource}: fictional resource record`
+      );
+    });
+  });
+}
+
+/* ==========================================================
+   SHELTERS
+========================================================== */
+
+function renderShelters(){
+  $("shelterList").innerHTML=SHELTERS.map(item=>`
+    <div style="margin-bottom:22px">
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        gap:10px;
+        margin-bottom:9px;
+        font-size:11px
+      ">
+        <span>
+          ${escapeHTML(item.name)}
+          <small style="display:block;color:var(--muted);margin-top:5px">
+            ${escapeHTML(item.district)}
+          </small>
+        </span>
+        <strong style="color:var(--gold-light)">
+          ${item.occupancy}%
+        </strong>
+      </div>
+
+      <div class="progress">
+        <span style="width:${item.occupancy}%"></span>
+      </div>
+    </div>
+  `).join("");
+}
+
+/* ==========================================================
+   AGENTS
+========================================================== */
+
+function renderAgents(){
+  $("agentGrid").innerHTML=AGENTS.map(
+    ([icon,name,description])=>`
+      <div class="agent-card">
+        <div class="agent-icon">${icon}</div>
+        <div>
+          <strong>${escapeHTML(name)}</strong>
+          <small>${escapeHTML(description)} · Demo</small>
+        </div>
+      </div>
+    `
+  ).join("");
+}
+
+/* ==========================================================
+   ACTIVITY
+========================================================== */
+
+function addActivity(title,detail){
+  state.activities.unshift({
+    title,
+    detail,
+    time:new Date().toLocaleTimeString()
+  });
+
+  state.activities=state.activities.slice(0,8);
+
+  renderActivity();
+}
+
+function renderActivity(){
+  $("activityList").innerHTML=state.activities.map(item=>`
+    <div class="activity-item">
+      <div class="activity-icon">◇</div>
+      <div>
+        <strong>${escapeHTML(item.title)}</strong>
+        <p>${escapeHTML(item.detail)}</p>
+        <small>${escapeHTML(item.time)}</small>
+      </div>
+    </div>
+  `).join("");
+}
+
+/* ==========================================================
+   REVIEW MODAL
+========================================================== */
+
+function openReview(incidentId=null){
+  const select=$("incidentSelect");
+
+  select.replaceChildren();
+
+  INCIDENTS.forEach(item=>{
+    const option=document.createElement("option");
+    option.value=item.id;
+    option.textContent=`${item.id} · ${item.district}`;
+    select.appendChild(option);
+  });
+
+  if(incidentId){
+    select.value=incidentId;
+  }
+
+  $("reviewNotes").value="";
+  $("reviewModal").classList.add("open");
+  $("closeModal").focus();
+}
+
+function closeReview(){
+  $("reviewModal").classList.remove("open");
+}
+
+function saveReview(event){
+  event.preventDefault();
+
+  const incidentId=$("incidentSelect").value;
+  const priority=$("reviewPriority").value;
+  const notes=$("reviewNotes").value.trim();
+
+  if(!incidentId||!notes){
+    toast("Select an incident and enter review notes");
+    return;
+  }
+
+  const review={
+    id:`DEMO-REV-${Date.now()}`,
+    incidentId,
+    priority,
+    notes,
+    createdAt:new Date().toISOString(),
+    status:"local_draft"
+  };
+
+  state.reviews.push(review);
+
+  addActivity(
+    "Demo incident review saved",
+    `${incidentId}: local review draft created. No dispatch occurred.`
+  );
+
+  closeReview();
+  toast("Demo review saved locally");
+}
+
+/* ==========================================================
+   EVENTS
+========================================================== */
+
+$("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+});
+
+$("refreshBtn").addEventListener("click",()=>{
+  renderAll();
+  toast("Synthetic command center refreshed");
+});
+
+$("reviewBtn").addEventListener("click",()=>{
+  openReview();
+});
+
+$("closeModal").addEventListener("click",closeReview);
+
+$("reviewModal").addEventListener("click",event=>{
+  if(event.target===$("reviewModal")){
+    closeReview();
+  }
+});
+
+$("reviewForm").addEventListener("submit",saveReview);
+
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"){
+    closeReview();
+  }
+});
+
+/* ==========================================================
+   INITIALIZATION
+========================================================== */
+
+function renderAll(){
+  renderKPIs();
+  renderMap();
+  renderIncidents();
+  renderResources();
+  renderShelters();
+  renderAgents();
+  renderActivity();
+}
+
+renderAll();
+
+console.info(
+  "Kerala Flood Command Center initialized with fictional records."
+);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Safety Network - Kerala Flood Relief</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 20px;
+            padding: 20px;
+            height: calc(100vh - 80px);
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .status-overview {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .map-container {
+            flex: 1;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        #family-map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .circle-selector {
+            margin-bottom: 20px;
+        }
+
+        .circle-selector select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card.safe {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .stat-card.at-risk {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        }
+
+        .stat-card.needs-check-in {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+            text-transform: uppercase;
+        }
+
+        .member-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .member-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .member-card:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .member-card.safe {
+            border-left-color: #38ef7d;
+        }
+
+        .member-card.unsafe {
+            border-left-color: #f45c43;
+        }
+
+        .member-card.needs-help {
+            border-left-color: #eb3349;
+        }
+
+        .member-card.needs-check-in {
+            border-left-color: #f5576c;
+        }
+
+        .member-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .member-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .member-role {
+            font-size: 11px;
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            padding: 2px 8px;
+            border-radius: 12px;
+            text-transform: uppercase;
+        }
+
+        .member-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-dot.safe { background: #38ef7d; }
+        .status-dot.unsafe { background: #f45c43; }
+        .status-dot.needs-help { background: #eb3349; }
+        .status-dot.no-response { background: #f5576c; }
+
+        .member-time {
+            font-size: 11px;
+            color: #adb5bd;
+            margin-top: 4px;
+        }
+
+        .check-in-button {
+            width: 100%;
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.2s;
+        }
+
+        .check-in-button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .action-btn {
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #212529;
+        }
+
+        .close-btn {
+            font-size: 28px;
+            font-weight: 300;
+            color: #adb5bd;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        .close-btn:hover {
+            color: #495057;
+        }
+
+        .status-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .status-option {
+            padding: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .status-option:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+        }
+
+        .status-option.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .status-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .status-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .message-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 14px;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+
+        .submit-check-in {
+            width: 100%;
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .submit-check-in:hover {
+            background: #5568d3;
+        }
+
+        .location-info {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+
+        .risk-banner {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .risk-banner.high {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .risk-banner.medium {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .risk-banner.low {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="images/logo.png" alt="Kerala Logo" class="logo">
+            <span>Family Safety Network</span>
+        </div>
+        <div class="nav-links">
+            <a href="command-center.html">Command Center</a>
+            <a href="emergency-sos.html">Emergency SOS</a>
+            <a href="notifications.html" class="notification-bell">
+                🔔 <span class="badge">0</span>
+            </a>
+            <a href="settings.html">⚙️</a>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="circle-selector">
+                <label style="font-weight: 600; margin-bottom: 8px; display: block;">Select Family Circle</label>
+                <select id="circle-select">
+                    <option value="">Loading circles...</option>
+                </select>
+            </div>
+
+            <button class="check-in-button" onclick="openCheckInModal()">
+                ✅ Quick Check-In
+            </button>
+
+            <div class="quick-actions">
+                <button class="action-btn" onclick="addMember()">➕ Add Member</button>
+                <button class="action-btn" onclick="viewSettings()">⚙️ Settings</button>
+                <button class="action-btn" onclick="viewHistory()">📊 History</button>
+                <button class="action-btn" onclick="requestCheckIns()">📢 Request Check-Ins</button>
+            </div>
+
+            <h3 style="margin-top: 30px; margin-bottom: 15px; color: #212529;">Family Members</h3>
+            <div id="member-list" class="member-list">
+                <!-- Members will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="status-overview">
+                <div id="risk-banner"></div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-members">0</div>
+                        <div class="stat-label">Total Members</div>
+                    </div>
+                    <div class="stat-card safe">
+                        <div class="stat-value" id="safe-count">0</div>
+                        <div class="stat-label">Safe</div>
+                    </div>
+                    <div class="stat-card at-risk">
+                        <div class="stat-value" id="at-risk-count">0</div>
+                        <div class="stat-label">At Risk</div>
+                    </div>
+                    <div class="stat-card needs-check-in">
+                        <div class="stat-value" id="needs-check-in-count">0</div>
+                        <div class="stat-label">Needs Check-In</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="map-container">
+                <div id="family-map"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Check-In Modal -->
+    <div id="check-in-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Safety Check-In</h2>
+                <button class="close-btn" onclick="closeCheckInModal()">&times;</button>
+            </div>
+
+            <div class="location-info" id="location-info">
+                📍 Getting your location...
+            </div>
+
+            <label style="font-weight: 600; margin-bottom: 10px; display: block;">How are you?</label>
+            <div class="status-selector">
+                <div class="status-option" data-status="safe" onclick="selectStatus('safe')">
+                    <div class="status-icon">✅</div>
+                    <div class="status-text">Safe</div>
+                </div>
+                <div class="status-option" data-status="unsafe" onclick="selectStatus('unsafe')">
+                    <div class="status-icon">⚠️</div>
+                    <div class="status-text">Unsafe</div>
+                </div>
+                <div class="status-option" data-status="evacuating" onclick="selectStatus('evacuating')">
+                    <div class="status-icon">🚶</div>
+                    <div class="status-text">Evacuating</div>
+                </div>
+                <div class="status-option" data-status="needs_help" onclick="selectStatus('needs_help')">
+                    <div class="status-icon">🆘</div>
+                    <div class="status-text">Need Help</div>
+                </div>
+            </div>
+
+            <label style="font-weight: 600; margin-bottom: 8px; display: block;">Additional Message (Optional)</label>
+            <textarea id="check-in-message" class="message-input" rows="3" placeholder="Add any details about your situation..."></textarea>
+
+            <button class="submit-check-in" onclick="submitCheckIn()">Submit Check-In</button>
+        </div>
+    </div>
+
+    <script>
+        let map;
+        let markers = {};
+        let currentCircleId = null;
+        let currentLocation = null;
+        let selectedStatus = null;
+        let currentMemberId = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            initMap();
+            await loadCircles();
+            requestLocation();
+            
+            // Auto-refresh every 30 seconds
+            setInterval(refreshData, 30000);
+        });
+
+        function initMap() {
+            map = L.map('family-map').setView([10.8505, 76.2711], 10); // Kerala center
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+        }
+
+        async function loadCircles() {
+            try {
+                const response = await fetch('/api/family-safety/circles', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                
+                const circles = await response.json();
+                const select = document.getElementById('circle-select');
+                
+                select.innerHTML = circles.length === 0
+                    ? '<option value="">No circles found - Create one!</option>'
+                    : circles.map(c => `<option value="${c.id}">${c.name} (${c.member_count} members)</option>`).join('');
+                
+                if (circles.length > 0) {
+                    currentCircleId = circles[0].id;
+                    select.value = currentCircleId;
+                    await loadCircleData(currentCircleId);
+                }
+            } catch (error) {
+                console.error('Error loading circles:', error);
+            }
+        }
+
+        document.getElementById('circle-select').addEventListener('change', async (e) => {
+            currentCircleId = parseInt(e.target.value);
+            if (currentCircleId) {
+                await loadCircleData(currentCircleId);
+            }
+        });
+
+        async function loadCircleData(circleId) {
+            await Promise.all([
+                loadCircleStatus(circleId),
+                loadMembers(circleId),
+                loadRiskAssessment(circleId)
+            ]);
+        }
+
+        async function loadCircleStatus(circleId) {
+            try {
+                const response = await fetch(`/api/family-safety/circles/${circleId}/status?hours=24`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                
+                const status = await response.json();
+                
+                document.getElementById('total-members').textContent = status.total_members;
+                document.getElementById('safe-count').textContent = 
+                    status.total_members - status.at_risk - status.needs_check_in;
+                document.getElementById('at-risk-count').textContent = status.at_risk;
+                document.getElementById('needs-check-in-count').textContent = status.needs_check_in;
+                
+            } catch (error) {
+                console.error('Error loading status:', error);
+            }
+        }
+
+        async function loadMembers(circleId) {
+            try {
+                const response = await fetch(`/api/family-safety/circles/${circleId}/members`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                
+                const members = await response.json();
+                renderMembers(members);
+                updateMapMarkers(members);
+                
+            } catch (error) {
+                console.error('Error loading members:', error);
+            }
+        }
+
+        function renderMembers(members) {
+            const container = document.getElementById('member-list');
+            
+            if (members.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #6c757d;">No members yet</p>';
+                return;
+            }
+            
+            container.innerHTML = members.map(member => {
+                const timeAgo = member.last_check_in_time 
+                    ? formatTimeAgo(new Date(member.last_check_in_time))
+                    : 'No check-in yet';
+                
+                const statusClass = member.last_check_in_time ? 'safe' : 'needs-check-in';
+                
+                return `
+                    <div class="member-card ${statusClass}" onclick="focusMember(${member.id})">
+                        <div class="member-header">
+                            <span class="member-name">${member.name}</span>
+                            <span class="member-role">${member.role}</span>
+                        </div>
+                        <div class="member-status">
+                            <span class="status-dot ${statusClass}"></span>
+                            <span>${member.last_check_in_time ? 'Checked In' : 'Awaiting Check-In'}</span>
+                        </div>
+                        <div class="member-time">${timeAgo}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function updateMapMarkers(members) {
+            // Clear existing markers
+            Object.values(markers).forEach(marker => map.removeLayer(marker));
+            markers = {};
+            
+            // Add new markers (would fetch actual locations in production)
+            members.forEach(member => {
+                if (member.last_check_in_time) {
+                    // Placeholder: scatter around Kerala center
+                    const lat = 10.8505 + (Math.random() - 0.5) * 0.5;
+                    const lng = 76.2711 + (Math.random() - 0.5) * 0.5;
+                    
+                    const icon = L.divIcon({
+                        className: 'custom-marker',
+                        html: `<div style="background: #667eea; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">${member.name}</div>`
+                    });
+                    
+                    markers[member.id] = L.marker([lat, lng], { icon })
+                        .addTo(map)
+                        .bindPopup(`<b>${member.name}</b><br>${member.last_check_in_time ? 'Safe' : 'No status'}`);
+                }
+            });
+        }
+
+        async function loadRiskAssessment(circleId) {
+            try {
+                const response = await fetch(`/api/family-safety/circles/${circleId}/risk-assessment`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                
+                const risk = await response.json();
+                const banner = document.getElementById('risk-banner');
+                
+                if (risk.risk_level !== 'LOW') {
+                    banner.className = `risk-banner ${risk.risk_level.toLowerCase()}`;
+                    banner.innerHTML = `
+                        <strong>${risk.risk_level} RISK</strong>: ${risk.risk_factors.join(', ')}
+                    `;
+                    banner.style.display = 'block';
+                } else {
+                    banner.style.display = 'none';
+                }
+                
+            } catch (error) {
+                console.error('Error loading risk assessment:', error);
+            }
+        }
+
+        function requestLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        currentLocation = {
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude,
+                            accuracy: position.coords.accuracy
+                        };
+                        document.getElementById('location-info').innerHTML = 
+                            `📍 Location: ${currentLocation.latitude.toFixed(4)}, ${currentLocation.longitude.toFixed(4)}`;
+                    },
+                    error => {
+                        document.getElementById('location-info').innerHTML = 
+                            '📍 Location not available - Check-in will proceed without location';
+                    }
+                );
+            }
+        }
+
+        function openCheckInModal() {
+            // Get current user's member ID
+            const members = document.querySelectorAll('.member-card');
+            if (members.length > 0) {
+                // In production, would identify current user's member record
+                currentMemberId = 1; // Placeholder
+            }
+            
+            document.getElementById('check-in-modal').style.display = 'block';
+            selectedStatus = null;
+            document.querySelectorAll('.status-option').forEach(opt => opt.classList.remove('selected'));
+            document.getElementById('check-in-message').value = '';
+        }
+
+        function closeCheckInModal() {
+            document.getElementById('check-in-modal').style.display = 'none';
+        }
+
+        function selectStatus(status) {
+            selectedStatus = status;
+            document.querySelectorAll('.status-option').forEach(opt => {
+                opt.classList.toggle('selected', opt.dataset.status === status);
+            });
+        }
+
+        async function submitCheckIn() {
+            if (!selectedStatus) {
+                alert('Please select your status');
+                return;
+            }
+            
+            if (!currentMemberId) {
+                alert('Could not identify your member record');
+                return;
+            }
+            
+            const payload = {
+                status: selectedStatus,
+                message: document.getElementById('check-in-message').value,
+                latitude: currentLocation?.latitude,
+                longitude: currentLocation?.longitude,
+                location_accuracy: currentLocation?.accuracy,
+                is_automated: false
+            };
+            
+            try {
+                const response = await fetch(`/api/family-safety/members/${currentMemberId}/check-in`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (response.ok) {
+                    alert('✅ Check-in submitted successfully!');
+                    closeCheckInModal();
+                    await refreshData();
+                } else {
+                    alert('Failed to submit check-in');
+                }
+            } catch (error) {
+                console.error('Error submitting check-in:', error);
+                alert('Error submitting check-in');
+            }
+        }
+
+        async function refreshData() {
+            if (currentCircleId) {
+                await loadCircleData(currentCircleId);
+            }
+        }
+
+        function focusMember(memberId) {
+            if (markers[memberId]) {
+                map.setView(markers[memberId].getLatLng(), 14);
+                markers[memberId].openPopup();
+            }
+        }
+
+        function formatTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            
+            if (seconds < 60) return 'Just now';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
+            return `${Math.floor(seconds / 86400)} days ago`;
+        }
+
+        function addMember() {
+            alert('Add Member feature - would open form modal');
+        }
+
+        function viewSettings() {
+            window.location.href = 'family-safety-settings.html';
+        }
+
+        function viewHistory() {
+            alert('History view - would show check-in timeline');
+        }
+
+        async function requestCheckIns() {
+            if (!confirm('Send check-in request to all members?')) return;
+            
+            try {
+                const response = await fetch('/api/family-safety/admin/send-check-in-requests', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    alert(`✅ Sent ${result.sent_count} check-in requests`);
+                } else {
+                    alert('Failed to send check-in requests');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error sending check-in requests');
+            }
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('check-in-modal');
+            if (event.target === modal) {
+                closeCheckInModal();
+            }
+        }
+    </script>
+</body>
+</html>

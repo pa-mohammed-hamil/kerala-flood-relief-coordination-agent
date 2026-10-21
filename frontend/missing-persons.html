@@ -1,0 +1,874 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b10">
+<title>Missing Persons | Kerala Flood AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#090b10;--sidebar:#0d1017;--panel:#151922;--panel2:#1b202b;
+ --gold:#d8b671;--gold2:#f5daa0;--text:#f4f1e9;--muted:#9399a7;
+ --line:rgba(255,255,255,.085);--green:#54d6a4;--orange:#ffb66e;
+ --red:#ff777d;--blue:#82adff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:13px "DM Sans",sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.app{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;background:var(--sidebar);border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:40}
+.brand{display:flex;align-items:center;gap:12px;padding:24px 18px;border-bottom:1px solid var(--line)}
+.brand-icon{width:43px;height:43px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#f5daa0,#a47c3b);color:#20170a;font-size:23px}
+.brand strong{font:800 13px Manrope,sans-serif;letter-spacing:.4px}
+.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:1.2px;margin-top:5px}
+.nav{padding:18px 13px;overflow:auto;flex:1}
+.nav-label{font-size:10px;letter-spacing:1.5px;color:#777e8d;font-weight:800;margin:17px 12px 9px}
+.nav a{display:flex;align-items:center;gap:12px;padding:12px 13px;margin-bottom:5px;border:1px solid transparent;border-radius:10px;color:#a2a8b4;font-size:12px;font-weight:600;transition:.2s}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{background:#d8b67119;border-color:#d8b67130;color:var(--gold2)}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.side-footer{padding:17px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:11px;background:#383023;color:var(--gold2);display:grid;place-items:center;font-weight:800}
+.side-footer strong{font-size:11px}
+.side-footer small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.main{min-width:0;background:radial-gradient(ellipse at 65% -5%,#d8b67112,transparent 38%),var(--bg)}
+.topbar{min-height:82px;padding:17px 30px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:14px}
+.top-left,.top-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.page-icon{width:43px;height:43px;border-radius:12px;background:#d8b67119;border:1px solid #d8b67133;color:var(--gold);display:grid;place-items:center;font-size:20px}
+.top-left h1{font:800 18px Manrope,sans-serif;letter-spacing:-.5px;margin:0}
+.top-left p{color:var(--muted);font-size:11px;margin:5px 0 0}
+.badge,.tag{display:inline-flex;align-items:center;gap:7px;padding:9px 11px;background:#d8b67112;border:1px solid #d8b67130;color:var(--gold2);border-radius:9px;font-size:10px;font-weight:800}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 15px;border-radius:10px;border:1px solid var(--line);background:#1a1f29;color:#e1e3e8;font-size:11px;font-weight:800;transition:.2s}
+.btn:hover{border-color:#d8b67166;transform:translateY(-1px)}
+.btn.gold{background:linear-gradient(120deg,#c6a15e,#f1d49a);color:#1b160e;border:0}
+.btn.red{color:var(--red);background:#ff777d12;border-color:#ff777d40}
+.btn.blue{color:var(--blue);background:#82adff12;border-color:#82adff40}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.content{max-width:1700px;margin:auto;padding:28px 30px 45px}
+.eyebrow{color:var(--gold);font-size:10px;letter-spacing:2px;font-weight:800;margin-bottom:10px}
+.heading{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+.heading h2{font:800 28px Manrope,sans-serif;letter-spacing:-1px;margin:0}
+.heading p{color:var(--muted);font-size:12px;line-height:1.8;margin:9px 0 0}
+.hero{padding:28px;border-radius:18px;border:1px solid #d8b67138;background:radial-gradient(circle at 85% 15%,#d8b67120,transparent 35%),linear-gradient(120deg,#252017,#151922)}
+.hero h3{font:800 26px Manrope,sans-serif;letter-spacing:-.8px;margin:12px 0}
+.hero p{color:#b9b5ae;font-size:12px;line-height:1.9;max-width:870px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:17px}
+.card{min-width:0;background:linear-gradient(150deg,#181c26,#12161e);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 35px #0002;animation:rise .5s ease both}
+.kpi{padding:21px}
+.kpi-head{display:flex;justify-content:space-between;align-items:center;color:#a7adba;font-size:11px;font-weight:700}
+.kpi-icon{width:36px;height:36px;border-radius:10px;background:#d8b67119;color:var(--gold);display:grid;place-items:center;font-size:18px}
+.kpi-number{font:800 30px Manrope,sans-serif;letter-spacing:-1px;margin:15px 0 7px}
+.kpi-caption{font-size:10px;color:var(--muted);line-height:1.7}
+.kpi-caption b{color:var(--gold)}
+.section{margin-top:25px}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:15px}
+.section-head h3{font:800 19px Manrope,sans-serif;letter-spacing:-.5px;margin:0}
+.section-head p{color:var(--muted);font-size:11px;line-height:1.8;margin:7px 0 0}
+.panel{padding:21px}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{color:var(--muted);font-size:10px;line-height:1.8;margin-top:6px}
+.columns{grid-template-columns:minmax(0,1.4fr) minmax(310px,1fr)}
+.two-col{grid-template-columns:repeat(2,minmax(0,1fr))}
+.field{display:grid;gap:8px;margin-bottom:14px}
+.field label{font-size:11px;font-weight:800;color:#c9ccd4}
+.input,.select,.textarea{width:100%;padding:12px 13px;border:1px solid #343a46;border-radius:10px;background:#1b202b;color:var(--text);outline:none}
+.input:focus,.select:focus,.textarea:focus{border-color:var(--gold)}
+.textarea{resize:vertical;min-height:83px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 13px}
+.form-grid .wide{grid-column:1/-1}
+.checkline{display:flex;align-items:flex-start;gap:10px;color:#b9bec9;font-size:11px;line-height:1.7;margin:9px 0 16px}
+.checkline input{accent-color:var(--gold);margin-top:3px}
+.info-list{display:grid;gap:10px}
+.info-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px;background:#1b202b;border:1px solid var(--line);border-radius:10px}
+.info-row strong{font-size:11px}
+.info-row small{display:block;color:var(--muted);font-size:10px;margin-top:5px;line-height:1.6}
+.pill{display:inline-flex;align-items:center;padding:7px 10px;border-radius:8px;font-size:10px;font-weight:800;white-space:nowrap}
+.pill.critical,.pill.rejected{color:var(--red);background:#ff777d19}
+.pill.high,.pill.open{color:var(--orange);background:#ffb66e19}
+.pill.medium,.pill.review,.pill.searching{color:var(--blue);background:#82adff19}
+.pill.low,.pill.reunited,.pill.closed{color:var(--green);background:#54d6a419}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;white-space:nowrap;text-align:left}
+th{padding:13px 10px;border-bottom:1px solid var(--line);color:#8d94a2;font-size:10px;letter-spacing:.5px}
+td{padding:14px 10px;border-bottom:1px solid #ffffff0b;color:#d7dbe2;font-size:11px}
+tbody tr:hover{background:#d8b67108}
+.small-btn{padding:8px 10px;border-radius:8px;border:1px solid #d8b67140;background:#d8b67115;color:var(--gold2);font-size:10px;font-weight:800}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
+.filters .input{flex:1;min-width:180px}
+.filters .select{width:auto;min-width:130px}
+.team{padding:14px;background:#1b202b;border:1px solid var(--line);border-radius:10px;margin-bottom:10px}
+.team-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.team strong{font-size:11px}
+.team p{font-size:10px;color:var(--muted);line-height:1.8;margin:9px 0}
+.timeline{display:grid;gap:15px}
+.event{display:flex;gap:12px}
+.event-icon{width:33px;height:33px;flex-shrink:0;display:grid;place-items:center;border-radius:10px;background:#d8b67118;color:var(--gold)}
+.event strong{font-size:11px}
+.event p{font-size:10px;color:var(--muted);line-height:1.7;margin:7px 0}
+.event small{font-size:10px;color:#777e8d}
+.notice{padding:16px;background:#d8b6710e;border:1px solid #d8b67130;border-radius:12px;color:#bbb4a5;font-size:11px;line-height:1.9;margin-top:17px}
+.notice strong{color:var(--gold2)}
+.footer{padding-top:26px;text-align:center;color:#69707e;font-size:10px}
+.overlay{position:fixed;inset:0;z-index:100;background:#000b;display:none;align-items:center;justify-content:center;padding:18px}
+.overlay.open{display:flex}
+.modal{width:min(590px,100%);max-height:90vh;overflow:auto;background:#181d27;border:1px solid #d8b67144;border-radius:17px;padding:24px;box-shadow:0 30px 90px #0009}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.modal-head h3{font:800 18px Manrope,sans-serif;margin:0}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
+.detail{padding:13px;background:#10151e;border:1px solid var(--line);border-radius:9px}
+.detail small{display:block;color:var(--muted);font-size:10px;margin-bottom:8px}
+.detail strong{font-size:11px;overflow-wrap:anywhere}
+.modal-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
+.toast{position:fixed;right:20px;bottom:20px;z-index:150;padding:14px 17px;background:#252b35;border:1px solid #d8b67166;color:var(--gold2);border-radius:11px;box-shadow:0 15px 45px #0008}
+.menu-btn{display:none}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1250px){.kpis{grid-template-columns:repeat(2,1fr)}.columns{grid-template-columns:1fr}}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:fixed;width:260px;transform:translateX(-100%);transition:.3s}.sidebar.open{transform:translateX(0)}.menu-btn{display:inline-flex}.topbar{padding:15px 20px}.content{padding:20px}}
+@media(max-width:560px){.kpis,.two-col,.form-grid{grid-template-columns:1fr}.form-grid .wide{grid-column:auto}.heading h2{font-size:23px}.panel{padding:16px}.top-actions .badge{display:none}.detail-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-icon">✦</div>
+  <div><strong>KERALA FLOOD AI</strong><small>INTELLIGENCE PLATFORM</small></div>
+ </div>
+ <nav class="nav">
+  <div class="nav-label">WORKSPACE</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Project Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="agent-command-center.html"><span class="nav-icon">✦</span>Agent Command Center</a>
+  <a href="ai-copilot.html"><span class="nav-icon">◇</span>AI Copilot</a>
+
+  <div class="nav-label">EMERGENCY RESPONSE</div>
+  <a href="incident-management.html"><span class="nav-icon">◉</span>Incident Management</a>
+  <a href="emergency-sos.html"><span class="nav-icon">⚑</span>Emergency SOS</a>
+  <a href="rescue-dashboard.html"><span class="nav-icon">✧</span>Rescue Operations</a>
+  <a href="evacuation-planning.html"><span class="nav-icon">⌁</span>Evacuation Planning</a>
+  <a href="medical-emergency.html"><span class="nav-icon">✚</span>Medical Emergency</a>
+  <a class="active" href="missing-persons.html"><span class="nav-icon">◎</span>Missing Persons</a>
+  <a href="family-reunification.html"><span class="nav-icon">♡</span>Family Reunification</a>
+  <a href="shelters.html"><span class="nav-icon">⌂</span>Shelters</a>
+
+  <div class="nav-label">INTELLIGENCE</div>
+  <a href="live-flood-map.html"><span class="nav-icon">◎</span>Live Flood Map</a>
+  <a href="district-dashboard.html"><span class="nav-icon">▦</span>District Dashboard</a>
+  <a href="flood-alerts.html"><span class="nav-icon">☁</span>Flood Alerts</a>
+
+  <div class="nav-label">GOVERNANCE</div>
+  <a href="human-approval.html"><span class="nav-icon">✓</span>Human Approval</a>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+  <a href="reports.html"><span class="nav-icon">▤</span>Reports</a>
+ </nav>
+ <div class="side-footer">
+  <div class="avatar">MP</div>
+  <div><strong>Search Coordination</strong><small>Synthetic Demo Workspace</small></div>
+ </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-left">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="page-icon">◎</div>
+  <div><h1>Missing Persons</h1><p>Case registry · Search coordination · Verification</p></div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>DEMO MODE</span>
+  <button class="btn" id="resetBtn">↻ Reset</button>
+  <button class="btn gold" id="exportBtn">↓ Export CSV</button>
+ </div>
+</header>
+
+<div class="content">
+<div class="heading">
+ <div>
+  <div class="eyebrow">HUMANITARIAN SEARCH INTELLIGENCE</div>
+  <h2>Missing Persons Coordination</h2>
+  <p>Organize fictional missing-person reports, simulated search activities and verification workflows.</p>
+ </div>
+ <span class="tag">PRIVACY-FIRST DEMONSTRATION</span>
+</div>
+
+<section class="hero">
+ <div class="eyebrow">SEARCH & REUNIFICATION SUPPORT</div>
+ <h3>Every Case Matters. Every Decision Requires Verification.</h3>
+ <p>
+  A proposed coordination platform for disaster-related missing-person reports,
+  search-team planning, shelter inquiries, case verification and family reunification.
+  All example identities use fictional reference codes rather than real personal data.
+ </p>
+ <div class="hero-actions">
+  <a class="btn gold" href="family-reunification.html">♡ Family Reunification</a>
+  <a class="btn" href="rescue-dashboard.html">✧ Rescue Coordination</a>
+  <a class="btn blue" href="human-approval.html">✓ Human Approval</a>
+  <a class="btn red" href="tel:112">Real Emergency: 112</a>
+ </div>
+</section>
+
+<section class="grid kpis">
+ <div class="card kpi"><div class="kpi-head">Fictional Cases<div class="kpi-icon">▤</div></div><div class="kpi-number" id="kpiTotal">0</div><div class="kpi-caption"><b>SYNTHETIC</b> · Demonstration records</div></div>
+ <div class="card kpi"><div class="kpi-head">Open / Searching<div class="kpi-icon">◎</div></div><div class="kpi-number" id="kpiOpen">0</div><div class="kpi-caption"><b>DEMO ONLY</b> · No actual search activity</div></div>
+ <div class="card kpi"><div class="kpi-head">High-Priority Cases<div class="kpi-icon">⚑</div></div><div class="kpi-number" id="kpiHigh">0</div><div class="kpi-caption"><b>SYNTHETIC</b> · Administrative labels</div></div>
+ <div class="card kpi"><div class="kpi-head">Demo Reunifications<div class="kpi-icon">♡</div></div><div class="kpi-number" id="kpiReunited">0</div><div class="kpi-caption"><b>SIMULATED</b> · Not identity-verified</div></div>
+</section>
+
+<section class="section grid columns">
+ <div class="card panel">
+  <div class="section-head">
+   <div><div class="panel-title">Register Fictional Missing-Person Scenario</div><div class="panel-sub">Use placeholder codes. Never enter real names, photos, phone numbers or identifying details.</div></div>
+   <span class="tag">NEW CASE</span>
+  </div>
+  <form id="caseForm">
+   <div class="form-grid">
+    <div class="field">
+     <label for="personCode">Fictional Person Code</label>
+     <input class="input" id="personCode" maxlength="40" placeholder="PERSON-ALPHA" required>
+    </div>
+    <div class="field">
+     <label for="familyCode">Fictional Family Reference</label>
+     <input class="input" id="familyCode" maxlength="40" placeholder="FAMILY-ALPHA" required>
+    </div>
+    <div class="field">
+     <label for="district">District</label>
+     <select class="select" id="district" required></select>
+    </div>
+    <div class="field">
+     <label for="ageGroup">Age Group</label>
+     <select class="select" id="ageGroup">
+      <option>Adult</option>
+      <option>Child</option>
+      <option>Older Adult</option>
+      <option>Unknown</option>
+     </select>
+    </div>
+    <div class="field">
+     <label for="priority">Administrative Priority</label>
+     <select class="select" id="priority">
+      <option value="medium">Medium</option>
+      <option value="low">Low</option>
+      <option value="high">High</option>
+      <option value="critical">Critical</option>
+     </select>
+    </div>
+    <div class="field">
+     <label for="area">Fictional Area Reference</label>
+     <input class="input" id="area" maxlength="70" placeholder="ZONE-DEMO-01">
+    </div>
+    <div class="field wide">
+     <label for="notes">Scenario Notes</label>
+     <textarea class="textarea" id="notes" maxlength="500" placeholder="Fictional search coordination details only..."></textarea>
+    </div>
+   </div>
+   <label class="checkline">
+    <input type="checkbox" id="syntheticConfirm" required>
+    <span>I confirm this report is entirely fictional and contains no real person's personal information.</span>
+   </label>
+   <button class="btn gold" type="submit">+ Create Demo Case</button>
+  </form>
+ </div>
+
+ <div class="card panel">
+  <div class="panel-title">Search Coordination Workflow</div>
+  <div class="panel-sub" style="margin-bottom:17px">Illustrative steps for a future authenticated operational system.</div>
+  <div class="info-list" id="workflowList"></div>
+  <div class="notice">
+   <strong>Safeguarding Requirement</strong>
+   <div>Never publicly disclose sensitive location, identity, shelter placement or family contact information. Any real reunification requires authorized identity and relationship verification, consent where applicable, and safeguarding review.</div>
+  </div>
+ </div>
+</section>
+
+<section class="section">
+ <div class="section-head">
+  <div><h3>Missing-Person Case Registry</h3><p>Inspect synthetic cases, filter priorities and simulate internal review stages.</p></div>
+  <span class="tag" id="caseCount">0 CASES</span>
+ </div>
+ <div class="card panel">
+  <div class="filters">
+   <input class="input" id="searchInput" placeholder="Search fictional person code, case ID or district..." aria-label="Search cases">
+   <select class="select" id="priorityFilter">
+    <option value="all">All Priorities</option>
+    <option value="critical">Critical</option>
+    <option value="high">High</option>
+    <option value="medium">Medium</option>
+    <option value="low">Low</option>
+   </select>
+   <select class="select" id="statusFilter">
+    <option value="all">All Statuses</option>
+    <option value="open">Open</option>
+    <option value="searching">Searching</option>
+    <option value="review">Verification Review</option>
+    <option value="reunited">Demo Reunited</option>
+    <option value="closed">Closed</option>
+   </select>
+  </div>
+  <div class="table-wrap">
+   <table>
+    <thead>
+     <tr><th>Case ID</th><th>Person Code</th><th>District</th><th>Age Group</th><th>Priority</th><th>Status</th><th>Search Team</th><th>Action</th></tr>
+    </thead>
+    <tbody id="caseTable"></tbody>
+   </table>
+  </div>
+ </div>
+</section>
+
+<section class="section grid two-col">
+ <div class="card panel">
+  <div class="section-head">
+   <div><div class="panel-title">Fictional Search Team Registry</div><div class="panel-sub">Training-only teams. Assignment changes no real deployment.</div></div>
+   <span class="tag">SAMPLE RESOURCES</span>
+  </div>
+  <div id="teamList"></div>
+ </div>
+ <div class="card panel">
+  <div class="panel-title">Case Status Overview</div>
+  <div class="panel-sub" style="margin-bottom:17px">Calculated from local demonstration records.</div>
+  <div id="statusOverview"></div>
+  <div class="notice">
+   <strong>Identity Protection</strong>
+   <div>Person and family reference codes are invented. This demo performs no facial recognition, identity matching, location tracing or external information sharing.</div>
+  </div>
+ </div>
+</section>
+
+<section class="section grid columns">
+ <div class="card panel">
+  <div class="panel-title">Planned AI & Backend Modules</div>
+  <div class="panel-sub" style="margin-bottom:16px">Architectural concepts, not active connected services.</div>
+  <div class="info-list" id="agentList"></div>
+ </div>
+ <div class="card panel">
+  <div class="panel-title">Activity Timeline</div>
+  <div class="panel-sub" style="margin-bottom:19px">Local demo changes only.</div>
+  <div class="timeline" id="timeline"></div>
+ </div>
+</section>
+
+<div class="notice">
+ <strong>⚠ Emergency and Privacy Notice.</strong>
+ <div>
+  This is a fictional software demonstration. It cannot locate missing people, verify their identity, contact relatives, deploy rescue teams or confirm reunification. For a real emergency in India, call <a href="tel:112" style="color:var(--gold2);font-weight:800">112</a> and work with authorized emergency responders.
+ </div>
+</div>
+<footer class="footer">KERALA FLOOD RELIEF COORDINATION AGENT · MISSING PERSONS DEMO · SYNTHETIC DATA</footer>
+</div>
+</main>
+</div>
+
+<div class="overlay" id="modalOverlay">
+ <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-head">
+   <h3 id="modalTitle">Missing-Person Case Review</h3>
+   <button class="btn" id="closeModal" aria-label="Close dialog">✕</button>
+  </div>
+  <p class="panel-sub">Fictional case review. No actual search, identification or reunification.</p>
+  <div class="detail-grid" id="modalDetails"></div>
+  <div class="field" id="teamAssignmentField">
+   <label for="teamSelect">Assign Fictional Search Team</label>
+   <select class="select" id="teamSelect"></select>
+  </div>
+  <div class="notice">
+   <strong>Human Verification Gate</strong>
+   <div>Marking a case reunited is only a demonstration status transition. Real reunification requires trained staff, verified identity and relationship, and appropriate safeguarding controls.</div>
+  </div>
+  <div class="modal-actions" id="modalActions"></div>
+ </div>
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const DISTRICTS=[
+ "Thiruvananthapuram","Kollam","Pathanamthitta","Alappuzha",
+ "Kottayam","Idukki","Ernakulam","Thrissur","Palakkad",
+ "Malappuram","Kozhikode","Wayanad","Kannur","Kasaragod"
+];
+
+const TEAMS=[
+ {id:"TEAM-DEMO-01",name:"Sample Search Team Alpha",district:"Wayanad",type:"Ground Search"},
+ {id:"TEAM-DEMO-02",name:"Sample Search Team Beta",district:"Thrissur",type:"Shelter Inquiry"},
+ {id:"TEAM-DEMO-03",name:"Sample Search Team Gamma",district:"Ernakulam",type:"Community Coordination"},
+ {id:"TEAM-DEMO-04",name:"Sample Search Team Delta",district:"Alappuzha",type:"Ground Search"},
+ {id:"TEAM-DEMO-05",name:"Sample Search Team Epsilon",district:"Idukki",type:"Remote Area Coordination"}
+];
+
+const SEED_CASES=[
+ {id:"MISS-DEMO-001",person:"PERSON-ALPHA",family:"FAMILY-ALPHA",district:"Wayanad",age:"Adult",priority:"high",area:"ZONE-DEMO-A",notes:"Fictional missing-person scenario.",status:"open",team:""},
+ {id:"MISS-DEMO-002",person:"PERSON-BETA",family:"FAMILY-BETA",district:"Alappuzha",age:"Older Adult",priority:"high",area:"ZONE-DEMO-B",notes:"Fictional shelter inquiry scenario.",status:"searching",team:"TEAM-DEMO-04"},
+ {id:"MISS-DEMO-003",person:"PERSON-GAMMA",family:"FAMILY-GAMMA",district:"Thrissur",age:"Adult",priority:"medium",area:"ZONE-DEMO-C",notes:"Fictional review scenario.",status:"review",team:"TEAM-DEMO-02"},
+ {id:"MISS-DEMO-004",person:"PERSON-DELTA",family:"FAMILY-DELTA",district:"Idukki",age:"Child",priority:"critical",area:"ZONE-DEMO-D",notes:"Fictional safeguarding scenario.",status:"open",team:""},
+ {id:"MISS-DEMO-005",person:"PERSON-EPSILON",family:"FAMILY-EPSILON",district:"Ernakulam",age:"Adult",priority:"low",area:"ZONE-DEMO-E",notes:"Fictional completed scenario.",status:"reunited",team:"TEAM-DEMO-03"}
+];
+
+const WORKFLOW=[
+ ["01 · Case Intake","Register a fictional case using non-identifying reference codes."],
+ ["02 · Report Verification","Validate report provenance and authorization in production."],
+ ["03 · Search Coordination","Prepare a resource proposal for authorized responders."],
+ ["04 · Shelter & Community Inquiry","Check only permitted, privacy-protected sources."],
+ ["05 · Identity & Relationship Verification","Require trained human verification and safeguarding."],
+ ["06 · Reunification Review","Approve only after verified evidence and required consent."]
+];
+
+const AGENTS=[
+ ["Missing Person Agent","Proposed case coordination, duplicate detection and review support."],
+ ["Verification Agent","Proposed evidence provenance and consistency checks."],
+ ["Rescue Coordinator Agent","Proposed human-supervised search resource planning."],
+ ["Shelter Allocation Agent","Proposed privacy-aware shelter coordination."],
+ ["Communication Agent","Proposed consent-based messaging through authorized channels."],
+ ["Human Approval Agent","Proposed identity safeguarding and accountable review gates."]
+];
+
+const state={
+ cases:structuredClone(SEED_CASES),
+ nextId:6,
+ selectedId:null,
+ events:[
+  {title:"Demo registry initialized",detail:"Synthetic missing-person cases loaded.",time:"Demo"},
+  {title:"Privacy controls highlighted",detail:"Real identity data and location tracing are not supported.",time:"Demo"}
+ ]
+};
+
+function el(tag,className,text){
+ const node=document.createElement(tag);
+ if(className)node.className=className;
+ if(text!==undefined)node.textContent=String(text);
+ return node;
+}
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+ const node=el("div","toast",message);
+ document.body.appendChild(node);
+ setTimeout(()=>node.remove(),3000);
+}
+
+function logEvent(title,detail){
+ state.events.unshift({title,detail,time:new Date().toLocaleTimeString("en-IN")});
+ state.events=state.events.slice(0,9);
+ renderTimeline();
+}
+
+function renderTimeline(){
+ const container=$("timeline");
+ container.replaceChildren();
+
+ state.events.forEach(event=>{
+  const row=el("div","event");
+  const icon=el("div","event-icon","◎");
+  const body=el("div");
+
+  body.append(
+   el("strong","",event.title),
+   el("p","",event.detail),
+   el("small","",event.time)
+  );
+
+  row.append(icon,body);
+  container.appendChild(row);
+ });
+}
+
+function renderKPIs(){
+ $("kpiTotal").textContent=state.cases.length;
+ $("kpiOpen").textContent=state.cases.filter(c=>
+  c.status==="open"||c.status==="searching"
+ ).length;
+ $("kpiHigh").textContent=state.cases.filter(c=>
+  ["high","critical"].includes(c.priority)&&!["reunited","closed"].includes(c.status)
+ ).length;
+ $("kpiReunited").textContent=state.cases.filter(c=>c.status==="reunited").length;
+ $("caseCount").textContent=state.cases.length+" CASES";
+}
+
+function pill(value){
+ const node=el("span","pill "+value,value==="review"?"REVIEW":value.toUpperCase());
+ return node;
+}
+
+function renderCases(){
+ const query=$("searchInput").value.trim().toLowerCase();
+ const priority=$("priorityFilter").value;
+ const status=$("statusFilter").value;
+
+ const filtered=state.cases.filter(c=>
+  [c.id,c.person,c.family,c.district].join(" ").toLowerCase().includes(query)&&
+  (priority==="all"||c.priority===priority)&&
+  (status==="all"||c.status===status)
+ );
+
+ const tbody=$("caseTable");
+ tbody.replaceChildren();
+
+ if(!filtered.length){
+  const row=el("tr");
+  const cell=el("td","","No matching fictional cases.");
+  cell.colSpan=8;
+  row.appendChild(cell);
+  tbody.appendChild(row);
+  return;
+ }
+
+ filtered.forEach(c=>{
+  const row=el("tr");
+
+  [c.id,c.person,c.district,c.age].forEach(value=>{
+   row.appendChild(el("td","",value));
+  });
+
+  const priorityCell=el("td");
+  priorityCell.appendChild(pill(c.priority));
+  row.appendChild(priorityCell);
+
+  const statusCell=el("td");
+  statusCell.appendChild(pill(c.status));
+  row.appendChild(statusCell);
+
+  row.appendChild(el("td","",c.team||"Not assigned"));
+
+  const action=el("td");
+  const button=el("button","small-btn","Inspect →");
+  button.addEventListener("click",()=>openModal(c.id));
+  action.appendChild(button);
+  row.appendChild(action);
+  tbody.appendChild(row);
+ });
+}
+
+function renderTeams(){
+ const container=$("teamList");
+ container.replaceChildren();
+
+ TEAMS.forEach(team=>{
+  const card=el("div","team");
+  const head=el("div","team-head");
+
+  head.append(
+   el("strong","",team.name),
+   el("span","tag",team.district)
+  );
+
+  const assignments=state.cases.filter(c=>
+   c.team===team.id&&!["closed","reunited"].includes(c.status)
+  ).length;
+
+  card.append(
+   head,
+   el("p","",team.type+" · "+team.id),
+   el("span","pill "+(assignments?"high":"low"),
+    assignments+" DEMO ASSIGNMENT"+(assignments===1?"":"S"))
+  );
+
+  container.appendChild(card);
+ });
+}
+
+function renderStatusOverview(){
+ const container=$("statusOverview");
+ container.replaceChildren();
+
+ const statuses=[
+  ["Open","open"],["Searching","searching"],
+  ["Verification Review","review"],["Demo Reunited","reunited"],
+  ["Closed","closed"]
+ ];
+
+ statuses.forEach(([label,status])=>{
+  const count=state.cases.filter(c=>c.status===status).length;
+  const row=el("div","info-row");
+  row.append(
+   el("strong","",label),
+   el("span","pill "+status,String(count))
+  );
+  container.appendChild(row);
+ });
+}
+
+function renderStaticLists(){
+ WORKFLOW.forEach(([title,description])=>{
+  const row=el("div","info-row");
+  const body=el("div");
+  body.append(el("strong","",title),el("small","",description));
+  row.appendChild(body);
+  $("workflowList").appendChild(row);
+ });
+
+ AGENTS.forEach(([title,description])=>{
+  const row=el("div","info-row");
+  const body=el("div");
+  body.append(el("strong","",title),el("small","",description));
+  row.appendChild(body);
+  $("agentList").appendChild(row);
+ });
+}
+
+function populateSelects(){
+ $("district").appendChild(new Option("Select District",""));
+ DISTRICTS.forEach(name=>$("district").appendChild(new Option(name,name)));
+
+ $("teamSelect").appendChild(new Option("No team assigned",""));
+ TEAMS.forEach(team=>{
+  $("teamSelect").appendChild(
+   new Option(team.name+" · "+team.district,team.id)
+  );
+ });
+}
+
+function createCase(event){
+ event.preventDefault();
+
+ const person=$("personCode").value.trim();
+ const family=$("familyCode").value.trim();
+ const district=$("district").value;
+
+ if(!person||!family||!district){
+  toast("Complete the fictional reference fields.");
+  return;
+ }
+
+ if(!$("syntheticConfirm").checked){
+  toast("Confirm that this scenario is entirely fictional.");
+  return;
+ }
+
+ const id="MISS-DEMO-"+String(state.nextId++).padStart(3,"0");
+
+ state.cases.unshift({
+  id,
+  person,
+  family,
+  district,
+  age:$("ageGroup").value,
+  priority:$("priority").value,
+  area:$("area").value.trim(),
+  notes:$("notes").value.trim(),
+  status:"open",
+  team:""
+ });
+
+ $("caseForm").reset();
+ renderAll();
+ logEvent("Fictional case created",id+" added to the demo registry.");
+ toast("Demo case created");
+}
+
+function addDetail(container,label,value){
+ const card=el("div","detail");
+ card.append(
+  el("small","",label),
+  el("strong","",value||"Not specified")
+ );
+ container.appendChild(card);
+}
+
+function openModal(id){
+ const c=state.cases.find(item=>item.id===id);
+ if(!c)return;
+
+ state.selectedId=id;
+ const details=$("modalDetails");
+ details.replaceChildren();
+
+ [
+  ["Case ID",c.id],
+  ["Fictional Person Code",c.person],
+  ["Fictional Family Code",c.family],
+  ["District",c.district],
+  ["Age Group",c.age],
+  ["Priority",c.priority.toUpperCase()],
+  ["Status",c.status.toUpperCase()],
+  ["Fictional Area",c.area],
+  ["Scenario Notes",c.notes],
+  ["Sample Team",c.team||"Unassigned"]
+ ].forEach(([label,value])=>addDetail(details,label,value));
+
+ $("teamSelect").value=c.team;
+ $("teamAssignmentField").style.display=
+  ["closed","reunited"].includes(c.status)?"none":"grid";
+
+ const actions=$("modalActions");
+ actions.replaceChildren();
+
+ const close=el("button","btn","Close");
+ close.addEventListener("click",closeModal);
+ actions.appendChild(close);
+
+ if(["open","searching","review"].includes(c.status)){
+  addAction(actions,"Save Demo Team","team","btn");
+ }
+
+ if(c.status==="open"){
+  addAction(actions,"Simulate Search Started","searching","btn blue");
+ }
+
+ if(c.status==="searching"){
+  addAction(actions,"Submit for Verification Review","review","btn blue");
+ }
+
+ if(c.status==="review"){
+  addAction(actions,"Simulate Reunification Review Complete","reunited","btn gold");
+  addAction(actions,"Return to Demo Search","searching","btn");
+ }
+
+ if(c.status!=="closed"&&c.status!=="reunited"){
+  addAction(actions,"Close Demo Case","closed","btn red");
+ }
+
+ $("modalOverlay").classList.add("open");
+ $("closeModal").focus();
+}
+
+function addAction(container,label,action,className){
+ const button=el("button",className,label);
+ button.addEventListener("click",()=>changeCase(action));
+ container.appendChild(button);
+}
+
+function changeCase(action){
+ const c=state.cases.find(item=>item.id===state.selectedId);
+ if(!c)return;
+
+ if(action==="team"){
+  c.team=$("teamSelect").value;
+  logEvent(
+   "Demo team assignment updated",
+   `${c.id} → ${c.team||"Unassigned"}. No actual team contacted.`
+  );
+ }else{
+  const allowed={
+   open:["searching","closed"],
+   searching:["review","closed"],
+   review:["reunited","searching","closed"],
+   reunited:[],
+   closed:[]
+  };
+
+  if(!allowed[c.status].includes(action)){
+   toast("Invalid demonstration status transition.");
+   return;
+  }
+
+  c.status=action;
+  logEvent(
+   "Fictional case status changed",
+   `${c.id} → ${action}. No identity or relationship verification occurred.`
+  );
+ }
+
+ closeModal();
+ renderAll();
+ toast("Demo case updated");
+}
+
+function closeModal(){
+ $("modalOverlay").classList.remove("open");
+ state.selectedId=null;
+}
+
+function renderAll(){
+ renderKPIs();
+ renderCases();
+ renderTeams();
+ renderStatusOverview();
+ renderTimeline();
+}
+
+function csvEscape(value){
+ let text=String(value??"");
+ if(/^\s*[=+\-@]/.test(text))text="'"+text;
+ return '"'+text.replace(/"/g,'""')+'"';
+}
+
+function exportCSV(){
+ const fields=[
+  "id","person","family","district","age",
+  "priority","area","status","team","notes"
+ ];
+
+ const rows=[
+  fields.map(csvEscape).join(","),
+  ...state.cases.map(c=>fields.map(field=>csvEscape(c[field])).join(","))
+ ];
+
+ const blob=new Blob(["\uFEFF"+rows.join("\r\n")],{
+  type:"text/csv;charset=utf-8"
+ });
+
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement("a");
+ link.href=url;
+ link.download="missing-persons-synthetic-cases.csv";
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ toast("Synthetic cases exported");
+}
+
+function resetDemo(){
+ state.cases=structuredClone(SEED_CASES);
+ state.nextId=6;
+ state.events=[{
+  title:"Demo registry reset",
+  detail:"Original fictional cases restored.",
+  time:new Date().toLocaleTimeString("en-IN")
+ }];
+
+ $("caseForm").reset();
+ $("searchInput").value="";
+ $("priorityFilter").value="all";
+ $("statusFilter").value="all";
+ closeModal();
+ renderAll();
+ toast("Demonstration reset");
+}
+
+function initialize(){
+ populateSelects();
+ renderStaticLists();
+ renderAll();
+
+ $("caseForm").addEventListener("submit",createCase);
+ $("searchInput").addEventListener("input",renderCases);
+ $("priorityFilter").addEventListener("change",renderCases);
+ $("statusFilter").addEventListener("change",renderCases);
+ $("exportBtn").addEventListener("click",exportCSV);
+ $("resetBtn").addEventListener("click",resetDemo);
+ $("closeModal").addEventListener("click",closeModal);
+
+ $("modalOverlay").addEventListener("click",event=>{
+  if(event.target===$("modalOverlay"))closeModal();
+ });
+
+ document.addEventListener("keydown",event=>{
+  if(event.key==="Escape")closeModal();
+ });
+
+ $("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+ });
+}
+
+initialize();
+</script>
+</body>
+</html>

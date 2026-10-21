@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Multi Agent Monitor</title></head><body><h1>Multi Agent Monitor</h1><p>Scaffold only — not operational.</p></body></html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b10">
+<title>Multi-Agent Monitor | Kerala Flood AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#090b10;--sidebar:#0d1017;--panel:#151922;--panel2:#1b202b;
+ --gold:#d8b671;--gold2:#f5daa0;--text:#f4f1e9;--muted:#9399a7;
+ --line:rgba(255,255,255,.085);--green:#54d6a4;--orange:#ffb66e;
+ --red:#ff777d;--blue:#82adff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:13px "DM Sans",sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.app{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;background:var(--sidebar);border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:40}
+.brand{padding:24px 18px;display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--line)}
+.brand-icon{width:43px;height:43px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#f5daa0,#a47c3b);color:#20170a;font-size:23px}
+.brand strong{font:800 13px Manrope,sans-serif}
+.brand small{display:block;font-size:10px;letter-spacing:1.2px;color:var(--muted);margin-top:5px}
+.nav{padding:18px 13px;overflow:auto;flex:1}
+.nav-label{color:#777e8d;font-size:10px;letter-spacing:1.5px;font-weight:800;margin:17px 12px 9px}
+.nav a{display:flex;align-items:center;gap:12px;padding:12px 13px;margin-bottom:5px;border:1px solid transparent;border-radius:10px;color:#a2a8b4;font-size:12px;font-weight:600;transition:.2s}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{background:#d8b67119;border-color:#d8b67130;color:var(--gold2)}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.side-footer{padding:17px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:11px;background:#383023;color:var(--gold2);display:grid;place-items:center;font-weight:800}
+.side-footer strong{font-size:11px}
+.side-footer small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.main{min-width:0;background:radial-gradient(ellipse at 65% -5%,#d8b67112,transparent 38%),var(--bg)}
+.topbar{min-height:82px;padding:17px 30px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:14px}
+.top-left,.top-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.page-icon{width:43px;height:43px;border-radius:12px;background:#d8b67119;border:1px solid #d8b67133;color:var(--gold);display:grid;place-items:center;font-size:20px}
+.top-left h1{font:800 18px Manrope,sans-serif;margin:0}
+.top-left p{color:var(--muted);font-size:11px;margin:5px 0 0}
+.badge,.tag{display:inline-flex;align-items:center;gap:7px;padding:9px 11px;background:#d8b67112;border:1px solid #d8b67130;color:var(--gold2);border-radius:9px;font-size:10px;font-weight:800}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 15px;border-radius:10px;border:1px solid var(--line);background:#1a1f29;color:#e1e3e8;font-size:11px;font-weight:800;transition:.2s}
+.btn:hover{border-color:#d8b67166;transform:translateY(-1px)}
+.btn.gold{background:linear-gradient(120deg,#c6a15e,#f1d49a);color:#1b160e;border:0}
+.btn.red{color:var(--red);background:#ff777d12;border-color:#ff777d40}
+.btn.blue{color:var(--blue);background:#82adff12;border-color:#82adff40}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.content{max-width:1700px;margin:auto;padding:28px 30px 45px}
+.eyebrow{color:var(--gold);font-size:10px;letter-spacing:2px;font-weight:800;margin-bottom:10px}
+.heading{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+.heading h2{font:800 28px Manrope,sans-serif;letter-spacing:-1px;margin:0}
+.heading p{color:var(--muted);font-size:12px;line-height:1.8;margin:9px 0 0}
+.hero{padding:27px;border-radius:18px;border:1px solid #d8b67138;background:radial-gradient(circle at 85% 15%,#d8b67120,transparent 35%),linear-gradient(120deg,#252017,#151922)}
+.hero h3{font:800 26px Manrope,sans-serif;letter-spacing:-.8px;margin:12px 0}
+.hero p{color:#b9b5ae;font-size:12px;line-height:1.9;max-width:850px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:17px}
+.card{min-width:0;background:linear-gradient(150deg,#181c26,#12161e);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 35px #0002;animation:rise .5s ease both}
+.kpi{padding:21px}
+.kpi-head{display:flex;justify-content:space-between;align-items:center;color:#a7adba;font-size:11px;font-weight:700}
+.kpi-icon{width:36px;height:36px;border-radius:10px;background:#d8b67119;color:var(--gold);display:grid;place-items:center;font-size:18px}
+.kpi-number{font:800 30px Manrope,sans-serif;letter-spacing:-1px;margin:15px 0 7px}
+.kpi-caption{font-size:10px;color:var(--muted);line-height:1.7}
+.kpi-caption b{color:var(--gold)}
+.section{margin-top:25px}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:15px}
+.section-head h3{font:800 19px Manrope,sans-serif;letter-spacing:-.5px;margin:0}
+.section-head p{color:var(--muted);font-size:11px;line-height:1.8;margin:7px 0 0}
+.panel{padding:21px}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{color:var(--muted);font-size:10px;line-height:1.8;margin-top:6px}
+.columns{grid-template-columns:minmax(0,1.45fr) minmax(310px,1fr)}
+.two-col{grid-template-columns:repeat(2,minmax(0,1fr))}
+.input,.select{padding:12px 13px;border:1px solid #343a46;border-radius:10px;background:#1b202b;color:var(--text);outline:none}
+.input:focus,.select:focus{border-color:var(--gold)}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
+.filters .input{flex:1;min-width:180px}
+.filters .select{min-width:140px}
+.agent-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.agent-card{padding:17px;background:#1b202b;border:1px solid var(--line);border-radius:12px;transition:.2s}
+.agent-card:hover{border-color:#d8b67155;transform:translateY(-2px)}
+.agent-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.agent-icon{width:39px;height:39px;display:grid;place-items:center;background:#d8b67115;border-radius:11px;color:var(--gold);font-size:20px}
+.agent-card h4{font:800 12px Manrope,sans-serif;margin:13px 0 5px}
+.agent-card p{font-size:10px;color:var(--muted);line-height:1.7;min-height:33px}
+.agent-stats{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-top:1px solid var(--line);margin-top:12px}
+.agent-stats small{display:block;color:var(--muted);font-size:9px}
+.agent-stats strong{display:block;margin-top:5px;font-size:12px}
+.pill{display:inline-flex;align-items:center;padding:7px 10px;border-radius:8px;font-size:10px;font-weight:800;white-space:nowrap}
+.pill.active,.pill.completed{color:var(--green);background:#54d6a419}
+.pill.busy,.pill.queued{color:var(--orange);background:#ffb66e19}
+.pill.idle,.pill.review{color:var(--blue);background:#82adff19}
+.pill.paused,.pill.failed{color:var(--red);background:#ff777d19}
+.pill.pending{color:var(--gold2);background:#d8b67119}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;white-space:nowrap;text-align:left}
+th{padding:13px 10px;border-bottom:1px solid var(--line);color:#8d94a2;font-size:10px}
+td{padding:14px 10px;border-bottom:1px solid #ffffff0b;color:#d7dbe2;font-size:11px}
+tbody tr:hover{background:#d8b67108}
+.small-btn{padding:8px 10px;border-radius:8px;border:1px solid #d8b67140;background:#d8b67115;color:var(--gold2);font-size:10px;font-weight:800}
+.workflow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:17px}
+.workflow-step{position:relative;text-align:center;padding:17px 10px;background:#1b202b;border:1px solid var(--line);border-radius:11px}
+.workflow-step .step-icon{font-size:21px;color:var(--gold)}
+.workflow-step strong{display:block;font-size:11px;margin-top:10px}
+.workflow-step small{display:block;color:var(--muted);font-size:9px;margin-top:7px;line-height:1.7}
+.timeline{display:grid;gap:15px}
+.event{display:flex;gap:12px}
+.event-icon{width:33px;height:33px;flex-shrink:0;display:grid;place-items:center;border-radius:10px;background:#d8b67118;color:var(--gold)}
+.event strong{font-size:11px}
+.event p{font-size:10px;color:var(--muted);line-height:1.7;margin:7px 0}
+.event small{font-size:10px;color:#777e8d}
+.bar-row{margin:16px 0}
+.bar-head{display:flex;justify-content:space-between;gap:10px;font-size:11px;margin-bottom:9px}
+.bar-head span:last-child{color:var(--gold2);font-weight:800}
+.progress{height:9px;background:#303642;border-radius:10px;overflow:hidden}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#a68145,#f1d69c);border-radius:10px;transition:width .3s}
+.notice{padding:16px;background:#d8b6710e;border:1px solid #d8b67130;border-radius:12px;color:#bbb4a5;font-size:11px;line-height:1.9;margin-top:17px}
+.notice strong{color:var(--gold2)}
+.footer{padding-top:26px;text-align:center;color:#69707e;font-size:10px}
+.overlay{position:fixed;inset:0;z-index:100;background:#000b;display:none;align-items:center;justify-content:center;padding:18px}
+.overlay.open{display:flex}
+.modal{width:min(590px,100%);max-height:90vh;overflow:auto;background:#181d27;border:1px solid #d8b67144;border-radius:17px;padding:24px;box-shadow:0 30px 90px #0009}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.modal-head h3{font:800 18px Manrope,sans-serif;margin:0}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
+.detail{padding:13px;background:#10151e;border:1px solid var(--line);border-radius:9px}
+.detail small{display:block;color:var(--muted);font-size:10px;margin-bottom:8px}
+.detail strong{font-size:11px;overflow-wrap:anywhere}
+.modal-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
+.toast{position:fixed;right:20px;bottom:20px;z-index:150;padding:14px 17px;background:#252b35;border:1px solid #d8b67166;color:var(--gold2);border-radius:11px;box-shadow:0 15px 45px #0008}
+.menu-btn{display:none}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1350px){.agent-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:1200px){.kpis{grid-template-columns:repeat(2,1fr)}.columns{grid-template-columns:1fr}}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:fixed;width:260px;transform:translateX(-100%);transition:.3s}.sidebar.open{transform:translateX(0)}.menu-btn{display:inline-flex}.topbar{padding:15px 20px}.content{padding:20px}}
+@media(max-width:560px){.kpis,.two-col,.agent-grid{grid-template-columns:1fr}.workflow{grid-template-columns:repeat(2,1fr)}.heading h2{font-size:23px}.panel{padding:16px}.top-actions .badge{display:none}.detail-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-icon">✦</div>
+  <div><strong>KERALA FLOOD AI</strong><small>INTELLIGENCE PLATFORM</small></div>
+ </div>
+ <nav class="nav">
+  <div class="nav-label">WORKSPACE</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Project Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="agent-command-center.html"><span class="nav-icon">✦</span>Agent Command Center</a>
+  <a class="active" href="multi-agent-monitor.html"><span class="nav-icon">◎</span>Multi-Agent Monitor</a>
+  <a href="ai-copilot.html"><span class="nav-icon">◇</span>AI Copilot</a>
+  <a href="analytics.html"><span class="nav-icon">▥</span>Analytics</a>
+
+  <div class="nav-label">OPERATIONS</div>
+  <a href="incident-management.html"><span class="nav-icon">◉</span>Incident Management</a>
+  <a href="emergency-sos.html"><span class="nav-icon">⚑</span>Emergency SOS</a>
+  <a href="rescue-dashboard.html"><span class="nav-icon">✧</span>Rescue Operations</a>
+  <a href="medical-emergency.html"><span class="nav-icon">✚</span>Medical Emergency</a>
+  <a href="missing-persons.html"><span class="nav-icon">◎</span>Missing Persons</a>
+  <a href="evacuation-planning.html"><span class="nav-icon">⌁</span>Evacuation Planning</a>
+
+  <div class="nav-label">INTELLIGENCE</div>
+  <a href="live-flood-map.html"><span class="nav-icon">◈</span>Flood Map</a>
+  <a href="flood-prediction.html"><span class="nav-icon">≈</span>Flood Prediction</a>
+  <a href="flood-alerts.html"><span class="nav-icon">☁</span>Flood Alerts</a>
+
+  <div class="nav-label">GOVERNANCE</div>
+  <a href="human-approval.html"><span class="nav-icon">✓</span>Human Approval</a>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+ </nav>
+ <div class="side-footer">
+  <div class="avatar">AI</div>
+  <div><strong>Agent Observability</strong><small>Simulation Workspace</small></div>
+ </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-left">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="page-icon">✦</div>
+  <div><h1>Multi-Agent Monitor</h1><p>Agent orchestration · Simulated telemetry · Task monitoring</p></div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>SIMULATION MODE</span>
+  <button class="btn" id="resetBtn">↻ Reset</button>
+  <button class="btn gold" id="exportBtn">↓ Export CSV</button>
+ </div>
+</header>
+
+<div class="content">
+<div class="heading">
+ <div>
+  <div class="eyebrow">AGENTIC AI OBSERVABILITY</div>
+  <h2>Multi-Agent Intelligence Monitor</h2>
+  <p>Explore a proposed multi-agent disaster response architecture through interactive synthetic monitoring.</p>
+ </div>
+ <span class="tag" id="simulationStatus">SIMULATION RUNNING</span>
+</div>
+
+<section class="hero">
+ <div class="eyebrow">AUTONOMOUS WORKFLOW DESIGN · HUMAN CONTROL</div>
+ <h3>One Intelligence Network. Multiple Specialized Agents.</h3>
+ <p>
+  Monitor proposed supervisor, forecasting, rescue, medical, verification,
+  logistics and communication agents. Explore synthetic execution metrics,
+  simulated task queues, human approval checkpoints and system events.
+  No real models or external tools are running.
+ </p>
+ <div class="hero-actions">
+  <button class="btn gold" id="toggleSimulation">Ⅱ Pause Simulation</button>
+  <button class="btn" id="createTaskBtn">+ Create Demo Task</button>
+  <a class="btn blue" href="human-approval.html">✓ Human Approval</a>
+  <a class="btn" href="agent-command-center.html">◈ Agent Command Center</a>
+ </div>
+</section>
+
+<section class="grid kpis">
+ <div class="card kpi"><div class="kpi-head">Total Agent Designs<div class="kpi-icon">✦</div></div><div class="kpi-number" id="kpiTotal">18</div><div class="kpi-caption"><b>ARCHITECTURE</b> · Proposed specialized agents</div></div>
+ <div class="card kpi"><div class="kpi-head">Simulated Active<div class="kpi-icon">◎</div></div><div class="kpi-number" id="kpiActive">0</div><div class="kpi-caption"><b>DEMO STATUS</b> · Not actual processes</div></div>
+ <div class="card kpi"><div class="kpi-head">Synthetic Completed Tasks<div class="kpi-icon">✓</div></div><div class="kpi-number" id="kpiCompleted">0</div><div class="kpi-caption"><b>LOCAL SIMULATION</b> · Generated results</div></div>
+ <div class="card kpi"><div class="kpi-head">Pending Human Review<div class="kpi-icon">⚑</div></div><div class="kpi-number" id="kpiReview">0</div><div class="kpi-caption"><b>SIMULATED</b> · Approval not performed</div></div>
+</section>
+
+<section class="section">
+ <div class="section-head">
+  <div><h3>Agent Fleet</h3><p>Inspect simulated statuses, workloads, latency and synthetic task counts.</p></div>
+  <span class="tag" id="agentCount">18 AGENTS</span>
+ </div>
+ <div class="card panel">
+  <div class="filters">
+   <input class="input" id="agentSearch" placeholder="Search agents by name or responsibility..." aria-label="Search agents">
+   <select class="select" id="agentStatusFilter">
+    <option value="all">All Statuses</option>
+    <option value="active">Active</option>
+    <option value="busy">Busy</option>
+    <option value="idle">Idle</option>
+    <option value="paused">Paused</option>
+   </select>
+   <select class="select" id="agentGroupFilter">
+    <option value="all">All Groups</option>
+    <option value="orchestration">Orchestration</option>
+    <option value="intelligence">Intelligence</option>
+    <option value="response">Response</option>
+    <option value="governance">Governance</option>
+   </select>
+  </div>
+  <div class="agent-grid" id="agentGrid"></div>
+ </div>
+</section>
+
+<section class="section grid columns">
+ <div class="card panel">
+  <div class="panel-title">Proposed Multi-Agent Workflow</div>
+  <div class="panel-sub">Conceptual architecture. Arrows indicate planned information flow, not real execution.</div>
+  <div class="workflow" id="workflowGrid"></div>
+  <div class="notice">
+   <strong>Mandatory Human Control</strong>
+   <div>Real evacuation orders, rescue dispatches, medical referrals, public alerts and other consequential actions require authorized human approval and verified operational systems.</div>
+  </div>
+ </div>
+ <div class="card panel">
+  <div class="panel-title">Synthetic Performance Overview</div>
+  <div class="panel-sub">Illustrative local counters; not benchmark results.</div>
+  <div id="performanceBars"></div>
+ </div>
+</section>
+
+<section class="section">
+ <div class="section-head">
+  <div><h3>Agent Task Queue</h3><p>Assign and review synthetic tasks. No external tool calls are executed.</p></div>
+  <span class="tag" id="taskCount">0 TASKS</span>
+ </div>
+ <div class="card panel">
+  <div class="table-wrap">
+   <table>
+    <thead><tr><th>Task ID</th><th>Assigned Agent</th><th>Scenario</th><th>Status</th><th>Progress</th><th>Action</th></tr></thead>
+    <tbody id="taskTable"></tbody>
+   </table>
+  </div>
+ </div>
+</section>
+
+<section class="section grid two-col">
+ <div class="card panel">
+  <div class="panel-title">Simulated Agent Events</div>
+  <div class="panel-sub" style="margin-bottom:18px">Local browser-generated activity, not backend logs.</div>
+  <div class="timeline" id="timeline"></div>
+ </div>
+ <div class="card panel">
+  <div class="panel-title">System Architecture Components</div>
+  <div class="panel-sub" style="margin-bottom:17px">Planned modules for future backend implementation.</div>
+  <div id="architectureList"></div>
+ </div>
+</section>
+
+<div class="notice">
+ <strong>⚠ Demonstration Boundary.</strong>
+ <div>All agent statuses, latency values, success percentages, workloads and tasks are synthetic. This page does not run LangGraph, LLMs, forecasting models, emergency integrations or live telemetry. Real deployment requires backend orchestration, evaluation, observability, security, verified data and human oversight.</div>
+</div>
+<footer class="footer">KERALA FLOOD RELIEF COORDINATION AGENT · MULTI-AGENT OBSERVABILITY · SYNTHETIC DEMO</footer>
+</div>
+</main>
+</div>
+
+<div class="overlay" id="agentModalOverlay">
+ <div class="modal" role="dialog" aria-modal="true" aria-labelledby="agentModalTitle">
+  <div class="modal-head">
+   <h3 id="agentModalTitle">Agent Inspection</h3>
+   <button class="btn" id="closeAgentModal">✕</button>
+  </div>
+  <p class="panel-sub">Synthetic runtime details and local controls.</p>
+  <div class="detail-grid" id="agentDetails"></div>
+  <div class="modal-actions" id="agentActions"></div>
+ </div>
+</div>
+
+<div class="overlay" id="taskModalOverlay">
+ <div class="modal" role="dialog" aria-modal="true" aria-labelledby="taskModalTitle">
+  <div class="modal-head">
+   <h3 id="taskModalTitle">Create Demo Task</h3>
+   <button class="btn" id="closeTaskModal">✕</button>
+  </div>
+  <p class="panel-sub">This creates an illustrative browser-local task only.</p>
+  <form id="taskForm" style="margin-top:20px">
+   <div style="margin-bottom:15px">
+    <label for="taskAgent" style="display:block;margin-bottom:8px;font-weight:800;font-size:11px">Assign Agent</label>
+    <select class="select" id="taskAgent" style="width:100%" required></select>
+   </div>
+   <div style="margin-bottom:15px">
+    <label for="taskScenario" style="display:block;margin-bottom:8px;font-weight:800;font-size:11px">Fictional Scenario</label>
+    <select class="select" id="taskScenario" style="width:100%">
+     <option>Analyze Synthetic Flood Risk</option>
+     <option>Review Fictional SOS Intake</option>
+     <option>Prepare Demo Rescue Coordination</option>
+     <option>Generate Sample Shelter Allocation</option>
+     <option>Review Synthetic Weather Bulletin</option>
+     <option>Validate Fictional Incident Report</option>
+     <option>Prepare Human Approval Draft</option>
+    </select>
+   </div>
+   <button class="btn gold" type="submit">+ Add Simulated Task</button>
+  </form>
+ </div>
+</div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+
+const DEFINITIONS=[
+ ["supervisor","Supervisor Agent","orchestration","✦","Coordinates proposed agent workflows."],
+ ["weather","Weather Agent","intelligence","☁","Processes planned weather intelligence inputs."],
+ ["flood","Flood Prediction Agent","intelligence","≈","Generates proposed flood forecast scenarios."],
+ ["risk","Risk Assessment Agent","intelligence","◈","Assesses hazard and exposure risk concepts."],
+ ["alert","Alert Intelligence Agent","response","⚑","Prepares public advisory drafts for review."],
+ ["sos","SOS Triage Agent","response","◎","Categorizes emergency intake scenarios."],
+ ["rescue","Rescue Coordinator Agent","response","✧","Prepares rescue resource proposals."],
+ ["evacuation","Evacuation Agent","response","⌁","Drafts evacuation planning scenarios."],
+ ["route","Route Planning Agent","response","◇","Evaluates proposed routing alternatives."],
+ ["shelter","Shelter Allocation Agent","response","⌂","Prepares fictional shelter allocation plans."],
+ ["medical","Medical Response Agent","response","✚","Supports clinician-reviewed coordination concepts."],
+ ["relief","Relief Logistics Agent","response","▣","Plans relief supply distribution scenarios."],
+ ["volunteer","Volunteer Coordinator Agent","response","♡","Organizes proposed volunteer workflows."],
+ ["missing","Missing Person Agent","response","◎","Supports privacy-aware case coordination."],
+ ["damage","Damage Assessment Agent","intelligence","▤","Prepares damage analysis proposals."],
+ ["verification","Verification Agent","governance","✓","Checks proposed source and evidence quality."],
+ ["approval","Human Approval Agent","governance","⚖","Coordinates human authorization gates."],
+ ["communication","Communication Agent","governance","✉","Prepares reviewed communication drafts."]
+];
+
+const AGENTS=DEFINITIONS.map((d,i)=>({
+ id:d[0],name:d[1],group:d[2],icon:d[3],description:d[4],
+ status:i%6===0?"busy":i%4===0?"idle":"active",
+ latency:120+(i*47)%390,
+ tasks:4+(i*7)%19,
+ success:86+(i*3)%13,
+ paused:false
+}));
+
+const SEED_TASKS=[
+ {id:"TASK-DEMO-001",agent:"flood",scenario:"Analyze Synthetic Flood Risk",status:"completed",progress:100},
+ {id:"TASK-DEMO-002",agent:"sos",scenario:"Review Fictional SOS Intake",status:"queued",progress:0},
+ {id:"TASK-DEMO-003",agent:"rescue",scenario:"Prepare Demo Rescue Coordination",status:"review",progress:100},
+ {id:"TASK-DEMO-004",agent:"verification",scenario:"Validate Fictional Incident Report",status:"busy",progress:35}
+];
+
+const state={
+ agents:structuredClone(AGENTS),
+ tasks:structuredClone(SEED_TASKS),
+ nextTask:5,
+ running:true,
+ selectedAgent:null,
+ events:[
+  {title:"Simulation initialized",detail:"18 proposed agent definitions loaded.",time:"Demo"},
+  {title:"Human approval boundary enabled",detail:"No real-world actions can be executed.",time:"Demo"}
+ ]
+};
+
+function el(tag,className,text){
+ const node=document.createElement(tag);
+ if(className)node.className=className;
+ if(text!==undefined)node.textContent=String(text);
+ return node;
+}
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+ const node=el("div","toast",message);
+ document.body.appendChild(node);
+ setTimeout(()=>node.remove(),2800);
+}
+
+function eventLog(title,detail){
+ state.events.unshift({
+  title,detail,time:new Date().toLocaleTimeString("en-IN")
+ });
+ state.events=state.events.slice(0,9);
+ renderEvents();
+}
+
+function renderEvents(){
+ const root=$("timeline");
+ root.replaceChildren();
+ state.events.forEach(event=>{
+  const row=el("div","event");
+  const icon=el("div","event-icon","✦");
+  const body=el("div");
+  body.append(
+   el("strong","",event.title),
+   el("p","",event.detail),
+   el("small","",event.time)
+  );
+  row.append(icon,body);
+  root.appendChild(row);
+ });
+}
+
+function agentStatus(agent){
+ return agent.paused?"paused":agent.status;
+}
+
+function renderKPIs(){
+ $("kpiTotal").textContent=state.agents.length;
+ $("kpiActive").textContent=state.agents.filter(a=>
+  !a.paused&&["active","busy"].includes(a.status)
+ ).length;
+ $("kpiCompleted").textContent=state.tasks.filter(t=>t.status==="completed").length;
+ $("kpiReview").textContent=state.tasks.filter(t=>t.status==="review").length;
+ $("agentCount").textContent=state.agents.length+" AGENTS";
+ $("taskCount").textContent=state.tasks.length+" TASKS";
+ $("simulationStatus").textContent=state.running?"SIMULATION RUNNING":"SIMULATION PAUSED";
+ $("toggleSimulation").textContent=state.running?"Ⅱ Pause Simulation":"▶ Resume Simulation";
+}
+
+function renderAgents(){
+ const search=$("agentSearch").value.toLowerCase().trim();
+ const status=$("agentStatusFilter").value;
+ const group=$("agentGroupFilter").value;
+ const root=$("agentGrid");
+ root.replaceChildren();
+
+ const filtered=state.agents.filter(a=>
+  (a.name+" "+a.description).toLowerCase().includes(search)&&
+  (status==="all"||agentStatus(a)===status)&&
+  (group==="all"||a.group===group)
+ );
+
+ if(!filtered.length){
+  root.appendChild(el("p","panel-sub","No matching agents."));
+  return;
+ }
+
+ filtered.forEach(agent=>{
+  const card=el("div","agent-card");
+  const top=el("div","agent-top");
+  top.append(
+   el("div","agent-icon",agent.icon),
+   el("span","pill "+agentStatus(agent),agentStatus(agent).toUpperCase())
+  );
+
+  card.append(
+   top,
+   el("h4","",agent.name),
+   el("p","",agent.description)
+  );
+
+  const stats=el("div","agent-stats");
+  [
+   ["Demo Latency",agent.latency+" ms"],
+   ["Demo Tasks",agent.tasks],
+   ["Synthetic Rate",agent.success+"%"]
+  ].forEach(([label,value])=>{
+   const box=el("div");
+   box.append(el("small","",label),el("strong","",value));
+   stats.appendChild(box);
+  });
+
+  card.appendChild(stats);
+  const button=el("button","small-btn","Inspect Agent →");
+  button.addEventListener("click",()=>openAgent(agent.id));
+  card.appendChild(button);
+  root.appendChild(card);
+ });
+}
+
+function renderTasks(){
+ const tbody=$("taskTable");
+ tbody.replaceChildren();
+
+ state.tasks.forEach(task=>{
+  const row=el("tr");
+  const agent=state.agents.find(a=>a.id===task.agent);
+
+  row.append(
+   el("td","",task.id),
+   el("td","",agent?.name||task.agent),
+   el("td","",task.scenario)
+  );
+
+  const status=el("td");
+  status.appendChild(el("span","pill "+task.status,task.status.toUpperCase()));
+  row.appendChild(status);
+  row.appendChild(el("td","",task.progress+"%"));
+
+  const action=el("td");
+  const button=el("button","small-btn",task.status==="review"?"Inspect Review":"Inspect →");
+  button.addEventListener("click",()=>inspectTask(task.id));
+  action.appendChild(button);
+  row.appendChild(action);
+  tbody.appendChild(row);
+ });
+}
+
+function renderPerformance(){
+ const root=$("performanceBars");
+ root.replaceChildren();
+
+ const completed=state.tasks.filter(t=>t.status==="completed").length;
+ const total=state.tasks.length||1;
+ const values=[
+  ["Synthetic Task Completion",Math.round(completed/total*100)],
+  ["Illustrative Agent Availability",Math.round(state.agents.filter(a=>!a.paused).length/state.agents.length*100)],
+  ["Simulated Review Coverage",100],
+  ["Synthetic Verification Coverage",78]
+ ];
+
+ values.forEach(([name,value])=>{
+  const row=el("div","bar-row");
+  const head=el("div","bar-head");
+  head.append(el("span","",name),el("span","",value+"%"));
+  const bar=el("div","progress");
+  const fill=el("span");
+  fill.style.width=value+"%";
+  bar.appendChild(fill);
+  row.append(head,bar);
+  root.appendChild(row);
+ });
+}
+
+function renderWorkflow(){
+ const steps=[
+  ["01","✦","Supervisor","Task orchestration"],
+  ["02","≈","Specialist Agents","Scenario processing"],
+  ["03","✓","Verification","Evidence checks"],
+  ["04","⚖","Human Approval","Authorization gate"],
+  ["05","▣","Approved Execution","Backend-only action"],
+  ["06","◷","Audit & Evaluation","Traceability"],
+  ["07","◇","Feedback Loop","Quality monitoring"],
+  ["08","↻","Replanning","Controlled retry"]
+ ];
+
+ const root=$("workflowGrid");
+ steps.forEach(([number,icon,title,detail])=>{
+  const card=el("div","workflow-step");
+  card.append(
+   el("div","step-icon",icon),
+   el("strong","",number+" · "+title),
+   el("small","",detail)
+  );
+  root.appendChild(card);
+ });
+}
+
+function renderArchitecture(){
+ const modules=[
+  ["agent_graph.py","Agent workflow graph"],
+  ["workflow_engine.py","Execution orchestration"],
+  ["task_router.py","Agent selection and routing"],
+  ["state_manager.py","Shared workflow state"],
+  ["checkpoint_manager.py","Recovery checkpoints"],
+  ["agent_evaluation.py","Quality and tool-use evaluation"],
+  ["decision_audit.py","Human decision audit trail"],
+  ["human_oversight.py","Human authorization controls"]
+ ];
+
+ const root=$("architectureList");
+ modules.forEach(([file,description])=>{
+  const row=el("div","detail");
+  row.style.marginBottom="9px";
+  row.append(el("strong","",file),el("small","",description));
+  root.appendChild(row);
+ });
+}
+
+function addDetail(root,label,value){
+ const card=el("div","detail");
+ card.append(el("small","",label),el("strong","",value));
+ root.appendChild(card);
+}
+
+function openAgent(id){
+ const agent=state.agents.find(a=>a.id===id);
+ if(!agent)return;
+ state.selectedAgent=id;
+
+ $("agentModalTitle").textContent=agent.name;
+ const root=$("agentDetails");
+ root.replaceChildren();
+
+ [
+  ["Agent ID",agent.id],
+  ["Group",agent.group],
+  ["Simulated Status",agentStatus(agent)],
+  ["Synthetic Latency",agent.latency+" ms"],
+  ["Synthetic Task Count",agent.tasks],
+  ["Illustrative Success Rate",agent.success+"%"],
+  ["Responsibility",agent.description]
+ ].forEach(([label,value])=>addDetail(root,label,value));
+
+ const actions=$("agentActions");
+ actions.replaceChildren();
+
+ const close=el("button","btn","Close");
+ close.addEventListener("click",closeAgentModal);
+
+ const toggle=el(
+  "button",
+  agent.paused?"btn gold":"btn red",
+  agent.paused?"Resume Demo Agent":"Pause Demo Agent"
+ );
+ toggle.addEventListener("click",()=>{
+  agent.paused=!agent.paused;
+  eventLog(
+   "Agent simulation state changed",
+   `${agent.name} → ${agent.paused?"paused":"resumed"}.`
+  );
+  closeAgentModal();
+  renderAll();
+  toast("Synthetic agent state updated");
+ });
+
+ actions.append(close,toggle);
+ $("agentModalOverlay").classList.add("open");
+ $("closeAgentModal").focus();
+}
+
+function closeAgentModal(){
+ $("agentModalOverlay").classList.remove("open");
+ state.selectedAgent=null;
+}
+
+function inspectTask(id){
+ const task=state.tasks.find(t=>t.id===id);
+ if(!task)return;
+
+ if(task.status==="review"){
+  toast("Human approval is required in a production workflow. This demo cannot authorize actions.");
+ }else{
+  toast(`${task.id}: ${task.status.toUpperCase()} · ${task.progress}% synthetic progress`);
+ }
+}
+
+function openTaskModal(){
+ $("taskModalOverlay").classList.add("open");
+ $("taskAgent").focus();
+}
+
+function closeTaskModal(){
+ $("taskModalOverlay").classList.remove("open");
+}
+
+function createTask(event){
+ event.preventDefault();
+ const agentId=$("taskAgent").value;
+ const agent=state.agents.find(a=>a.id===agentId);
+
+ if(!agent){
+  toast("Select a demo agent.");
+  return;
+ }
+
+ const id="TASK-DEMO-"+String(state.nextTask++).padStart(3,"0");
+
+ state.tasks.unshift({
+  id,
+  agent:agentId,
+  scenario:$("taskScenario").value,
+  status:"queued",
+  progress:0
+ });
+
+ agent.tasks++;
+ eventLog("Synthetic task created",`${id} assigned to ${agent.name}.`);
+ closeTaskModal();
+ renderAll();
+ toast("Demo task added");
+}
+
+function advanceSimulation(){
+ if(!state.running)return;
+
+ let changed=false;
+
+ state.tasks.forEach(task=>{
+  const agent=state.agents.find(a=>a.id===task.agent);
+  if(!agent||agent.paused)return;
+
+  if(task.status==="queued"){
+   task.status="busy";
+   task.progress=15;
+   changed=true;
+  }else if(task.status==="busy"){
+   task.progress=Math.min(100,task.progress+15);
+
+   if(task.progress===100){
+    const needsReview=[
+     "rescue","medical","evacuation","alert",
+     "communication","approval","sos","shelter"
+    ].includes(task.agent);
+
+    task.status=needsReview?"review":"completed";
+
+    eventLog(
+     needsReview?"Demo task awaiting review":"Synthetic task completed",
+     `${task.id} · No real agent inference or external action occurred.`
+    );
+   }
+   changed=true;
+  }
+ });
+
+ if(changed)renderAll();
+}
+
+function toggleSimulation(){
+ state.running=!state.running;
+ eventLog(
+  "Simulation control",
+  state.running?"Local task simulation resumed.":"Local task simulation paused."
+ );
+ renderAll();
+}
+
+function csvEscape(value){
+ let text=String(value??"");
+ if(/^\s*[=+\-@]/.test(text))text="'"+text;
+ return '"'+text.replace(/"/g,'""')+'"';
+}
+
+function exportCSV(){
+ const fields=["id","name","group","status","latency","tasks","success"];
+ const rows=[
+  fields.map(csvEscape).join(","),
+  ...state.agents.map(a=>[
+   a.id,a.name,a.group,agentStatus(a),a.latency,a.tasks,a.success
+  ].map(csvEscape).join(","))
+ ];
+
+ const blob=new Blob(["\uFEFF"+rows.join("\r\n")],{
+  type:"text/csv;charset=utf-8"
+ });
+
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement("a");
+ link.href=url;
+ link.download="multi-agent-monitor-synthetic.csv";
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ toast("Synthetic agent metrics exported");
+}
+
+function resetDemo(){
+ state.agents=structuredClone(AGENTS);
+ state.tasks=structuredClone(SEED_TASKS);
+ state.nextTask=5;
+ state.running=true;
+ state.events=[{
+  title:"Simulation reset",
+  detail:"Original synthetic agent and task data restored.",
+  time:new Date().toLocaleTimeString("en-IN")
+ }];
+
+ $("agentSearch").value="";
+ $("agentStatusFilter").value="all";
+ $("agentGroupFilter").value="all";
+
+ closeAgentModal();
+ closeTaskModal();
+ renderAll();
+ toast("Simulation reset");
+}
+
+function renderAll(){
+ renderKPIs();
+ renderAgents();
+ renderTasks();
+ renderPerformance();
+ renderEvents();
+}
+
+function initialize(){
+ renderWorkflow();
+ renderArchitecture();
+
+ DEFINITIONS.forEach(agent=>{
+  $("taskAgent").appendChild(new Option(agent[1],agent[0]));
+ });
+
+ renderAll();
+
+ $("agentSearch").addEventListener("input",renderAgents);
+ $("agentStatusFilter").addEventListener("change",renderAgents);
+ $("agentGroupFilter").addEventListener("change",renderAgents);
+
+ $("toggleSimulation").addEventListener("click",toggleSimulation);
+ $("createTaskBtn").addEventListener("click",openTaskModal);
+ $("taskForm").addEventListener("submit",createTask);
+
+ $("closeAgentModal").addEventListener("click",closeAgentModal);
+ $("closeTaskModal").addEventListener("click",closeTaskModal);
+
+ $("agentModalOverlay").addEventListener("click",event=>{
+  if(event.target===$("agentModalOverlay"))closeAgentModal();
+ });
+
+ $("taskModalOverlay").addEventListener("click",event=>{
+  if(event.target===$("taskModalOverlay"))closeTaskModal();
+ });
+
+ document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"){
+   closeAgentModal();
+   closeTaskModal();
+  }
+ });
+
+ $("resetBtn").addEventListener("click",resetDemo);
+ $("exportBtn").addEventListener("click",exportCSV);
+
+ $("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+ });
+
+ setInterval(advanceSimulation,1800);
+}
+
+initialize();
+</script>
+</body>
+</html>

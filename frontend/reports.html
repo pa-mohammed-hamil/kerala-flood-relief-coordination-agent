@@ -1,0 +1,1081 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b10">
+<title>Reports & Intelligence | Kerala Flood AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#090b10;--sidebar:#0d1017;--panel:#151922;--panel2:#1b202b;
+ --gold:#d8b671;--gold2:#f5daa0;--text:#f4f1e9;--muted:#9399a7;
+ --line:rgba(255,255,255,.085);--green:#54d6a4;--orange:#ffb66e;
+ --red:#ff777d;--blue:#82adff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:13px "DM Sans",sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.app{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;background:var(--sidebar);border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:40}
+.brand{padding:23px 17px;display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--line)}
+.brand-icon{width:43px;height:43px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#f5daa0,#a47c3b);color:#20170a;font-size:23px}
+.brand strong{font:800 13px Manrope,sans-serif}
+.brand small{display:block;font-size:10px;letter-spacing:1.2px;color:var(--muted);margin-top:5px}
+.nav{padding:17px 12px;overflow:auto;flex:1}
+.nav-label{color:#777e8d;font-size:10px;letter-spacing:1.5px;font-weight:800;margin:17px 12px 9px}
+.nav a{display:flex;align-items:center;gap:12px;padding:12px 13px;margin-bottom:5px;border:1px solid transparent;border-radius:10px;color:#a2a8b4;font-size:12px;font-weight:600;transition:.2s}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{background:#d8b67119;border-color:#d8b67130;color:var(--gold2)}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.side-footer{padding:17px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:11px;background:#383023;color:var(--gold2);display:grid;place-items:center;font-weight:800}
+.side-footer strong{font-size:11px}
+.side-footer small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.main{min-width:0;background:radial-gradient(ellipse at 65% -5%,#d8b67112,transparent 38%),var(--bg)}
+.topbar{min-height:80px;padding:16px 28px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.top-left,.top-actions{display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.page-icon{width:43px;height:43px;border-radius:12px;background:#d8b67119;border:1px solid #d8b67133;color:var(--gold);display:grid;place-items:center;font-size:20px}
+.top-left h1{font:800 18px Manrope,sans-serif;margin:0}
+.top-left p{color:var(--muted);font-size:11px;margin:5px 0 0}
+.badge,.tag{display:inline-flex;align-items:center;gap:7px;padding:9px 11px;background:#d8b67112;border:1px solid #d8b67130;color:var(--gold2);border-radius:9px;font-size:10px;font-weight:800}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 15px;border-radius:10px;border:1px solid var(--line);background:#1a1f29;color:#e1e3e8;font-size:11px;font-weight:800;transition:.2s}
+.btn:hover{border-color:#d8b67166;transform:translateY(-1px)}
+.btn.gold{background:linear-gradient(120deg,#c6a15e,#f1d49a);color:#1b160e;border:0}
+.btn.blue{color:var(--blue);background:#82adff12;border-color:#82adff40}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.content{max-width:1700px;margin:auto;padding:27px 29px 44px}
+.eyebrow{color:var(--gold);font-size:10px;letter-spacing:2px;font-weight:800;margin-bottom:10px}
+.heading{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+.heading h2{font:800 28px Manrope,sans-serif;letter-spacing:-1px;margin:0}
+.heading p{color:var(--muted);font-size:12px;line-height:1.8;margin:9px 0 0}
+.hero{padding:26px;border-radius:18px;border:1px solid #d8b67138;background:radial-gradient(circle at 85% 15%,#d8b67120,transparent 35%),linear-gradient(120deg,#252017,#151922)}
+.hero h3{font:800 25px Manrope,sans-serif;letter-spacing:-.8px;margin:12px 0}
+.hero p{color:#b9b5ae;font-size:12px;line-height:1.9;max-width:850px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:19px}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:17px}
+.card{min-width:0;background:linear-gradient(150deg,#181c26,#12161e);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 35px #0002;animation:rise .5s ease both}
+.kpi{padding:20px}
+.kpi-head{display:flex;justify-content:space-between;align-items:center;color:#a7adba;font-size:11px;font-weight:700}
+.kpi-icon{width:36px;height:36px;border-radius:10px;background:#d8b67119;color:var(--gold);display:grid;place-items:center;font-size:18px}
+.kpi-number{font:800 29px Manrope,sans-serif;letter-spacing:-1px;margin:15px 0 7px}
+.kpi-caption{font-size:10px;color:var(--muted);line-height:1.7}
+.kpi-caption b{color:var(--gold)}
+.section{margin-top:25px}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:15px}
+.section-head h3{font:800 19px Manrope,sans-serif;letter-spacing:-.5px;margin:0}
+.section-head p{color:var(--muted);font-size:11px;line-height:1.8;margin:7px 0 0}
+.panel{padding:21px}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{color:var(--muted);font-size:10px;line-height:1.8;margin-top:6px}
+.two-col{grid-template-columns:repeat(2,minmax(0,1fr))}
+.three-col{grid-template-columns:repeat(3,minmax(0,1fr))}
+.input,.select{width:100%;padding:12px 13px;border:1px solid #343a46;border-radius:10px;background:#1b202b;color:var(--text);outline:none}
+.input:focus,.select:focus{border-color:var(--gold)}
+.field{display:grid;gap:8px}
+.field label{font-size:11px;font-weight:800;color:#c9ccd4}
+.filter-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:end}
+.pill{display:inline-flex;align-items:center;padding:7px 10px;border-radius:8px;font-size:10px;font-weight:800;white-space:nowrap}
+.pill.high{color:var(--red);background:#ff777d19}
+.pill.medium{color:var(--orange);background:#ffb66e19}
+.pill.low{color:var(--green);background:#54d6a419}
+.pill.ready{color:var(--green);background:#54d6a419}
+.pill.draft{color:var(--blue);background:#82adff19}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th{text-align:left;color:#89909d;font-size:10px;letter-spacing:.7px;padding:14px 11px;border-bottom:1px solid var(--line)}
+td{padding:15px 11px;border-bottom:1px solid var(--line);font-size:11px;color:#c4c9d3}
+td strong{color:var(--text);font-size:11px}
+td small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.progress{height:8px;background:#303642;border-radius:10px;overflow:hidden;margin-top:8px}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#a68145,#f1d69c);border-radius:10px}
+.metric{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid var(--line)}
+.metric span{color:var(--muted);font-size:11px}
+.metric strong{font-size:12px}
+.report-card{padding:16px;background:#1b202b;border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;gap:10px}
+.report-card h4{font:800 13px Manrope,sans-serif;margin:0}
+.report-card p{color:var(--muted);font-size:10px;line-height:1.8;margin:0;flex:1}
+.report-card .btn{align-self:flex-start}
+.chart{height:220px;width:100%;display:block}
+.chart-label{fill:#9299a7;font:11px "DM Sans",sans-serif}
+.bar-row{display:grid;grid-template-columns:95px minmax(0,1fr) 45px;align-items:center;gap:12px;margin:15px 0;font-size:10px}
+.bar-row span:first-child{color:#aeb3bf}
+.bar-track{height:11px;border-radius:9px;background:#303642;overflow:hidden}
+.bar-fill{height:100%;border-radius:9px;background:linear-gradient(90deg,#9d7b43,#edce8f)}
+.timeline{display:grid;gap:14px}
+.event{display:flex;gap:12px}
+.event-icon{width:33px;height:33px;flex-shrink:0;display:grid;place-items:center;border-radius:10px;background:#d8b67118;color:var(--gold)}
+.event strong{font-size:11px}
+.event p{font-size:10px;color:var(--muted);line-height:1.7;margin:7px 0}
+.event small{font-size:10px;color:#777e8d}
+.notice{padding:16px;background:#d8b6710e;border:1px solid #d8b67130;border-radius:12px;color:#bbb4a5;font-size:11px;line-height:1.9;margin-top:17px}
+.notice strong{color:var(--gold2)}
+.footer{padding-top:26px;text-align:center;color:#69707e;font-size:10px}
+.overlay{position:fixed;inset:0;z-index:100;background:#000b;display:none;align-items:center;justify-content:center;padding:18px}
+.overlay.open{display:flex}
+.modal{width:min(760px,100%);max-height:90vh;overflow:auto;background:#181d27;border:1px solid #d8b67144;border-radius:17px;padding:24px;box-shadow:0 30px 90px #0009}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.modal-head h3{font:800 18px Manrope,sans-serif;margin:0}
+.report-preview{margin-top:18px;padding:20px;background:#10151e;border:1px solid var(--line);border-radius:12px;white-space:pre-wrap;line-height:1.9;color:#d6d8de;font-size:12px}
+.toast{position:fixed;right:20px;bottom:20px;z-index:150;padding:14px 17px;background:#252b35;border:1px solid #d8b67166;color:var(--gold2);border-radius:11px;box-shadow:0 15px 45px #0008}
+.menu-btn{display:none}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1250px){.kpis{grid-template-columns:repeat(2,1fr)}.filter-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:fixed;width:260px;transform:translateX(-100%);transition:.3s}.sidebar.open{transform:translateX(0)}.menu-btn{display:inline-flex}.topbar{padding:15px 20px}.content{padding:20px}}
+@media(max-width:620px){.kpis,.two-col,.three-col,.filter-grid{grid-template-columns:1fr}.heading h2{font-size:23px}.panel{padding:16px}.top-actions .badge{display:none}}
+@media print{
+ body{background:white;color:black}
+ .sidebar,.topbar,.hero,.filters,.no-print,.footer,.overlay,.notice{display:none!important}
+ .app{display:block}.content{padding:0}.card{background:white;color:black;border:1px solid #bbb;box-shadow:none}
+ .kpi-head,.kpi-caption,.panel-sub,.section-head p{color:#444}
+ .kpi-number,.panel-title,.section-head h3{color:black}
+ .section{break-inside:avoid}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<div class="app">
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-icon">✦</div>
+  <div><strong>KERALA FLOOD AI</strong><small>INTELLIGENCE PLATFORM</small></div>
+ </div>
+ <nav class="nav">
+  <div class="nav-label">WORKSPACE</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Project Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="analytics.html"><span class="nav-icon">▥</span>Analytics</a>
+  <a href="district-dashboard.html"><span class="nav-icon">◉</span>District Dashboard</a>
+
+  <div class="nav-label">OPERATIONS</div>
+  <a href="incident-management.html"><span class="nav-icon">!</span>Incident Management</a>
+  <a href="rescue-dashboard.html"><span class="nav-icon">⚑</span>Rescue Dashboard</a>
+  <a href="relief-dashboard.html"><span class="nav-icon">◇</span>Relief Dashboard</a>
+  <a href="relief-distribution.html"><span class="nav-icon">▣</span>Relief Distribution</a>
+  <a href="relief-inventory.html"><span class="nav-icon">▤</span>Relief Inventory</a>
+  <a href="shelters.html"><span class="nav-icon">⌂</span>Shelter Management</a>
+  <a href="recovery-management.html"><span class="nav-icon">⚒</span>Recovery Management</a>
+
+  <div class="nav-label">INTELLIGENCE & GOVERNANCE</div>
+  <a href="multi-agent-monitor.html"><span class="nav-icon">✦</span>Agent Monitor</a>
+  <a href="rag-knowledge-base.html"><span class="nav-icon">▧</span>Knowledge Base</a>
+  <a href="human-approval.html"><span class="nav-icon">✓</span>Human Approval</a>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+  <a class="active" href="reports.html"><span class="nav-icon">▥</span>Reports</a>
+ </nav>
+ <div class="side-footer">
+  <div class="avatar">RP</div>
+  <div><strong>Reporting Intelligence</strong><small>Simulation Workspace</small></div>
+ </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-left">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="page-icon">▥</div>
+  <div><h1>Reports & Intelligence</h1><p>Operational analytics · District insights · Exportable reports</p></div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>SYNTHETIC DATA</span>
+  <button class="btn" id="resetBtn">↻ Reset</button>
+  <button class="btn" id="printBtn">⎙ Print</button>
+  <button class="btn gold" id="exportBtn">↓ Export CSV</button>
+ </div>
+</header>
+
+<div class="content">
+ <div class="heading">
+  <div>
+   <div class="eyebrow">OPERATIONAL REPORTING & ANALYTICS</div>
+   <h2>Disaster Response Intelligence Reports</h2>
+   <p>Explore fictional emergency response, shelter, relief, recovery and evaluation performance.</p>
+  </div>
+  <span class="tag">14 DISTRICTS · DEMO DATASET</span>
+ </div>
+
+ <section class="hero">
+  <div class="eyebrow">REPORT GENERATION WORKSPACE</div>
+  <h3>From Operational Data to Accountable Decisions.</h3>
+  <p>
+   Analyze a deterministic synthetic reporting dataset, filter by district and
+   date range, generate preview reports and export tabular results. All metrics
+   are simulated for portfolio demonstration and are not official disaster statistics.
+  </p>
+  <div class="hero-actions">
+   <button class="btn gold" id="generateShortcut">+ Generate Report</button>
+   <a href="#districtSection" class="btn">District Performance ↓</a>
+   <a href="audit-logs.html" class="btn blue">Audit Logs →</a>
+  </div>
+ </section>
+
+ <section class="section card panel no-print">
+  <div class="section-head">
+   <div>
+    <div class="panel-title">Report Filters</div>
+    <div class="panel-sub">Apply district, reporting window and report type to the synthetic dataset.</div>
+   </div>
+   <span class="tag">LOCAL ANALYTICS</span>
+  </div>
+  <div class="filter-grid">
+   <div class="field">
+    <label for="districtFilter">District</label>
+    <select class="select" id="districtFilter"><option value="all">All Districts</option></select>
+   </div>
+   <div class="field">
+    <label for="fromDate">From Date</label>
+    <input class="input" id="fromDate" type="date" value="2026-10-01">
+   </div>
+   <div class="field">
+    <label for="toDate">To Date</label>
+    <input class="input" id="toDate" type="date" value="2026-10-16">
+   </div>
+   <div class="field">
+    <label for="reportType">Report Category</label>
+    <select class="select" id="reportType">
+     <option value="overview">Executive Overview</option>
+     <option value="incidents">Incident & Rescue</option>
+     <option value="relief">Relief & Shelter</option>
+     <option value="recovery">Recovery Progress</option>
+     <option value="evaluation">AI Evaluation</option>
+    </select>
+   </div>
+  </div>
+  <div class="hero-actions">
+   <button class="btn gold" id="applyBtn">Apply Filters</button>
+   <button class="btn" id="clearFiltersBtn">Clear Filters</button>
+  </div>
+ </section>
+
+ <section class="grid kpis">
+  <div class="card kpi">
+   <div class="kpi-head">Reported Incidents<div class="kpi-icon">!</div></div>
+   <div class="kpi-number" id="kpiIncidents">0</div>
+   <div class="kpi-caption"><b>SYNTHETIC</b> · Selected reporting period</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Simulated Rescues<div class="kpi-icon">⚑</div></div>
+   <div class="kpi-number" id="kpiRescues">0</div>
+   <div class="kpi-caption"><b>FICTIONAL</b> · Recorded demo outcomes</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Relief Kits Distributed<div class="kpi-icon">▣</div></div>
+   <div class="kpi-number" id="kpiRelief">0</div>
+   <div class="kpi-caption"><b>SIMULATED</b> · Example supply distribution</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Shelter Occupancy<div class="kpi-icon">⌂</div></div>
+   <div class="kpi-number" id="kpiShelter">0%</div>
+   <div class="kpi-caption"><b>ILLUSTRATIVE</b> · Aggregated occupancy ratio</div>
+  </div>
+ </section>
+
+ <section class="section grid two-col">
+  <div class="card panel">
+   <div class="section-head">
+    <div>
+     <div class="panel-title">Incident & Rescue Trend</div>
+     <div class="panel-sub">Daily synthetic incident and rescue counts.</div>
+    </div>
+   </div>
+   <svg class="chart" id="trendChart" viewBox="0 0 620 220" role="img" aria-label="Incident and rescue trend chart"></svg>
+   <div class="hero-actions">
+    <span class="tag" style="color:var(--gold)">● Incidents</span>
+    <span class="tag" style="color:var(--blue)">● Rescues</span>
+   </div>
+  </div>
+  <div class="card panel">
+   <div class="section-head">
+    <div>
+     <div class="panel-title">Operational Workload Distribution</div>
+     <div class="panel-sub">Relative category totals from the filtered dataset.</div>
+    </div>
+   </div>
+   <div id="categoryBars"></div>
+  </div>
+ </section>
+
+ <section class="section" id="districtSection">
+  <div class="section-head">
+   <div>
+    <h3>District Performance Summary</h3>
+    <p>District-level synthetic counts and recovery indicators for the selected reporting window.</p>
+   </div>
+   <span class="tag" id="districtCount">0 DISTRICTS</span>
+  </div>
+  <div class="card panel">
+   <div class="table-wrap">
+    <table>
+     <thead>
+      <tr>
+       <th>DISTRICT</th>
+       <th>INCIDENTS</th>
+       <th>RESCUES</th>
+       <th>RELIEF KITS</th>
+       <th>SHELTER OCCUPANCY</th>
+       <th>RECOVERY PROGRESS</th>
+      </tr>
+     </thead>
+     <tbody id="districtTable"></tbody>
+    </table>
+   </div>
+  </div>
+ </section>
+
+ <section class="section">
+  <div class="section-head">
+   <div>
+    <h3>Generate Operational Reports</h3>
+    <p>Build locally generated previews from the currently filtered dataset.</p>
+   </div>
+   <span class="tag">REPORT TEMPLATES</span>
+  </div>
+  <div class="grid three-col" id="reportTemplates"></div>
+ </section>
+
+ <section class="section grid two-col">
+  <div class="card panel">
+   <div class="section-head">
+    <div>
+     <div class="panel-title">Recovery & Shelter Intelligence</div>
+     <div class="panel-sub">Aggregate synthetic progress indicators.</div>
+    </div>
+   </div>
+   <div id="recoveryMetrics"></div>
+  </div>
+  <div class="card panel">
+   <div class="section-head">
+    <div>
+     <div class="panel-title">AI Evaluation Snapshot</div>
+     <div class="panel-sub">Illustrative target values, not actual measured model performance.</div>
+    </div>
+   </div>
+   <div id="evaluationMetrics"></div>
+  </div>
+ </section>
+
+ <section class="section card panel">
+  <div class="section-head">
+   <div>
+    <div class="panel-title">Report Generation Activity</div>
+    <div class="panel-sub">Session-only reporting actions.</div>
+   </div>
+  </div>
+  <div class="timeline" id="activityTimeline"></div>
+ </section>
+
+ <div class="notice">
+  <strong>⚠ Reporting Integrity Notice.</strong>
+  <div>
+   All figures are synthetic and must not be presented as actual Kerala flood
+   incidents, rescues, relief deliveries, shelter occupancy or model evaluation results.
+   The standalone pages do not share a live database. Production reporting requires
+   validated source records, district permissions, consistent reporting windows,
+   provenance, audit trails and verified government data.
+   For emergencies in India, call <a href="tel:112" style="color:var(--gold2)">112</a>.
+  </div>
+ </div>
+
+ <footer class="footer">
+  KERALA FLOOD RELIEF COORDINATION AGENT · REPORTS & INTELLIGENCE · SYNTHETIC DEMONSTRATION
+ </footer>
+</div>
+</main>
+</div>
+
+<div class="overlay" id="reportOverlay">
+ <div class="modal" role="dialog" aria-modal="true" aria-labelledby="reportTitle">
+  <div class="modal-head">
+   <h3 id="reportTitle">Report Preview</h3>
+   <button class="btn" id="closeReport" aria-label="Close report">✕</button>
+  </div>
+  <p class="panel-sub">Generated locally from synthetic reporting data.</p>
+  <div class="report-preview" id="reportPreview"></div>
+  <div class="hero-actions">
+   <button class="btn gold" id="downloadReportBtn">↓ Download Text Report</button>
+   <button class="btn" id="copyReportBtn">Copy Report</button>
+  </div>
+ </div>
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const DISTRICTS=[
+ "Thiruvananthapuram","Kollam","Pathanamthitta","Alappuzha",
+ "Kottayam","Idukki","Ernakulam","Thrissur","Palakkad",
+ "Malappuram","Kozhikode","Wayanad","Kannur","Kasaragod"
+];
+
+const START="2026-10-01";
+const END="2026-10-16";
+
+const state={
+ rows:[],
+ filtered:[],
+ events:[],
+ activeType:"overview",
+ reportText:""
+};
+
+function el(tag,className,text){
+ const node=document.createElement(tag);
+ if(className)node.className=className;
+ if(text!==undefined)node.textContent=String(text);
+ return node;
+}
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+ const node=el("div","toast",message);
+ document.body.appendChild(node);
+ setTimeout(()=>node.remove(),2800);
+}
+
+function format(value){
+ return Math.round(value).toLocaleString("en-IN");
+}
+
+function sum(rows,key){
+ return rows.reduce((total,row)=>total+row[key],0);
+}
+
+function mean(rows,key){
+ return rows.length?sum(rows,key)/rows.length:0;
+}
+
+function isoDate(date){
+ return date.toISOString().slice(0,10);
+}
+
+function generateSeed(){
+ const rows=[];
+ const start=new Date(START+"T00:00:00Z");
+ const end=new Date(END+"T00:00:00Z");
+
+ for(let date=new Date(start);date<=end;date.setUTCDate(date.getUTCDate()+1)){
+  const day=Math.round((date-start)/86400000);
+
+  DISTRICTS.forEach((district,index)=>{
+   const factor=(index*7+day*5)%13;
+   const incidents=2+factor;
+   const rescues=Math.max(0,incidents-((index+day)%4));
+   const relief=60+incidents*18+(index%5)*12;
+   const capacity=100+index*14;
+   const occupied=Math.min(capacity,45+factor*8+(day%4)*5);
+   const recovery=Math.min(100,25+day*3+(index*4)%19);
+
+   rows.push({
+    date:isoDate(date),
+    district,
+    incidents,
+    rescues,
+    relief,
+    capacity,
+    occupied,
+    recovery
+   });
+  });
+ }
+
+ return rows;
+}
+
+function getFilters(){
+ return {
+  district:$("districtFilter").value,
+  from:$("fromDate").value,
+  to:$("toDate").value
+ };
+}
+
+function applyFilters(){
+ const {district,from,to}=getFilters();
+
+ if(!from||!to||from>to){
+  toast("Choose a valid date range.");
+  return;
+ }
+
+ state.filtered=state.rows.filter(row=>
+  row.date>=from&&row.date<=to&&
+  (district==="all"||row.district===district)
+ );
+
+ state.activeType=$("reportType").value;
+
+ renderAll();
+ logEvent(
+  "Report filters applied",
+  `${district==="all"?"All districts":district} · ${from} to ${to} · ${state.filtered.length} synthetic records`
+ );
+}
+
+function metrics(){
+ const rows=state.filtered;
+ const capacity=sum(rows,"capacity");
+ const occupied=sum(rows,"occupied");
+
+ return {
+  incidents:sum(rows,"incidents"),
+  rescues:sum(rows,"rescues"),
+  relief:sum(rows,"relief"),
+  capacity,
+  occupied,
+  occupancy:capacity?occupied/capacity*100:0,
+  recovery:mean(rows,"recovery")
+ };
+}
+
+function renderKPIs(){
+ const m=metrics();
+
+ $("kpiIncidents").textContent=format(m.incidents);
+ $("kpiRescues").textContent=format(m.rescues);
+ $("kpiRelief").textContent=format(m.relief);
+ $("kpiShelter").textContent=m.occupancy.toFixed(1)+"%";
+}
+
+function aggregateByDistrict(){
+ const map=new Map();
+
+ state.filtered.forEach(row=>{
+  if(!map.has(row.district)){
+   map.set(row.district,{
+    district:row.district,
+    incidents:0,
+    rescues:0,
+    relief:0,
+    capacity:0,
+    occupied:0,
+    recoveryTotal:0,
+    count:0
+   });
+  }
+
+  const entry=map.get(row.district);
+  entry.incidents+=row.incidents;
+  entry.rescues+=row.rescues;
+  entry.relief+=row.relief;
+  entry.capacity+=row.capacity;
+  entry.occupied+=row.occupied;
+  entry.recoveryTotal+=row.recovery;
+  entry.count++;
+ });
+
+ return [...map.values()].map(row=>({
+  ...row,
+  occupancy:row.capacity?row.occupied/row.capacity*100:0,
+  recovery:row.count?row.recoveryTotal/row.count:0
+ }));
+}
+
+function renderDistrictTable(){
+ const root=$("districtTable");
+ root.replaceChildren();
+
+ const rows=aggregateByDistrict();
+ $("districtCount").textContent=rows.length+" DISTRICTS";
+
+ if(!rows.length){
+  const tr=document.createElement("tr");
+  const td=el("td","","No synthetic records for the selected filters.");
+  td.colSpan=6;
+  tr.appendChild(td);
+  root.appendChild(tr);
+  return;
+ }
+
+ rows.forEach(row=>{
+  const tr=document.createElement("tr");
+
+  const name=document.createElement("td");
+  name.appendChild(el("strong","",row.district));
+
+  const recovery=document.createElement("td");
+  recovery.appendChild(el("strong","",row.recovery.toFixed(1)+"%"));
+
+  const bar=el("div","progress");
+  const fill=el("span");
+  fill.style.width=row.recovery+"%";
+  bar.appendChild(fill);
+  recovery.appendChild(bar);
+
+  tr.append(
+   name,
+   el("td","",format(row.incidents)),
+   el("td","",format(row.rescues)),
+   el("td","",format(row.relief)),
+   el("td","",row.occupancy.toFixed(1)+"%"),
+   recovery
+  );
+
+  root.appendChild(tr);
+ });
+}
+
+function createSVG(tag,attributes){
+ const node=document.createElementNS("http://www.w3.org/2000/svg",tag);
+ Object.entries(attributes).forEach(([key,value])=>node.setAttribute(key,value));
+ return node;
+}
+
+function renderTrendChart(){
+ const svg=$("trendChart");
+ svg.replaceChildren();
+
+ const dates=[...new Set(state.filtered.map(row=>row.date))].sort();
+
+ const points=dates.map(date=>{
+  const rows=state.filtered.filter(row=>row.date===date);
+  return {
+   date,
+   incidents:sum(rows,"incidents"),
+   rescues:sum(rows,"rescues")
+  };
+ });
+
+ if(!points.length){
+  const label=createSVG("text",{x:190,y:115,fill:"#9399a7"});
+  label.textContent="No data in selected range";
+  svg.appendChild(label);
+  return;
+ }
+
+ const max=Math.max(1,...points.flatMap(p=>[p.incidents,p.rescues]));
+ const x=i=>points.length===1?310:40+i*540/(points.length-1);
+ const y=value=>180-value/max*145;
+
+ for(let i=0;i<=4;i++){
+  const yy=180-i*145/4;
+  svg.appendChild(createSVG("line",{
+   x1:40,y1:yy,x2:580,y2:yy,
+   stroke:"#ffffff18","stroke-dasharray":"4 5"
+  }));
+ }
+
+ function drawSeries(key,color){
+  const polyline=createSVG("polyline",{
+   points:points.map((p,i)=>x(i)+","+y(p[key])).join(" "),
+   fill:"none",
+   stroke:color,
+   "stroke-width":"3",
+   "stroke-linecap":"round",
+   "stroke-linejoin":"round"
+  });
+  svg.appendChild(polyline);
+
+  points.forEach((p,i)=>{
+   svg.appendChild(createSVG("circle",{
+    cx:x(i),cy:y(p[key]),r:3,
+    fill:color
+   }));
+  });
+ }
+
+ drawSeries("incidents","#d8b671");
+ drawSeries("rescues","#82adff");
+
+ const step=Math.max(1,Math.ceil(points.length/5));
+ points.forEach((p,i)=>{
+  if(i%step!==0&&i!==points.length-1)return;
+
+  const label=createSVG("text",{
+   x:x(i),y:207,
+   fill:"#9399a7",
+   "text-anchor":"middle",
+   "font-size":"10"
+  });
+  label.textContent=p.date.slice(5);
+  svg.appendChild(label);
+ });
+}
+
+function renderCategoryBars(){
+ const m=metrics();
+ const categories=[
+  ["Incidents",m.incidents],
+  ["Rescues",m.rescues],
+  ["Relief Kits",m.relief],
+  ["Occupied Bed-Days",m.occupied]
+ ];
+
+ const max=Math.max(1,...categories.map(row=>row[1]));
+ const root=$("categoryBars");
+ root.replaceChildren();
+
+ categories.forEach(([name,value])=>{
+  const row=el("div","bar-row");
+  const track=el("div","bar-track");
+  const fill=el("div","bar-fill");
+  fill.style.width=(value/max*100)+"%";
+  track.appendChild(fill);
+
+  row.append(
+   el("span","",name),
+   track,
+   el("strong","",format(value))
+  );
+
+  root.appendChild(row);
+ });
+}
+
+function renderRecovery(){
+ const root=$("recoveryMetrics");
+ root.replaceChildren();
+
+ const m=metrics();
+
+ [
+  ["Average Recovery Progress",m.recovery.toFixed(1)+"%"],
+  ["Aggregate Shelter Occupancy",m.occupancy.toFixed(1)+"%"],
+  ["Synthetic Shelter Bed-Days",format(m.capacity)],
+  ["Synthetic Occupied Bed-Days",format(m.occupied)]
+ ].forEach(([label,value])=>{
+  const row=el("div","metric");
+  row.append(el("span","",label),el("strong","",value));
+  root.appendChild(row);
+ });
+}
+
+function renderEvaluation(){
+ const root=$("evaluationMetrics");
+ root.replaceChildren();
+
+ const examples=[
+  ["Illustrative RAG Recall@5 Target","≥ 0.85"],
+  ["Illustrative Citation Accuracy Target","≥ 0.95"],
+  ["Illustrative Agent Tool Accuracy Target","≥ 0.98"],
+  ["Illustrative Safety Review Coverage","100%"],
+  ["Actual Evaluations Executed","0"]
+ ];
+
+ examples.forEach(([label,value])=>{
+  const row=el("div","metric");
+  row.append(el("span","",label),el("strong","",value));
+  root.appendChild(row);
+ });
+
+ const note=el("div","notice");
+ note.append(
+  el("strong","","Not benchmark results"),
+  el("div","","These are example acceptance targets only. No RAG, agent or forecasting evaluation is executed by this page.")
+ );
+ root.appendChild(note);
+}
+
+const REPORT_TYPES=[
+ {
+  id:"overview",
+  title:"Executive Situation Report",
+  description:"Summary of incidents, rescues, relief, shelters and recovery indicators."
+ },
+ {
+  id:"incidents",
+  title:"Incident & Rescue Report",
+  description:"Synthetic incident volume, rescue outcomes and district breakdown."
+ },
+ {
+  id:"relief",
+  title:"Relief & Shelter Report",
+  description:"Relief-kit distribution and aggregated shelter occupancy."
+ },
+ {
+  id:"recovery",
+  title:"Recovery Progress Report",
+  description:"District recovery completion indicators and aggregate progress."
+ },
+ {
+  id:"evaluation",
+  title:"AI Evaluation Readiness Report",
+  description:"Proposed evaluation targets and implementation readiness notes."
+ }
+];
+
+function renderTemplates(){
+ const root=$("reportTemplates");
+ root.replaceChildren();
+
+ REPORT_TYPES.forEach(type=>{
+  const card=el("div","report-card");
+  card.append(
+   el("span","tag","REPORT TEMPLATE"),
+   el("h4","",type.title),
+   el("p","",type.description)
+  );
+
+  const button=el("button","btn","Generate Preview →");
+  button.addEventListener("click",()=>generateReport(type.id));
+  card.appendChild(button);
+  root.appendChild(card);
+ });
+}
+
+function generateReport(typeId){
+ const type=REPORT_TYPES.find(item=>item.id===typeId);
+ if(!type)return;
+
+ const m=metrics();
+ const rows=aggregateByDistrict();
+ const filters=getFilters();
+
+ const lines=[
+  "KERALA FLOOD AI — SYNTHETIC REPORT",
+  "=================================",
+  type.title,
+  "",
+  "DATA STATUS: FICTIONAL / NOT OFFICIAL",
+  "District: "+(filters.district==="all"?"All Districts":filters.district),
+  "Period: "+filters.from+" to "+filters.to,
+  "Dataset records: "+state.filtered.length,
+  ""
+ ];
+
+ if(typeId==="overview"||typeId==="incidents"){
+  lines.push(
+   "INCIDENT & RESCUE SUMMARY",
+   "Reported demo incidents: "+format(m.incidents),
+   "Simulated rescues: "+format(m.rescues),
+   ""
+  );
+ }
+
+ if(typeId==="overview"||typeId==="relief"){
+  lines.push(
+   "RELIEF & SHELTER SUMMARY",
+   "Fictional relief kits: "+format(m.relief),
+   "Aggregate occupancy: "+m.occupancy.toFixed(1)+"%",
+   ""
+  );
+ }
+
+ if(typeId==="overview"||typeId==="recovery"){
+  lines.push(
+   "RECOVERY SUMMARY",
+   "Average recovery indicator: "+m.recovery.toFixed(1)+"%",
+   ""
+  );
+ }
+
+ if(typeId==="evaluation"){
+  lines.push(
+   "AI EVALUATION READINESS",
+   "RAG Recall@5 target: >= 0.85",
+   "Citation accuracy target: >= 0.95",
+   "Agent tool accuracy target: >= 0.98",
+   "Actual model evaluations executed: 0",
+   "These targets are illustrative and not measured results.",
+   ""
+  );
+ }
+
+ if(typeId!=="evaluation"){
+  lines.push("DISTRICT BREAKDOWN");
+
+  rows.forEach(row=>{
+   lines.push(
+    `${row.district}: incidents=${row.incidents}, rescues=${row.rescues}, relief_kits=${row.relief}, occupancy=${row.occupancy.toFixed(1)}%, recovery=${row.recovery.toFixed(1)}%`
+   );
+  });
+ }
+
+ lines.push(
+  "",
+  "LIMITATIONS",
+  "Generated from a deterministic browser-local synthetic dataset.",
+  "Daily shelter counts are aggregated as bed-days, not unique people.",
+  "No real emergency data, operational actions or verified model outputs."
+ );
+
+ state.reportText=lines.join("\n");
+
+ $("reportTitle").textContent=type.title;
+ $("reportPreview").textContent=state.reportText;
+ $("reportOverlay").classList.add("open");
+ $("closeReport").focus();
+
+ logEvent("Report generated",type.title+" preview created from synthetic records.");
+}
+
+function downloadText(){
+ if(!state.reportText)return;
+
+ const blob=new Blob([state.reportText],{
+  type:"text/plain;charset=utf-8"
+ });
+
+ downloadBlob(blob,"kerala-flood-synthetic-report.txt");
+ toast("Synthetic report downloaded");
+}
+
+async function copyReport(){
+ if(!state.reportText)return;
+
+ try{
+  await navigator.clipboard.writeText(state.reportText);
+  toast("Report copied");
+ }catch{
+  toast("Clipboard unavailable. Select text in the preview.");
+ }
+}
+
+function downloadBlob(blob,filename){
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement("a");
+ link.href=url;
+ link.download=filename;
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+function csvEscape(value){
+ let text=String(value??"");
+ if(/^\s*[=+\-@]/.test(text))text="'"+text;
+ return '"'+text.replace(/"/g,'""')+'"';
+}
+
+function exportCSV(){
+ const columns=[
+  "date","district","incidents","rescues",
+  "relief","capacity","occupied","recovery"
+ ];
+
+ const rows=[
+  columns.map(csvEscape).join(","),
+  ...state.filtered.map(row=>
+   columns.map(key=>csvEscape(row[key])).join(",")
+  )
+ ];
+
+ downloadBlob(
+  new Blob(["\uFEFF"+rows.join("\r\n")],{
+   type:"text/csv;charset=utf-8"
+  }),
+  "kerala-flood-reports-synthetic.csv"
+ );
+
+ toast("Filtered synthetic data exported");
+}
+
+function logEvent(title,detail){
+ state.events.unshift({
+  title,detail,time:new Date().toLocaleTimeString("en-IN")
+ });
+ state.events=state.events.slice(0,8);
+ renderTimeline();
+}
+
+function renderTimeline(){
+ const root=$("activityTimeline");
+ root.replaceChildren();
+
+ state.events.forEach(event=>{
+  const row=el("div","event");
+  const icon=el("div","event-icon","▥");
+  const body=el("div");
+
+  body.append(
+   el("strong","",event.title),
+   el("p","",event.detail),
+   el("small","",event.time)
+  );
+
+  row.append(icon,body);
+  root.appendChild(row);
+ });
+}
+
+function renderAll(){
+ renderKPIs();
+ renderTrendChart();
+ renderCategoryBars();
+ renderDistrictTable();
+ renderRecovery();
+ renderEvaluation();
+}
+
+function closeReport(){
+ $("reportOverlay").classList.remove("open");
+}
+
+function resetDemo(){
+ state.rows=generateSeed();
+ state.events=[{
+  title:"Reporting workspace initialized",
+  detail:"Deterministic fictional district data loaded for 1–16 October 2026.",
+  time:"Demo"
+ }];
+
+ $("districtFilter").value="all";
+ $("fromDate").value=START;
+ $("toDate").value=END;
+ $("reportType").value="overview";
+
+ state.filtered=[...state.rows];
+ state.activeType="overview";
+ state.reportText="";
+
+ closeReport();
+ renderAll();
+ renderTimeline();
+ toast("Reporting demonstration reset");
+}
+
+function initialize(){
+ DISTRICTS.forEach(name=>{
+  $("districtFilter").appendChild(new Option(name,name));
+ });
+
+ renderTemplates();
+ resetDemo();
+
+ $("applyBtn").addEventListener("click",applyFilters);
+ $("clearFiltersBtn").addEventListener("click",resetDemo);
+
+ $("generateShortcut").addEventListener("click",()=>{
+  applyFilters();
+  generateReport($("reportType").value);
+ });
+
+ $("resetBtn").addEventListener("click",resetDemo);
+ $("exportBtn").addEventListener("click",exportCSV);
+ $("printBtn").addEventListener("click",()=>window.print());
+
+ $("closeReport").addEventListener("click",closeReport);
+ $("downloadReportBtn").addEventListener("click",downloadText);
+ $("copyReportBtn").addEventListener("click",copyReport);
+
+ $("reportOverlay").addEventListener("click",event=>{
+  if(event.target===$("reportOverlay"))closeReport();
+ });
+
+ document.addEventListener("keydown",event=>{
+  if(event.key==="Escape")closeReport();
+ });
+
+ $("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+ });
+}
+
+initialize();
+</script>
+</body>
+</html>

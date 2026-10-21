@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b10">
+<title>Notifications | Kerala Flood AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#090b10;--sidebar:#0d1017;--panel:#151922;--panel2:#1b202b;
+ --gold:#d8b671;--gold2:#f5daa0;--text:#f4f1e9;--muted:#9399a7;
+ --line:rgba(255,255,255,.085);--green:#54d6a4;--orange:#ffb66e;
+ --red:#ff777d;--blue:#82adff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:13px "DM Sans",sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.app{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;background:var(--sidebar);border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:40}
+.brand{padding:24px 18px;display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--line)}
+.brand-icon{width:43px;height:43px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#f5daa0,#a47c3b);color:#20170a;font-size:23px}
+.brand strong{font:800 13px Manrope,sans-serif}
+.brand small{display:block;font-size:10px;letter-spacing:1.2px;color:var(--muted);margin-top:5px}
+.nav{padding:18px 13px;overflow:auto;flex:1}
+.nav-label{color:#777e8d;font-size:10px;letter-spacing:1.5px;font-weight:800;margin:17px 12px 9px}
+.nav a{display:flex;align-items:center;gap:12px;padding:12px 13px;margin-bottom:5px;border:1px solid transparent;border-radius:10px;color:#a2a8b4;font-size:12px;font-weight:600;transition:.2s}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{background:#d8b67119;border-color:#d8b67130;color:var(--gold2)}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.side-footer{padding:17px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:11px;background:#383023;color:var(--gold2);display:grid;place-items:center;font-weight:800}
+.side-footer strong{font-size:11px}
+.side-footer small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.main{min-width:0;background:radial-gradient(ellipse at 65% -5%,#d8b67112,transparent 38%),var(--bg)}
+.topbar{min-height:82px;padding:17px 30px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:14px}
+.top-left,.top-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.page-icon{width:43px;height:43px;border-radius:12px;background:#d8b67119;border:1px solid #d8b67133;color:var(--gold);display:grid;place-items:center;font-size:20px}
+.top-left h1{font:800 18px Manrope,sans-serif;margin:0}
+.top-left p{color:var(--muted);font-size:11px;margin:5px 0 0}
+.badge,.tag{display:inline-flex;align-items:center;gap:7px;padding:9px 11px;background:#d8b67112;border:1px solid #d8b67130;color:var(--gold2);border-radius:9px;font-size:10px;font-weight:800}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 15px;border-radius:10px;border:1px solid var(--line);background:#1a1f29;color:#e1e3e8;font-size:11px;font-weight:800;transition:.2s}
+.btn:hover{border-color:#d8b67166;transform:translateY(-1px)}
+.btn.gold{background:linear-gradient(120deg,#c6a15e,#f1d49a);color:#1b160e;border:0}
+.btn.red{color:var(--red);background:#ff777d12;border-color:#ff777d40}
+.btn.blue{color:var(--blue);background:#82adff12;border-color:#82adff40}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.content{max-width:1700px;margin:auto;padding:28px 30px 45px}
+.eyebrow{color:var(--gold);font-size:10px;letter-spacing:2px;font-weight:800;margin-bottom:10px}
+.heading{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+.heading h2{font:800 28px Manrope,sans-serif;letter-spacing:-1px;margin:0}
+.heading p{color:var(--muted);font-size:12px;line-height:1.8;margin:9px 0 0}
+.hero{padding:27px;border-radius:18px;border:1px solid #d8b67138;background:radial-gradient(circle at 85% 15%,#d8b67120,transparent 35%),linear-gradient(120deg,#252017,#151922)}
+.hero h3{font:800 26px Manrope,sans-serif;letter-spacing:-.8px;margin:12px 0}
+.hero p{color:#b9b5ae;font-size:12px;line-height:1.9;max-width:850px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:17px}
+.card{min-width:0;background:linear-gradient(150deg,#181c26,#12161e);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 35px #0002;animation:rise .5s ease both}
+.kpi{padding:21px}
+.kpi-head{display:flex;justify-content:space-between;align-items:center;color:#a7adba;font-size:11px;font-weight:700}
+.kpi-icon{width:36px;height:36px;border-radius:10px;background:#d8b67119;color:var(--gold);display:grid;place-items:center;font-size:18px}
+.kpi-number{font:800 30px Manrope,sans-serif;letter-spacing:-1px;margin:15px 0 7px}
+.kpi-caption{font-size:10px;color:var(--muted);line-height:1.7}
+.kpi-caption b{color:var(--gold)}
+.section{margin-top:25px}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:15px}
+.section-head h3{font:800 19px Manrope,sans-serif;letter-spacing:-.5px;margin:0}
+.section-head p{color:var(--muted);font-size:11px;line-height:1.8;margin:7px 0 0}
+.panel{padding:21px}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{color:var(--muted);font-size:10px;line-height:1.8;margin-top:6px}
+.columns{grid-template-columns:minmax(0,1.45fr) minmax(310px,1fr)}
+.two-col{grid-template-columns:repeat(2,minmax(0,1fr))}
+.field{display:grid;gap:8px;margin-bottom:14px}
+.field label{font-size:11px;font-weight:800;color:#c9ccd4}
+.input,.select,.textarea{width:100%;padding:12px 13px;border:1px solid #343a46;border-radius:10px;background:#1b202b;color:var(--text);outline:none}
+.input:focus,.select:focus,.textarea:focus{border-color:var(--gold)}
+.textarea{resize:vertical;min-height:95px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 13px}
+.form-grid .wide{grid-column:1/-1}
+.checkline{display:flex;align-items:flex-start;gap:10px;color:#b9bec9;font-size:11px;line-height:1.7;margin:9px 0 16px}
+.checkline input{accent-color:var(--gold);margin-top:3px}
+.pill{display:inline-flex;align-items:center;padding:7px 10px;border-radius:8px;font-size:10px;font-weight:800;white-space:nowrap}
+.pill.critical,.pill.rejected{color:var(--red);background:#ff777d19}
+.pill.high,.pill.pending{color:var(--orange);background:#ffb66e19}
+.pill.medium,.pill.review{color:var(--blue);background:#82adff19}
+.pill.low,.pill.approved,.pill.closed{color:var(--green);background:#54d6a419}
+.pill.draft{color:var(--gold2);background:#d8b67119}
+.notification-list{display:grid;gap:10px}
+.notification{display:flex;align-items:flex-start;gap:13px;padding:17px;background:#1b202b;border:1px solid var(--line);border-radius:12px;transition:.2s}
+.notification:hover{border-color:#d8b67144}
+.notification.unread{border-left:3px solid var(--gold)}
+.notification-icon{width:39px;height:39px;flex-shrink:0;border-radius:11px;background:#d8b67117;display:grid;place-items:center;color:var(--gold);font-size:18px}
+.notification-body{flex:1;min-width:0}
+.notification-head{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.notification h4{font:800 12px Manrope,sans-serif;margin:0}
+.notification p{font-size:11px;color:var(--muted);line-height:1.8;margin:9px 0}
+.notification-meta{font-size:10px;color:#8b92a0}
+.notification-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.small-btn{padding:8px 10px;border-radius:8px;border:1px solid #d8b67140;background:#d8b67115;color:var(--gold2);font-size:10px;font-weight:800}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
+.filters .input{flex:1;min-width:180px}
+.filters .select{width:auto;min-width:130px}
+.channel{padding:15px;background:#1b202b;border:1px solid var(--line);border-radius:11px;margin-bottom:10px}
+.channel-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.channel strong{font-size:11px}
+.channel p{font-size:10px;color:var(--muted);line-height:1.8;margin:9px 0}
+.timeline{display:grid;gap:15px}
+.event{display:flex;gap:12px}
+.event-icon{width:33px;height:33px;flex-shrink:0;display:grid;place-items:center;border-radius:10px;background:#d8b67118;color:var(--gold)}
+.event strong{font-size:11px}
+.event p{font-size:10px;color:var(--muted);line-height:1.7;margin:7px 0}
+.event small{font-size:10px;color:#777e8d}
+.notice{padding:16px;background:#d8b6710e;border:1px solid #d8b67130;border-radius:12px;color:#bbb4a5;font-size:11px;line-height:1.9;margin-top:17px}
+.notice strong{color:var(--gold2)}
+.footer{padding-top:26px;text-align:center;color:#69707e;font-size:10px}
+.overlay{position:fixed;inset:0;z-index:100;background:#000b;display:none;align-items:center;justify-content:center;padding:18px}
+.overlay.open{display:flex}
+.modal{width:min(570px,100%);max-height:90vh;overflow:auto;background:#181d27;border:1px solid #d8b67144;border-radius:17px;padding:24px;box-shadow:0 30px 90px #0009}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.modal-head h3{font:800 18px Manrope,sans-serif;margin:0}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
+.detail{padding:13px;background:#10151e;border:1px solid var(--line);border-radius:9px}
+.detail small{display:block;color:var(--muted);font-size:10px;margin-bottom:8px}
+.detail strong{font-size:11px;overflow-wrap:anywhere}
+.modal-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
+.toast{position:fixed;right:20px;bottom:20px;z-index:150;padding:14px 17px;background:#252b35;border:1px solid #d8b67166;color:var(--gold2);border-radius:11px;box-shadow:0 15px 45px #0008}
+.menu-btn{display:none}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1250px){.kpis{grid-template-columns:repeat(2,1fr)}.columns{grid-template-columns:1fr}}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:fixed;width:260px;transform:translateX(-100%);transition:.3s}.sidebar.open{transform:translateX(0)}.menu-btn{display:inline-flex}.topbar{padding:15px 20px}.content{padding:20px}}
+@media(max-width:560px){.kpis,.two-col,.form-grid{grid-template-columns:1fr}.form-grid .wide{grid-column:auto}.heading h2{font-size:23px}.panel{padding:16px}.top-actions .badge{display:none}.detail-grid{grid-template-columns:1fr}.notification{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-icon">✦</div>
+  <div><strong>KERALA FLOOD AI</strong><small>INTELLIGENCE PLATFORM</small></div>
+ </div>
+ <nav class="nav">
+  <div class="nav-label">WORKSPACE</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Project Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="agent-command-center.html"><span class="nav-icon">✦</span>Agent Command Center</a>
+  <a href="multi-agent-monitor.html"><span class="nav-icon">◎</span>Multi-Agent Monitor</a>
+  <a href="ai-copilot.html"><span class="nav-icon">◇</span>AI Copilot</a>
+  <a class="active" href="notifications.html"><span class="nav-icon">♧</span>Notifications</a>
+
+  <div class="nav-label">OPERATIONS</div>
+  <a href="incident-management.html"><span class="nav-icon">◉</span>Incident Management</a>
+  <a href="emergency-sos.html"><span class="nav-icon">⚑</span>Emergency SOS</a>
+  <a href="rescue-dashboard.html"><span class="nav-icon">✧</span>Rescue Operations</a>
+  <a href="medical-emergency.html"><span class="nav-icon">✚</span>Medical Emergency</a>
+  <a href="missing-persons.html"><span class="nav-icon">◎</span>Missing Persons</a>
+
+  <div class="nav-label">INTELLIGENCE</div>
+  <a href="live-flood-map.html"><span class="nav-icon">◈</span>Flood Map</a>
+  <a href="flood-alerts.html"><span class="nav-icon">☁</span>Flood Alerts</a>
+  <a href="flood-prediction.html"><span class="nav-icon">≈</span>Flood Prediction</a>
+
+  <div class="nav-label">GOVERNANCE</div>
+  <a href="human-approval.html"><span class="nav-icon">✓</span>Human Approval</a>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+ </nav>
+ <div class="side-footer">
+  <div class="avatar">NT</div>
+  <div><strong>Notification Center</strong><small>Simulation Workspace</small></div>
+ </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-left">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="page-icon">♧</div>
+  <div><h1>Notifications</h1><p>Alert inbox · Delivery concepts · Human review</p></div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>DEMO MODE</span>
+  <button class="btn" id="resetBtn">↻ Reset</button>
+  <button class="btn gold" id="exportBtn">↓ Export CSV</button>
+ </div>
+</header>
+
+<div class="content">
+<div class="heading">
+ <div>
+  <div class="eyebrow">NOTIFICATION INTELLIGENCE</div>
+  <h2>Alerts & Notifications Center</h2>
+  <p>Manage fictional operational notifications and review proposed communication workflows.</p>
+ </div>
+ <span class="tag">NO REAL MESSAGES SENT</span>
+</div>
+
+<section class="hero">
+ <div class="eyebrow">COMMUNICATION WORKFLOW DESIGN</div>
+ <h3>One Inbox. Clear Priorities. Controlled Communication.</h3>
+ <p>
+  Review synthetic flood alerts, SOS updates, rescue coordination messages,
+  medical notices and approval requests. Prepare draft notifications for
+  SMS, email, WhatsApp or dashboard delivery, with human review before any
+  future production integration.
+ </p>
+ <div class="hero-actions">
+  <button class="btn gold" id="composeBtn">+ Compose Demo Notification</button>
+  <button class="btn" id="markAllReadBtn">✓ Mark All Read</button>
+  <a class="btn blue" href="human-approval.html">Human Approval →</a>
+ </div>
+</section>
+
+<section class="grid kpis">
+ <div class="card kpi"><div class="kpi-head">Total Notifications<div class="kpi-icon">▤</div></div><div class="kpi-number" id="kpiTotal">0</div><div class="kpi-caption"><b>SYNTHETIC</b> · Local inbox</div></div>
+ <div class="card kpi"><div class="kpi-head">Unread<div class="kpi-icon">◎</div></div><div class="kpi-number" id="kpiUnread">0</div><div class="kpi-caption"><b>DEMO</b> · Requires review</div></div>
+ <div class="card kpi"><div class="kpi-head">Critical Alerts<div class="kpi-icon">⚑</div></div><div class="kpi-number" id="kpiCritical">0</div><div class="kpi-caption"><b>FICTIONAL</b> · Severity labels</div></div>
+ <div class="card kpi"><div class="kpi-head">Pending Approval<div class="kpi-icon">✓</div></div><div class="kpi-number" id="kpiPending">0</div><div class="kpi-caption"><b>LOCAL WORKFLOW</b> · No real authorization</div></div>
+</section>
+
+<section class="section grid columns">
+ <div class="card panel">
+  <div class="section-head">
+   <div><div class="panel-title">Notification Inbox</div><div class="panel-sub">Search, filter and inspect fictional messages.</div></div>
+   <span class="tag" id="inboxCount">0 MESSAGES</span>
+  </div>
+  <div class="filters">
+   <input class="input" id="searchInput" placeholder="Search title, district or message..." aria-label="Search notifications">
+   <select class="select" id="priorityFilter">
+    <option value="all">All Priorities</option>
+    <option value="critical">Critical</option>
+    <option value="high">High</option>
+    <option value="medium">Medium</option>
+    <option value="low">Low</option>
+   </select>
+   <select class="select" id="readFilter">
+    <option value="all">All Messages</option>
+    <option value="unread">Unread</option>
+    <option value="read">Read</option>
+   </select>
+  </div>
+  <div class="notification-list" id="notificationList"></div>
+ </div>
+
+ <div class="card panel">
+  <div class="panel-title">Compose Fictional Notification</div>
+  <div class="panel-sub" style="margin-bottom:17px">Draft a scenario message. It will never be delivered to external recipients.</div>
+  <form id="composeForm">
+   <div class="form-grid">
+    <div class="field wide">
+     <label for="notificationTitle">Notification Title</label>
+     <input class="input" id="notificationTitle" maxlength="90" placeholder="Demo Flood Coordination Update" required>
+    </div>
+    <div class="field">
+     <label for="district">District</label>
+     <select class="select" id="district" required></select>
+    </div>
+    <div class="field">
+     <label for="priority">Priority</label>
+     <select class="select" id="priority">
+      <option value="medium">Medium</option>
+      <option value="low">Low</option>
+      <option value="high">High</option>
+      <option value="critical">Critical</option>
+     </select>
+    </div>
+    <div class="field">
+     <label for="category">Category</label>
+     <select class="select" id="category">
+      <option>Flood Advisory</option>
+      <option>SOS Coordination</option>
+      <option>Rescue Update</option>
+      <option>Medical Coordination</option>
+      <option>Shelter Update</option>
+      <option>System Notice</option>
+     </select>
+    </div>
+    <div class="field">
+     <label for="channel">Proposed Channel</label>
+     <select class="select" id="channel">
+      <option>Dashboard</option>
+      <option>SMS</option>
+      <option>Email</option>
+      <option>WhatsApp</option>
+      <option>Push Notification</option>
+     </select>
+    </div>
+    <div class="field wide">
+     <label for="message">Message</label>
+     <textarea class="textarea" id="message" maxlength="600" placeholder="Write fictional advisory content..." required></textarea>
+    </div>
+   </div>
+   <label class="checkline">
+    <input type="checkbox" id="syntheticConfirm" required>
+    <span>This is fictional content for a software demonstration, not a real public safety communication.</span>
+   </label>
+   <button class="btn gold" type="submit">+ Save Demo Draft</button>
+  </form>
+  <div class="notice">
+   <strong>Publication Safety</strong>
+   <div>Real public alerts require verified official sources, approved wording, authorized personnel and authenticated delivery infrastructure. No message can be sent from this page.</div>
+  </div>
+ </div>
+</section>
+
+<section class="section grid two-col">
+ <div class="card panel">
+  <div class="panel-title">Communication Channel Integrations</div>
+  <div class="panel-sub" style="margin-bottom:17px">Planned connectors. No provider is currently connected.</div>
+  <div id="channelList"></div>
+ </div>
+ <div class="card panel">
+  <div class="panel-title">Notification Activity Timeline</div>
+  <div class="panel-sub" style="margin-bottom:19px">Events generated within this browser session.</div>
+  <div class="timeline" id="timeline"></div>
+ </div>
+</section>
+
+<div class="notice">
+ <strong>⚠ Operational Disclaimer.</strong>
+ <div>
+  Every notification and delivery status is synthetic. This dashboard does not issue emergency warnings, contact responders, send messages or verify official weather information. For a real emergency in India, contact <a href="tel:112" style="color:var(--gold2);font-weight:800">112</a>.
+ </div>
+</div>
+<footer class="footer">KERALA FLOOD RELIEF COORDINATION AGENT · NOTIFICATION DEMO · SYNTHETIC DATA</footer>
+</div>
+</main>
+</div>
+
+<div class="overlay" id="modalOverlay">
+ <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-head">
+   <h3 id="modalTitle">Notification Review</h3>
+   <button class="btn" id="closeModal" aria-label="Close dialog">✕</button>
+  </div>
+  <p class="panel-sub">Local demonstration review. No messages are transmitted.</p>
+  <div class="detail-grid" id="modalDetails"></div>
+  <div class="notice">
+   <strong>Approval Boundary</strong>
+   <div>Demo approval only changes the record status. It does not publish or deliver a notification.</div>
+  </div>
+  <div class="modal-actions" id="modalActions"></div>
+ </div>
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const DISTRICTS=[
+ "Thiruvananthapuram","Kollam","Pathanamthitta","Alappuzha",
+ "Kottayam","Idukki","Ernakulam","Thrissur","Palakkad",
+ "Malappuram","Kozhikode","Wayanad","Kannur","Kasaragod"
+];
+
+const SEED_NOTIFICATIONS=[
+ {id:"NTF-DEMO-001",title:"Synthetic Flood Risk Advisory",district:"Wayanad",category:"Flood Advisory",priority:"critical",channel:"Dashboard",message:"Fictional high-risk flood scenario prepared for verification.",status:"pending",read:false},
+ {id:"NTF-DEMO-002",title:"Demo SOS Coordination Update",district:"Alappuzha",category:"SOS Coordination",priority:"high",channel:"SMS",message:"Synthetic SOS scenario awaiting coordination review.",status:"draft",read:false},
+ {id:"NTF-DEMO-003",title:"Sample Rescue Team Update",district:"Thrissur",category:"Rescue Update",priority:"medium",channel:"Dashboard",message:"Fictional rescue resource proposal added to the review queue.",status:"approved",read:true},
+ {id:"NTF-DEMO-004",title:"Demo Medical Referral Review",district:"Ernakulam",category:"Medical Coordination",priority:"high",channel:"Email",message:"Synthetic medical coordination request awaiting human review.",status:"pending",read:false},
+ {id:"NTF-DEMO-005",title:"Sample Shelter Availability Notice",district:"Kottayam",category:"Shelter Update",priority:"low",channel:"WhatsApp",message:"Fictional shelter capacity information for interface testing.",status:"draft",read:true},
+ {id:"NTF-DEMO-006",title:"Illustrative Rainfall Bulletin",district:"Idukki",category:"Flood Advisory",priority:"high",channel:"Push Notification",message:"Synthetic rainfall scenario, not a real meteorological forecast.",status:"approved",read:false},
+ {id:"NTF-DEMO-007",title:"Demo System Review Reminder",district:"Kozhikode",category:"System Notice",priority:"medium",channel:"Dashboard",message:"Review the fictional pending workflow tasks.",status:"closed",read:true}
+];
+
+const CHANNELS=[
+ ["Dashboard","Local UI notification display only.","Demo UI"],
+ ["SMS","Planned sms_adapter.py integration.","Not Connected"],
+ ["Email","Planned email_adapter.py integration.","Not Connected"],
+ ["WhatsApp","Planned whatsapp_adapter.py integration.","Not Connected"],
+ ["Push Notification","Planned authenticated notification service.","Not Connected"]
+];
+
+const state={
+ notifications:structuredClone(SEED_NOTIFICATIONS),
+ nextId:8,
+ selectedId:null,
+ events:[
+  {title:"Notification demo initialized",detail:"Synthetic notification inbox loaded.",time:"Demo"},
+  {title:"External delivery disabled",detail:"No SMS, email, WhatsApp or push service is connected.",time:"Demo"}
+ ]
+};
+
+function el(tag,className,text){
+ const node=document.createElement(tag);
+ if(className)node.className=className;
+ if(text!==undefined)node.textContent=String(text);
+ return node;
+}
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+ const node=el("div","toast",message);
+ document.body.appendChild(node);
+ setTimeout(()=>node.remove(),2800);
+}
+
+function logEvent(title,detail){
+ state.events.unshift({title,detail,time:new Date().toLocaleTimeString("en-IN")});
+ state.events=state.events.slice(0,9);
+ renderTimeline();
+}
+
+function renderTimeline(){
+ const root=$("timeline");
+ root.replaceChildren();
+
+ state.events.forEach(event=>{
+  const row=el("div","event");
+  const icon=el("div","event-icon","♧");
+  const body=el("div");
+
+  body.append(
+   el("strong","",event.title),
+   el("p","",event.detail),
+   el("small","",event.time)
+  );
+
+  row.append(icon,body);
+  root.appendChild(row);
+ });
+}
+
+function renderKPIs(){
+ $("kpiTotal").textContent=state.notifications.length;
+ $("kpiUnread").textContent=state.notifications.filter(n=>!n.read).length;
+ $("kpiCritical").textContent=state.notifications.filter(n=>
+  n.priority==="critical"&&n.status!=="closed"
+ ).length;
+ $("kpiPending").textContent=state.notifications.filter(n=>n.status==="pending").length;
+ $("inboxCount").textContent=state.notifications.length+" MESSAGES";
+}
+
+function pill(value){
+ return el("span","pill "+value,value.toUpperCase());
+}
+
+function renderNotifications(){
+ const query=$("searchInput").value.trim().toLowerCase();
+ const priority=$("priorityFilter").value;
+ const read=$("readFilter").value;
+
+ const filtered=state.notifications.filter(n=>
+  [n.title,n.message,n.district,n.category].join(" ").toLowerCase().includes(query)&&
+  (priority==="all"||n.priority===priority)&&
+  (read==="all"||(read==="read"&&n.read)||(read==="unread"&&!n.read))
+ );
+
+ const root=$("notificationList");
+ root.replaceChildren();
+
+ if(!filtered.length){
+  root.appendChild(el("p","panel-sub","No matching fictional notifications."));
+  return;
+ }
+
+ filtered.forEach(n=>{
+  const card=el("div","notification"+(n.read?"":" unread"));
+  const icon=el("div","notification-icon",n.category==="Flood Advisory"?"☁":"♧");
+  const body=el("div","notification-body");
+  const head=el("div","notification-head");
+
+  head.append(
+   el("h4","",n.title),
+   pill(n.priority),
+   pill(n.status)
+  );
+
+  body.append(
+   head,
+   el("p","",n.message),
+   el("div","notification-meta",n.id+" · "+n.district+" · "+n.channel+" · "+(n.read?"Read":"Unread"))
+  );
+
+  const actions=el("div","notification-actions");
+
+  const inspect=el("button","small-btn","Inspect →");
+  inspect.addEventListener("click",()=>openModal(n.id));
+  actions.appendChild(inspect);
+
+  const readButton=el("button","small-btn",n.read?"Mark Unread":"Mark Read");
+  readButton.addEventListener("click",()=>{
+   n.read=!n.read;
+   renderAll();
+  });
+  actions.appendChild(readButton);
+
+  body.appendChild(actions);
+  card.append(icon,body);
+  root.appendChild(card);
+ });
+}
+
+function renderChannels(){
+ const root=$("channelList");
+ root.replaceChildren();
+
+ CHANNELS.forEach(([name,description,status])=>{
+  const card=el("div","channel");
+  const head=el("div","channel-head");
+
+  head.append(
+   el("strong","",name),
+   el("span","pill "+(status==="Demo UI"?"approved":"draft"),status)
+  );
+
+  card.append(head,el("p","",description));
+  root.appendChild(card);
+ });
+}
+
+function populateDistricts(){
+ $("district").appendChild(new Option("Select District",""));
+ DISTRICTS.forEach(name=>$("district").appendChild(new Option(name,name)));
+}
+
+function createNotification(event){
+ event.preventDefault();
+
+ const title=$("notificationTitle").value.trim();
+ const district=$("district").value;
+ const message=$("message").value.trim();
+
+ if(!title||!district||!message){
+  toast("Complete the notification fields.");
+  return;
+ }
+
+ if(!$("syntheticConfirm").checked){
+  toast("Confirm the notification is fictional.");
+  return;
+ }
+
+ const id="NTF-DEMO-"+String(state.nextId++).padStart(3,"0");
+
+ state.notifications.unshift({
+  id,title,district,message,
+  priority:$("priority").value,
+  category:$("category").value,
+  channel:$("channel").value,
+  status:"draft",
+  read:false
+ });
+
+ $("composeForm").reset();
+ renderAll();
+ logEvent("Demo notification drafted",id+" saved locally. Nothing was sent.");
+ toast("Fictional notification draft created");
+}
+
+function addDetail(root,label,value){
+ const card=el("div","detail");
+ card.append(el("small","",label),el("strong","",value));
+ root.appendChild(card);
+}
+
+function openModal(id){
+ const n=state.notifications.find(item=>item.id===id);
+ if(!n)return;
+
+ state.selectedId=id;
+ n.read=true;
+
+ const root=$("modalDetails");
+ root.replaceChildren();
+
+ [
+  ["Notification ID",n.id],
+  ["Title",n.title],
+  ["District",n.district],
+  ["Category",n.category],
+  ["Priority",n.priority.toUpperCase()],
+  ["Proposed Channel",n.channel],
+  ["Status",n.status.toUpperCase()],
+  ["Message",n.message]
+ ].forEach(([label,value])=>addDetail(root,label,value));
+
+ const actions=$("modalActions");
+ actions.replaceChildren();
+
+ const close=el("button","btn","Close");
+ close.addEventListener("click",closeModal);
+ actions.appendChild(close);
+
+ if(n.status==="draft"){
+  addAction(actions,"Submit Demo Review","pending","btn blue");
+ }
+
+ if(n.status==="pending"){
+  addAction(actions,"Simulate Approval","approved","btn gold");
+  addAction(actions,"Simulate Rejection","rejected","btn red");
+ }
+
+ if(n.status!=="closed"){
+  addAction(actions,"Close Demo Notification","closed","btn");
+ }
+
+ $("modalOverlay").classList.add("open");
+ renderKPIs();
+ renderNotifications();
+ $("closeModal").focus();
+}
+
+function addAction(root,label,status,className){
+ const button=el("button",className,label);
+ button.addEventListener("click",()=>changeStatus(status));
+ root.appendChild(button);
+}
+
+function changeStatus(status){
+ const n=state.notifications.find(item=>item.id===state.selectedId);
+ if(!n)return;
+
+ const transitions={
+  draft:["pending","closed"],
+  pending:["approved","rejected","closed"],
+  approved:["closed"],
+  rejected:["closed"],
+  closed:[]
+ };
+
+ if(!transitions[n.status].includes(status)){
+  toast("Invalid demo status transition.");
+  return;
+ }
+
+ n.status=status;
+ logEvent(
+  "Notification review updated",
+  `${n.id} → ${status}. No message transmitted.`
+ );
+ closeModal();
+ renderAll();
+ toast("Local notification status updated");
+}
+
+function closeModal(){
+ $("modalOverlay").classList.remove("open");
+ state.selectedId=null;
+}
+
+function markAllRead(){
+ state.notifications.forEach(n=>n.read=true);
+ renderAll();
+ logEvent("Inbox marked read","All synthetic notifications marked read.");
+ toast("All demo notifications marked read");
+}
+
+function renderAll(){
+ renderKPIs();
+ renderNotifications();
+ renderTimeline();
+}
+
+function csvEscape(value){
+ let text=String(value??"");
+ if(/^\s*[=+\-@]/.test(text))text="'"+text;
+ return '"'+text.replace(/"/g,'""')+'"';
+}
+
+function exportCSV(){
+ const fields=[
+  "id","title","district","category","priority",
+  "channel","status","read","message"
+ ];
+
+ const rows=[
+  fields.map(csvEscape).join(","),
+  ...state.notifications.map(n=>fields.map(field=>csvEscape(n[field])).join(","))
+ ];
+
+ const blob=new Blob(["\uFEFF"+rows.join("\r\n")],{
+  type:"text/csv;charset=utf-8"
+ });
+
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement("a");
+ link.href=url;
+ link.download="notifications-synthetic-demo.csv";
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ toast("Synthetic notification CSV exported");
+}
+
+function resetDemo(){
+ state.notifications=structuredClone(SEED_NOTIFICATIONS);
+ state.nextId=8;
+ state.events=[{
+  title:"Notification demo reset",
+  detail:"Original synthetic notifications restored.",
+  time:new Date().toLocaleTimeString("en-IN")
+ }];
+
+ $("composeForm").reset();
+ $("searchInput").value="";
+ $("priorityFilter").value="all";
+ $("readFilter").value="all";
+
+ closeModal();
+ renderAll();
+ toast("Notification demonstration reset");
+}
+
+function initialize(){
+ populateDistricts();
+ renderChannels();
+ renderAll();
+
+ $("composeForm").addEventListener("submit",createNotification);
+ $("searchInput").addEventListener("input",renderNotifications);
+ $("priorityFilter").addEventListener("change",renderNotifications);
+ $("readFilter").addEventListener("change",renderNotifications);
+
+ $("composeBtn").addEventListener("click",()=>{
+  $("notificationTitle").scrollIntoView({behavior:"smooth",block:"center"});
+  $("notificationTitle").focus();
+ });
+
+ $("markAllReadBtn").addEventListener("click",markAllRead);
+ $("exportBtn").addEventListener("click",exportCSV);
+ $("resetBtn").addEventListener("click",resetDemo);
+ $("closeModal").addEventListener("click",closeModal);
+
+ $("modalOverlay").addEventListener("click",event=>{
+  if(event.target===$("modalOverlay"))closeModal();
+ });
+
+ document.addEventListener("keydown",event=>{
+  if(event.key==="Escape")closeModal();
+ });
+
+ $("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+ });
+}
+
+initialize();
+</script>
+</body>
+</html>

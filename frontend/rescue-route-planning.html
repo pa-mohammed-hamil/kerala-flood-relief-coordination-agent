@@ -1,0 +1,1049 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b10">
+<title>Rescue Route Planning | Kerala Flood AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#090b10;--sidebar:#0d1017;--panel:#151922;--panel2:#1b202b;
+ --gold:#d8b671;--gold2:#f5daa0;--text:#f4f1e9;--muted:#9399a7;
+ --line:rgba(255,255,255,.085);--green:#54d6a4;--orange:#ffb66e;
+ --red:#ff777d;--blue:#82adff
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:13px "DM Sans",sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.app{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;background:var(--sidebar);border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:40}
+.brand{padding:23px 17px;display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--line)}
+.brand-icon{width:43px;height:43px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#f5daa0,#a47c3b);color:#20170a;font-size:23px}
+.brand strong{font:800 13px Manrope,sans-serif}
+.brand small{display:block;font-size:10px;letter-spacing:1.2px;color:var(--muted);margin-top:5px}
+.nav{padding:17px 12px;overflow:auto;flex:1}
+.nav-label{color:#777e8d;font-size:10px;letter-spacing:1.5px;font-weight:800;margin:17px 12px 9px}
+.nav a{display:flex;align-items:center;gap:12px;padding:12px 13px;margin-bottom:5px;border:1px solid transparent;border-radius:10px;color:#a2a8b4;font-size:12px;font-weight:600}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{background:#d8b67119;border-color:#d8b67130;color:var(--gold2)}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.side-footer{padding:17px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:11px;background:#383023;color:var(--gold2);display:grid;place-items:center;font-weight:800}
+.side-footer strong{font-size:11px}
+.side-footer small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.main{min-width:0;background:radial-gradient(ellipse at 65% -5%,#d8b67112,transparent 38%),var(--bg)}
+.topbar{min-height:80px;padding:16px 28px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.top-left,.top-actions{display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.page-icon{width:43px;height:43px;border-radius:12px;background:#d8b67119;border:1px solid #d8b67133;color:var(--gold);display:grid;place-items:center;font-size:20px}
+.top-left h1{font:800 18px Manrope,sans-serif;margin:0}
+.top-left p{color:var(--muted);font-size:11px;margin:5px 0 0}
+.badge,.tag{display:inline-flex;align-items:center;gap:7px;padding:9px 11px;background:#d8b67112;border:1px solid #d8b67130;color:var(--gold2);border-radius:9px;font-size:10px;font-weight:800}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 15px;border-radius:10px;border:1px solid var(--line);background:#1a1f29;color:#e1e3e8;font-size:11px;font-weight:800;transition:.2s}
+.btn:hover{border-color:#d8b67166;transform:translateY(-1px)}
+.btn.gold{background:linear-gradient(120deg,#c6a15e,#f1d49a);color:#1b160e;border:0}
+.btn.blue{color:var(--blue);background:#82adff12;border-color:#82adff40}
+.btn.red{color:var(--red);background:#ff777d12;border-color:#ff777d40}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.content{max-width:1700px;margin:auto;padding:27px 29px 44px}
+.eyebrow{color:var(--gold);font-size:10px;letter-spacing:2px;font-weight:800;margin-bottom:10px}
+.heading{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+.heading h2{font:800 28px Manrope,sans-serif;letter-spacing:-1px;margin:0}
+.heading p{color:var(--muted);font-size:12px;line-height:1.8;margin:9px 0 0}
+.hero{padding:26px;border-radius:18px;border:1px solid #d8b67138;background:radial-gradient(circle at 85% 15%,#d8b67120,transparent 35%),linear-gradient(120deg,#252017,#151922)}
+.hero h3{font:800 25px Manrope,sans-serif;letter-spacing:-.8px;margin:12px 0}
+.hero p{color:#b9b5ae;font-size:12px;line-height:1.9;max-width:850px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:19px}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:17px}
+.card{min-width:0;background:linear-gradient(150deg,#181c26,#12161e);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 35px #0002;animation:rise .5s ease both}
+.kpi{padding:20px}
+.kpi-head{display:flex;justify-content:space-between;align-items:center;color:#a7adba;font-size:11px;font-weight:700}
+.kpi-icon{width:36px;height:36px;border-radius:10px;background:#d8b67119;color:var(--gold);display:grid;place-items:center;font-size:18px}
+.kpi-number{font:800 29px Manrope,sans-serif;letter-spacing:-1px;margin:15px 0 7px}
+.kpi-caption{font-size:10px;color:var(--muted);line-height:1.7}
+.kpi-caption b{color:var(--gold)}
+.section{margin-top:25px}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:15px}
+.section-head h3{font:800 19px Manrope,sans-serif;letter-spacing:-.5px;margin:0}
+.section-head p{color:var(--muted);font-size:11px;line-height:1.8;margin:7px 0 0}
+.panel{padding:21px}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{color:var(--muted);font-size:10px;line-height:1.8;margin-top:6px}
+.columns{grid-template-columns:minmax(0,1.6fr) minmax(310px,1fr)}
+.two-col{grid-template-columns:repeat(2,minmax(0,1fr))}
+.three-col{grid-template-columns:repeat(3,minmax(0,1fr))}
+.input,.select,.textarea{width:100%;padding:12px 13px;border:1px solid #343a46;border-radius:10px;background:#1b202b;color:var(--text);outline:none}
+.input:focus,.select:focus,.textarea:focus{border-color:var(--gold)}
+.textarea{min-height:85px;resize:vertical}
+.field{display:grid;gap:8px;margin-bottom:15px}
+.field label{font-size:11px;font-weight:800;color:#c9ccd4}
+.pill{display:inline-flex;align-items:center;padding:7px 10px;border-radius:8px;font-size:10px;font-weight:800;white-space:nowrap}
+.pill.low,.pill.approved{color:var(--green);background:#54d6a419}
+.pill.medium,.pill.review{color:var(--orange);background:#ffb66e19}
+.pill.high,.pill.blocked,.pill.rejected{color:var(--red);background:#ff777d19}
+.pill.draft{color:var(--blue);background:#82adff19}
+.pill.closed{color:var(--muted);background:#9399a719}
+.route-card{padding:16px;background:#1b202b;border:1px solid var(--line);border-radius:12px;margin-bottom:11px;transition:.2s}
+.route-card.selected{border-color:#d8b67188;background:#d8b6710d}
+.route-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.route-head strong{font:800 12px Manrope,sans-serif}
+.route-details{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:13px 0}
+.route-details small{display:block;color:var(--muted);font-size:10px;margin-bottom:5px}
+.route-details strong{font-size:13px}
+.route-path{color:#aeb4c0;font-size:10px;line-height:1.8;overflow-wrap:anywhere}
+.map-shell{background:#0e141d;border:1px solid #303947;border-radius:13px;padding:10px}
+.map-svg{display:block;width:100%;height:auto}
+.map-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:13px;font-size:10px;color:var(--muted)}
+.legend-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+.metric{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid var(--line)}
+.metric span{color:var(--muted);font-size:11px}
+.metric strong{font-size:12px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:730px}
+th{text-align:left;color:#89909d;font-size:10px;letter-spacing:.7px;padding:14px 11px;border-bottom:1px solid var(--line)}
+td{padding:15px 11px;border-bottom:1px solid var(--line);font-size:11px;color:#c4c9d3}
+td strong{color:var(--text);font-size:11px}
+td small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.small-btn{padding:8px 10px;border-radius:8px;border:1px solid #d8b67140;background:#d8b67115;color:var(--gold2);font-size:10px;font-weight:800}
+.timeline{display:grid;gap:14px}
+.event{display:flex;gap:12px}
+.event-icon{width:33px;height:33px;flex-shrink:0;display:grid;place-items:center;border-radius:10px;background:#d8b67118;color:var(--gold)}
+.event strong{font-size:11px}
+.event p{font-size:10px;color:var(--muted);line-height:1.7;margin:7px 0}
+.event small{font-size:10px;color:#777e8d}
+.notice{padding:16px;background:#d8b6710e;border:1px solid #d8b67130;border-radius:12px;color:#bbb4a5;font-size:11px;line-height:1.9;margin-top:17px}
+.notice strong{color:var(--gold2)}
+.footer{padding-top:26px;text-align:center;color:#69707e;font-size:10px}
+.toast{position:fixed;right:20px;bottom:20px;z-index:150;padding:14px 17px;background:#252b35;border:1px solid #d8b67166;color:var(--gold2);border-radius:11px;box-shadow:0 15px 45px #0008}
+.menu-btn{display:none}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1250px){.kpis{grid-template-columns:repeat(2,1fr)}.columns{grid-template-columns:1fr}}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:fixed;width:260px;transform:translateX(-100%);transition:.3s}.sidebar.open{transform:translateX(0)}.menu-btn{display:inline-flex}.topbar{padding:15px 20px}.content{padding:20px}}
+@media(max-width:600px){.kpis,.two-col,.three-col{grid-template-columns:1fr}.heading h2{font-size:23px}.panel{padding:16px}.top-actions .badge{display:none}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-icon">✦</div>
+  <div><strong>KERALA FLOOD AI</strong><small>INTELLIGENCE PLATFORM</small></div>
+ </div>
+ <nav class="nav">
+  <div class="nav-label">WORKSPACE</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Project Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="district-dashboard.html"><span class="nav-icon">◉</span>District Dashboard</a>
+  <div class="nav-label">EMERGENCY OPERATIONS</div>
+  <a href="emergency-sos.html"><span class="nav-icon">✚</span>Emergency SOS</a>
+  <a href="rescue-dashboard.html"><span class="nav-icon">⚑</span>Rescue Dashboard</a>
+  <a href="rescue-dispatch.html"><span class="nav-icon">↗</span>Rescue Dispatch</a>
+  <a class="active" href="rescue-route-planning.html"><span class="nav-icon">◇</span>Route Planning</a>
+  <a href="evacuation-planning.html"><span class="nav-icon">⇢</span>Evacuation Planning</a>
+  <a href="live-flood-map.html"><span class="nav-icon">◎</span>Flood Map</a>
+  <div class="nav-label">GOVERNANCE</div>
+  <a href="human-approval.html"><span class="nav-icon">✓</span>Human Approval</a>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+  <a href="reports.html"><span class="nav-icon">▥</span>Reports</a>
+ </nav>
+ <div class="side-footer">
+  <div class="avatar">RT</div>
+  <div><strong>Route Intelligence</strong><small>Simulation Workspace</small></div>
+ </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-left">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="page-icon">◇</div>
+  <div><h1>Rescue Route Planning</h1><p>Route simulation · Flood constraints · Human approval</p></div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>NOT REAL NAVIGATION</span>
+  <button class="btn" id="resetBtn">↻ Reset</button>
+  <button class="btn gold" id="exportBtn">↓ Export CSV</button>
+ </div>
+</header>
+
+<div class="content">
+ <div class="heading">
+  <div>
+   <div class="eyebrow">RESCUE NAVIGATION INTELLIGENCE</div>
+   <h2>AI-Assisted Rescue Route Planning</h2>
+   <p>Compare alternative paths across a fictional road network and review simulated constraints.</p>
+  </div>
+  <span class="tag">SCHEMATIC MAP · DEMO</span>
+ </div>
+
+ <section class="hero">
+  <div class="eyebrow">ROUTE OPTIMIZATION SIMULATION</div>
+  <h3>Compare Routes. Review Risks. Authorize Plans.</h3>
+  <p>
+   Explore a synthetic road graph with example flood hazards and road closures.
+   Generate candidate routes using a shortest-path algorithm, compare estimated
+   distance and illustrative risk, and record human review decisions.
+   This map is not geographically accurate.
+  </p>
+  <div class="hero-actions">
+   <a class="btn gold" href="#planner">Open Route Planner ↓</a>
+   <a class="btn" href="rescue-dispatch.html">Dispatch Center →</a>
+   <a class="btn blue" href="live-flood-map.html">Flood Monitoring →</a>
+  </div>
+ </section>
+
+ <section class="grid kpis">
+  <div class="card kpi">
+   <div class="kpi-head">Candidate Routes<div class="kpi-icon">◇</div></div>
+   <div class="kpi-number" id="kpiRoutes">0</div>
+   <div class="kpi-caption"><b>SYNTHETIC</b> · Current route alternatives</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Closed Road Segments<div class="kpi-icon">⛔</div></div>
+   <div class="kpi-number" id="kpiClosures">0</div>
+   <div class="kpi-caption"><b>FICTIONAL</b> · Example restrictions</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Selected Route Risk<div class="kpi-icon">!</div></div>
+   <div class="kpi-number" id="kpiRisk">—</div>
+   <div class="kpi-caption"><b>ILLUSTRATIVE</b> · Not a safety certification</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Reviewed Plans<div class="kpi-icon">✓</div></div>
+   <div class="kpi-number" id="kpiApproved">0</div>
+   <div class="kpi-caption"><b>DEMO ONLY</b> · Browser-local review decisions</div>
+  </div>
+ </section>
+
+ <section class="section grid columns" id="planner">
+  <div class="card panel">
+   <div class="section-head">
+    <div>
+     <div class="panel-title">Synthetic Rescue Network Map</div>
+     <div class="panel-sub">Abstract node-and-edge graph. Labels are fictional zones, not mapped locations.</div>
+    </div>
+    <span class="tag">SCHEMATIC · NOT GPS</span>
+   </div>
+
+   <div class="map-shell">
+    <svg id="routeMap" class="map-svg" viewBox="0 0 780 470"
+      role="img" aria-label="Fictional road graph with route candidates and closures"></svg>
+   </div>
+
+   <div class="map-legend">
+    <span><i class="legend-dot" style="background:#d8b671"></i>Selected candidate</span>
+    <span><i class="legend-dot" style="background:#ff777d"></i>Closed segment</span>
+    <span><i class="legend-dot" style="background:#82adff"></i>Open segment</span>
+    <span><i class="legend-dot" style="background:#54d6a4"></i>Start / Destination</span>
+   </div>
+
+   <div class="notice">
+    <strong>Map limitation:</strong>
+    <div>Distances are artificial graph weights, not actual kilometers on Kerala roads. Travel-time estimates and flood-risk scores are illustrative.</div>
+   </div>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-title">Route Planning Controls</div>
+   <div class="panel-sub" style="margin-bottom:19px">
+    Choose fictional start and destination nodes.
+   </div>
+
+   <div class="field">
+    <label for="districtSelect">District Context</label>
+    <select class="select" id="districtSelect"></select>
+   </div>
+
+   <div class="field">
+    <label for="startNode">Starting Zone</label>
+    <select class="select" id="startNode"></select>
+   </div>
+
+   <div class="field">
+    <label for="endNode">Destination Zone</label>
+    <select class="select" id="endNode"></select>
+   </div>
+
+   <div class="field">
+    <label for="vehicleType">Response Vehicle</label>
+    <select class="select" id="vehicleType">
+     <option value="road">Road Rescue Vehicle</option>
+     <option value="ambulance">Ambulance</option>
+     <option value="supply">Relief Supply Vehicle</option>
+    </select>
+   </div>
+
+   <div class="field">
+    <label for="routingMode">Route Preference</label>
+    <select class="select" id="routingMode">
+     <option value="balanced">Balanced Distance & Risk</option>
+     <option value="distance">Shortest Distance</option>
+     <option value="risk">Lower Illustrative Risk</option>
+    </select>
+   </div>
+
+   <div class="field">
+    <label for="rainfallScenario">Synthetic Flood Severity</label>
+    <select class="select" id="rainfallScenario">
+     <option value="normal">Baseline Scenario</option>
+     <option value="elevated">Elevated Scenario</option>
+     <option value="severe">Severe Scenario</option>
+    </select>
+   </div>
+
+   <div class="hero-actions">
+    <button class="btn gold" id="planBtn">◇ Generate Routes</button>
+    <button class="btn" id="resetScenarioBtn">Reset Scenario</button>
+   </div>
+
+   <div class="notice">
+    <strong>Planning rule:</strong>
+    <div>Closed edges are excluded. Generated routes are candidates for a fictional exercise, not safe-route recommendations.</div>
+   </div>
+  </div>
+ </section>
+
+ <section class="section grid columns">
+  <div class="card panel">
+   <div class="section-head">
+    <div>
+     <div class="panel-title">Alternative Route Comparison</div>
+     <div class="panel-sub">Choose one of the generated synthetic route candidates.</div>
+    </div>
+    <span class="tag" id="routeCount">0 CANDIDATES</span>
+   </div>
+   <div id="routeList"></div>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-title">Selected Route Review</div>
+   <div class="panel-sub">Human-reviewed simulation only.</div>
+
+   <div id="selectedRouteMetrics" style="margin-top:14px"></div>
+
+   <div class="field" style="margin-top:17px">
+    <label for="reviewNote">Review Rationale</label>
+    <textarea class="textarea" id="reviewNote" maxlength="500" placeholder="Document fictional route review rationale..."></textarea>
+   </div>
+
+   <div class="hero-actions">
+    <button class="btn gold" id="approveBtn">✓ Approve Demo Plan</button>
+    <button class="btn red" id="rejectBtn">✕ Reject Demo Plan</button>
+   </div>
+  </div>
+ </section>
+
+ <section class="section grid two-col">
+  <div class="card panel">
+   <div class="section-head">
+    <div>
+     <div class="panel-title">Road Closure & Hazard Simulator</div>
+     <div class="panel-sub">Toggle fictional road closures and regenerate routes.</div>
+    </div>
+   </div>
+   <div id="edgeControls"></div>
+  </div>
+
+  <div class="card panel">
+   <div class="section-head">
+    <div>
+     <div class="panel-title">Route Planning Activity</div>
+     <div class="panel-sub">Session-only review and planning events.</div>
+    </div>
+   </div>
+   <div class="timeline" id="activityTimeline"></div>
+  </div>
+ </section>
+
+ <section class="section">
+  <div class="section-head">
+   <div>
+    <h3>Reviewed Route Plans</h3>
+    <p>Locally recorded fictional decisions. No route is transmitted to rescue teams.</p>
+   </div>
+  </div>
+
+  <div class="card panel">
+   <div class="table-wrap">
+    <table>
+     <thead>
+      <tr>
+       <th>PLAN ID</th>
+       <th>DISTRICT</th>
+       <th>ROUTE</th>
+       <th>DISTANCE</th>
+       <th>RISK</th>
+       <th>DECISION</th>
+      </tr>
+     </thead>
+     <tbody id="historyTable"></tbody>
+    </table>
+   </div>
+  </div>
+ </section>
+
+ <div class="notice">
+  <strong>⚠ Life-Safety Warning.</strong>
+  <div>
+   This application does not know whether any real road, bridge, water crossing,
+   evacuation route or destination is safe. It uses an invented graph with
+   fictional distances, closures and hazard scores. Never use its outputs for
+   actual rescue or evacuation decisions. Production routing requires authoritative
+   GIS networks, verified closures, live flood observations, vehicle constraints,
+   communication with authorized responders and human command approval.
+   For emergencies in India, call <a href="tel:112" style="color:var(--gold2)">112</a>.
+  </div>
+ </div>
+
+ <footer class="footer">
+  KERALA FLOOD RELIEF COORDINATION AGENT · RESCUE ROUTE PLANNING · SYNTHETIC DEMONSTRATION
+ </footer>
+</div>
+</main>
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const DISTRICTS=[
+ "Thiruvananthapuram","Kollam","Pathanamthitta","Alappuzha",
+ "Kottayam","Idukki","Ernakulam","Thrissur","Palakkad",
+ "Malappuram","Kozhikode","Wayanad","Kannur","Kasaragod"
+];
+
+const NODES=[
+ {id:"A",name:"Response Base",x:90,y:235},
+ {id:"B",name:"North Junction",x:245,y:95},
+ {id:"C",name:"Central Junction",x:255,y:250},
+ {id:"D",name:"South Junction",x:245,y:385},
+ {id:"E",name:"Relief Hub",x:445,y:110},
+ {id:"F",name:"Bridge Approach",x:445,y:250},
+ {id:"G",name:"Medical Hub",x:445,y:385},
+ {id:"H",name:"Rescue Zone",x:665,y:235}
+];
+
+const EDGE_SEED=[
+ {id:"AB",a:"A",b:"B",distance:5,risk:12,closed:false},
+ {id:"AC",a:"A",b:"C",distance:4,risk:20,closed:false},
+ {id:"AD",a:"A",b:"D",distance:6,risk:9,closed:false},
+ {id:"BE",a:"B",b:"E",distance:5,risk:18,closed:false},
+ {id:"BC",a:"B",b:"C",distance:3,risk:15,closed:false},
+ {id:"CF",a:"C",b:"F",distance:4,risk:32,closed:false},
+ {id:"CD",a:"C",b:"D",distance:3,risk:22,closed:false},
+ {id:"DG",a:"D",b:"G",distance:5,risk:10,closed:false},
+ {id:"EF",a:"E",b:"F",distance:3,risk:16,closed:false},
+ {id:"FG",a:"F",b:"G",distance:3,risk:28,closed:false},
+ {id:"EH",a:"E",b:"H",distance:6,risk:18,closed:false},
+ {id:"FH",a:"F",b:"H",distance:4,risk:45,closed:true},
+ {id:"GH",a:"G",b:"H",distance:6,risk:12,closed:false},
+ {id:"BG",a:"B",b:"G",distance:9,risk:30,closed:false}
+];
+
+const state={
+ edges:[],
+ routes:[],
+ selectedIndex:0,
+ history:[],
+ events:[],
+ nextPlan:1
+};
+
+function el(tag,className,text){
+ const node=document.createElement(tag);
+ if(className)node.className=className;
+ if(text!==undefined)node.textContent=String(text);
+ return node;
+}
+
+function svgEl(tag,attributes){
+ const node=document.createElementNS("http://www.w3.org/2000/svg",tag);
+ Object.entries(attributes).forEach(([key,value])=>{
+  node.setAttribute(key,String(value));
+ });
+ return node;
+}
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+ const node=el("div","toast",message);
+ document.body.appendChild(node);
+ setTimeout(()=>node.remove(),2800);
+}
+
+function nodeById(id){
+ return NODES.find(node=>node.id===id);
+}
+
+function edgeKey(a,b){
+ return [a,b].sort().join("-");
+}
+
+function getScenarioFactor(){
+ return {
+  normal:1,
+  elevated:1.3,
+  severe:1.7
+ }[$("rainfallScenario").value]||1;
+}
+
+function adjustedRisk(edge){
+ return Math.min(100,edge.risk*getScenarioFactor());
+}
+
+function weight(edge){
+ const risk=adjustedRisk(edge)/100;
+ const mode=$("routingMode").value;
+
+ if(mode==="distance")return edge.distance;
+ if(mode==="risk")return edge.distance*(1+risk*5);
+ return edge.distance*(1+risk*2);
+}
+
+function routeEdges(path){
+ const edges=[];
+
+ for(let i=0;i<path.length-1;i++){
+  const key=edgeKey(path[i],path[i+1]);
+  const edge=state.edges.find(e=>edgeKey(e.a,e.b)===key);
+
+  if(!edge||edge.closed)return null;
+  edges.push(edge);
+ }
+
+ return edges;
+}
+
+function routeInfo(path){
+ const edges=routeEdges(path);
+ if(!edges)return null;
+
+ const distance=edges.reduce((sum,e)=>sum+e.distance,0);
+ const weightedRisk=distance
+  ?edges.reduce((sum,e)=>sum+adjustedRisk(e)*e.distance,0)/distance
+  :0;
+
+ const risk=Math.round(weightedRisk);
+ const speed=$("vehicleType").value==="ambulance"?30:
+  $("vehicleType").value==="supply"?24:28;
+
+ return {
+  path,
+  distance,
+  risk,
+  time:Math.ceil(distance/speed*60),
+  cost:edges.reduce((sum,e)=>sum+weight(e),0)
+ };
+}
+
+function findCandidates(){
+ const start=$("startNode").value;
+ const end=$("endNode").value;
+
+ if(start===end)return[];
+
+ const found=[];
+ const visited=new Set([start]);
+
+ function dfs(current,path){
+  if(found.length>=2000)return;
+
+  if(current===end){
+   const info=routeInfo(path);
+   if(info)found.push(info);
+   return;
+  }
+
+  const neighbors=state.edges
+   .filter(e=>!e.closed&&(e.a===current||e.b===current))
+   .map(e=>e.a===current?e.b:e.a);
+
+  for(const next of neighbors){
+   if(visited.has(next))continue;
+   visited.add(next);
+   dfs(next,[...path,next]);
+   visited.delete(next);
+  }
+ }
+
+ dfs(start,[start]);
+
+ found.sort((a,b)=>a.cost-b.cost||a.distance-b.distance);
+
+ const selected=[];
+ const seen=new Set();
+
+ for(const route of found){
+  const key=route.path.join("-");
+  if(!seen.has(key)){
+   selected.push(route);
+   seen.add(key);
+  }
+  if(selected.length===3)break;
+ }
+
+ return selected;
+}
+
+function planRoutes(){
+ if($("startNode").value===$("endNode").value){
+  toast("Choose different start and destination nodes.");
+  return;
+ }
+
+ state.routes=findCandidates();
+ state.selectedIndex=0;
+
+ renderAll();
+
+ logEvent(
+  "Route alternatives generated",
+  `${state.routes.length} fictional candidates for ${$("startNode").value} → ${$("endNode").value}.`
+ );
+
+ toast(state.routes.length
+  ?"Synthetic route candidates generated"
+  :"No route available in this fictional graph");
+}
+
+function selectedRoute(){
+ return state.routes[state.selectedIndex]||null;
+}
+
+function renderKPIs(){
+ $("kpiRoutes").textContent=state.routes.length;
+ $("kpiClosures").textContent=state.edges.filter(e=>e.closed).length;
+ $("kpiRisk").textContent=selectedRoute()
+  ?selectedRoute().risk+"/100":"—";
+ $("kpiApproved").textContent=state.history.filter(h=>
+  h.decision==="approved"
+ ).length;
+}
+
+function renderMap(){
+ const svg=$("routeMap");
+ svg.replaceChildren();
+
+ for(let x=0;x<=780;x+=40){
+  svg.appendChild(svgEl("line",{
+   x1:x,y1:0,x2:x,y2:470,stroke:"#ffffff07"
+  }));
+ }
+ for(let y=0;y<=470;y+=40){
+  svg.appendChild(svgEl("line",{
+   x1:0,y1:y,x2:780,y2:y,stroke:"#ffffff07"
+  }));
+ }
+
+ const selected=selectedRoute();
+ const selectedKeys=new Set();
+
+ if(selected){
+  for(let i=0;i<selected.path.length-1;i++){
+   selectedKeys.add(edgeKey(selected.path[i],selected.path[i+1]));
+  }
+ }
+
+ state.edges.forEach(edge=>{
+  const a=nodeById(edge.a);
+  const b=nodeById(edge.b);
+  const highlighted=selectedKeys.has(edgeKey(edge.a,edge.b));
+
+  const line=svgEl("line",{
+   x1:a.x,y1:a.y,x2:b.x,y2:b.y,
+   stroke:edge.closed?"#ff777d":highlighted?"#d8b671":"#54739d",
+   "stroke-width":highlighted?7:edge.closed?4:3,
+   "stroke-dasharray":edge.closed?"8 7":"none",
+   opacity:highlighted?1:.75,
+   "stroke-linecap":"round"
+  });
+  svg.appendChild(line);
+
+  if(edge.closed){
+   const text=svgEl("text",{
+    x:(a.x+b.x)/2,
+    y:(a.y+b.y)/2-9,
+    fill:"#ff777d",
+    "font-size":"11",
+    "text-anchor":"middle",
+    "font-weight":"800"
+   });
+   text.textContent="CLOSED";
+   svg.appendChild(text);
+  }
+ });
+
+ NODES.forEach(node=>{
+  const isEndpoint=
+   node.id===$("startNode").value||
+   node.id===$("endNode").value;
+
+  svg.appendChild(svgEl("circle",{
+   cx:node.x,cy:node.y,r:isEndpoint?17:13,
+   fill:isEndpoint?"#54d6a4":"#222c3a",
+   stroke:isEndpoint?"#b7ffe3":"#d8b671",
+   "stroke-width":2
+  }));
+
+  const letter=svgEl("text",{
+   x:node.x,y:node.y+4,
+   fill:isEndpoint?"#102018":"#f5daa0",
+   "text-anchor":"middle",
+   "font-size":"12",
+   "font-weight":"800"
+  });
+  letter.textContent=node.id;
+  svg.appendChild(letter);
+
+  const label=svgEl("text",{
+   x:node.x,y:node.y+31,
+   fill:"#c1c8d2",
+   "text-anchor":"middle",
+   "font-size":"10"
+  });
+  label.textContent=node.name;
+  svg.appendChild(label);
+ });
+
+ const warning=svgEl("text",{
+  x:390,y:20,
+  fill:"#d8b671",
+  "text-anchor":"middle",
+  "font-size":"13",
+  "font-weight":"800",
+  "letter-spacing":"2"
+ });
+ warning.textContent="FICTIONAL NETWORK — NOT A GEOGRAPHIC MAP";
+ svg.appendChild(warning);
+}
+
+function renderRoutes(){
+ const root=$("routeList");
+ root.replaceChildren();
+
+ $("routeCount").textContent=state.routes.length+" CANDIDATES";
+
+ if(!state.routes.length){
+  root.appendChild(el("p","panel-sub","No candidates. Adjust closures or generate routes."));
+  return;
+ }
+
+ state.routes.forEach((route,index)=>{
+  const card=el("div","route-card"+(index===state.selectedIndex?" selected":""));
+  const head=el("div","route-head");
+
+  head.append(
+   el("strong","","Candidate "+(index+1)),
+   pill(route.risk<25?"low":route.risk<45?"medium":"high")
+  );
+
+  const details=el("div","route-details");
+
+  [
+   ["Distance",route.distance+" units"],
+   ["Demo Time",route.time+" min"],
+   ["Risk Score",route.risk+"/100"]
+  ].forEach(([label,value])=>{
+   const item=el("div");
+   item.append(el("small","",label),el("strong","",value));
+   details.appendChild(item);
+  });
+
+  const button=el("button","btn "+(index===state.selectedIndex?"gold":""),"Select Candidate");
+  button.addEventListener("click",()=>{
+   state.selectedIndex=index;
+   renderAll();
+  });
+
+  card.append(
+   head,
+   details,
+   el("p","route-path",route.path.map(id=>nodeById(id).name).join(" → ")),
+   button
+  );
+
+  root.appendChild(card);
+ });
+}
+
+function pill(status){
+ return el("span","pill "+status,status.toUpperCase());
+}
+
+function renderSelected(){
+ const root=$("selectedRouteMetrics");
+ root.replaceChildren();
+
+ const route=selectedRoute();
+
+ if(!route){
+  root.appendChild(el("p","panel-sub","Generate and select a fictional route candidate."));
+  return;
+ }
+
+ [
+  ["Path",route.path.join(" → ")],
+  ["Synthetic Distance",route.distance+" units"],
+  ["Illustrative Time",route.time+" minutes"],
+  ["Illustrative Risk",route.risk+"/100"],
+  ["Road Segments",route.path.length-1],
+  ["Vehicle Type",$("vehicleType").selectedOptions[0].textContent]
+ ].forEach(([label,value])=>{
+  const row=el("div","metric");
+  row.append(el("span","",label),el("strong","",value));
+  root.appendChild(row);
+ });
+}
+
+function renderEdges(){
+ const root=$("edgeControls");
+ root.replaceChildren();
+
+ state.edges.forEach(edge=>{
+  const row=el("div","metric");
+  const left=el("span","",
+   `${edge.a}–${edge.b} · ${edge.distance} units · base risk ${edge.risk}`
+  );
+
+  const button=el("button",
+   "small-btn",
+   edge.closed?"Reopen Demo Edge":"Close Demo Edge"
+  );
+
+  button.addEventListener("click",()=>{
+   edge.closed=!edge.closed;
+   state.routes=[];
+   state.selectedIndex=0;
+   renderAll();
+
+   logEvent(
+    "Synthetic road status changed",
+    `${edge.id} is now ${edge.closed?"closed":"open"}. Previous candidates cleared.`
+   );
+  });
+
+  row.append(left,button);
+  root.appendChild(row);
+ });
+}
+
+function renderHistory(){
+ const root=$("historyTable");
+ root.replaceChildren();
+
+ if(!state.history.length){
+  const tr=document.createElement("tr");
+  const td=el("td","","No reviewed route plans in this browser session.");
+  td.colSpan=6;
+  tr.appendChild(td);
+  root.appendChild(tr);
+  return;
+ }
+
+ state.history.forEach(plan=>{
+  const tr=document.createElement("tr");
+  const status=document.createElement("td");
+  status.appendChild(pill(plan.decision));
+
+  tr.append(
+   el("td","",plan.id),
+   el("td","",plan.district),
+   el("td","",plan.path),
+   el("td","",plan.distance+" units"),
+   el("td","",plan.risk+"/100"),
+   status
+  );
+
+  root.appendChild(tr);
+ });
+}
+
+function logEvent(title,detail){
+ state.events.unshift({
+  title,detail,time:new Date().toLocaleTimeString("en-IN")
+ });
+ state.events=state.events.slice(0,8);
+ renderTimeline();
+}
+
+function renderTimeline(){
+ const root=$("activityTimeline");
+ root.replaceChildren();
+
+ state.events.forEach(event=>{
+  const row=el("div","event");
+  const icon=el("div","event-icon","◇");
+  const body=el("div");
+
+  body.append(
+   el("strong","",event.title),
+   el("p","",event.detail),
+   el("small","",event.time)
+  );
+
+  row.append(icon,body);
+  root.appendChild(row);
+ });
+}
+
+function reviewRoute(decision){
+ const route=selectedRoute();
+
+ if(!route){
+  toast("Select a route candidate first.");
+  return;
+ }
+
+ const note=$("reviewNote").value.trim();
+
+ if(!note){
+  toast("Enter a fictional review rationale.");
+  return;
+ }
+
+ const id="ROUTE-DEMO-"+String(state.nextPlan++).padStart(3,"0");
+
+ state.history.unshift({
+  id,
+  district:$("districtSelect").value,
+  path:route.path.join(" → "),
+  distance:route.distance,
+  risk:route.risk,
+  decision,
+  note
+ });
+
+ $("reviewNote").value="";
+ renderHistory();
+ renderKPIs();
+
+ logEvent(
+  "Route plan "+decision,
+  `${id} reviewed for ${$("districtSelect").value}. This does not authorize real navigation.`
+ );
+
+ toast("Fictional route plan "+decision);
+}
+
+function csvEscape(value){
+ let text=String(value??"");
+ if(/^\s*[=+\-@]/.test(text))text="'"+text;
+ return '"'+text.replace(/"/g,'""')+'"';
+}
+
+function exportCSV(){
+ const columns=[
+  "id","district","path","distance","risk","decision","note"
+ ];
+
+ const rows=[
+  columns.map(csvEscape).join(","),
+  ...state.history.map(plan=>
+   columns.map(key=>csvEscape(plan[key])).join(",")
+  )
+ ];
+
+ const blob=new Blob(["\uFEFF"+rows.join("\r\n")],{
+  type:"text/csv;charset=utf-8"
+ });
+
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement("a");
+ link.href=url;
+ link.download="rescue-route-planning-synthetic.csv";
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ toast("Synthetic route review history exported");
+}
+
+function renderAll(){
+ renderKPIs();
+ renderMap();
+ renderRoutes();
+ renderSelected();
+ renderEdges();
+ renderHistory();
+}
+
+function populateSelects(){
+ DISTRICTS.forEach(district=>{
+  $("districtSelect").appendChild(new Option(district,district));
+ });
+
+ NODES.forEach(node=>{
+  $("startNode").appendChild(new Option(node.name,node.id));
+  $("endNode").appendChild(new Option(node.name,node.id));
+ });
+}
+
+function resetDemo(){
+ state.edges=structuredClone(EDGE_SEED);
+ state.routes=[];
+ state.selectedIndex=0;
+ state.history=[];
+ state.nextPlan=1;
+ state.events=[{
+  title:"Route planner initialized",
+  detail:"Synthetic graph and fictional road restrictions loaded.",
+  time:"Demo"
+ }];
+
+ $("districtSelect").value="Thrissur";
+ $("startNode").value="A";
+ $("endNode").value="H";
+ $("vehicleType").value="road";
+ $("routingMode").value="balanced";
+ $("rainfallScenario").value="normal";
+ $("reviewNote").value="";
+
+ planRoutes();
+ renderTimeline();
+ toast("Route simulation reset");
+}
+
+function initialize(){
+ populateSelects();
+ resetDemo();
+
+ $("planBtn").addEventListener("click",planRoutes);
+ $("resetBtn").addEventListener("click",resetDemo);
+ $("resetScenarioBtn").addEventListener("click",resetDemo);
+ $("exportBtn").addEventListener("click",exportCSV);
+
+ $("approveBtn").addEventListener("click",()=>reviewRoute("approved"));
+ $("rejectBtn").addEventListener("click",()=>reviewRoute("rejected"));
+
+ ["startNode","endNode","vehicleType","routingMode","rainfallScenario"]
+  .forEach(id=>{
+   $(id).addEventListener("change",()=>{
+    state.routes=[];
+    state.selectedIndex=0;
+    renderAll();
+   });
+  });
+
+ $("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+ });
+}
+
+initialize();
+</script>
+</body>
+</html>

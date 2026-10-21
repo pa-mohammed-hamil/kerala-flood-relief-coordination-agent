@@ -1,0 +1,1146 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090b10">
+<title>Rainfall Monitoring | Kerala Flood AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#090b10;
+  --sidebar:#0d1017;
+  --panel:#151922;
+  --panel2:#1b202b;
+  --gold:#d8b671;
+  --gold2:#f5daa0;
+  --text:#f4f1e9;
+  --muted:#9399a7;
+  --line:rgba(255,255,255,.085);
+  --green:#54d6a4;
+  --orange:#ffb66e;
+  --red:#ff777d;
+  --blue:#82adff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:13px "DM Sans",sans-serif;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+.app{
+  display:grid;
+  grid-template-columns:252px minmax(0,1fr);
+  min-height:100vh;
+}
+.sidebar{
+  position:sticky;
+  top:0;
+  height:100vh;
+  background:var(--sidebar);
+  border-right:1px solid var(--line);
+  display:flex;
+  flex-direction:column;
+  z-index:40;
+}
+.brand{
+  padding:24px 18px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border-bottom:1px solid var(--line);
+}
+.brand-icon{
+  width:43px;height:43px;
+  display:grid;place-items:center;
+  border-radius:13px;
+  background:linear-gradient(135deg,#f5daa0,#a47c3b);
+  color:#20170a;font-size:23px;
+}
+.brand strong{font:800 13px Manrope,sans-serif}
+.brand small{
+  display:block;font-size:10px;
+  letter-spacing:1.2px;color:var(--muted);margin-top:5px;
+}
+.nav{padding:18px 13px;overflow:auto;flex:1}
+.nav-label{
+  color:#777e8d;font-size:10px;letter-spacing:1.5px;
+  font-weight:800;margin:17px 12px 9px;
+}
+.nav a{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 13px;margin-bottom:5px;
+  border:1px solid transparent;border-radius:10px;
+  color:#a2a8b4;font-size:12px;font-weight:600;
+  transition:.2s;
+}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{
+  background:#d8b67119;
+  border-color:#d8b67130;
+  color:var(--gold2);
+}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.side-footer{
+  padding:17px;border-top:1px solid var(--line);
+  display:flex;align-items:center;gap:10px;
+}
+.avatar{
+  width:38px;height:38px;border-radius:11px;
+  background:#383023;color:var(--gold2);
+  display:grid;place-items:center;font-weight:800;
+}
+.side-footer strong{font-size:11px}
+.side-footer small{
+  display:block;color:var(--muted);
+  font-size:10px;margin-top:5px;
+}
+
+.main{
+  min-width:0;
+  background:
+    radial-gradient(ellipse at 65% -5%,#d8b67112,transparent 38%),
+    var(--bg);
+}
+.topbar{
+  min-height:82px;padding:17px 30px;
+  border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;
+  align-items:center;gap:14px;
+}
+.top-left,.top-actions{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.page-icon{
+  width:43px;height:43px;border-radius:12px;
+  background:#d8b67119;border:1px solid #d8b67133;
+  color:var(--gold);display:grid;place-items:center;
+  font-size:20px;
+}
+.top-left h1{font:800 18px Manrope,sans-serif;margin:0}
+.top-left p{color:var(--muted);font-size:11px;margin:5px 0 0}
+.badge,.tag{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 11px;background:#d8b67112;
+  border:1px solid #d8b67130;color:var(--gold2);
+  border-radius:9px;font-size:10px;font-weight:800;
+}
+.dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--gold);animation:pulse 2s infinite;
+}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  gap:8px;padding:11px 15px;border-radius:10px;
+  border:1px solid var(--line);background:#1a1f29;
+  color:#e1e3e8;font-size:11px;font-weight:800;
+  transition:.2s;
+}
+.btn:hover{border-color:#d8b67166;transform:translateY(-1px)}
+.btn.gold{
+  background:linear-gradient(120deg,#c6a15e,#f1d49a);
+  color:#1b160e;border:0;
+}
+.btn.blue{
+  color:var(--blue);background:#82adff12;
+  border-color:#82adff40;
+}
+.btn.red{
+  color:var(--red);background:#ff777d12;
+  border-color:#ff777d40;
+}
+.content{max-width:1700px;margin:auto;padding:28px 30px 45px}
+.eyebrow{
+  color:var(--gold);font-size:10px;
+  letter-spacing:2px;font-weight:800;margin-bottom:10px;
+}
+.heading{
+  display:flex;justify-content:space-between;
+  align-items:flex-end;gap:15px;
+  flex-wrap:wrap;margin-bottom:22px;
+}
+.heading h2{
+  font:800 28px Manrope,sans-serif;
+  letter-spacing:-1px;margin:0;
+}
+.heading p{
+  color:var(--muted);font-size:12px;
+  line-height:1.8;margin:9px 0 0;
+}
+.hero{
+  padding:27px;border-radius:18px;
+  border:1px solid #d8b67138;
+  background:
+    radial-gradient(circle at 85% 15%,#d8b67120,transparent 35%),
+    linear-gradient(120deg,#252017,#151922);
+}
+.hero h3{
+  font:800 26px Manrope,sans-serif;
+  letter-spacing:-.8px;margin:12px 0;
+}
+.hero p{
+  color:#b9b5ae;font-size:12px;
+  line-height:1.9;max-width:850px;
+}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.grid{display:grid;gap:16px}
+.kpis{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  margin-top:17px;
+}
+.card{
+  min-width:0;
+  background:linear-gradient(150deg,#181c26,#12161e);
+  border:1px solid var(--line);
+  border-radius:16px;
+  box-shadow:0 14px 35px #0002;
+  animation:rise .5s ease both;
+}
+.kpi{padding:21px}
+.kpi-head{
+  display:flex;justify-content:space-between;
+  align-items:center;color:#a7adba;
+  font-size:11px;font-weight:700;
+}
+.kpi-icon{
+  width:36px;height:36px;border-radius:10px;
+  background:#d8b67119;color:var(--gold);
+  display:grid;place-items:center;font-size:18px;
+}
+.kpi-number{
+  font:800 30px Manrope,sans-serif;
+  letter-spacing:-1px;margin:15px 0 7px;
+}
+.kpi-caption{font-size:10px;color:var(--muted);line-height:1.7}
+.kpi-caption b{color:var(--gold)}
+.section{margin-top:25px}
+.section-head{
+  display:flex;justify-content:space-between;
+  align-items:flex-end;gap:14px;
+  flex-wrap:wrap;margin-bottom:15px;
+}
+.section-head h3{
+  font:800 19px Manrope,sans-serif;
+  letter-spacing:-.5px;margin:0;
+}
+.section-head p{
+  color:var(--muted);font-size:11px;
+  line-height:1.8;margin:7px 0 0;
+}
+.panel{padding:21px}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{
+  color:var(--muted);font-size:10px;
+  line-height:1.8;margin-top:6px;
+}
+.columns{
+  grid-template-columns:minmax(0,1.45fr) minmax(310px,1fr);
+}
+.two-col{grid-template-columns:repeat(2,minmax(0,1fr))}
+.input,.select{
+  width:100%;padding:12px 13px;
+  border:1px solid #343a46;border-radius:10px;
+  background:#1b202b;color:var(--text);outline:none;
+}
+.input:focus,.select:focus{border-color:var(--gold)}
+.filters{
+  display:flex;gap:9px;flex-wrap:wrap;
+  margin-bottom:16px;
+}
+.filters .input{flex:1;min-width:170px}
+.filters .select{width:auto;min-width:135px}
+.pill{
+  display:inline-flex;align-items:center;
+  padding:7px 10px;border-radius:8px;
+  font-size:10px;font-weight:800;white-space:nowrap;
+}
+.pill.critical{color:var(--red);background:#ff777d19}
+.pill.high{color:var(--orange);background:#ffb66e19}
+.pill.moderate{color:var(--blue);background:#82adff19}
+.pill.low{color:var(--green);background:#54d6a419}
+.district-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+.district{
+  padding:15px;background:#1b202b;
+  border:1px solid var(--line);border-radius:11px;
+  text-align:left;color:var(--text);transition:.2s;
+}
+.district:hover,.district.selected{
+  border-color:var(--gold);background:#d8b67113;
+}
+.district strong{
+  display:block;font-size:11px;margin-bottom:10px;
+}
+.district small{
+  display:block;color:var(--muted);
+  margin-top:9px;font-size:10px;
+}
+.progress{
+  height:8px;background:#303642;
+  border-radius:10px;overflow:hidden;margin-top:10px;
+}
+.progress span{
+  display:block;height:100%;
+  background:linear-gradient(90deg,#a68145,#f1d69c);
+  border-radius:10px;
+}
+.metric{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:10px;
+  padding:13px 0;border-bottom:1px solid var(--line);
+}
+.metric span{color:var(--muted);font-size:11px}
+.metric strong{font-size:12px}
+.chart{width:100%;height:260px;margin-top:16px}
+.chart text{
+  font:10px "DM Sans",sans-serif;
+  fill:#9098a6;
+}
+.station{
+  padding:15px;background:#1b202b;
+  border:1px solid var(--line);
+  border-radius:11px;margin-bottom:10px;
+}
+.station-head{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:10px;flex-wrap:wrap;
+}
+.station strong{font-size:11px}
+.station p{
+  font-size:10px;color:var(--muted);
+  line-height:1.8;margin:9px 0;
+}
+.station-metrics{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:10px;margin-top:12px;
+}
+.station-metric{
+  padding:11px;background:#121720;
+  border:1px solid var(--line);border-radius:9px;
+}
+.station-metric small{
+  display:block;color:var(--muted);font-size:9px;
+}
+.station-metric b{
+  display:block;margin-top:6px;
+  font:800 15px Manrope,sans-serif;
+}
+.alert{
+  padding:15px;background:#1b202b;
+  border:1px solid var(--line);
+  border-radius:11px;margin-bottom:10px;
+}
+.alert-head{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:10px;flex-wrap:wrap;
+}
+.alert strong{font-size:11px}
+.alert p{
+  font-size:10px;color:var(--muted);
+  line-height:1.8;margin:10px 0;
+}
+.small-btn{
+  padding:8px 10px;border-radius:8px;
+  border:1px solid #d8b67140;
+  background:#d8b67115;color:var(--gold2);
+  font-size:10px;font-weight:800;
+}
+.sim-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+.field{display:grid;gap:8px}
+.field label{
+  font-size:11px;font-weight:800;color:#c9ccd4;
+}
+.range{width:100%;accent-color:var(--gold)}
+.range-value{
+  color:var(--gold2);font-size:11px;font-weight:800;
+}
+.sim-result{
+  padding:16px;background:#1b202b;
+  border:1px solid #d8b67133;
+  border-radius:12px;margin-top:17px;
+}
+.sim-result strong{
+  font:800 14px Manrope,sans-serif;
+}
+.sim-result p{
+  font-size:11px;color:var(--muted);
+  line-height:1.9;
+}
+.notice{
+  padding:16px;background:#d8b6710e;
+  border:1px solid #d8b67130;
+  border-radius:12px;color:#bbb4a5;
+  font-size:11px;line-height:1.9;margin-top:17px;
+}
+.notice strong{color:var(--gold2)}
+.footer{
+  padding-top:26px;text-align:center;
+  color:#69707e;font-size:10px;
+}
+.toast{
+  position:fixed;right:20px;bottom:20px;
+  z-index:150;padding:14px 17px;
+  background:#252b35;border:1px solid #d8b67166;
+  color:var(--gold2);border-radius:11px;
+  box-shadow:0 15px 45px #0008;
+}
+.menu-btn{display:none}
+@keyframes rise{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1250px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .columns{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+  .app{grid-template-columns:1fr}
+  .sidebar{
+    position:fixed;width:260px;
+    transform:translateX(-100%);transition:.3s;
+  }
+  .sidebar.open{transform:translateX(0)}
+  .menu-btn{display:inline-flex}
+  .topbar{padding:15px 20px}
+  .content{padding:20px}
+}
+@media(max-width:560px){
+  .kpis,.two-col,.sim-grid{grid-template-columns:1fr}
+  .district-grid{grid-template-columns:repeat(2,1fr)}
+  .heading h2{font-size:23px}
+  .panel{padding:16px}
+  .top-actions .badge{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="brand-icon">✦</div>
+    <div>
+      <strong>KERALA FLOOD AI</strong>
+      <small>INTELLIGENCE PLATFORM</small>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-label">WORKSPACE</div>
+    <a href="index.html"><span class="nav-icon">▦</span>Project Overview</a>
+    <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+    <a href="agent-command-center.html"><span class="nav-icon">✦</span>Agent Command Center</a>
+    <a href="public-dashboard.html"><span class="nav-icon">◎</span>Public Dashboard</a>
+
+    <div class="nav-label">FLOOD INTELLIGENCE</div>
+    <a class="active" href="rainfall-monitoring.html"><span class="nav-icon">☂</span>Rainfall Monitoring</a>
+    <a href="weather-monitoring.html"><span class="nav-icon">☁</span>Weather Monitoring</a>
+    <a href="river-monitoring.html"><span class="nav-icon">≈</span>River Monitoring</a>
+    <a href="dam-monitoring.html"><span class="nav-icon">◉</span>Dam Monitoring</a>
+    <a href="flood-prediction.html"><span class="nav-icon">◇</span>Flood Prediction</a>
+    <a href="flood-alerts.html"><span class="nav-icon">⚑</span>Flood Alerts</a>
+    <a href="live-flood-map.html"><span class="nav-icon">◈</span>Flood Map</a>
+
+    <div class="nav-label">RESPONSE</div>
+    <a href="incident-management.html"><span class="nav-icon">▣</span>Incident Management</a>
+    <a href="emergency-sos.html"><span class="nav-icon">✚</span>Emergency SOS</a>
+    <a href="notifications.html"><span class="nav-icon">♧</span>Notifications</a>
+
+    <div class="nav-label">GOVERNANCE</div>
+    <a href="human-approval.html"><span class="nav-icon">✓</span>Human Approval</a>
+    <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+  </nav>
+
+  <div class="side-footer">
+    <div class="avatar">RF</div>
+    <div>
+      <strong>Rainfall Intelligence</strong>
+      <small>Simulation Workspace</small>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <div class="top-left">
+    <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+    <div class="page-icon">☂</div>
+    <div>
+      <h1>Rainfall Monitoring</h1>
+      <p>District rainfall · Station telemetry · Scenario analysis</p>
+    </div>
+  </div>
+
+  <div class="top-actions">
+    <span class="badge"><span class="dot"></span>SYNTHETIC DATA</span>
+    <button class="btn" id="resetBtn">↻ Reset</button>
+    <button class="btn gold" id="exportBtn">↓ Export CSV</button>
+  </div>
+</header>
+
+<div class="content">
+  <div class="heading">
+    <div>
+      <div class="eyebrow">WEATHER & HYDROLOGICAL INTELLIGENCE</div>
+      <h2>Kerala Rainfall Intelligence</h2>
+      <p>Explore fictional rainfall readings across Kerala's 14 districts and inspect demonstration monitoring stations.</p>
+    </div>
+    <span class="tag">14 DISTRICTS · DEMO</span>
+  </div>
+
+  <section class="hero">
+    <div class="eyebrow">RAINFALL MONITORING WORKSPACE</div>
+    <h3>Understand Rainfall Patterns. Explore Risk Scenarios.</h3>
+    <p>
+      This interactive dashboard demonstrates district-level rainfall visualization,
+      rainfall accumulation trends, monitoring-station status and rule-based scenario
+      calculations. All values are generated locally for demonstration and do not
+      represent observed weather or an official forecast.
+    </p>
+    <div class="hero-actions">
+      <a class="btn gold" href="#districtSection">Explore Districts ↓</a>
+      <a class="btn" href="#simulationSection">Run Scenario</a>
+      <a class="btn blue" href="flood-prediction.html">Flood Prediction →</a>
+      <a class="btn" href="https://mausam.imd.gov.in/" target="_blank" rel="noopener noreferrer">Official IMD ↗</a>
+    </div>
+  </section>
+
+  <section class="grid kpis">
+    <div class="card kpi">
+      <div class="kpi-head">Illustrative Average Rainfall<div class="kpi-icon">☂</div></div>
+      <div class="kpi-number" id="kpiAverage">—</div>
+      <div class="kpi-caption"><b>SYNTHETIC</b> · Sample 24-hour total</div>
+    </div>
+    <div class="card kpi">
+      <div class="kpi-head">Highest Sample Reading<div class="kpi-icon">↑</div></div>
+      <div class="kpi-number" id="kpiMaximum">—</div>
+      <div class="kpi-caption" id="kpiMaximumDistrict">Fictional district value</div>
+    </div>
+    <div class="card kpi">
+      <div class="kpi-head">High / Critical Scenarios<div class="kpi-icon">⚑</div></div>
+      <div class="kpi-number" id="kpiHigh">—</div>
+      <div class="kpi-caption"><b>DEMO CLASSIFICATION</b> · Not warnings</div>
+    </div>
+    <div class="card kpi">
+      <div class="kpi-head">Sample Monitoring Stations<div class="kpi-icon">◎</div></div>
+      <div class="kpi-number" id="kpiStations">—</div>
+      <div class="kpi-caption"><b>FICTIONAL</b> · No live sensor connections</div>
+    </div>
+  </section>
+
+  <section class="section grid columns" id="districtSection">
+    <div class="card panel">
+      <div class="section-head">
+        <div>
+          <div class="panel-title">District Rainfall Explorer</div>
+          <div class="panel-sub">Select a district to update the rainfall trend and station summary.</div>
+        </div>
+        <span class="tag">DISTRICT COMPARISON</span>
+      </div>
+
+      <div class="filters">
+        <input class="input" id="districtSearch" placeholder="Search district..." aria-label="Search districts">
+        <select class="select" id="riskFilter" aria-label="Filter rainfall category">
+          <option value="all">All Categories</option>
+          <option value="critical">Critical</option>
+          <option value="high">High</option>
+          <option value="moderate">Moderate</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+
+      <div class="district-grid" id="districtGrid"></div>
+    </div>
+
+    <div class="card panel">
+      <div class="section-head">
+        <div>
+          <div class="panel-title" id="selectedTitle">District Rainfall Profile</div>
+          <div class="panel-sub">Synthetic rainfall metrics and deterministic example trend.</div>
+        </div>
+        <span class="tag" id="selectedCategory">DEMO</span>
+      </div>
+
+      <div class="metric">
+        <span>24-Hour Sample Rainfall</span>
+        <strong id="metricRain">—</strong>
+      </div>
+      <div class="metric">
+        <span>7-Day Synthetic Accumulation</span>
+        <strong id="metricSevenDay">—</strong>
+      </div>
+      <div class="metric">
+        <span>Illustrative Rainfall Intensity</span>
+        <strong id="metricIntensity">—</strong>
+      </div>
+      <div class="metric">
+        <span>Demo Monitoring Stations</span>
+        <strong id="metricStationCount">—</strong>
+      </div>
+      <div class="metric">
+        <span>Fictional Rainfall Category</span>
+        <strong id="metricCategory">—</strong>
+      </div>
+
+      <div class="panel-title" style="margin-top:22px">Synthetic 7-Day Rainfall Trend</div>
+
+      <svg class="chart" viewBox="0 0 540 260" role="img" aria-label="Synthetic seven-day rainfall bar chart">
+        <g id="chartGrid"></g>
+        <g id="chartBars"></g>
+        <g id="chartLabels"></g>
+      </svg>
+
+      <div class="notice">
+        <strong>Illustrative trend only.</strong>
+        <div>Chart values are deterministic generated samples. They are not recorded observations or predictive model outputs.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section grid two-col">
+    <div class="card panel">
+      <div class="section-head">
+        <div>
+          <div class="panel-title">Synthetic Weather Stations</div>
+          <div class="panel-sub">Fictional sensor identifiers and readings for the selected district.</div>
+        </div>
+        <span class="tag" id="stationDistrict">DISTRICT</span>
+      </div>
+      <div id="stationList"></div>
+    </div>
+
+    <div class="card panel">
+      <div class="section-head">
+        <div>
+          <div class="panel-title">Illustrative Rainfall Advisories</div>
+          <div class="panel-sub">Locally generated review scenarios, not public weather alerts.</div>
+        </div>
+        <a class="btn" href="flood-alerts.html">Alert Workspace →</a>
+      </div>
+      <div id="alertList"></div>
+    </div>
+  </section>
+
+  <section class="section" id="simulationSection">
+    <div class="section-head">
+      <div>
+        <h3>Rainfall Scenario Simulator</h3>
+        <p>Experiment with rainfall and river-index inputs using a transparent illustrative formula.</p>
+      </div>
+      <span class="tag">RULE-BASED DEMO</span>
+    </div>
+
+    <div class="card panel">
+      <div class="sim-grid">
+        <div class="field">
+          <label for="simDistrict">District</label>
+          <select class="select" id="simDistrict"></select>
+        </div>
+        <div class="field">
+          <label for="simDuration">Scenario Duration</label>
+          <select class="select" id="simDuration">
+            <option value="24">24 Hours</option>
+            <option value="48">48 Hours</option>
+            <option value="72">72 Hours</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="simRain">Illustrative Rainfall (mm): <span class="range-value" id="simRainValue">120</span></label>
+          <input class="range" id="simRain" type="range" min="0" max="300" value="120" step="5">
+        </div>
+        <div class="field">
+          <label for="simRiver">Synthetic River Index: <span class="range-value" id="simRiverValue">60</span></label>
+          <input class="range" id="simRiver" type="range" min="0" max="100" value="60" step="1">
+        </div>
+      </div>
+
+      <div class="hero-actions">
+        <button class="btn gold" id="runSimulation">▶ Run Simulation</button>
+        <button class="btn" id="resetSimulation">↻ Reset Inputs</button>
+      </div>
+
+      <div class="sim-result" id="simulationResult" aria-live="polite">
+        <strong>Ready for Simulation</strong>
+        <p>Adjust the inputs and run a fictional rainfall scenario. Results are not forecasts or operational risk assessments.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section grid two-col">
+    <div class="card panel">
+      <div class="panel-title">Planned Data Integration Architecture</div>
+      <div class="panel-sub" style="margin-bottom:17px">Backend modules to connect after authenticated source validation.</div>
+      <div class="metric"><span>IMD Data Adapter</span><strong>Not Connected</strong></div>
+      <div class="metric"><span>Weather Station Ingestion</span><strong>Not Connected</strong></div>
+      <div class="metric"><span>Rainfall Forecasting Model</span><strong>Not Running</strong></div>
+      <div class="metric"><span>Time-Series Database</span><strong>Not Connected</strong></div>
+      <div class="metric"><span>Agent Verification Workflow</span><strong>Planned</strong></div>
+      <div class="metric"><span>Human Approval Workflow</span><strong>Planned</strong></div>
+    </div>
+
+    <div class="card panel">
+      <div class="panel-title">Monitoring & Quality Controls</div>
+      <div class="panel-sub" style="margin-bottom:17px">Required safeguards before operational deployment.</div>
+      <div class="metric"><span>Sensor Timestamp Validation</span><strong>Required</strong></div>
+      <div class="metric"><span>Missing Data Detection</span><strong>Required</strong></div>
+      <div class="metric"><span>Outlier & Unit Checks</span><strong>Required</strong></div>
+      <div class="metric"><span>Official Source Verification</span><strong>Required</strong></div>
+      <div class="metric"><span>Forecast Model Evaluation</span><strong>Required</strong></div>
+      <div class="metric"><span>Human-Reviewed Public Alerts</span><strong>Required</strong></div>
+    </div>
+  </section>
+
+  <div class="notice">
+    <strong>⚠ Important Safety Notice.</strong>
+    <div>
+      Every rainfall measurement, station status, alert category and scenario result on this page is fictional.
+      No official rainfall thresholds, live weather observations or flood warnings are represented.
+      Use verified IMD and Kerala disaster-management information for real conditions.
+      For emergencies in India, call <a href="tel:112" style="color:var(--gold2);font-weight:800">112</a>.
+    </div>
+  </div>
+
+  <footer class="footer">
+    KERALA FLOOD RELIEF COORDINATION AGENT · RAINFALL MONITORING · SYNTHETIC DEMONSTRATION
+  </footer>
+</div>
+</main>
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const SEED_DISTRICTS=[
+ {name:"Thiruvananthapuram",rain:36,risk:"low",stations:3,river:28},
+ {name:"Kollam",rain:68,risk:"moderate",stations:4,river:48},
+ {name:"Pathanamthitta",rain:142,risk:"high",stations:5,river:78},
+ {name:"Alappuzha",rain:155,risk:"high",stations:5,river:82},
+ {name:"Kottayam",rain:91,risk:"moderate",stations:4,river:61},
+ {name:"Idukki",rain:196,risk:"critical",stations:6,river:91},
+ {name:"Ernakulam",rain:129,risk:"high",stations:6,river:77},
+ {name:"Thrissur",rain:97,risk:"moderate",stations:5,river:64},
+ {name:"Palakkad",rain:83,risk:"moderate",stations:4,river:57},
+ {name:"Malappuram",rain:133,risk:"high",stations:5,river:75},
+ {name:"Kozhikode",rain:124,risk:"high",stations:4,river:72},
+ {name:"Wayanad",rain:212,risk:"critical",stations:6,river:94},
+ {name:"Kannur",rain:88,risk:"moderate",stations:4,river:59},
+ {name:"Kasaragod",rain:49,risk:"low",stations:3,river:32}
+];
+
+const state={
+ districts:structuredClone(SEED_DISTRICTS),
+ selected:"Thrissur",
+ simulations:0
+};
+
+function el(tag,className,text){
+ const node=document.createElement(tag);
+ if(className)node.className=className;
+ if(text!==undefined)node.textContent=String(text);
+ return node;
+}
+
+function svgEl(tag,attributes={}){
+ const node=document.createElementNS("http://www.w3.org/2000/svg",tag);
+ Object.entries(attributes).forEach(([key,value])=>
+  node.setAttribute(key,String(value))
+ );
+ return node;
+}
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+ const node=el("div","toast",message);
+ document.body.appendChild(node);
+ setTimeout(()=>node.remove(),2800);
+}
+
+function getSelected(){
+ return state.districts.find(d=>d.name===state.selected);
+}
+
+function pill(risk){
+ return el("span","pill "+risk,risk.toUpperCase()+" · DEMO");
+}
+
+function renderKPIs(){
+ const total=state.districts.reduce((sum,d)=>sum+d.rain,0);
+ const average=total/state.districts.length;
+ const maximum=state.districts.reduce((a,b)=>a.rain>b.rain?a:b);
+ const high=state.districts.filter(d=>
+  d.risk==="high"||d.risk==="critical"
+ ).length;
+ const stations=state.districts.reduce((sum,d)=>sum+d.stations,0);
+
+ $("kpiAverage").textContent=average.toFixed(1)+" mm";
+ $("kpiMaximum").textContent=maximum.rain+" mm";
+ $("kpiMaximumDistrict").textContent=maximum.name+" · Fictional reading";
+ $("kpiHigh").textContent=high;
+ $("kpiStations").textContent=stations;
+}
+
+function renderDistricts(){
+ const query=$("districtSearch").value.trim().toLowerCase();
+ const risk=$("riskFilter").value;
+
+ const filtered=state.districts.filter(d=>
+  d.name.toLowerCase().includes(query)&&
+  (risk==="all"||d.risk===risk)
+ );
+
+ const root=$("districtGrid");
+ root.replaceChildren();
+
+ if(!filtered.length){
+  root.appendChild(el("p","panel-sub","No matching districts."));
+  return;
+ }
+
+ filtered.forEach(d=>{
+  const button=el(
+   "button",
+   "district"+(state.selected===d.name?" selected":"")
+  );
+
+  button.type="button";
+  button.append(
+   el("strong","",d.name),
+   pill(d.risk),
+   el("small","",d.rain+" mm · Synthetic 24-hour rainfall")
+  );
+
+  button.addEventListener("click",()=>{
+   state.selected=d.name;
+   renderDistricts();
+   renderSelected();
+  });
+
+  root.appendChild(button);
+ });
+}
+
+function rainfallSeries(d){
+ const factors=[.44,.65,.58,.81,.72,.94,1];
+ return factors.map((factor,index)=>
+  Math.max(0,Math.round(d.rain*factor*(1+.08*Math.sin(index+d.river))))
+ );
+}
+
+function renderSelected(){
+ const d=getSelected();
+ if(!d)return;
+
+ const series=rainfallSeries(d);
+ const total=series.reduce((sum,value)=>sum+value,0);
+
+ $("selectedTitle").textContent=d.name+" · Rainfall Profile";
+ $("selectedCategory").textContent=d.risk.toUpperCase()+" · DEMO";
+ $("metricRain").textContent=d.rain+" mm";
+ $("metricSevenDay").textContent=total+" mm";
+ $("metricIntensity").textContent=(d.rain/24).toFixed(1)+" mm/h (simple average)";
+ $("metricStationCount").textContent=d.stations+" synthetic stations";
+ $("metricCategory").textContent=d.risk.toUpperCase()+" · FICTIONAL";
+
+ drawChart(series);
+ renderStations(d);
+ renderAlerts(d);
+}
+
+function drawChart(values){
+ const grid=$("chartGrid");
+ const bars=$("chartBars");
+ const labels=$("chartLabels");
+
+ grid.replaceChildren();
+ bars.replaceChildren();
+ labels.replaceChildren();
+
+ const max=Math.max(50,...values)*1.18;
+ const baseline=215;
+ const chartHeight=175;
+ const left=45;
+ const width=465;
+
+ for(let i=0;i<5;i++){
+  const y=40+i*(chartHeight/4);
+
+  grid.appendChild(svgEl("line",{
+   x1:left,y1:y,x2:left+width,y2:y,
+   stroke:"#ffffff18","stroke-dasharray":"4 6"
+  }));
+
+  const tick=svgEl("text",{x:8,y:y+4});
+  tick.textContent=Math.round(max*(1-i/4));
+  labels.appendChild(tick);
+ }
+
+ values.forEach((value,index)=>{
+  const slot=width/values.length;
+  const barWidth=Math.min(38,slot*.6);
+  const x=left+index*slot+(slot-barWidth)/2;
+  const h=value/max*chartHeight;
+  const y=baseline-h;
+
+  bars.appendChild(svgEl("rect",{
+   x,y,width:barWidth,height:h,rx:6,
+   fill:index===values.length-1?"#f5daa0":"#a78349",
+   opacity:index===values.length-1?1:.75
+  }));
+
+  const day=svgEl("text",{
+   x:x+barWidth/2,y:239,"text-anchor":"middle"
+  });
+  day.textContent="D"+(index+1);
+  labels.appendChild(day);
+ });
+}
+
+function renderStations(d){
+ const root=$("stationList");
+ root.replaceChildren();
+ $("stationDistrict").textContent=d.name.toUpperCase();
+
+ for(let index=0;index<d.stations;index++){
+  const stationNumber=index+1;
+  const reading=Math.max(
+   0,
+   Math.round(d.rain*(.7+.08*index+.08*Math.sin(index+2)))
+  );
+
+  const card=el("div","station");
+  const head=el("div","station-head");
+
+  head.append(
+   el("strong","",`DEMO-ST-${String(stationNumber).padStart(2,"0")}`),
+   el("span","pill low","SYNTHETIC")
+  );
+
+  const metrics=el("div","station-metrics");
+
+  [
+   ["Sample Rainfall",reading+" mm"],
+   ["Sample Intensity",(reading/24).toFixed(1)+" mm/h"]
+  ].forEach(([label,value])=>{
+   const box=el("div","station-metric");
+   box.append(el("small","",label),el("b","",value));
+   metrics.appendChild(box);
+  });
+
+  card.append(
+   head,
+   el("p","",d.name+" · Invented monitoring-station record"),
+   metrics
+  );
+
+  root.appendChild(card);
+ }
+}
+
+function renderAlerts(d){
+ const root=$("alertList");
+ root.replaceChildren();
+
+ const examples=[
+  {
+   title:"Illustrative Rainfall Review",
+   priority:d.risk,
+   description:`The fictional ${d.name} scenario contains ${d.rain} mm of sample rainfall. This is not a measured value or official warning.`
+  },
+  {
+   title:"Synthetic Station Data Quality Check",
+   priority:"moderate",
+   description:"A demonstration workflow for timestamp checks, outlier detection and missing-data validation."
+  },
+  {
+   title:"Human Verification Required",
+   priority:"high",
+   description:"Any real public advisory would require authoritative evidence and approval before publication."
+  }
+ ];
+
+ examples.forEach(item=>{
+  const card=el("div","alert");
+  const head=el("div","alert-head");
+
+  head.append(
+   el("strong","",item.title),
+   pill(item.priority)
+  );
+
+  card.append(
+   head,
+   el("p","",item.description),
+   el("span","tag","NOT AN OFFICIAL ALERT")
+  );
+
+  root.appendChild(card);
+ });
+}
+
+function populateSimulationDistricts(){
+ const root=$("simDistrict");
+ root.replaceChildren();
+
+ state.districts.forEach(d=>{
+  root.appendChild(new Option(d.name,d.name));
+ });
+
+ root.value=state.selected;
+}
+
+function updateRangeLabels(){
+ $("simRainValue").textContent=$("simRain").value+" mm";
+ $("simRiverValue").textContent=$("simRiver").value+"/100";
+}
+
+function scenarioCategory(score){
+ if(score>=80)return"critical";
+ if(score>=65)return"high";
+ if(score>=40)return"moderate";
+ return"low";
+}
+
+function runSimulation(){
+ const district=$("simDistrict").value;
+ const rain=Number($("simRain").value);
+ const river=Number($("simRiver").value);
+ const duration=Number($("simDuration").value);
+
+ // Deliberately illustrative formula, not a hydrological model.
+ const rainComponent=Math.min(100,rain/300*100);
+ const score=Math.round(.55*rainComponent+.45*river);
+ const category=scenarioCategory(score);
+
+ const result=$("simulationResult");
+ result.replaceChildren();
+
+ result.append(
+  el("strong","",district+" · "+category.toUpperCase()+" Demo Scenario"),
+  el(
+   "p","",
+   `Illustrative index: ${score}/100. Rainfall input: ${rain} mm over ${duration} hours. Synthetic river index: ${river}/100. The formula combines normalized rainfall (55%) and river index (45%). These weights and categories are arbitrary demonstration choices, not scientifically validated warning thresholds.`
+  ),
+  pill(category)
+ );
+
+ state.simulations++;
+ toast("Synthetic rainfall scenario calculated");
+}
+
+function resetSimulation(){
+ $("simDistrict").value=state.selected;
+ $("simDuration").value="24";
+ $("simRain").value="120";
+ $("simRiver").value="60";
+ updateRangeLabels();
+
+ const result=$("simulationResult");
+ result.replaceChildren(
+  el("strong","","Ready for Simulation"),
+  el("p","","Adjust the inputs and run a fictional rainfall scenario. Results are not forecasts or operational risk assessments.")
+ );
+}
+
+function csvEscape(value){
+ let text=String(value??"");
+ if(/^\s*[=+\-@]/.test(text))text="'"+text;
+ return '"'+text.replace(/"/g,'""')+'"';
+}
+
+function exportCSV(){
+ const columns=["district","rainfall_mm_demo","risk_demo","station_count_demo","river_index_demo"];
+
+ const rows=[
+  columns.map(csvEscape).join(","),
+  ...state.districts.map(d=>[
+   d.name,d.rain,d.risk,d.stations,d.river
+  ].map(csvEscape).join(","))
+ ];
+
+ const blob=new Blob(["\uFEFF"+rows.join("\r\n")],{
+  type:"text/csv;charset=utf-8"
+ });
+
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement("a");
+ link.href=url;
+ link.download="kerala-rainfall-synthetic-demo.csv";
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ toast("Synthetic rainfall CSV exported");
+}
+
+function resetDashboard(){
+ state.districts=structuredClone(SEED_DISTRICTS);
+ state.selected="Thrissur";
+ state.simulations=0;
+
+ $("districtSearch").value="";
+ $("riskFilter").value="all";
+
+ renderKPIs();
+ renderDistricts();
+ renderSelected();
+ populateSimulationDistricts();
+ resetSimulation();
+
+ toast("Rainfall demonstration reset");
+}
+
+function initialize(){
+ renderKPIs();
+ renderDistricts();
+ renderSelected();
+ populateSimulationDistricts();
+ updateRangeLabels();
+
+ $("districtSearch").addEventListener("input",renderDistricts);
+ $("riskFilter").addEventListener("change",renderDistricts);
+
+ $("simRain").addEventListener("input",updateRangeLabels);
+ $("simRiver").addEventListener("input",updateRangeLabels);
+
+ $("runSimulation").addEventListener("click",runSimulation);
+ $("resetSimulation").addEventListener("click",resetSimulation);
+ $("resetBtn").addEventListener("click",resetDashboard);
+ $("exportBtn").addEventListener("click",exportCSV);
+
+ $("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+ });
+}
+
+initialize();
+</script>
+</body>
+</html>

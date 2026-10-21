@@ -1,0 +1,1140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b10">
+<title>Create Account | Kerala Flood AI</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#090b10;
+ --sidebar:#0d1017;
+ --panel:#151922;
+ --panel2:#1b202b;
+ --gold:#d8b671;
+ --gold2:#f5daa0;
+ --text:#f4f1e9;
+ --muted:#9399a7;
+ --line:rgba(255,255,255,.085);
+ --green:#54d6a4;
+ --orange:#ffb66e;
+ --red:#ff777d;
+ --blue:#82adff;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0;
+ min-height:100vh;
+ background:var(--bg);
+ color:var(--text);
+ font:13px "DM Sans",sans-serif;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+.auth-layout{
+ display:grid;
+ grid-template-columns:minmax(0,1.05fr) minmax(430px,.95fr);
+ min-height:100vh;
+}
+
+.visual-panel{
+ position:relative;
+ min-height:100vh;
+ padding:42px clamp(30px,5vw,85px);
+ background:
+  radial-gradient(circle at 55% 38%,#d8b67116,transparent 35%),
+  radial-gradient(circle at 0% 100%,#d8b6710c,transparent 40%),
+  linear-gradient(145deg,#12151d,#090b10);
+ border-right:1px solid var(--line);
+ overflow:hidden;
+ display:flex;
+ flex-direction:column;
+}
+
+.visual-panel:before{
+ content:"";
+ position:absolute;
+ inset:0;
+ background-image:
+  linear-gradient(#ffffff05 1px,transparent 1px),
+  linear-gradient(90deg,#ffffff05 1px,transparent 1px);
+ background-size:46px 46px;
+ mask-image:linear-gradient(to bottom,transparent,#000 35%,transparent);
+ pointer-events:none;
+}
+
+.brand{
+ position:relative;
+ display:flex;
+ align-items:center;
+ gap:13px;
+ z-index:1;
+}
+.brand-icon{
+ width:47px;
+ height:47px;
+ display:grid;
+ place-items:center;
+ border-radius:14px;
+ background:linear-gradient(135deg,#f5daa0,#a47c3b);
+ color:#20170a;
+ font-size:25px;
+ box-shadow:0 8px 35px #d8b67124;
+}
+.brand strong{
+ display:block;
+ font:800 15px Manrope,sans-serif;
+ letter-spacing:.3px;
+}
+.brand small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ letter-spacing:1.7px;
+ margin-top:5px;
+}
+
+.visual-content{
+ position:relative;
+ z-index:1;
+ flex:1;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ padding:45px 0;
+}
+
+.eyebrow{
+ color:var(--gold);
+ font-size:10px;
+ font-weight:800;
+ letter-spacing:2px;
+}
+
+.visual-content h1{
+ font:800 clamp(32px,3.6vw,53px)/1.18 Manrope,sans-serif;
+ letter-spacing:-1.8px;
+ max-width:650px;
+ margin:20px 0;
+}
+
+.gradient-text{
+ background:linear-gradient(110deg,#b78c4a,#f9e3b7,#d8b671);
+ -webkit-background-clip:text;
+ background-clip:text;
+ color:transparent;
+}
+
+.visual-description{
+ color:#a8aebb;
+ font-size:13px;
+ line-height:2;
+ max-width:550px;
+ margin:0;
+}
+
+.network{
+ width:100%;
+ max-width:610px;
+ height:auto;
+ margin:25px auto 10px;
+ filter:drop-shadow(0 0 25px #d8b67116);
+}
+
+.network-line{
+ stroke:#d8b671;
+ stroke-opacity:.22;
+ stroke-width:1.5;
+ stroke-dasharray:5 7;
+ animation:dash 16s linear infinite;
+}
+
+.network-node{
+ fill:#161b25;
+ stroke:#d8b671;
+ stroke-width:1.5;
+}
+
+.network-center{
+ fill:#3b3020;
+ stroke:#f5daa0;
+ stroke-width:2;
+}
+
+.network-pulse{
+ fill:none;
+ stroke:#d8b671;
+ stroke-width:1;
+ opacity:.5;
+ transform-origin:center;
+ animation:pulseRing 3s ease-in-out infinite;
+}
+
+.network-label{
+ fill:#bfc3ca;
+ font:11px "DM Sans",sans-serif;
+ text-anchor:middle;
+}
+
+.features{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:12px;
+ margin-top:10px;
+}
+
+.feature{
+ padding:16px;
+ border:1px solid var(--line);
+ border-radius:13px;
+ background:#ffffff06;
+ backdrop-filter:blur(12px);
+}
+.feature-icon{
+ width:34px;
+ height:34px;
+ display:grid;
+ place-items:center;
+ background:#d8b67119;
+ color:var(--gold2);
+ border-radius:9px;
+ font-size:17px;
+ margin-bottom:12px;
+}
+.feature strong{
+ display:block;
+ font-size:11px;
+ font-weight:800;
+}
+.feature p{
+ color:var(--muted);
+ font-size:10px;
+ line-height:1.7;
+ margin:7px 0 0;
+}
+
+.visual-footer{
+ position:relative;
+ z-index:1;
+ display:flex;
+ justify-content:space-between;
+ gap:12px;
+ flex-wrap:wrap;
+ color:#7b8290;
+ font-size:10px;
+}
+
+.form-panel{
+ padding:36px clamp(24px,5vw,78px);
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ background:
+  radial-gradient(circle at 100% 0%,#d8b67109,transparent 40%),
+  var(--bg);
+}
+
+.form-container{
+ width:100%;
+ max-width:510px;
+ margin:auto;
+ animation:rise .6s ease both;
+}
+
+.form-top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ margin-bottom:30px;
+}
+
+.badge{
+ display:inline-flex;
+ align-items:center;
+ gap:8px;
+ padding:9px 12px;
+ border:1px solid #d8b67135;
+ background:#d8b67110;
+ color:var(--gold2);
+ border-radius:9px;
+ font-size:10px;
+ font-weight:800;
+}
+
+.dot{
+ width:7px;
+ height:7px;
+ background:var(--gold);
+ border-radius:50%;
+ animation:blink 2s infinite;
+}
+
+.back-link{
+ color:#a6acb8;
+ font-size:11px;
+ font-weight:700;
+}
+.back-link:hover{color:var(--gold2)}
+
+.form-container h2{
+ font:800 31px Manrope,sans-serif;
+ letter-spacing:-1px;
+ margin:0 0 10px;
+}
+
+.subtitle{
+ color:var(--muted);
+ font-size:12px;
+ line-height:1.8;
+ margin:0 0 27px;
+}
+
+.field{
+ margin-bottom:17px;
+}
+.field label{
+ display:block;
+ color:#cdd0d7;
+ font-size:11px;
+ font-weight:800;
+ margin-bottom:9px;
+}
+
+.input-wrap{
+ position:relative;
+}
+
+.input,.select{
+ width:100%;
+ background:#171c25;
+ color:var(--text);
+ border:1px solid #323844;
+ border-radius:11px;
+ padding:14px 15px;
+ outline:none;
+ transition:.2s;
+}
+
+.input::placeholder{color:#68707e}
+
+.input:focus,.select:focus{
+ border-color:var(--gold);
+ box-shadow:0 0 0 3px #d8b67112;
+}
+
+.input.invalid{border-color:var(--red)}
+
+.input-wrap .input{
+ padding-right:65px;
+}
+
+.toggle-password{
+ position:absolute;
+ right:11px;
+ top:50%;
+ transform:translateY(-50%);
+ background:transparent;
+ border:0;
+ color:var(--gold2);
+ font-size:10px;
+ font-weight:800;
+ padding:7px;
+}
+
+.two-col{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:13px;
+}
+
+.role-grid{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:9px;
+}
+
+.role-card{
+ padding:12px 8px;
+ border:1px solid #343a46;
+ border-radius:10px;
+ background:#171c25;
+ text-align:center;
+ color:#a9afba;
+ transition:.2s;
+ min-height:86px;
+}
+
+.role-card:hover{
+ border-color:#d8b67166;
+ background:#d8b6710d;
+}
+
+.role-card.selected{
+ background:#d8b67116;
+ border-color:var(--gold);
+ color:var(--gold2);
+ box-shadow:inset 0 0 0 1px #d8b67125;
+}
+
+.role-icon{
+ display:block;
+ font-size:22px;
+ margin-bottom:9px;
+}
+
+.role-name{
+ display:block;
+ font-size:10px;
+ font-weight:800;
+ line-height:1.4;
+}
+
+.role-help{
+ font-size:10px;
+ color:var(--muted);
+ line-height:1.8;
+ margin:10px 0 0;
+}
+
+.password-meter{
+ height:6px;
+ background:#303642;
+ border-radius:10px;
+ overflow:hidden;
+ margin-top:11px;
+}
+
+.password-meter span{
+ display:block;
+ width:0;
+ height:100%;
+ border-radius:10px;
+ background:var(--red);
+ transition:width .2s,background .2s;
+}
+
+.password-hint{
+ font-size:10px;
+ color:var(--muted);
+ line-height:1.8;
+ margin-top:8px;
+}
+
+.checkbox-row{
+ display:flex;
+ align-items:flex-start;
+ gap:10px;
+ margin:20px 0;
+ color:#aeb4c0;
+ font-size:11px;
+ line-height:1.8;
+}
+
+.checkbox-row input{
+ margin-top:4px;
+ accent-color:var(--gold);
+}
+
+.checkbox-row a{color:var(--gold2)}
+
+.btn{
+ width:100%;
+ padding:15px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:9px;
+ border-radius:11px;
+ border:1px solid var(--line);
+ background:#1b202b;
+ color:var(--text);
+ font-size:12px;
+ font-weight:800;
+ transition:.2s;
+}
+
+.btn:hover{transform:translateY(-1px)}
+.btn.gold{
+ border:0;
+ background:linear-gradient(120deg,#c6a15e,#f1d49a);
+ color:#20170a;
+ box-shadow:0 10px 30px #d8b67120;
+}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+
+.login-link{
+ text-align:center;
+ margin-top:21px;
+ color:var(--muted);
+ font-size:11px;
+}
+.login-link a{
+ color:var(--gold2);
+ font-weight:800;
+}
+
+.notice{
+ padding:15px;
+ background:#d8b6710d;
+ border:1px solid #d8b67130;
+ border-radius:11px;
+ color:#bdb7ab;
+ font-size:10px;
+ line-height:1.9;
+ margin-top:22px;
+}
+.notice strong{color:var(--gold2)}
+
+.message{
+ display:none;
+ padding:13px 14px;
+ border-radius:10px;
+ margin-bottom:17px;
+ font-size:11px;
+ line-height:1.8;
+}
+
+.message.show{display:block}
+.message.error{
+ background:#ff777d13;
+ border:1px solid #ff777d50;
+ color:#ffabb0;
+}
+.message.success{
+ background:#54d6a413;
+ border:1px solid #54d6a450;
+ color:#87e5c2;
+}
+
+.success-panel{
+ display:none;
+ text-align:center;
+ padding:35px 15px;
+}
+.success-panel.show{display:block}
+.success-icon{
+ width:70px;
+ height:70px;
+ display:grid;
+ place-items:center;
+ border-radius:50%;
+ margin:0 auto 20px;
+ color:var(--green);
+ background:#54d6a419;
+ border:1px solid #54d6a455;
+ font-size:34px;
+}
+.success-panel h3{
+ font:800 22px Manrope,sans-serif;
+ margin:0 0 12px;
+}
+.success-panel p{
+ font-size:12px;
+ color:var(--muted);
+ line-height:1.9;
+ margin-bottom:25px;
+}
+
+.toast{
+ position:fixed;
+ right:20px;
+ bottom:20px;
+ z-index:100;
+ padding:14px 17px;
+ background:#252b35;
+ border:1px solid #d8b67166;
+ color:var(--gold2);
+ border-radius:11px;
+ box-shadow:0 15px 45px #0008;
+}
+
+@keyframes rise{
+ from{opacity:0;transform:translateY(18px)}
+ to{opacity:1;transform:translateY(0)}
+}
+@keyframes blink{50%{opacity:.3}}
+@keyframes dash{to{stroke-dashoffset:-250}}
+@keyframes pulseRing{
+ 0%,100%{opacity:.12;transform:scale(.92)}
+ 50%{opacity:.65;transform:scale(1.12)}
+}
+
+@media(max-width:1150px){
+ .auth-layout{grid-template-columns:1fr 1fr}
+ .visual-panel{padding:32px}
+ .form-panel{padding:35px}
+ .features{grid-template-columns:1fr}
+ .feature{display:flex;align-items:center;gap:13px}
+ .feature-icon{margin:0;flex-shrink:0}
+ .feature p{margin-top:3px}
+}
+@media(max-width:850px){
+ .auth-layout{grid-template-columns:1fr}
+ .visual-panel{min-height:auto;padding:28px}
+ .visual-content{padding:35px 0 15px}
+ .visual-content h1{font-size:31px}
+ .network{max-height:220px}
+ .features{grid-template-columns:repeat(3,1fr)}
+ .feature{display:block}
+ .feature-icon{margin-bottom:10px}
+ .visual-footer{margin-top:22px}
+ .form-panel{padding:45px 25px}
+}
+@media(max-width:520px){
+ .features{grid-template-columns:1fr}
+ .feature{display:flex}
+ .feature-icon{margin:0}
+ .two-col{grid-template-columns:1fr}
+ .role-grid{grid-template-columns:repeat(2,1fr)}
+ .form-container h2{font-size:26px}
+ .visual-content h1{font-size:27px}
+ .network{height:190px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{
+  animation-duration:.01ms!important;
+  transition-duration:.01ms!important;
+ }
+}
+</style>
+</head>
+
+<body>
+<div class="auth-layout">
+
+<!-- LEFT VISUAL PANEL -->
+<section class="visual-panel">
+ <a href="index.html" class="brand">
+  <div class="brand-icon">✦</div>
+  <div>
+   <strong>KERALA FLOOD AI</strong>
+   <small>INTELLIGENCE PLATFORM</small>
+  </div>
+ </a>
+
+ <div class="visual-content">
+  <div class="eyebrow">UNIFIED DISASTER RESPONSE INTELLIGENCE</div>
+
+  <h1>
+   Join the Future of
+   <span class="gradient-text">Intelligent Disaster Coordination.</span>
+  </h1>
+
+  <p class="visual-description">
+   Explore a proposed multi-agent intelligence platform designed for
+   flood monitoring, rescue coordination, emergency response, recovery
+   planning and accountable human oversight.
+  </p>
+
+  <svg class="network" viewBox="0 0 620 350" role="img" aria-label="Decorative multi-agent intelligence network">
+   <defs>
+    <radialGradient id="centerGlow">
+     <stop offset="0%" stop-color="#d8b671" stop-opacity=".35"/>
+     <stop offset="100%" stop-color="#d8b671" stop-opacity="0"/>
+    </radialGradient>
+   </defs>
+
+   <circle cx="310" cy="174" r="125" fill="url(#centerGlow)"/>
+
+   <g class="network-line">
+    <line x1="310" y1="174" x2="110" y2="83"/>
+    <line x1="310" y1="174" x2="310" y2="44"/>
+    <line x1="310" y1="174" x2="507" y2="85"/>
+    <line x1="310" y1="174" x2="100" y2="263"/>
+    <line x1="310" y1="174" x2="310" y2="312"/>
+    <line x1="310" y1="174" x2="520" y2="263"/>
+    <line x1="110" y1="83" x2="310" y2="44"/>
+    <line x1="507" y1="85" x2="520" y2="263"/>
+    <line x1="100" y1="263" x2="310" y2="312"/>
+   </g>
+
+   <circle class="network-pulse" cx="310" cy="174" r="75"/>
+   <circle class="network-pulse" cx="310" cy="174" r="98" style="animation-delay:1s"/>
+
+   <g>
+    <circle class="network-center" cx="310" cy="174" r="53"/>
+    <text x="310" y="168" text-anchor="middle" fill="#f5daa0" font-size="24">✦</text>
+    <text x="310" y="190" text-anchor="middle" fill="#f5daa0" font-size="11" font-weight="800">SUPERVISOR</text>
+   </g>
+
+   <g>
+    <circle class="network-node" cx="110" cy="83" r="30"/>
+    <text x="110" y="89" text-anchor="middle" fill="#d8b671" font-size="22">☁</text>
+    <text class="network-label" x="110" y="127">Weather Agent</text>
+
+    <circle class="network-node" cx="310" cy="44" r="28"/>
+    <text x="310" y="50" text-anchor="middle" fill="#d8b671" font-size="21">≈</text>
+    <text class="network-label" x="310" y="88">Flood Agent</text>
+
+    <circle class="network-node" cx="507" cy="85" r="30"/>
+    <text x="507" y="91" text-anchor="middle" fill="#d8b671" font-size="21">⚑</text>
+    <text class="network-label" x="507" y="130">Rescue Agent</text>
+
+    <circle class="network-node" cx="100" cy="263" r="30"/>
+    <text x="100" y="269" text-anchor="middle" fill="#d8b671" font-size="21">✚</text>
+    <text class="network-label" x="100" y="308">Medical Agent</text>
+
+    <circle class="network-node" cx="310" cy="312" r="28"/>
+    <text x="310" y="318" text-anchor="middle" fill="#d8b671" font-size="21">⌂</text>
+    <text class="network-label" x="310" y="349">Recovery Agent</text>
+
+    <circle class="network-node" cx="520" cy="263" r="30"/>
+    <text x="520" y="269" text-anchor="middle" fill="#d8b671" font-size="21">✓</text>
+    <text class="network-label" x="520" y="308">Review Agent</text>
+   </g>
+  </svg>
+
+  <div class="features">
+   <div class="feature">
+    <div class="feature-icon">◈</div>
+    <div>
+     <strong>Unified Workspace</strong>
+     <p>Explore connected disaster-response modules.</p>
+    </div>
+   </div>
+   <div class="feature">
+    <div class="feature-icon">✦</div>
+    <div>
+     <strong>Agentic AI Architecture</strong>
+     <p>Inspect proposed multi-agent coordination.</p>
+    </div>
+   </div>
+   <div class="feature">
+    <div class="feature-icon">✓</div>
+    <div>
+     <strong>Human Oversight</strong>
+     <p>Review decisions through simulated workflows.</p>
+    </div>
+   </div>
+  </div>
+ </div>
+
+ <div class="visual-footer">
+  <span>© 2026 Kerala Flood AI · Portfolio Prototype</span>
+  <span>Synthetic Demo Workspace</span>
+ </div>
+</section>
+
+<!-- RIGHT REGISTRATION PANEL -->
+<section class="form-panel">
+ <div class="form-container">
+  <div class="form-top">
+   <span class="badge"><span class="dot"></span>DEMO REGISTRATION</span>
+   <a href="login.html" class="back-link">← Back to Login</a>
+  </div>
+
+  <div id="registrationView">
+   <div class="eyebrow">CREATE YOUR WORKSPACE PROFILE</div>
+   <h2>Create an Account</h2>
+   <p class="subtitle">
+    Set up a fictional workspace profile to explore the Kerala Flood AI interface.
+   </p>
+
+   <div class="message" id="formMessage" role="alert"></div>
+
+   <form id="registerForm" novalidate>
+    <div class="two-col">
+     <div class="field">
+      <label for="firstName">First Name</label>
+      <input class="input" id="firstName" maxlength="60" autocomplete="given-name" placeholder="Demo first name" required>
+     </div>
+
+     <div class="field">
+      <label for="lastName">Last Name</label>
+      <input class="input" id="lastName" maxlength="60" autocomplete="family-name" placeholder="Demo last name" required>
+     </div>
+    </div>
+
+    <div class="field">
+     <label for="email">Email Address</label>
+     <input class="input" id="email" type="email" autocomplete="email" maxlength="150" placeholder="demo@example.com" required>
+    </div>
+
+    <div class="field">
+     <label for="organization">Organization / Department</label>
+     <input class="input" id="organization" maxlength="100" placeholder="Example: Demo Coordination Team">
+    </div>
+
+    <div class="field">
+     <label for="district">District</label>
+     <select class="select" id="district" required>
+      <option value="">Select a district</option>
+     </select>
+    </div>
+
+    <div class="field">
+     <label>Requested Workspace Role</label>
+
+     <div class="role-grid" id="roleGrid">
+      <button type="button" class="role-card selected" data-role="Volunteer">
+       <span class="role-icon">♧</span>
+       <span class="role-name">Volunteer</span>
+      </button>
+
+      <button type="button" class="role-card" data-role="District Officer">
+       <span class="role-icon">▦</span>
+       <span class="role-name">District Officer</span>
+      </button>
+
+      <button type="button" class="role-card" data-role="Rescue Coordinator">
+       <span class="role-icon">⚑</span>
+       <span class="role-name">Rescue Coordinator</span>
+      </button>
+
+      <button type="button" class="role-card" data-role="Medical Coordinator">
+       <span class="role-icon">✚</span>
+       <span class="role-name">Medical Coordinator</span>
+      </button>
+
+      <button type="button" class="role-card" data-role="Auditor">
+       <span class="role-icon">✓</span>
+       <span class="role-name">Auditor</span>
+      </button>
+
+      <button type="button" class="role-card" data-role="Administrator">
+       <span class="role-icon">✦</span>
+       <span class="role-name">Administrator</span>
+      </button>
+     </div>
+
+     <p class="role-help">
+      Role selection is a demonstration preference only. It does not grant access or permissions.
+      Real privileged roles require administrator approval and server-side authorization.
+     </p>
+    </div>
+
+    <div class="field">
+     <label for="password">Password (Validation Demonstration)</label>
+     <div class="input-wrap">
+      <input class="input" id="password" type="password" autocomplete="new-password" maxlength="128" placeholder="Enter a sample password" required>
+      <button type="button" class="toggle-password" data-target="password">SHOW</button>
+     </div>
+     <div class="password-meter"><span id="strengthBar"></span></div>
+     <div class="password-hint" id="strengthText">
+      Use at least 12 characters with uppercase, lowercase, numbers and symbols.
+     </div>
+    </div>
+
+    <div class="field">
+     <label for="confirmPassword">Confirm Password</label>
+     <div class="input-wrap">
+      <input class="input" id="confirmPassword" type="password" autocomplete="new-password" maxlength="128" placeholder="Confirm sample password" required>
+      <button type="button" class="toggle-password" data-target="confirmPassword">SHOW</button>
+     </div>
+    </div>
+
+    <label class="checkbox-row">
+     <input type="checkbox" id="demoConsent" required>
+     <span>
+      I understand that this is a fictional demonstration and does not create
+      a real operational account. I will not enter real credentials or sensitive personal data.
+     </span>
+    </label>
+
+    <button type="submit" class="btn gold" id="submitBtn">
+     Create Demo Profile →
+    </button>
+   </form>
+
+   <div class="login-link">
+    Already have an account? <a href="login.html">Sign In</a>
+   </div>
+
+   <div class="notice">
+    <strong>Security Notice</strong>
+    <div>
+     This standalone page performs local form validation only.
+     It does not transmit, persist, hash or authenticate passwords.
+     Production registration requires FastAPI authentication, secure password
+     hashing, email verification, rate limiting, RBAC, MFA for privileged users,
+     and administrative role approval.
+    </div>
+   </div>
+  </div>
+
+  <div class="success-panel" id="successView" aria-live="polite">
+   <div class="success-icon">✓</div>
+   <div class="eyebrow">DEMONSTRATION COMPLETE</div>
+   <h3>Demo Profile Validated</h3>
+   <p id="successMessage">
+    Your fictional registration details passed local validation.
+   </p>
+
+   <a href="login.html" class="btn gold">Continue to Demo Login →</a>
+
+   <div style="height:12px"></div>
+
+   <button class="btn" id="registerAnother">Create Another Demo Profile</button>
+
+   <div class="notice">
+    <strong>No account was created.</strong>
+    <div>
+     The form did not contact a server or save credentials.
+     The login page is a separate demonstration experience.
+    </div>
+   </div>
+  </div>
+ </div>
+</section>
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const DISTRICTS=[
+ "Thiruvananthapuram",
+ "Kollam",
+ "Pathanamthitta",
+ "Alappuzha",
+ "Kottayam",
+ "Idukki",
+ "Ernakulam",
+ "Thrissur",
+ "Palakkad",
+ "Malappuram",
+ "Kozhikode",
+ "Wayanad",
+ "Kannur",
+ "Kasaragod"
+];
+
+const state={
+ selectedRole:"Volunteer"
+};
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+
+ const node=document.createElement("div");
+ node.className="toast";
+ node.textContent=message;
+
+ document.body.appendChild(node);
+
+ setTimeout(()=>node.remove(),2800);
+}
+
+function showMessage(message,type="error"){
+ const box=$("formMessage");
+ box.textContent=message;
+ box.className="message show "+type;
+ box.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+function clearMessage(){
+ const box=$("formMessage");
+ box.textContent="";
+ box.className="message";
+}
+
+function populateDistricts(){
+ DISTRICTS.forEach(name=>{
+  $("district").appendChild(new Option(name,name));
+ });
+}
+
+function selectRole(role){
+ state.selectedRole=role;
+
+ document.querySelectorAll(".role-card").forEach(card=>{
+  const selected=card.dataset.role===role;
+
+  card.classList.toggle("selected",selected);
+  card.setAttribute("aria-pressed",String(selected));
+ });
+
+ toast("Demo role selected: "+role);
+}
+
+function passwordScore(password){
+ let score=0;
+
+ if(password.length>=8)score++;
+ if(password.length>=12)score++;
+ if(/[a-z]/.test(password)&&/[A-Z]/.test(password))score++;
+ if(/\d/.test(password))score++;
+ if(/[^A-Za-z0-9]/.test(password))score++;
+
+ return score;
+}
+
+function updatePasswordStrength(){
+ const password=$("password").value;
+ const score=passwordScore(password);
+ const bar=$("strengthBar");
+ const text=$("strengthText");
+
+ if(!password){
+  bar.style.width="0%";
+  text.textContent="Use at least 12 characters with uppercase, lowercase, numbers and symbols.";
+  return;
+ }
+
+ const width=Math.round(score/5*100);
+ bar.style.width=width+"%";
+
+ if(score<=2){
+  bar.style.background="var(--red)";
+  text.textContent="Weak sample password · Add length and character variety.";
+ }else if(score<=3){
+  bar.style.background="var(--orange)";
+  text.textContent="Moderate sample password · Improve length and complexity.";
+ }else if(score===4){
+  bar.style.background="var(--gold)";
+  text.textContent="Good sample password · One more requirement recommended.";
+ }else{
+  bar.style.background="var(--green)";
+  text.textContent="Strong sample password by these basic demonstration checks.";
+ }
+}
+
+function togglePassword(targetId,button){
+ const input=$(targetId);
+ const visible=input.type==="text";
+
+ input.type=visible?"password":"text";
+ button.textContent=visible?"SHOW":"HIDE";
+ button.setAttribute("aria-label",visible?"Show password":"Hide password");
+}
+
+function validateRegistration(){
+ const firstName=$("firstName").value.trim();
+ const lastName=$("lastName").value.trim();
+ const email=$("email").value.trim();
+ const district=$("district").value;
+ const password=$("password").value;
+ const confirm=$("confirmPassword").value;
+
+ if(firstName.length<2||lastName.length<2){
+  return"Enter a sample first and last name with at least 2 characters each.";
+ }
+
+ if(!$("email").validity.valid||!email){
+  return"Enter a valid demonstration email address.";
+ }
+
+ if(!district){
+  return"Select a district.";
+ }
+
+ if(password.length<12){
+  return"Your sample password must contain at least 12 characters.";
+ }
+
+ if(!/[a-z]/.test(password)||
+    !/[A-Z]/.test(password)||
+    !/\d/.test(password)||
+    !/[^A-Za-z0-9]/.test(password)){
+  return"Use uppercase, lowercase, a number and a symbol in the sample password.";
+ }
+
+ if(password!==confirm){
+  return"Password confirmation does not match.";
+ }
+
+ if(!$("demoConsent").checked){
+  return"Confirm that you understand this is a fictional registration.";
+ }
+
+ return null;
+}
+
+function registerDemo(event){
+ event.preventDefault();
+ clearMessage();
+
+ const error=validateRegistration();
+
+ if(error){
+  showMessage(error);
+  return;
+ }
+
+ // Deliberately do not save or transmit passwords, email, or form data.
+ const selectedDistrict=$("district").value;
+ const selectedRole=state.selectedRole;
+
+ $("registerForm").reset();
+ $("password").value="";
+ $("confirmPassword").value="";
+ updatePasswordStrength();
+
+ $("registrationView").style.display="none";
+ $("successView").classList.add("show");
+
+ $("successMessage").textContent=
+  `The fictional ${selectedRole} profile for ${selectedDistrict} passed local form validation. No account was created, no role was granted, and no credentials were stored.`;
+
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function resetRegistration(){
+ $("successView").classList.remove("show");
+ $("registrationView").style.display="block";
+ $("registerForm").reset();
+
+ state.selectedRole="Volunteer";
+
+ document.querySelectorAll(".role-card").forEach(card=>{
+  const selected=card.dataset.role==="Volunteer";
+  card.classList.toggle("selected",selected);
+  card.setAttribute("aria-pressed",String(selected));
+ });
+
+ document.querySelectorAll(".toggle-password").forEach(button=>{
+  const input=$(button.dataset.target);
+  input.type="password";
+  button.textContent="SHOW";
+ });
+
+ clearMessage();
+ updatePasswordStrength();
+
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function initialize(){
+ populateDistricts();
+
+ document.querySelectorAll(".role-card").forEach(card=>{
+  card.addEventListener("click",()=>{
+   selectRole(card.dataset.role);
+  });
+
+  card.setAttribute(
+   "aria-pressed",
+   String(card.dataset.role===state.selectedRole)
+  );
+ });
+
+ document.querySelectorAll(".toggle-password").forEach(button=>{
+  button.addEventListener("click",()=>{
+   togglePassword(button.dataset.target,button);
+  });
+ });
+
+ $("password").addEventListener("input",updatePasswordStrength);
+
+ $("registerForm").addEventListener("submit",registerDemo);
+
+ $("registerAnother").addEventListener("click",resetRegistration);
+}
+
+initialize();
+</script>
+</body>
+</html>

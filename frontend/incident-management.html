@@ -1,0 +1,1160 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#090b10">
+<title>Incident Management | Kerala Flood AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#090b10;--side:#0d1017;--panel:#151922;--panel2:#1b202b;
+ --gold:#d8b671;--gold2:#f5daa0;--text:#f4f1e9;--muted:#9399a7;
+ --line:rgba(255,255,255,.085);--green:#54d6a4;--orange:#ffb66e;
+ --red:#ff777d;--blue:#82adff
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:13px "DM Sans",sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+ outline:2px solid var(--gold);outline-offset:3px
+}
+.app{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+.sidebar{
+ position:sticky;top:0;height:100vh;background:var(--side);
+ border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:40
+}
+.brand{display:flex;align-items:center;gap:12px;padding:24px 18px;border-bottom:1px solid var(--line)}
+.brand-icon{
+ width:43px;height:43px;display:grid;place-items:center;border-radius:13px;
+ background:linear-gradient(135deg,#f5daa0,#a47c3b);color:#20170a;font-size:23px;font-weight:900
+}
+.brand strong{font:800 13px Manrope,sans-serif;letter-spacing:.4px}
+.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:1.2px;margin-top:5px}
+.nav{padding:20px 13px;overflow:auto;flex:1}
+.nav-label{font-size:10px;letter-spacing:1.6px;color:#777e8d;font-weight:800;margin:14px 12px}
+.nav a{
+ display:flex;align-items:center;gap:12px;padding:12px 13px;margin-bottom:5px;
+ border:1px solid transparent;border-radius:10px;color:#a2a8b4;font-size:12px;font-weight:600;transition:.2s
+}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{background:#d8b67119;border-color:#d8b67130;color:var(--gold2)}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.side-footer{padding:17px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.avatar{
+ width:38px;height:38px;border-radius:11px;background:#383023;
+ color:var(--gold2);display:grid;place-items:center;font-weight:800
+}
+.side-footer strong{font-size:11px}
+.side-footer small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.main{
+ min-width:0;background:radial-gradient(ellipse at 65% -5%,#d8b67112,transparent 38%),var(--bg)
+}
+.topbar{
+ min-height:82px;padding:17px 30px;border-bottom:1px solid var(--line);
+ display:flex;justify-content:space-between;align-items:center;gap:14px
+}
+.top-left,.top-actions{display:flex;align-items:center;gap:12px}
+.page-icon{
+ width:43px;height:43px;border-radius:12px;background:#d8b67119;
+ border:1px solid #d8b67133;color:var(--gold);display:grid;place-items:center;font-size:20px
+}
+.top-left h1{font:800 18px Manrope,sans-serif;letter-spacing:-.5px;margin:0}
+.top-left p{margin:5px 0 0;color:var(--muted);font-size:11px}
+.badge,.tag{
+ display:inline-flex;align-items:center;gap:7px;padding:9px 11px;
+ background:#d8b67112;border:1px solid #d8b67130;
+ color:var(--gold2);border-radius:9px;font-size:10px;font-weight:800
+}
+.dot{height:7px;width:7px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+.btn{
+ display:inline-flex;align-items:center;justify-content:center;gap:8px;
+ padding:11px 15px;border-radius:10px;border:1px solid var(--line);
+ background:#1a1f29;color:#e1e3e8;font-size:11px;font-weight:800;transition:.2s
+}
+.btn:hover{border-color:#d8b67166;transform:translateY(-1px)}
+.btn.gold{background:linear-gradient(120deg,#c6a15e,#f1d49a);color:#1b160e;border:0}
+.btn.danger{border-color:#ff777d50;background:#ff777d13;color:var(--red)}
+.btn.blue{border-color:#82adff50;background:#82adff13;color:var(--blue)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.content{max-width:1700px;margin:auto;padding:28px 30px 42px}
+.eyebrow{color:var(--gold);font-size:10px;letter-spacing:2px;font-weight:800;margin-bottom:10px}
+.heading{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;flex-wrap:wrap;margin-bottom:24px}
+.heading h2{font:800 28px Manrope,sans-serif;letter-spacing:-1px;margin:0}
+.heading p{color:var(--muted);font-size:12px;line-height:1.8;margin:9px 0 0}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{
+ min-width:0;background:linear-gradient(150deg,#181c26,#12161e);
+ border:1px solid var(--line);border-radius:16px;
+ box-shadow:0 14px 35px #0002;animation:rise .5s ease both
+}
+.kpi{padding:21px;position:relative;overflow:hidden}
+.kpi:before{
+ content:"";position:absolute;width:115px;height:115px;right:-50px;top:-55px;
+ background:#d8b67109;border-radius:50%
+}
+.kpi-head{display:flex;align-items:center;justify-content:space-between;color:#a7adba;font-size:11px;font-weight:700}
+.kpi-icon{
+ width:36px;height:36px;border-radius:10px;background:#d8b67119;
+ color:var(--gold);display:grid;place-items:center;font-size:18px
+}
+.kpi-number{font:800 30px Manrope,sans-serif;letter-spacing:-1px;margin:15px 0 7px}
+.kpi-caption{font-size:10px;color:var(--muted)}
+.kpi-caption b{color:var(--gold)}
+.columns{grid-template-columns:minmax(0,1.6fr) minmax(310px,1fr);margin-top:17px}
+.panel{padding:22px}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:20px}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{color:var(--muted);font-size:10px;line-height:1.7;margin-top:7px}
+.hero{
+ padding:28px;border:1px solid #d8b67138;border-radius:17px;
+ background:radial-gradient(circle at 85% 15%,#d8b67120,transparent 35%),linear-gradient(120deg,#252017,#151922)
+}
+.hero h3{font:800 26px Manrope,sans-serif;letter-spacing:-.8px;margin:12px 0}
+.hero p{max-width:850px;color:#b9b5ae;font-size:12px;line-height:1.9}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.search,.select{
+ padding:11px 12px;border-radius:10px;border:1px solid #303541;
+ background:#191e28;color:#e8e8e8;outline:0
+}
+.search{flex:1;min-width:180px}
+.search:focus,.select:focus{border-color:var(--gold)}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;white-space:nowrap;text-align:left}
+th{padding:14px 12px;color:#8d94a2;font-size:10px;letter-spacing:.7px;border-bottom:1px solid var(--line)}
+td{padding:15px 12px;color:#d7dbe2;font-size:11px;border-bottom:1px solid #ffffff0b}
+tbody tr:hover{background:#d8b67108}
+.id{color:var(--gold2);font-family:monospace;font-weight:800}
+.pill{display:inline-flex;padding:6px 9px;border-radius:7px;font-size:10px;font-weight:800}
+.pill.critical{background:#ff777d19;color:var(--red)}
+.pill.high{background:#ffb66e19;color:var(--orange)}
+.pill.medium{background:#82adff19;color:var(--blue)}
+.pill.low{background:#54d6a419;color:var(--green)}
+.pill.open{background:#82adff19;color:var(--blue)}
+.pill.review{background:#ffb66e19;color:var(--orange)}
+.pill.assigned{background:#d8b67119;color:var(--gold2)}
+.pill.resolved{background:#54d6a419;color:var(--green)}
+.small-btn{
+ padding:8px 10px;border-radius:8px;border:1px solid #d8b67133;
+ background:#d8b67116;color:var(--gold2);font-size:10px;font-weight:800
+}
+.small-btn:hover{background:#d8b6712d}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:grid;gap:8px;min-width:0}
+.field.full{grid-column:1/-1}
+.field label{color:#aeb4c0;font-size:11px;font-weight:700}
+.field input,.field select,.field textarea{
+ width:100%;background:#1e2430;color:var(--text);border:1px solid #343a46;
+ border-radius:10px;padding:12px;outline:0
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold)}
+.field textarea{min-height:95px;resize:vertical}
+.field input::placeholder,.field textarea::placeholder{color:#7a818e}
+.form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.metric{padding:15px;background:#1b202b;border:1px solid var(--line);border-radius:11px;margin-bottom:11px}
+.metric-head{display:flex;justify-content:space-between;gap:10px}
+.metric strong{font-size:11px}
+.metric b{font-size:12px;color:var(--gold2)}
+.progress{height:8px;background:#303642;border-radius:10px;overflow:hidden;margin-top:12px}
+.progress span{
+ display:block;height:100%;border-radius:10px;
+ background:linear-gradient(90deg,#a68145,#f1d69c);transition:width .3s
+}
+.workflow{
+ display:flex;align-items:center;gap:10px;padding:14px;
+ background:#1b202b;border:1px solid var(--line);border-radius:11px;margin-bottom:10px
+}
+.workflow-icon{
+ width:36px;height:36px;flex-shrink:0;border-radius:10px;
+ background:#d8b67118;color:var(--gold);display:grid;place-items:center;font-size:17px
+}
+.workflow strong{font-size:11px}
+.workflow small{display:block;color:var(--muted);font-size:10px;margin-top:6px;line-height:1.6}
+.timeline{display:grid;gap:15px}
+.event{display:flex;gap:12px}
+.event-icon{
+ width:32px;height:32px;flex-shrink:0;display:grid;place-items:center;
+ border-radius:10px;background:#d8b67118;color:var(--gold)
+}
+.event strong{font-size:11px}
+.event p{color:var(--muted);font-size:10px;line-height:1.7;margin:7px 0}
+.event small{color:#777e8d;font-size:10px}
+.notice{
+ padding:16px;background:#d8b6710e;border:1px solid #d8b67130;
+ border-radius:12px;color:#bbb4a5;font-size:11px;line-height:1.9;margin-top:17px
+}
+.notice strong{color:var(--gold2)}
+.footer{padding-top:27px;text-align:center;color:#69707e;font-size:10px}
+.modal-backdrop{
+ position:fixed;inset:0;z-index:100;display:none;align-items:center;
+ justify-content:center;padding:18px;background:#000c;backdrop-filter:blur(7px)
+}
+.modal-backdrop.open{display:flex}
+.modal{
+ width:min(740px,100%);max-height:90vh;overflow:auto;padding:25px;
+ background:#171b24;border:1px solid #d8b6714b;border-radius:18px;
+ box-shadow:0 30px 100px #0008
+}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.modal-head h3{font:800 17px Manrope,sans-serif;margin:0}
+.close{
+ width:35px;height:35px;border:1px solid var(--line);
+ background:#282d38;color:white;border-radius:9px;font-size:19px
+}
+.details{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.detail{
+ background:#1d222d;border:1px solid var(--line);border-radius:10px;
+ padding:14px;overflow-wrap:anywhere
+}
+.detail.full{grid-column:1/-1}
+.detail small{display:block;color:var(--muted);font-size:10px;margin-bottom:8px}
+.detail strong{font-size:12px;line-height:1.6}
+.form-field{display:grid;gap:8px;margin-top:16px}
+.form-field label{color:#aeb4c0;font-size:11px;font-weight:700}
+.form-field textarea,.form-field select{
+ width:100%;background:#1e2430;color:var(--text);border:1px solid #343a46;
+ border-radius:10px;padding:12px;outline:0
+}
+.form-field textarea{min-height:80px;resize:vertical}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}
+.toast{
+ position:fixed;right:22px;bottom:22px;z-index:200;padding:14px 17px;
+ background:#252b35;border:1px solid #d8b67166;color:var(--gold2);
+ border-radius:11px;box-shadow:0 15px 45px #0008
+}
+.menu-btn{display:none}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1250px){
+ .kpis{grid-template-columns:repeat(2,1fr)}
+ .columns{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+ .app{grid-template-columns:1fr}
+ .sidebar{position:fixed;width:260px;transform:translateX(-100%);transition:.3s}
+ .sidebar.open{transform:translateX(0)}
+ .menu-btn{display:inline-flex}
+ .topbar{padding:15px 20px}
+ .content{padding:20px}
+}
+@media(max-width:560px){
+ .kpis,.form-grid,.details{grid-template-columns:1fr}
+ .field.full,.detail.full{grid-column:auto}
+ .heading h2{font-size:23px}
+ .panel{padding:17px}
+ .hero{padding:20px}
+ .top-actions .badge{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-icon">✦</div>
+  <div>
+   <strong>KERALA FLOOD AI</strong>
+   <small>INTELLIGENCE PLATFORM</small>
+  </div>
+ </div>
+
+ <nav class="nav">
+  <div class="nav-label">WORKSPACE</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="agent-command-center.html"><span class="nav-icon">✦</span>Agent Command Center</a>
+  <a href="ai-copilot.html"><span class="nav-icon">◇</span>AI Copilot</a>
+  <a href="analytics.html"><span class="nav-icon">▥</span>Analytics</a>
+
+  <div class="nav-label" style="margin-top:24px">INCIDENT RESPONSE</div>
+  <a class="active" href="incident-management.html"><span class="nav-icon">◉</span>Incident Management</a>
+  <a href="emergency-sos.html"><span class="nav-icon">⚑</span>Emergency SOS</a>
+  <a href="rescue-dashboard.html"><span class="nav-icon">✧</span>Rescue Dashboard</a>
+  <a href="evacuation-planning.html"><span class="nav-icon">⌁</span>Evacuation Planning</a>
+  <a href="ambulance-dispatch.html"><span class="nav-icon">✚</span>Ambulance Dispatch</a>
+
+  <div class="nav-label" style="margin-top:24px">INTELLIGENCE</div>
+  <a href="district-dashboard.html"><span class="nav-icon">▦</span>District Dashboard</a>
+  <a href="flood-alerts.html"><span class="nav-icon">☁</span>Flood Alerts</a>
+  <a href="flood-prediction.html"><span class="nav-icon">◈</span>Flood Prediction</a>
+
+  <div class="nav-label" style="margin-top:24px">GOVERNANCE</div>
+  <a href="human-approval.html"><span class="nav-icon">✓</span>Human Approval</a>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+  <a href="reports.html"><span class="nav-icon">▤</span>Reports</a>
+ </nav>
+
+ <div class="side-footer">
+  <div class="avatar">IM</div>
+  <div>
+   <strong>Incident Operations</strong>
+   <small>Simulation Workspace</small>
+  </div>
+ </div>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+ <div class="top-left">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="page-icon">◉</div>
+  <div>
+   <h1>Incident Management</h1>
+   <p>Incident intake · Classification · Coordination</p>
+  </div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>DEMO MODE</span>
+  <button class="btn" id="resetBtn">↻ Reset</button>
+  <button class="btn gold" id="exportBtn">↓ Export CSV</button>
+ </div>
+</header>
+
+<div class="content">
+
+ <div class="heading">
+  <div>
+   <div class="eyebrow">EMERGENCY INCIDENT INTELLIGENCE</div>
+   <h2>Incident Operations Center</h2>
+   <p>Register fictional incidents, inspect scenario risks and track simulated response workflows.</p>
+  </div>
+  <span class="tag">SYNTHETIC INCIDENTS</span>
+ </div>
+
+ <section class="hero">
+  <div class="eyebrow">INCIDENT COORDINATION WORKSPACE</div>
+  <h3>From incident report to accountable review.</h3>
+  <p>
+   Organize incident scenarios across Kerala, review simulated severity
+   assessments and prepare fictional team assignments. No live rescue,
+   emergency dispatch, alerts or field operations are connected.
+  </p>
+  <div class="hero-actions">
+   <button class="btn gold" id="newIncidentBtn">＋ Register Demo Incident</button>
+   <a class="btn" href="human-approval.html">✓ Human Approval Center</a>
+  </div>
+ </section>
+
+ <section class="grid kpis" style="margin-top:17px">
+  <div class="card kpi">
+   <div class="kpi-head">Total Incidents<div class="kpi-icon">◉</div></div>
+   <div class="kpi-number" id="kpiTotal">0</div>
+   <div class="kpi-caption"><b>DEMO</b> · Fictional case registry</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Open Incidents<div class="kpi-icon">◷</div></div>
+   <div class="kpi-number" id="kpiOpen">0</div>
+   <div class="kpi-caption"><b>DEMO</b> · Awaiting local review</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Critical Incidents<div class="kpi-icon">⚑</div></div>
+   <div class="kpi-number" id="kpiCritical">0</div>
+   <div class="kpi-caption"><b>DEMO</b> · Illustrative severity</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Resolved Scenarios<div class="kpi-icon">✓</div></div>
+   <div class="kpi-number" id="kpiResolved">0</div>
+   <div class="kpi-caption"><b>DEMO</b> · No real response completed</div>
+  </div>
+ </section>
+
+ <section class="grid columns">
+
+  <div class="card panel" id="registryPanel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Incident Registry</div>
+     <div class="panel-sub">Search and inspect synthetic emergency incident records</div>
+    </div>
+    <span class="tag">INCIDENT TRACKING</span>
+   </div>
+
+   <div class="filters">
+    <input id="searchInput" class="search" placeholder="Search incident, type or district..." aria-label="Search incidents">
+    <select id="severityFilter" class="select">
+     <option value="all">All Severities</option>
+     <option value="critical">Critical</option>
+     <option value="high">High</option>
+     <option value="medium">Medium</option>
+     <option value="low">Low</option>
+    </select>
+    <select id="statusFilter" class="select">
+     <option value="all">All Statuses</option>
+     <option value="open">Open</option>
+     <option value="review">Under Review</option>
+     <option value="assigned">Assignment Drafted</option>
+     <option value="resolved">Demo Resolved</option>
+    </select>
+   </div>
+
+   <div class="table-wrap">
+    <table>
+     <thead>
+      <tr>
+       <th>Incident ID</th>
+       <th>Incident Type</th>
+       <th>District</th>
+       <th>Severity</th>
+       <th>People</th>
+       <th>Status</th>
+       <th>Inspect</th>
+      </tr>
+     </thead>
+     <tbody id="incidentTable"></tbody>
+    </table>
+   </div>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Incident Severity Distribution</div>
+     <div class="panel-sub">Current fictional case mix</div>
+    </div>
+    <span class="tag">RISK OVERVIEW</span>
+   </div>
+
+   <div id="severityMetrics"></div>
+
+   <div class="notice">
+    <strong>Risk Interpretation</strong>
+    <div>
+     Severity values are administrative labels for training. They are not
+     validated predictions of harm, casualty risk or emergency priority.
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <section class="grid columns">
+
+  <div class="card panel" id="intakePanel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Register Incident Scenario</div>
+     <div class="panel-sub">Create a fictional incident for workflow testing</div>
+    </div>
+    <span class="tag">INCIDENT INTAKE</span>
+   </div>
+
+   <form id="incidentForm">
+    <div class="form-grid">
+
+     <div class="field">
+      <label for="incidentType">Incident Type</label>
+      <select id="incidentType" required>
+       <option value="">Select incident type</option>
+       <option>Flood Inundation</option>
+       <option>Landslide</option>
+       <option>Road Blockage</option>
+       <option>Infrastructure Damage</option>
+       <option>Medical Assistance</option>
+       <option>Evacuation Support</option>
+       <option>Missing Person Scenario</option>
+       <option>Other</option>
+      </select>
+     </div>
+
+     <div class="field">
+      <label for="district">District</label>
+      <select id="district" required>
+       <option value="">Select district</option>
+      </select>
+     </div>
+
+     <div class="field">
+      <label for="severity">Scenario Severity</label>
+      <select id="severity">
+       <option value="low">Low</option>
+       <option value="medium" selected>Medium</option>
+       <option value="high">High</option>
+       <option value="critical">Critical</option>
+      </select>
+     </div>
+
+     <div class="field">
+      <label for="affected">Fictional People Affected</label>
+      <input id="affected" type="number" min="1" max="10000" value="5" required>
+     </div>
+
+     <div class="field full">
+      <label for="location">Scenario Location Description</label>
+      <input id="location" maxlength="120" placeholder="Example: Fictional low-lying road section" required>
+     </div>
+
+     <div class="field full">
+      <label for="description">Incident Description</label>
+      <textarea id="description" maxlength="1000" placeholder="Describe a fictional incident scenario. Do not enter real emergency or personal information." required></textarea>
+     </div>
+
+     <div class="field full">
+      <label style="display:flex;align-items:flex-start;gap:10px;line-height:1.7">
+       <input type="checkbox" id="demoConfirm" required style="width:auto;margin-top:3px;accent-color:var(--gold)">
+       This is a fictional training scenario, not a real emergency report.
+      </label>
+     </div>
+    </div>
+
+    <div class="form-actions">
+     <button class="btn gold" type="submit" style="flex:1">＋ Create Demo Incident</button>
+     <button class="btn" type="reset">Clear</button>
+    </div>
+   </form>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Incident Response Workflow</div>
+     <div class="panel-sub">Conceptual human-supervised processing pipeline</div>
+    </div>
+    <span class="tag">AGENT ORCHESTRATION</span>
+   </div>
+
+   <div class="workflow">
+    <div class="workflow-icon">01</div>
+    <div><strong>Incident Intake</strong><small>Record and validate scenario fields</small></div>
+   </div>
+   <div class="workflow">
+    <div class="workflow-icon">02</div>
+    <div><strong>Verification Agent</strong><small>Check evidence provenance and report consistency</small></div>
+   </div>
+   <div class="workflow">
+    <div class="workflow-icon">03</div>
+    <div><strong>Risk Assessment Agent</strong><small>Prepare explainable risk recommendations</small></div>
+   </div>
+   <div class="workflow">
+    <div class="workflow-icon">04</div>
+    <div><strong>Rescue Coordinator Agent</strong><small>Draft response options and resource requirements</small></div>
+   </div>
+   <div class="workflow">
+    <div class="workflow-icon">05</div>
+    <div><strong>Human Approval Agent</strong><small>Route consequential decisions to authorized reviewers</small></div>
+   </div>
+   <div class="workflow">
+    <div class="workflow-icon">06</div>
+    <div><strong>Audit & Resolution</strong><small>Document review outcomes and closure evidence</small></div>
+   </div>
+  </div>
+ </section>
+
+ <section class="grid columns">
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Incident Activity Timeline</div>
+     <div class="panel-sub">Events generated in this browser session</div>
+    </div>
+    <span class="tag">LOCAL AUDIT PREVIEW</span>
+   </div>
+   <div class="timeline" id="timeline"></div>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Operational Safety Controls</div>
+     <div class="panel-sub">Requirements for a future production system</div>
+    </div>
+    <span class="tag">HUMAN OVERSIGHT</span>
+   </div>
+
+   <div class="workflow">
+    <div class="workflow-icon">✓</div>
+    <div><strong>Incident Verification</strong><small>Confirm source, timestamp, location and duplicate reports</small></div>
+   </div>
+   <div class="workflow">
+    <div class="workflow-icon">✓</div>
+    <div><strong>Role-Based Access</strong><small>Restrict assignment and closure authority to approved personnel</small></div>
+   </div>
+   <div class="workflow">
+    <div class="workflow-icon">✓</div>
+    <div><strong>Escalation & Acknowledgment</strong><small>Track handoffs, response confirmation and unresolved risks</small></div>
+   </div>
+   <div class="workflow">
+    <div class="workflow-icon">✓</div>
+    <div><strong>Privacy & Retention</strong><small>Protect sensitive reports and apply controlled retention policies</small></div>
+   </div>
+  </div>
+ </section>
+
+ <div class="notice">
+  <strong>⚠ Emergency Safety Notice.</strong>
+  <div>
+   All incidents, locations, affected-person counts and decisions are synthetic.
+   This interface cannot receive real SOS reports, contact responders, assign
+   teams, or verify that an emergency has been resolved. For a real emergency
+   in India, call <a href="tel:112" style="color:var(--gold2);font-weight:800">112</a>.
+  </div>
+ </div>
+
+ <footer class="footer">
+  KERALA FLOOD RELIEF COORDINATION AGENT · INCIDENT MANAGEMENT · SYNTHETIC OPERATIONS WORKSPACE
+ </footer>
+
+</div>
+</main>
+</div>
+
+<div class="modal-backdrop" id="incidentModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+ <div class="modal">
+  <div class="modal-head">
+   <h3 id="modalTitle">Incident Details & Review</h3>
+   <button class="close" id="closeModalBtn" aria-label="Close">×</button>
+  </div>
+
+  <div class="details" id="incidentDetails"></div>
+
+  <div class="form-field">
+   <label for="assignment">Fictional Response Assignment</label>
+   <select id="assignment">
+    <option value="">No assignment drafted</option>
+    <option value="Demo Rescue Team Alpha">Demo Rescue Team Alpha</option>
+    <option value="Demo Rescue Team Beta">Demo Rescue Team Beta</option>
+    <option value="Demo Medical Support Unit">Demo Medical Support Unit</option>
+    <option value="Demo Evacuation Coordination Unit">Demo Evacuation Coordination Unit</option>
+    <option value="Demo Logistics Unit">Demo Logistics Unit</option>
+   </select>
+  </div>
+
+  <div class="form-field">
+   <label for="reviewNotes">Review Notes</label>
+   <textarea id="reviewNotes" maxlength="1000" placeholder="Add fictional review notes or rationale."></textarea>
+  </div>
+
+  <div class="notice">
+   <strong>Local Simulation</strong>
+   <div>
+    Assignments are draft labels only. No personnel are notified or deployed.
+    Marking a scenario resolved does not represent a real emergency outcome.
+   </div>
+  </div>
+
+  <div class="modal-actions">
+   <button class="btn blue" id="reviewBtn">◷ Mark Under Review</button>
+   <button class="btn gold" id="assignBtn">✧ Draft Assignment</button>
+   <button class="btn" id="resolveBtn">✓ Demo Resolve</button>
+   <button class="btn" id="dismissBtn">Close</button>
+  </div>
+ </div>
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const DISTRICTS=[
+ "Thiruvananthapuram","Kollam","Pathanamthitta",
+ "Alappuzha","Kottayam","Idukki","Ernakulam",
+ "Thrissur","Palakkad","Malappuram","Kozhikode",
+ "Wayanad","Kannur","Kasaragod"
+];
+
+const INITIAL_INCIDENTS=[
+ {
+  id:"INC-DEMO-001",
+  type:"Flood Inundation",
+  district:"Alappuzha",
+  severity:"critical",
+  affected:24,
+  location:"Fictional canal-side settlement",
+  description:"Synthetic inundation scenario used to test the review workflow.",
+  status:"open",
+  assignment:"",
+  notes:""
+ },
+ {
+  id:"INC-DEMO-002",
+  type:"Landslide",
+  district:"Wayanad",
+  severity:"critical",
+  affected:9,
+  location:"Fictional hillside access road",
+  description:"Synthetic slope-failure scenario with assumed road restrictions.",
+  status:"review",
+  assignment:"",
+  notes:""
+ },
+ {
+  id:"INC-DEMO-003",
+  type:"Road Blockage",
+  district:"Idukki",
+  severity:"high",
+  affected:15,
+  location:"Fictional mountain road section",
+  description:"Synthetic debris blockage for resource coordination testing.",
+  status:"assigned",
+  assignment:"Demo Rescue Team Alpha",
+  notes:"Fictional assignment prepared."
+ },
+ {
+  id:"INC-DEMO-004",
+  type:"Medical Assistance",
+  district:"Thrissur",
+  severity:"medium",
+  affected:3,
+  location:"Fictional community shelter",
+  description:"Synthetic medical coordination case.",
+  status:"open",
+  assignment:"",
+  notes:""
+ },
+ {
+  id:"INC-DEMO-005",
+  type:"Evacuation Support",
+  district:"Ernakulam",
+  severity:"high",
+  affected:36,
+  location:"Fictional riverside ward",
+  description:"Synthetic evacuation support exercise.",
+  status:"review",
+  assignment:"",
+  notes:""
+ },
+ {
+  id:"INC-DEMO-006",
+  type:"Infrastructure Damage",
+  district:"Kottayam",
+  severity:"low",
+  affected:2,
+  location:"Fictional pedestrian bridge",
+  description:"Synthetic minor damage assessment scenario.",
+  status:"resolved",
+  assignment:"",
+  notes:"Closed fictional training case."
+ }
+];
+
+const state={
+ incidents:structuredClone(INITIAL_INCIDENTS),
+ nextId:7,
+ selectedId:null,
+ search:"",
+ severity:"all",
+ status:"all",
+ events:[
+  {
+   title:"Incident management demo initialized",
+   detail:"Fictional incident registry loaded.",
+   time:"Demo dataset"
+  },
+  {
+   title:"Safety controls enabled",
+   detail:"No real responder dispatch or incident closure is supported.",
+   time:"Demo dataset"
+  }
+ ]
+};
+
+function escapeHTML(value){
+ return String(value).replace(/[&<>"']/g,char=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ })[char]);
+}
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+
+ const node=document.createElement("div");
+ node.className="toast";
+ node.textContent=message;
+ document.body.appendChild(node);
+
+ setTimeout(()=>node.remove(),3000);
+}
+
+function addEvent(title,detail){
+ state.events.unshift({
+  title,
+  detail,
+  time:new Date().toLocaleTimeString("en-IN")
+ });
+
+ state.events=state.events.slice(0,10);
+ renderTimeline();
+}
+
+function renderKPIs(){
+ $("kpiTotal").textContent=state.incidents.length;
+ $("kpiOpen").textContent=state.incidents.filter(i=>i.status==="open").length;
+ $("kpiCritical").textContent=state.incidents.filter(i=>i.severity==="critical").length;
+ $("kpiResolved").textContent=state.incidents.filter(i=>i.status==="resolved").length;
+}
+
+function filteredIncidents(){
+ return state.incidents.filter(incident=>{
+  const searchable=[
+   incident.id,incident.type,incident.district,incident.location
+  ].join(" ").toLowerCase();
+
+  return searchable.includes(state.search.toLowerCase())&&
+   (state.severity==="all"||incident.severity===state.severity)&&
+   (state.status==="all"||incident.status===state.status);
+ });
+}
+
+function statusText(status){
+ return ({
+  open:"OPEN",
+  review:"UNDER REVIEW",
+  assigned:"DRAFT ASSIGNED",
+  resolved:"DEMO RESOLVED"
+ })[status]||status.toUpperCase();
+}
+
+function renderIncidents(){
+ const incidents=filteredIncidents();
+
+ $("incidentTable").innerHTML=incidents.map(incident=>`
+  <tr>
+   <td class="id">${escapeHTML(incident.id)}</td>
+   <td>${escapeHTML(incident.type)}</td>
+   <td>${escapeHTML(incident.district)}</td>
+   <td><span class="pill ${incident.severity}">${incident.severity.toUpperCase()}</span></td>
+   <td>${incident.affected}</td>
+   <td><span class="pill ${incident.status}">${statusText(incident.status)}</span></td>
+   <td><button class="small-btn" data-incident="${incident.id}">Inspect →</button></td>
+  </tr>
+ `).join("");
+
+ if(!incidents.length){
+  $("incidentTable").innerHTML=
+   '<tr><td colspan="7" style="text-align:center;padding:30px">No matching demo incidents.</td></tr>';
+ }
+
+ document.querySelectorAll("[data-incident]").forEach(button=>{
+  button.addEventListener("click",()=>openIncident(button.dataset.incident));
+ });
+}
+
+function renderSeverity(){
+ const levels=[
+  ["Critical","critical"],
+  ["High","high"],
+  ["Medium","medium"],
+  ["Low","low"]
+ ];
+
+ const total=Math.max(1,state.incidents.length);
+
+ $("severityMetrics").innerHTML=levels.map(([label,severity])=>{
+  const count=state.incidents.filter(i=>i.severity===severity).length;
+  const percent=Math.round(count/total*100);
+
+  return `
+   <div class="metric">
+    <div class="metric-head">
+     <strong>${label}</strong>
+     <b>${count} · ${percent}%</b>
+    </div>
+    <div class="progress"><span style="width:${percent}%"></span></div>
+   </div>
+  `;
+ }).join("");
+}
+
+function renderTimeline(){
+ const container=$("timeline");
+ container.replaceChildren();
+
+ state.events.forEach(event=>{
+  const row=document.createElement("div");
+  row.className="event";
+
+  const icon=document.createElement("div");
+  icon.className="event-icon";
+  icon.textContent="◉";
+
+  const body=document.createElement("div");
+
+  const title=document.createElement("strong");
+  title.textContent=event.title;
+
+  const detail=document.createElement("p");
+  detail.textContent=event.detail;
+
+  const time=document.createElement("small");
+  time.textContent=event.time;
+
+  body.append(title,detail,time);
+  row.append(icon,body);
+  container.appendChild(row);
+ });
+}
+
+function buildDetails(fields){
+ const container=$("incidentDetails");
+ container.replaceChildren();
+
+ fields.forEach(([label,value],index)=>{
+  const box=document.createElement("div");
+  box.className="detail"+(index>=fields.length-3?" full":"");
+
+  const small=document.createElement("small");
+  small.textContent=label;
+
+  const strong=document.createElement("strong");
+  strong.textContent=value;
+
+  box.append(small,strong);
+  container.appendChild(box);
+ });
+}
+
+function openIncident(id){
+ const incident=state.incidents.find(i=>i.id===id);
+ if(!incident)return;
+
+ state.selectedId=id;
+
+ buildDetails([
+  ["Incident ID",incident.id],
+  ["Incident Type",incident.type],
+  ["District",incident.district],
+  ["Severity",incident.severity.toUpperCase()],
+  ["Fictional People Affected",String(incident.affected)],
+  ["Workflow Status",statusText(incident.status)],
+  ["Scenario Location",incident.location],
+  ["Incident Description",incident.description],
+  ["Draft Assignment",incident.assignment||"None"],
+  ["Review Notes",incident.notes||"None"]
+ ]);
+
+ $("assignment").value=incident.assignment;
+ $("reviewNotes").value=incident.notes;
+
+ const active=incident.status!=="resolved";
+
+ $("reviewBtn").disabled=!active||incident.status==="review";
+ $("assignBtn").disabled=!active;
+ $("resolveBtn").disabled=!active;
+
+ $("incidentModal").classList.add("open");
+ $("closeModalBtn").focus();
+}
+
+function closeModal(){
+ $("incidentModal").classList.remove("open");
+ state.selectedId=null;
+}
+
+function updateIncident(status){
+ const incident=state.incidents.find(i=>i.id===state.selectedId);
+ if(!incident||incident.status==="resolved")return;
+
+ const notes=$("reviewNotes").value.trim();
+ const assignment=$("assignment").value;
+
+ if(status==="assigned"&&!assignment){
+  toast("Select a fictional response team");
+  return;
+ }
+
+ if(status==="resolved"&&!notes){
+  toast("Add fictional closure rationale");
+  return;
+ }
+
+ incident.status=status;
+ incident.notes=notes;
+
+ if(status==="assigned"){
+  incident.assignment=assignment;
+ }
+
+ addEvent(
+  `Incident ${status==="assigned"?"assignment drafted":status==="resolved"?"demo resolved":"under review"}`,
+  `${incident.id} updated locally. No real response operation occurred.`
+ );
+
+ renderAll();
+ closeModal();
+ toast(`Demo incident updated: ${statusText(status)}`);
+}
+
+function createIncident(event){
+ event.preventDefault();
+
+ if(!$("demoConfirm").checked){
+  toast("Confirm this is a fictional incident");
+  return;
+ }
+
+ const type=$("incidentType").value;
+ const district=$("district").value;
+ const severity=$("severity").value;
+ const affected=Number($("affected").value);
+ const location=$("location").value.trim();
+ const description=$("description").value.trim();
+
+ if(!type||!district||!location||!description||
+    !Number.isInteger(affected)||affected<1||affected>10000){
+  toast("Complete the scenario with valid values");
+  return;
+ }
+
+ const id=`INC-DEMO-${String(state.nextId++).padStart(3,"0")}`;
+
+ state.incidents.unshift({
+  id,type,district,severity,affected,location,description,
+  status:"open",assignment:"",notes:""
+ });
+
+ $("incidentForm").reset();
+
+ addEvent(
+  "New fictional incident registered",
+  `${id} created in ${district}. No emergency service contacted.`
+ );
+
+ renderAll();
+ toast("Demo incident created");
+}
+
+function csvEscape(value){
+ let text=String(value??"");
+ if(/^\s*[=+\-@]/.test(text))text="'"+text;
+ return `"${text.replace(/"/g,'""')}"`;
+}
+
+function exportCSV(){
+ const fields=[
+  "id","type","district","severity","affected","location",
+  "description","status","assignment","notes"
+ ];
+
+ const rows=[
+  fields.map(csvEscape).join(","),
+  ...state.incidents.map(incident=>
+   fields.map(field=>csvEscape(incident[field])).join(",")
+  )
+ ];
+
+ const blob=new Blob(["\uFEFF"+rows.join("\r\n")],{
+  type:"text/csv;charset=utf-8"
+ });
+
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement("a");
+
+ link.href=url;
+ link.download="incident-management-demo.csv";
+
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ toast("Fictional incident registry exported");
+}
+
+function resetDemo(){
+ state.incidents=structuredClone(INITIAL_INCIDENTS);
+ state.nextId=7;
+ state.selectedId=null;
+ state.search="";
+ state.severity="all";
+ state.status="all";
+
+ state.events=[{
+  title:"Incident management demo reset",
+  detail:"Original fictional incidents restored.",
+  time:new Date().toLocaleTimeString("en-IN")
+ }];
+
+ $("searchInput").value="";
+ $("severityFilter").value="all";
+ $("statusFilter").value="all";
+ $("incidentForm").reset();
+
+ closeModal();
+ renderAll();
+ toast("Incident demo reset");
+}
+
+function renderAll(){
+ renderKPIs();
+ renderIncidents();
+ renderSeverity();
+ renderTimeline();
+}
+
+function initialize(){
+ DISTRICTS.forEach(district=>{
+  const option=document.createElement("option");
+  option.value=district;
+  option.textContent=district;
+  $("district").appendChild(option);
+ });
+
+ $("searchInput").addEventListener("input",event=>{
+  state.search=event.target.value.trim();
+  renderIncidents();
+ });
+
+ $("severityFilter").addEventListener("change",event=>{
+  state.severity=event.target.value;
+  renderIncidents();
+ });
+
+ $("statusFilter").addEventListener("change",event=>{
+  state.status=event.target.value;
+  renderIncidents();
+ });
+
+ $("incidentForm").addEventListener("submit",createIncident);
+
+ $("newIncidentBtn").addEventListener("click",()=>{
+  $("intakePanel").scrollIntoView({behavior:"smooth",block:"start"});
+  $("incidentType").focus({preventScroll:true});
+ });
+
+ $("reviewBtn").addEventListener("click",()=>updateIncident("review"));
+ $("assignBtn").addEventListener("click",()=>updateIncident("assigned"));
+ $("resolveBtn").addEventListener("click",()=>updateIncident("resolved"));
+
+ $("closeModalBtn").addEventListener("click",closeModal);
+ $("dismissBtn").addEventListener("click",closeModal);
+
+ $("incidentModal").addEventListener("click",event=>{
+  if(event.target===$("incidentModal"))closeModal();
+ });
+
+ document.addEventListener("keydown",event=>{
+  if(event.key==="Escape")closeModal();
+ });
+
+ $("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+ });
+
+ $("resetBtn").addEventListener("click",resetDemo);
+ $("exportBtn").addEventListener("click",exportCSV);
+
+ renderAll();
+}
+
+initialize();
+
+console.info(
+ "Incident Management demo initialized. All incident records and response actions are fictional."
+);
+</script>
+</body>
+</html>

@@ -1,0 +1,685 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b10">
+<title>Evacuation Planning | Kerala Flood AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#090b10;--side:#0d1017;--panel:#151922;--panel2:#1b202b;
+ --gold:#d8b671;--gold2:#f5daa0;--text:#f4f1e9;
+ --muted:#9399a7;--line:rgba(255,255,255,.085);
+ --green:#54d6a4;--orange:#ffb66e;--red:#ff777d;--blue:#82adff;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:13px "DM Sans",sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+a{color:inherit}
+.app{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;background:var(--side);border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:30}
+.brand{padding:24px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line)}
+.brand-icon{height:43px;width:43px;border-radius:13px;background:linear-gradient(135deg,#f5daa0,#a47c3b);color:#20170a;display:grid;place-items:center;font-size:23px;font-weight:900}
+.brand strong{font:800 13px Manrope,sans-serif;letter-spacing:.5px}
+.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:1.2px;margin-top:5px}
+.nav{padding:20px 13px;overflow:auto;flex:1}
+.nav-label{font-size:10px;letter-spacing:1.6px;color:#777e8d;font-weight:800;margin:14px 12px}
+.nav a{display:flex;align-items:center;gap:12px;padding:12px 13px;margin-bottom:5px;border:1px solid transparent;border-radius:10px;text-decoration:none;color:#a2a8b4;font-size:12px;font-weight:600;transition:.2s}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{background:#d8b67119;border-color:#d8b67130;color:var(--gold2)}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.side-foot{padding:17px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.avatar{height:37px;width:37px;border-radius:11px;display:grid;place-items:center;background:#383023;color:var(--gold2);font-weight:800}
+.side-foot strong{font-size:11px}
+.side-foot small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.main{min-width:0;background:radial-gradient(ellipse at 65% -5%,#d8b67112,transparent 38%),var(--bg)}
+.topbar{padding:17px 30px;min-height:82px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:14px}
+.top-left,.top-actions{display:flex;align-items:center;gap:12px}
+.page-icon{width:43px;height:43px;border-radius:12px;background:#d8b67119;border:1px solid #d8b67133;color:var(--gold);display:grid;place-items:center;font-size:20px}
+.top-left h1{font:800 18px Manrope,sans-serif;letter-spacing:-.5px;margin:0}
+.top-left p{margin:5px 0 0;color:var(--muted);font-size:11px}
+.badge,.tag{display:inline-flex;align-items:center;gap:7px;padding:9px 11px;background:#d8b67112;border:1px solid #d8b67130;color:var(--gold2);border-radius:9px;font-size:10px;font-weight:800}
+.dot{height:7px;width:7px;background:var(--gold);border-radius:50%;box-shadow:0 0 10px var(--gold);animation:pulse 2s infinite}
+.btn{padding:11px 15px;border-radius:10px;border:1px solid var(--line);background:#1a1f29;color:#e1e3e8;font-size:11px;font-weight:800;transition:.2s}
+.btn:hover{border-color:#d8b67166;transform:translateY(-1px)}
+.btn.gold{background:linear-gradient(120deg,#c6a15e,#f1d49a);color:#1b160e;border:0}
+.btn.red{background:#ff777d1b;color:#ff9da1;border-color:#ff777d45}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.content{max-width:1700px;margin:auto;padding:28px 30px 42px}
+.eyebrow{color:var(--gold);font-size:10px;font-weight:800;letter-spacing:2px;margin-bottom:10px}
+.heading{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:23px}
+.heading h2{font:800 28px Manrope,sans-serif;letter-spacing:-1px;margin:0}
+.heading p{font-size:12px;color:var(--muted);line-height:1.8;margin:9px 0 0}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{background:linear-gradient(150deg,#181c26,#12161e);border:1px solid var(--line);border-radius:16px;min-width:0;box-shadow:0 14px 35px #0002;animation:rise .45s ease both}
+.kpi{padding:21px;overflow:hidden;position:relative}
+.kpi:after{content:"";position:absolute;width:120px;height:120px;border-radius:50%;background:#d8b67109;right:-55px;top:-60px}
+.kpi-head{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#a7adba;font-weight:700}
+.kpi-icon{height:36px;width:36px;border-radius:10px;background:#d8b67119;color:var(--gold);display:grid;place-items:center;font-size:18px}
+.kpi-number{font:800 30px Manrope,sans-serif;letter-spacing:-1px;margin:15px 0 7px}
+.kpi-caption{color:var(--muted);font-size:10px}
+.kpi-caption b{color:var(--gold)}
+.columns{grid-template-columns:minmax(0,1.55fr) minmax(310px,1fr);margin-top:17px}
+.panel{padding:22px}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:20px}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{font-size:10px;color:var(--muted);line-height:1.7;margin-top:7px}
+.hero{position:relative;overflow:hidden;background:radial-gradient(circle at 85% 15%,#d8b67120,transparent 35%),linear-gradient(120deg,#252017,#151922);border:1px solid #d8b67138;border-radius:17px;padding:27px}
+.hero h3{font:800 25px Manrope,sans-serif;letter-spacing:-.8px;margin:12px 0}
+.hero p{max-width:750px;color:#b9b5ae;font-size:12px;line-height:1.9}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:grid;gap:8px;min-width:0}
+.field.full{grid-column:1/-1}
+.field label{font-size:11px;font-weight:700;color:#aeb4c0}
+.field input,.field select,.field textarea{width:100%;background:#1e2430;color:#f4f1e9;border:1px solid #343a46;border-radius:10px;padding:12px;outline:0}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold)}
+.field textarea{resize:vertical;min-height:84px}
+.field input::placeholder,.field textarea::placeholder{color:#7a818e}
+.form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.route-visual{background:#10151e;border:1px solid var(--line);border-radius:13px;overflow:hidden}
+.route-visual svg{width:100%;height:auto;display:block}
+.legend{display:flex;flex-wrap:wrap;gap:16px;padding:13px 15px;border-top:1px solid var(--line);color:#aeb5c1;font-size:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.route-cards{display:grid;gap:10px}
+.route-card{padding:16px;background:#1b202b;border:1px solid var(--line);border-radius:12px;transition:.2s}
+.route-card.selected{border-color:#d8b6719c;background:#d8b67112}
+.route-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.route-top strong{font-size:12px}
+.route-meta{display:flex;flex-wrap:wrap;gap:13px;color:var(--muted);font-size:10px;margin:13px 0}
+.route-note{font-size:10px;color:#b3bac5;line-height:1.7}
+.risk-pill{display:inline-flex;padding:6px 9px;border-radius:7px;font-size:9px;font-weight:800}
+.risk-pill.low{background:#54d6a419;color:var(--green)}
+.risk-pill.moderate{background:#82adff19;color:var(--blue)}
+.risk-pill.high{background:#ffb66e19;color:var(--orange)}
+.risk-pill.critical{background:#ff777d19;color:var(--red)}
+.resource{display:flex;align-items:center;gap:11px;padding:14px;background:#1b202b;border:1px solid var(--line);border-radius:11px;margin-bottom:10px}
+.resource-icon{height:37px;width:37px;flex-shrink:0;background:#d8b67117;color:var(--gold);display:grid;place-items:center;border-radius:10px;font-size:18px}
+.resource strong{font-size:11px}
+.resource small{display:block;color:var(--muted);font-size:10px;margin-top:6px}
+.resource-value{margin-left:auto;color:var(--gold2);font:800 17px Manrope,sans-serif}
+.progress{height:7px;background:#2c323e;border-radius:10px;overflow:hidden;margin-top:12px}
+.progress span{height:100%;display:block;background:linear-gradient(90deg,#a68145,#f1d69c);border-radius:10px}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;white-space:nowrap;text-align:left}
+th{font-size:10px;color:#89909f;letter-spacing:.6px;border-bottom:1px solid var(--line);padding:14px 12px}
+td{font-size:11px;color:#d4d9e2;border-bottom:1px solid #ffffff0b;padding:15px 12px}
+tbody tr:hover{background:#d8b67108}
+.id{color:var(--gold2);font-family:monospace;font-weight:800}
+.status{display:inline-flex;padding:6px 9px;border-radius:7px;font-size:9px;font-weight:800;background:#ffb66e19;color:var(--orange)}
+.status.approved{background:#54d6a419;color:var(--green)}
+.status.draft{background:#82adff19;color:var(--blue)}
+.status.rejected{background:#ff777d19;color:var(--red)}
+.small-btn{padding:8px 10px;border-radius:8px;border:1px solid #d8b67133;background:#d8b67116;color:var(--gold2);font-size:10px;font-weight:800}
+.small-btn:hover{background:#d8b6712d}
+.timeline{display:grid;gap:14px}
+.event{display:flex;gap:12px}
+.event-icon{height:32px;width:32px;flex-shrink:0;display:grid;place-items:center;border-radius:10px;background:#d8b67118;color:var(--gold)}
+.event strong{font-size:11px}
+.event p{color:var(--muted);font-size:10px;line-height:1.7;margin:7px 0}
+.event small{color:#777e8d;font-size:10px}
+.notice{padding:16px;border:1px solid #d8b67130;background:#d8b6710e;border-radius:12px;color:#bbb4a5;font-size:11px;line-height:1.9;margin-top:18px}
+.notice strong{color:var(--gold2)}
+.footer{padding-top:27px;text-align:center;color:#69707e;font-size:10px}
+.modal-backdrop{position:fixed;inset:0;background:#000c;backdrop-filter:blur(7px);z-index:100;display:none;align-items:center;justify-content:center;padding:18px}
+.modal-backdrop.open{display:flex}
+.modal{width:min(650px,100%);max-height:90vh;overflow:auto;background:#171b24;border:1px solid #d8b6714b;border-radius:18px;padding:25px;box-shadow:0 30px 100px #0008}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.modal-head h3{font:800 17px Manrope,sans-serif;margin:0}
+.close{height:35px;width:35px;border:1px solid var(--line);background:#282d38;color:white;border-radius:9px;font-size:19px}
+.details{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.detail{background:#1d222d;border:1px solid var(--line);border-radius:10px;padding:14px;overflow-wrap:anywhere}
+.detail small{display:block;color:var(--muted);font-size:10px;margin-bottom:8px}
+.detail strong{font-size:12px}
+.detail.full{grid-column:1/-1}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}
+.toast{position:fixed;right:22px;bottom:22px;z-index:200;padding:14px 17px;background:#252b35;border:1px solid #d8b67166;color:var(--gold2);border-radius:11px;box-shadow:0 15px 45px #0008}
+.menu-btn{display:none}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1250px){.kpis{grid-template-columns:repeat(2,1fr)}.columns{grid-template-columns:1fr}}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:fixed;width:260px;transform:translateX(-100%);transition:.3s}.sidebar.open{transform:translateX(0)}.menu-btn{display:inline-block}.topbar{padding:15px 20px}.content{padding:20px}}
+@media(max-width:560px){.kpis,.form-grid,.details{grid-template-columns:1fr}.field.full,.detail.full{grid-column:auto}.heading h2{font-size:23px}.panel{padding:17px}.top-actions .badge{display:none}.hero{padding:20px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+ <div class="brand"><div class="brand-icon">✦</div><div><strong>KERALA FLOOD AI</strong><small>INTELLIGENCE PLATFORM</small></div></div>
+ <nav class="nav">
+  <div class="nav-label">WORKSPACE</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="agent-command-center.html"><span class="nav-icon">✦</span>Agent Command Center</a>
+  <a href="ai-copilot.html"><span class="nav-icon">◇</span>AI Copilot</a>
+  <a href="analytics.html"><span class="nav-icon">▥</span>Analytics</a>
+  <div class="nav-label" style="margin-top:24px">RESPONSE OPERATIONS</div>
+  <a href="district-dashboard.html"><span class="nav-icon">◈</span>District Dashboard</a>
+  <a href="emergency-sos.html"><span class="nav-icon">⚑</span>Emergency SOS</a>
+  <a class="active" href="evacuation-planning.html"><span class="nav-icon">⌁</span>Evacuation Planning</a>
+  <a href="rescue-dashboard.html"><span class="nav-icon">◉</span>Rescue Operations</a>
+  <a href="ambulance-dispatch.html"><span class="nav-icon">✚</span>Ambulance Dispatch</a>
+  <a href="shelters.html"><span class="nav-icon">⌂</span>Shelter Management</a>
+  <a href="dam-monitoring.html"><span class="nav-icon">≋</span>Dam Monitoring</a>
+  <div class="nav-label" style="margin-top:24px">GOVERNANCE</div>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+  <a href="reports.html"><span class="nav-icon">▤</span>Reports</a>
+ </nav>
+ <div class="side-foot"><div class="avatar">OP</div><div><strong>Operations Workspace</strong><small>Evacuation Simulation</small></div></div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-left">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="page-icon">⌁</div>
+  <div><h1>Evacuation Planning Intelligence</h1><p>Scenario design · Route comparison · Human oversight</p></div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>SIMULATION</span>
+  <button class="btn" id="resetBtn">↻ Reset</button>
+  <button class="btn gold" id="exportBtn">↓ Export CSV</button>
+ </div>
+</header>
+
+<div class="content">
+ <div class="heading">
+  <div>
+   <div class="eyebrow">KERALA EMERGENCY COORDINATION</div>
+   <h2>Evacuation Command Workspace</h2>
+   <p>Design fictional evacuation scenarios, compare illustrative routes and document simulated approval decisions.</p>
+  </div>
+  <span class="tag">14 KERALA DISTRICTS</span>
+ </div>
+
+ <section class="hero">
+  <div class="eyebrow">HUMAN-SUPERVISED PLANNING</div>
+  <h3>Safer planning starts with verified information.</h3>
+  <p>Explore route selection, shelter capacity, vehicle requirements and coordination workflows. This page does not provide verified road safety, live travel times or real evacuation instructions.</p>
+  <div class="hero-actions">
+   <button class="btn gold" id="newPlanBtn">＋ New Simulation Plan</button>
+   <a class="btn" href="emergency-sos.html" style="text-decoration:none">⚑ Emergency SOS Demo</a>
+  </div>
+ </section>
+
+ <section class="grid kpis" style="margin-top:17px">
+  <div class="card kpi"><div class="kpi-head">Simulation Plans <div class="kpi-icon">▤</div></div><div class="kpi-number" id="kpiPlans">0</div><div class="kpi-caption"><b>DEMO</b> · Scenario registry</div></div>
+  <div class="card kpi"><div class="kpi-head">People in Scenarios <div class="kpi-icon">♙</div></div><div class="kpi-number" id="kpiPeople">0</div><div class="kpi-caption"><b>DEMO</b> · Not real evacuees</div></div>
+  <div class="card kpi"><div class="kpi-head">Pending Human Review <div class="kpi-icon">◇</div></div><div class="kpi-number" id="kpiPending">0</div><div class="kpi-caption"><b>DEMO</b> · Local approval markers</div></div>
+  <div class="card kpi"><div class="kpi-head">Available Sample Vehicles <div class="kpi-icon">▣</div></div><div class="kpi-number" id="kpiVehicles">0</div><div class="kpi-caption"><b>DEMO</b> · Fictional resources</div></div>
+ </section>
+
+ <section class="grid columns">
+  <div class="card panel" id="planner">
+   <div class="panel-head"><div><div class="panel-title">Evacuation Scenario Builder</div><div class="panel-sub">Configure a fictional district-level planning exercise</div></div><span class="tag">PLANNING ENGINE</span></div>
+   <form id="planForm">
+    <div class="form-grid">
+     <div class="field"><label for="district">District</label><select id="district" required><option value="">Select district</option></select></div>
+     <div class="field"><label for="scenario">Hazard Scenario</label><select id="scenario"><option value="River Flooding">River Flooding</option><option value="Urban Flooding">Urban Flooding</option><option value="Landslide Risk">Landslide Risk</option><option value="Dam-Related Flood Scenario">Dam-Related Flood Scenario</option><option value="Coastal Flooding">Coastal Flooding</option></select></div>
+     <div class="field full"><label for="origin">Fictional Evacuation Origin</label><input id="origin" required maxlength="150" placeholder="Example: Sample Ward A / fictional community zone"></div>
+     <div class="field"><label for="people">People in Scenario</label><input id="people" type="number" min="1" max="10000" value="120" required></div>
+     <div class="field"><label for="vulnerable">People Requiring Additional Support</label><input id="vulnerable" type="number" min="0" max="10000" value="15" required></div>
+     <div class="field"><label for="transport">Transport Type</label><select id="transport"><option value="Mixed Fleet">Mixed Fleet</option><option value="Bus">Bus</option><option value="Mini Bus">Mini Bus</option><option value="Ambulance Support">Ambulance Support</option><option value="Rescue Boat">Rescue Boat</option></select></div>
+     <div class="field"><label for="urgency">Scenario Urgency</label><select id="urgency"><option value="medium">Medium</option><option value="high">High</option><option value="critical">Critical</option></select></div>
+     <div class="field full"><label for="notes">Planning Notes</label><textarea id="notes" maxlength="800" placeholder="Describe assumptions and simulated accessibility needs..."></textarea></div>
+    </div>
+    <div class="form-actions">
+     <button class="btn gold" type="submit" style="flex:1">✦ Generate Demo Plan</button>
+     <button class="btn" type="reset">Clear Form</button>
+    </div>
+   </form>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head"><div><div class="panel-title">Scenario Readiness Overview</div><div class="panel-sub">Illustrative district resource profile</div></div><span class="tag">CAPACITY MODEL</span></div>
+   <div id="resourceList"></div>
+   <div class="notice"><strong>Resource availability is fictional.</strong><div>Do not interpret these counts as available vehicles, shelter beds, medical support or deployed teams.</div></div>
+  </div>
+ </section>
+
+ <section class="grid columns">
+  <div class="card panel">
+   <div class="panel-head"><div><div class="panel-title">Route Intelligence Board</div><div class="panel-sub">Schematic diagram only — not a geographical map</div></div><span class="tag">VISUAL SIMULATION</span></div>
+   <div class="route-visual">
+    <svg viewBox="0 0 720 340" role="img" aria-label="Fictional route network with three illustrative paths">
+     <defs>
+      <pattern id="dots" width="25" height="25" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#46505e" opacity=".38"/></pattern>
+      <linearGradient id="road" x1="0" x2="1"><stop offset="0%" stop-color="#c49b56"/><stop offset="100%" stop-color="#f6dca2"/></linearGradient>
+     </defs>
+     <rect width="720" height="340" fill="#111722"/>
+     <rect width="720" height="340" fill="url(#dots)"/>
+     <path d="M0 245 Q170 190 300 245 T720 160" fill="none" stroke="#22394b" stroke-width="54" opacity=".5"/>
+     <path d="M0 245 Q170 190 300 245 T720 160" fill="none" stroke="#5b91ba" stroke-width="2" stroke-dasharray="7 9" opacity=".7"/>
+     <path d="M90 175 Q185 65 340 110 T620 105" fill="none" stroke="#82adff" stroke-width="5" stroke-dasharray="9 9"/>
+     <path d="M90 175 L250 185 L400 155 L620 105" fill="none" stroke="url(#road)" stroke-width="6" stroke-linecap="round"/>
+     <path d="M90 175 Q230 295 410 245 T620 105" fill="none" stroke="#ffb66e" stroke-width="5" stroke-dasharray="10 8"/>
+     <g fill="#d8b671" stroke="#f5daa0" stroke-width="3"><circle cx="90" cy="175" r="12"/><circle cx="620" cy="105" r="12"/></g>
+     <circle cx="250" cy="185" r="7" fill="#f5daa0"/>
+     <circle cx="400" cy="155" r="7" fill="#f5daa0"/>
+     <g font-family="DM Sans, sans-serif" font-size="13" fill="#e9e6dd">
+      <text x="62" y="150">Origin</text><text x="580" y="78">Shelter</text>
+      <text x="310" y="90" fill="#82adff">Route B</text>
+      <text x="325" y="148" fill="#f5daa0">Route A</text>
+      <text x="310" y="275" fill="#ffb66e">Route C</text>
+     </g>
+     <rect x="18" y="292" width="265" height="31" rx="8" fill="#1c2531"/>
+     <text x="30" y="312" fill="#b9c0ca" font-size="11">FICTIONAL NETWORK · NOT NAVIGABLE</text>
+    </svg>
+    <div class="legend"><span><i style="background:var(--gold)"></i>Route A</span><span><i style="background:var(--blue)"></i>Route B</span><span><i style="background:var(--orange)"></i>Route C</span></div>
+   </div>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head"><div><div class="panel-title">Illustrative Route Alternatives</div><div class="panel-sub">Compare synthetic route parameters</div></div><span class="tag">3 OPTIONS</span></div>
+   <div class="route-cards" id="routeCards"></div>
+  </div>
+ </section>
+
+ <section class="grid columns">
+  <div class="card panel">
+   <div class="panel-head"><div><div class="panel-title">Shelter Allocation Preview</div><div class="panel-sub">Fictional capacity model for the selected district</div></div><span class="tag">SHELTER MATCHING</span></div>
+   <div id="shelterList"></div>
+  </div>
+  <div class="card panel">
+   <div class="panel-head"><div><div class="panel-title">Planning Insights</div><div class="panel-sub">Transparent, rule-based simulation observations</div></div><span class="tag">AI-READY WORKFLOW</span></div>
+   <div id="insightList"></div>
+  </div>
+ </section>
+
+ <section class="card panel" style="margin-top:17px">
+  <div class="panel-head"><div><div class="panel-title">Evacuation Plan Registry</div><div class="panel-sub">Locally created scenario drafts and simulated approvals</div></div><span class="tag">HUMAN REVIEW</span></div>
+  <div class="table-wrap">
+   <table>
+    <thead><tr><th>Plan ID</th><th>District</th><th>Scenario</th><th>People</th><th>Route</th><th>Vehicles Needed</th><th>Status</th><th>Inspect</th></tr></thead>
+    <tbody id="planTable"></tbody>
+   </table>
+  </div>
+ </section>
+
+ <section class="grid columns">
+  <div class="card panel">
+   <div class="panel-head"><div><div class="panel-title">Coordination Activity</div><div class="panel-sub">Simulation event history</div></div><span class="tag">ACTIVITY</span></div>
+   <div class="timeline" id="timeline"></div>
+  </div>
+  <div class="card panel">
+   <div class="panel-head"><div><div class="panel-title">Safety & Approval Controls</div><div class="panel-sub">Production implementation requirements</div></div><span class="tag">GOVERNANCE</span></div>
+   <div class="resource"><div class="resource-icon">✓</div><div><strong>Human Authorization</strong><small>Trained officials approve operational evacuation actions</small></div></div>
+   <div class="resource"><div class="resource-icon">≋</div><div><strong>Verified Hazard Data</strong><small>Official warnings, sensor freshness and flood extent checks</small></div></div>
+   <div class="resource"><div class="resource-icon">⌁</div><div><strong>Road & Accessibility Validation</strong><small>Confirm passability, vehicle suitability and alternate paths</small></div></div>
+   <div class="resource"><div class="resource-icon">⌂</div><div><strong>Shelter Confirmation</strong><small>Verify accessibility, staffing and actual capacity</small></div></div>
+  </div>
+ </section>
+
+ <div class="notice"><strong>⚠ Demonstration Only.</strong><div>All routes are schematic, all travel and risk values are invented, and all shelters and vehicles are fictional. “Approved” means only a simulated review marker; no evacuation orders, notifications, reservations or dispatches occur. In a real emergency in India, use official guidance or call 112.</div></div>
+ <footer class="footer">KERALA FLOOD RELIEF COORDINATION AGENT · EVACUATION PLANNING · SIMULATION ENVIRONMENT</footer>
+</div>
+</main>
+</div>
+
+<div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+ <div class="modal">
+  <div class="modal-head"><h3 id="modalTitle">Plan Review</h3><button class="close" id="closeModal" aria-label="Close dialog">×</button></div>
+  <div class="details" id="modalDetails"></div>
+  <div class="notice"><strong>Simulation review only.</strong><div>Approving this plan does not initiate evacuation, contact responders, reserve shelter space or change road access.</div></div>
+  <div class="modal-actions">
+   <button class="btn gold" id="approveBtn">✓ Approve Demo Plan</button>
+   <button class="btn red" id="rejectBtn">× Reject Demo Plan</button>
+   <button class="btn" id="dismissBtn">Close</button>
+  </div>
+ </div>
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+const DISTRICTS=[
+ "Thiruvananthapuram","Kollam","Pathanamthitta","Alappuzha",
+ "Kottayam","Idukki","Ernakulam","Thrissur","Palakkad",
+ "Malappuram","Kozhikode","Wayanad","Kannur","Kasaragod"
+];
+const RESOURCES={
+ Thiruvananthapuram:[22,16,8,680],
+ Kollam:[18,14,6,590],
+ Pathanamthitta:[16,12,8,510],
+ Alappuzha:[20,17,12,730],
+ Kottayam:[18,13,7,560],
+ Idukki:[14,10,9,440],
+ Ernakulam:[29,21,11,950],
+ Thrissur:[24,17,8,760],
+ Palakkad:[19,14,7,610],
+ Malappuram:[21,16,9,700],
+ Kozhikode:[22,15,8,690],
+ Wayanad:[15,12,10,490],
+ Kannur:[20,14,7,620],
+ Kasaragod:[16,11,6,480]
+};
+const ROUTES=[
+ {id:"A",name:"Route A · Primary",distance:8.4,minutes:22,risk:"moderate",note:"Fictional road corridor with simulated intermediate checkpoints."},
+ {id:"B",name:"Route B · Alternate",distance:11.2,minutes:31,risk:"low",note:"Fictional alternate corridor with lower illustrative hazard exposure."},
+ {id:"C",name:"Route C · Contingency",distance:9.7,minutes:29,risk:"high",note:"Fictional contingency route with a simulated obstruction concern."}
+];
+const initialPlans=[
+ {id:"EVAC-DEMO-001",district:"Wayanad",scenario:"Landslide Risk",origin:"Fictional Zone W",people:140,vulnerable:24,transport:"Mixed Fleet",urgency:"critical",notes:"Training scenario only.",route:"B",vehicles:4,status:"pending"},
+ {id:"EVAC-DEMO-002",district:"Alappuzha",scenario:"River Flooding",origin:"Fictional Zone A",people:95,vulnerable:11,transport:"Bus",urgency:"high",notes:"Training scenario only.",route:"A",vehicles:3,status:"draft"},
+ {id:"EVAC-DEMO-003",district:"Thrissur",scenario:"Urban Flooding",origin:"Fictional Zone T",people:70,vulnerable:8,transport:"Mixed Fleet",urgency:"medium",notes:"Training scenario only.",route:"B",vehicles:2,status:"approved"}
+];
+const state={
+ district:"Thrissur",
+ route:"B",
+ plans:structuredClone(initialPlans),
+ selectedId:null,
+ nextId:4,
+ events:[
+  {title:"Evacuation simulator initialized",detail:"Fictional resources and plans loaded.",time:"Demo dataset"},
+  {title:"Approval workflow available",detail:"Review decisions remain local and have no operational effect.",time:"Demo dataset"}
+ ]
+};
+
+function escapeHTML(value){
+ return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function toast(message){
+ document.querySelector(".toast")?.remove();
+ const el=document.createElement("div");
+ el.className="toast";
+ el.textContent=message;
+ document.body.appendChild(el);
+ setTimeout(()=>el.remove(),3000);
+}
+function addEvent(title,detail){
+ state.events.unshift({title,detail,time:new Date().toLocaleTimeString("en-IN")});
+ state.events=state.events.slice(0,8);
+ renderTimeline();
+}
+function selectedResources(){return RESOURCES[state.district]||RESOURCES.Thrissur}
+function capacityPerVehicle(type){
+ return {"Bus":40,"Mini Bus":18,"Ambulance Support":2,"Rescue Boat":8,"Mixed Fleet":30}[type]||30;
+}
+function renderKPIs(){
+ $("kpiPlans").textContent=state.plans.length;
+ $("kpiPeople").textContent=state.plans.reduce((s,p)=>s+p.people,0).toLocaleString("en-IN");
+ $("kpiPending").textContent=state.plans.filter(p=>p.status==="pending").length;
+ $("kpiVehicles").textContent=Object.values(RESOURCES).reduce((s,r)=>s+r[0],0);
+}
+function renderResources(){
+ const [vehicles,teams,shelters,capacity]=selectedResources();
+ const items=[
+  ["▣","Sample Transport Units","Fictional vehicles",vehicles],
+  ["⌁","Rescue Teams","Fictional personnel groups",teams],
+  ["⌂","Shelter Facilities","Fictional sites",shelters],
+  ["♙","Shelter Capacity","Fictional available places",capacity]
+ ];
+ $("resourceList").innerHTML=items.map(item=>`
+  <div class="resource">
+   <div class="resource-icon">${item[0]}</div>
+   <div><strong>${item[1]}</strong><small>${item[2]}</small></div>
+   <div class="resource-value">${item[3].toLocaleString("en-IN")}</div>
+  </div>
+ `).join("");
+}
+function renderRoutes(){
+ $("routeCards").innerHTML=ROUTES.map(route=>`
+  <div class="route-card ${state.route===route.id?"selected":""}">
+   <div class="route-top">
+    <strong>${route.name}</strong>
+    <span class="risk-pill ${route.risk}">${route.risk.toUpperCase()} DEMO RISK</span>
+   </div>
+   <div class="route-meta">
+    <span>⌁ ${route.distance} fictional km</span>
+    <span>◷ ${route.minutes} illustrative min</span>
+   </div>
+   <div class="route-note">${route.note}</div>
+   <button class="small-btn" data-route="${route.id}" style="margin-top:13px">
+    ${state.route===route.id?"✓ Selected":"Select Route"}
+   </button>
+  </div>
+ `).join("");
+ document.querySelectorAll("[data-route]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+   state.route=btn.dataset.route;
+   renderRoutes();
+   renderInsights();
+  });
+ });
+}
+function renderShelters(){
+ const [, ,count,capacity]=selectedResources();
+ const people=Number($("people").value)||0;
+ const allocations=[
+  {name:"Demo Shelter Alpha",share:.4},
+  {name:"Demo Shelter Beta",share:.35},
+  {name:"Demo Shelter Gamma",share:.25}
+ ];
+ $("shelterList").innerHTML=allocations.map((item,i)=>{
+  const slots=Math.floor(capacity*item.share);
+  const proposed=Math.min(slots,Math.max(0,people-Math.floor(people*(i===0?0:i===1?.4:.75))));
+  const percent=slots?Math.min(100,Math.round(proposed/slots*100)):0;
+  return `
+   <div class="resource" style="display:block">
+    <div style="display:flex;justify-content:space-between;gap:10px">
+     <strong>${item.name}</strong>
+     <span style="color:var(--gold2);font-size:11px">${slots} demo places</span>
+    </div>
+    <small style="display:block;color:var(--muted);margin-top:9px">
+     Illustration only · Not a real shelter · ${count} total sample district sites
+    </small>
+    <div class="progress"><span style="width:${percent}%"></span></div>
+   </div>
+  `;
+ }).join("");
+}
+function renderInsights(){
+ const people=Number($("people").value)||0;
+ const vulnerable=Number($("vulnerable").value)||0;
+ const transport=$("transport").value;
+ const [vehicles,, ,capacity]=selectedResources();
+ const required=Math.ceil(people/capacityPerVehicle(transport));
+ const route=ROUTES.find(r=>r.id===state.route);
+ const insights=[
+  ["Transport Demand",`${people} fictional people would require approximately ${required} ${transport.toLowerCase()} units at the simplified assumed capacity. No real vehicle allocation is made.`],
+  ["Shelter Capacity",`The synthetic district capacity is ${capacity} places. ${people>capacity?"The scenario exceeds that illustrative capacity.":"The scenario fits within that illustrative aggregate capacity."} Actual shelter readiness is unknown.`],
+  ["Additional Assistance",`${vulnerable} people are marked as needing additional support. Accessible transport, medical needs and family reunification require individualized human assessment.`],
+  ["Route Review",`${route.name} has a fictional ${route.risk} risk rating and ${route.minutes}-minute estimate. It must never be treated as navigable or verified.`],
+  ["Resource Check",`${vehicles} fictional transport units appear in this demo. A production system must verify vehicle status, drivers, roads and authorization.`]
+ ];
+ $("insightList").innerHTML=insights.map(([title,description])=>`
+  <div class="resource" style="display:block">
+   <strong style="color:var(--gold2)">${escapeHTML(title)}</strong>
+   <p style="font-size:11px;color:#abb2be;line-height:1.8;margin:9px 0 0">${escapeHTML(description)}</p>
+  </div>
+ `).join("");
+}
+function renderPlans(){
+ $("planTable").innerHTML=state.plans.map(plan=>`
+  <tr>
+   <td class="id">${escapeHTML(plan.id)}</td>
+   <td>${escapeHTML(plan.district)}</td>
+   <td>${escapeHTML(plan.scenario)}</td>
+   <td>${plan.people}</td>
+   <td>Route ${plan.route}</td>
+   <td>${plan.vehicles}</td>
+   <td><span class="status ${plan.status}">${plan.status.toUpperCase()}</span></td>
+   <td><button class="small-btn" data-plan="${escapeHTML(plan.id)}">Review →</button></td>
+  </tr>
+ `).join("");
+ document.querySelectorAll("[data-plan]").forEach(btn=>{
+  btn.addEventListener("click",()=>openPlan(btn.dataset.plan));
+ });
+}
+function renderTimeline(){
+ $("timeline").replaceChildren();
+ state.events.forEach(event=>{
+  const row=document.createElement("div");
+  row.className="event";
+  const icon=document.createElement("div");
+  icon.className="event-icon";
+  icon.textContent="⌁";
+  const body=document.createElement("div");
+  const title=document.createElement("strong");
+  title.textContent=event.title;
+  const desc=document.createElement("p");
+  desc.textContent=event.detail;
+  const time=document.createElement("small");
+  time.textContent=event.time;
+  body.append(title,desc,time);
+  row.append(icon,body);
+  $("timeline").appendChild(row);
+ });
+}
+function generatePlan(event){
+ event.preventDefault();
+ const district=$("district").value;
+ const people=Number($("people").value);
+ const vulnerable=Number($("vulnerable").value);
+ if(!district||!Number.isInteger(people)||people<1||people>10000||
+  !Number.isInteger(vulnerable)||vulnerable<0||vulnerable>people){
+  toast("Check district, people and additional support counts");
+  return;
+ }
+ const transport=$("transport").value;
+ const id=`EVAC-DEMO-${String(state.nextId++).padStart(3,"0")}`;
+ const plan={
+  id,district,
+  scenario:$("scenario").value,
+  origin:$("origin").value.trim(),
+  people,vulnerable,transport,
+  urgency:$("urgency").value,
+  notes:$("notes").value.trim(),
+  route:state.route,
+  vehicles:Math.ceil(people/capacityPerVehicle(transport)),
+  status:"pending"
+ };
+ if(!plan.origin){toast("Enter a fictional origin");return}
+ state.plans.unshift(plan);
+ renderKPIs();
+ renderPlans();
+ addEvent("Simulation plan created",`${id} · ${district} · No evacuation or dispatch initiated.`);
+ toast("Demo plan created for review");
+}
+function openPlan(id){
+ const plan=state.plans.find(p=>p.id===id);
+ if(!plan)return;
+ state.selectedId=id;
+ const fields=[
+  ["Plan ID",plan.id],["District",plan.district],
+  ["Scenario",plan.scenario],["Origin",plan.origin],
+  ["People",plan.people],["Additional Support",plan.vulnerable],
+  ["Transport",plan.transport],["Urgency",plan.urgency],
+  ["Selected Route",`Route ${plan.route}`],
+  ["Estimated Demo Vehicles",plan.vehicles],
+  ["Status",plan.status.toUpperCase()],["Notes",plan.notes||"None"]
+ ];
+ const container=$("modalDetails");
+ container.replaceChildren();
+ fields.forEach(([label,value],index)=>{
+  const box=document.createElement("div");
+  box.className="detail"+(index===fields.length-1?" full":"");
+  const small=document.createElement("small");
+  small.textContent=label;
+  const strong=document.createElement("strong");
+  strong.textContent=String(value);
+  box.append(small,strong);
+  container.appendChild(box);
+ });
+ $("approveBtn").disabled=plan.status!=="pending"&&plan.status!=="draft";
+ $("rejectBtn").disabled=plan.status!=="pending"&&plan.status!=="draft";
+ $("modal").classList.add("open");
+ $("closeModal").focus();
+}
+function closeModal(){
+ $("modal").classList.remove("open");
+ state.selectedId=null;
+}
+function updatePlanStatus(status){
+ const plan=state.plans.find(p=>p.id===state.selectedId);
+ if(!plan||!["pending","draft"].includes(plan.status))return;
+ plan.status=status;
+ addEvent(`Demo plan ${status}`,`${plan.id} marked ${status} locally; no operational actions occurred.`);
+ renderKPIs();
+ renderPlans();
+ closeModal();
+ toast(`Plan marked ${status} in demo`);
+}
+function exportCSV(){
+ const columns=["id","district","scenario","origin","people","vulnerable","transport","urgency","route","vehicles","status","notes"];
+ const csv=value=>{
+  let s=String(value??"");
+  if(/^\s*[=+\-@]/.test(s))s="'"+s;
+  return `"${s.replace(/"/g,'""')}"`;
+ };
+ const lines=[
+  columns.map(csv).join(","),
+  ...state.plans.map(p=>columns.map(key=>csv(p[key])).join(","))
+ ];
+ const blob=new Blob(["\uFEFF"+lines.join("\r\n")],{type:"text/csv;charset=utf-8"});
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement("a");
+ link.href=url;
+ link.download="kerala-evacuation-plans-demo.csv";
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ toast("Demo plans exported");
+}
+function reset(){
+ state.district="Thrissur";
+ state.route="B";
+ state.plans=structuredClone(initialPlans);
+ state.nextId=4;
+ $("planForm").reset();
+ $("district").value="Thrissur";
+ state.events=[{title:"Simulation reset",detail:"Fictional planning records restored.",time:new Date().toLocaleTimeString("en-IN")}];
+ renderAll();
+ toast("Evacuation simulation reset");
+}
+function renderAll(){
+ renderKPIs();renderResources();renderRoutes();renderShelters();renderInsights();renderPlans();renderTimeline();
+}
+function initialize(){
+ DISTRICTS.forEach(name=>{
+  const option=document.createElement("option");
+  option.value=name;
+  option.textContent=name;
+  $("district").appendChild(option);
+ });
+ $("district").value=state.district;
+ $("district").addEventListener("change",e=>{
+  state.district=e.target.value;
+  renderResources();renderShelters();renderInsights();
+ });
+ ["people","vulnerable","transport"].forEach(id=>{
+  $(id).addEventListener("input",()=>{
+   renderShelters();renderInsights();
+  });
+ });
+ $("planForm").addEventListener("submit",generatePlan);
+ $("newPlanBtn").addEventListener("click",()=>{
+  $("planner").scrollIntoView({behavior:"smooth",block:"start"});
+  $("origin").focus({preventScroll:true});
+ });
+ $("approveBtn").addEventListener("click",()=>updatePlanStatus("approved"));
+ $("rejectBtn").addEventListener("click",()=>updatePlanStatus("rejected"));
+ $("closeModal").addEventListener("click",closeModal);
+ $("dismissBtn").addEventListener("click",closeModal);
+ $("modal").addEventListener("click",e=>{if(e.target===$("modal"))closeModal()});
+ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+ $("menuBtn").addEventListener("click",()=>$("sidebar").classList.toggle("open"));
+ $("exportBtn").addEventListener("click",exportCSV);
+ $("resetBtn").addEventListener("click",reset);
+ renderAll();
+}
+initialize();
+console.info("Evacuation Planning demo initialized; no real routing or dispatch connected.");
+</script>
+</body>
+</html>

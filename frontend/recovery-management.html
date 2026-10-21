@@ -1,0 +1,943 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b10">
+<title>Recovery Management | Kerala Flood AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#090b10;--sidebar:#0d1017;--panel:#151922;--panel2:#1b202b;
+ --gold:#d8b671;--gold2:#f5daa0;--text:#f4f1e9;--muted:#9399a7;
+ --line:rgba(255,255,255,.085);--green:#54d6a4;--orange:#ffb66e;
+ --red:#ff777d;--blue:#82adff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:13px "DM Sans",sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.app{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;background:var(--sidebar);border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:40}
+.brand{padding:24px 18px;display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--line)}
+.brand-icon{width:43px;height:43px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#f5daa0,#a47c3b);color:#20170a;font-size:23px}
+.brand strong{font:800 13px Manrope,sans-serif}
+.brand small{display:block;font-size:10px;letter-spacing:1.2px;color:var(--muted);margin-top:5px}
+.nav{padding:18px 13px;overflow:auto;flex:1}
+.nav-label{color:#777e8d;font-size:10px;letter-spacing:1.5px;font-weight:800;margin:17px 12px 9px}
+.nav a{display:flex;align-items:center;gap:12px;padding:12px 13px;margin-bottom:5px;border:1px solid transparent;border-radius:10px;color:#a2a8b4;font-size:12px;font-weight:600;transition:.2s}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{background:#d8b67119;border-color:#d8b67130;color:var(--gold2)}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.side-footer{padding:17px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:11px;background:#383023;color:var(--gold2);display:grid;place-items:center;font-weight:800}
+.side-footer strong{font-size:11px}
+.side-footer small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.main{min-width:0;background:radial-gradient(ellipse at 65% -5%,#d8b67112,transparent 38%),var(--bg)}
+.topbar{min-height:82px;padding:17px 30px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:14px}
+.top-left,.top-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.page-icon{width:43px;height:43px;border-radius:12px;background:#d8b67119;border:1px solid #d8b67133;color:var(--gold);display:grid;place-items:center;font-size:20px}
+.top-left h1{font:800 18px Manrope,sans-serif;margin:0}
+.top-left p{color:var(--muted);font-size:11px;margin:5px 0 0}
+.badge,.tag{display:inline-flex;align-items:center;gap:7px;padding:9px 11px;background:#d8b67112;border:1px solid #d8b67130;color:var(--gold2);border-radius:9px;font-size:10px;font-weight:800}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 15px;border-radius:10px;border:1px solid var(--line);background:#1a1f29;color:#e1e3e8;font-size:11px;font-weight:800;transition:.2s}
+.btn:hover{border-color:#d8b67166;transform:translateY(-1px)}
+.btn.gold{background:linear-gradient(120deg,#c6a15e,#f1d49a);color:#1b160e;border:0}
+.btn.red{color:var(--red);background:#ff777d12;border-color:#ff777d40}
+.btn.blue{color:var(--blue);background:#82adff12;border-color:#82adff40}
+.content{max-width:1700px;margin:auto;padding:28px 30px 45px}
+.eyebrow{color:var(--gold);font-size:10px;letter-spacing:2px;font-weight:800;margin-bottom:10px}
+.heading{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+.heading h2{font:800 28px Manrope,sans-serif;letter-spacing:-1px;margin:0}
+.heading p{color:var(--muted);font-size:12px;line-height:1.8;margin:9px 0 0}
+.hero{padding:27px;border-radius:18px;border:1px solid #d8b67138;background:radial-gradient(circle at 85% 15%,#d8b67120,transparent 35%),linear-gradient(120deg,#252017,#151922)}
+.hero h3{font:800 26px Manrope,sans-serif;letter-spacing:-.8px;margin:12px 0}
+.hero p{color:#b9b5ae;font-size:12px;line-height:1.9;max-width:850px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:17px}
+.card{min-width:0;background:linear-gradient(150deg,#181c26,#12161e);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 35px #0002;animation:rise .5s ease both}
+.kpi{padding:21px}
+.kpi-head{display:flex;justify-content:space-between;align-items:center;color:#a7adba;font-size:11px;font-weight:700}
+.kpi-icon{width:36px;height:36px;border-radius:10px;background:#d8b67119;color:var(--gold);display:grid;place-items:center;font-size:18px}
+.kpi-number{font:800 29px Manrope,sans-serif;letter-spacing:-1px;margin:15px 0 7px}
+.kpi-caption{font-size:10px;color:var(--muted);line-height:1.7}
+.kpi-caption b{color:var(--gold)}
+.section{margin-top:25px}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:15px}
+.section-head h3{font:800 19px Manrope,sans-serif;letter-spacing:-.5px;margin:0}
+.section-head p{color:var(--muted);font-size:11px;line-height:1.8;margin:7px 0 0}
+.panel{padding:21px}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{color:var(--muted);font-size:10px;line-height:1.8;margin-top:6px}
+.columns{grid-template-columns:minmax(0,1.5fr) minmax(310px,1fr)}
+.two-col{grid-template-columns:repeat(2,minmax(0,1fr))}
+.three-col{grid-template-columns:repeat(3,minmax(0,1fr))}
+.input,.select,.textarea{width:100%;padding:12px 13px;border:1px solid #343a46;border-radius:10px;background:#1b202b;color:var(--text);outline:none}
+.input:focus,.select:focus,.textarea:focus{border-color:var(--gold)}
+.textarea{resize:vertical;min-height:90px}
+.field{display:grid;gap:8px;margin-bottom:15px}
+.field label{font-size:11px;font-weight:800;color:#c9ccd4}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
+.filters .input{flex:1;min-width:170px}
+.filters .select{width:auto;min-width:135px}
+.pill{display:inline-flex;align-items:center;padding:7px 10px;border-radius:8px;font-size:10px;font-weight:800;white-space:nowrap}
+.pill.planned{color:var(--blue);background:#82adff19}
+.pill.review{color:var(--orange);background:#ffb66e19}
+.pill.active{color:var(--gold2);background:#d8b67119}
+.pill.completed{color:var(--green);background:#54d6a419}
+.pill.blocked{color:var(--red);background:#ff777d19}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:800px}
+th{text-align:left;color:#89909d;font-size:10px;letter-spacing:.7px;padding:14px 11px;border-bottom:1px solid var(--line)}
+td{padding:15px 11px;border-bottom:1px solid var(--line);font-size:11px;color:#c4c9d3}
+td strong{color:var(--text);font-size:11px}
+td small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.progress{height:8px;background:#303642;border-radius:10px;overflow:hidden;margin-top:8px}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#a68145,#f1d69c);border-radius:10px}
+.small-btn{padding:8px 10px;border-radius:8px;border:1px solid #d8b67140;background:#d8b67115;color:var(--gold2);font-size:10px;font-weight:800}
+.metric{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid var(--line)}
+.metric span{color:var(--muted);font-size:11px}
+.metric strong{font-size:12px}
+.project{padding:15px;background:#1b202b;border:1px solid var(--line);border-radius:11px;margin-bottom:10px}
+.project-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.project strong{font-size:11px}
+.project p{font-size:10px;color:var(--muted);line-height:1.8;margin:10px 0}
+.stage{padding:16px;background:#1b202b;border:1px solid var(--line);border-radius:11px}
+.stage .number{font:800 20px Manrope,sans-serif;color:var(--gold)}
+.stage strong{display:block;font-size:11px;margin:11px 0 7px}
+.stage p{font-size:10px;color:var(--muted);line-height:1.8;margin:0}
+.timeline{display:grid;gap:14px}
+.event{display:flex;gap:12px}
+.event-icon{width:33px;height:33px;flex-shrink:0;display:grid;place-items:center;border-radius:10px;background:#d8b67118;color:var(--gold)}
+.event strong{font-size:11px}
+.event p{font-size:10px;color:var(--muted);line-height:1.7;margin:7px 0}
+.event small{font-size:10px;color:#777e8d}
+.notice{padding:16px;background:#d8b6710e;border:1px solid #d8b67130;border-radius:12px;color:#bbb4a5;font-size:11px;line-height:1.9;margin-top:17px}
+.notice strong{color:var(--gold2)}
+.footer{padding-top:26px;text-align:center;color:#69707e;font-size:10px}
+.overlay{position:fixed;inset:0;z-index:100;background:#000b;display:none;align-items:center;justify-content:center;padding:18px}
+.overlay.open{display:flex}
+.modal{width:min(680px,100%);max-height:90vh;overflow:auto;background:#181d27;border:1px solid #d8b67144;border-radius:17px;padding:24px;box-shadow:0 30px 90px #0009}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.modal-head h3{font:800 18px Manrope,sans-serif;margin:0}
+.detail{padding:13px;background:#10151e;border:1px solid var(--line);border-radius:9px;margin-top:12px}
+.detail small{display:block;color:var(--muted);font-size:10px;margin-bottom:8px}
+.detail strong{font-size:11px;overflow-wrap:anywhere}
+.toast{position:fixed;right:20px;bottom:20px;z-index:150;padding:14px 17px;background:#252b35;border:1px solid #d8b67166;color:var(--gold2);border-radius:11px;box-shadow:0 15px 45px #0008}
+.menu-btn{display:none}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1250px){.kpis{grid-template-columns:repeat(2,1fr)}.columns{grid-template-columns:1fr}}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:fixed;width:260px;transform:translateX(-100%);transition:.3s}.sidebar.open{transform:translateX(0)}.menu-btn{display:inline-flex}.topbar{padding:15px 20px}.content{padding:20px}}
+@media(max-width:560px){.kpis,.two-col,.three-col{grid-template-columns:1fr}.heading h2{font-size:23px}.panel{padding:16px}.top-actions .badge{display:none}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-icon">✦</div>
+  <div><strong>KERALA FLOOD AI</strong><small>INTELLIGENCE PLATFORM</small></div>
+ </div>
+ <nav class="nav">
+  <div class="nav-label">WORKSPACE</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Project Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="agent-command-center.html"><span class="nav-icon">✦</span>Agent Command Center</a>
+  <a href="analytics.html"><span class="nav-icon">▥</span>Analytics</a>
+
+  <div class="nav-label">EMERGENCY OPERATIONS</div>
+  <a href="incident-management.html"><span class="nav-icon">◉</span>Incident Management</a>
+  <a href="damage-assessment.html"><span class="nav-icon">▣</span>Damage Assessment</a>
+  <a class="active" href="recovery-management.html"><span class="nav-icon">⌂</span>Recovery Management</a>
+  <a href="evacuation-planning.html"><span class="nav-icon">↗</span>Evacuation Planning</a>
+  <a href="shelters.html"><span class="nav-icon">▤</span>Shelter Management</a>
+  <a href="relief-distribution.html"><span class="nav-icon">◇</span>Relief Distribution</a>
+  <a href="volunteer-management.html"><span class="nav-icon">♧</span>Volunteer Management</a>
+
+  <div class="nav-label">INTELLIGENCE & GOVERNANCE</div>
+  <a href="ai-copilot.html"><span class="nav-icon">✧</span>AI Copilot</a>
+  <a href="rag-knowledge-base.html"><span class="nav-icon">▤</span>RAG Knowledge Base</a>
+  <a href="human-approval.html"><span class="nav-icon">✓</span>Human Approval</a>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+  <a href="reports.html"><span class="nav-icon">▧</span>Reports</a>
+ </nav>
+ <div class="side-footer">
+  <div class="avatar">RC</div>
+  <div><strong>Recovery Intelligence</strong><small>Operations Workspace</small></div>
+ </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-left">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="page-icon">⌂</div>
+  <div><h1>Recovery Management</h1><p>Damage recovery · Reconstruction · Funding · Oversight</p></div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>DEMO MODE</span>
+  <button class="btn" id="resetBtn">↻ Reset</button>
+  <button class="btn gold" id="exportBtn">↓ Export CSV</button>
+ </div>
+</header>
+
+<div class="content">
+<div class="heading">
+ <div>
+  <div class="eyebrow">POST-DISASTER RECOVERY INTELLIGENCE</div>
+  <h2>Recovery & Reconstruction Command Center</h2>
+  <p>Manage fictional recovery cases, infrastructure rehabilitation, budget proposals, and human-reviewed project workflows.</p>
+ </div>
+ <span class="tag">LOCAL OPERATIONS SIMULATION</span>
+</div>
+
+<section class="hero">
+ <div class="eyebrow">FROM DAMAGE ASSESSMENT TO LONG-TERM RECOVERY</div>
+ <h3>Rebuild Communities. Track Progress. Maintain Accountability.</h3>
+ <p>
+  Demonstrate a coordinated recovery lifecycle across housing, roads,
+  public infrastructure, utilities, healthcare facilities and community
+  restoration. All projects, cost estimates, funding figures and approvals
+  on this page are fictional. No government systems are connected.
+ </p>
+ <div class="hero-actions">
+  <button class="btn gold" id="newProjectShortcut">+ New Recovery Case</button>
+  <a class="btn" href="damage-assessment.html">Damage Assessment →</a>
+  <a class="btn blue" href="human-approval.html">Human Oversight →</a>
+ </div>
+</section>
+
+<section class="grid kpis">
+ <div class="card kpi">
+  <div class="kpi-head">Recovery Cases<div class="kpi-icon">⌂</div></div>
+  <div class="kpi-number" id="kpiCases">0</div>
+  <div class="kpi-caption"><b>FICTIONAL</b> · Local project registry</div>
+ </div>
+ <div class="card kpi">
+  <div class="kpi-head">Active Reconstruction<div class="kpi-icon">⚒</div></div>
+  <div class="kpi-number" id="kpiActive">0</div>
+  <div class="kpi-caption"><b>DEMO</b> · Simulated project statuses</div>
+ </div>
+ <div class="card kpi">
+  <div class="kpi-head">Estimated Recovery Cost<div class="kpi-icon">₹</div></div>
+  <div class="kpi-number" id="kpiCost">₹0</div>
+  <div class="kpi-caption"><b>SAMPLE INR</b> · Not actual funding</div>
+ </div>
+ <div class="card kpi">
+  <div class="kpi-head">Average Progress<div class="kpi-icon">◉</div></div>
+  <div class="kpi-number" id="kpiProgress">0%</div>
+  <div class="kpi-caption"><b>SIMULATED</b> · Local progress indicators</div>
+ </div>
+</section>
+
+<section class="section grid columns" id="registrySection">
+ <div class="card panel">
+  <div class="section-head">
+   <div>
+    <div class="panel-title">Recovery Project Registry</div>
+    <div class="panel-sub">Search, filter and inspect fictional reconstruction projects.</div>
+   </div>
+   <span class="tag" id="registryCount">0 PROJECTS</span>
+  </div>
+
+  <div class="filters">
+   <input class="input" id="searchInput" placeholder="Search project, district or ID..." aria-label="Search projects">
+   <select class="select" id="statusFilter" aria-label="Filter status">
+    <option value="all">All Statuses</option>
+    <option value="planned">Planned</option>
+    <option value="review">Pending Review</option>
+    <option value="active">Active</option>
+    <option value="completed">Completed</option>
+    <option value="blocked">Blocked</option>
+   </select>
+   <select class="select" id="districtFilter" aria-label="Filter district">
+    <option value="all">All Districts</option>
+   </select>
+  </div>
+
+  <div class="table-wrap">
+   <table>
+    <thead>
+     <tr>
+      <th>PROJECT</th>
+      <th>DISTRICT</th>
+      <th>STATUS</th>
+      <th>PROGRESS</th>
+      <th>EST. COST</th>
+      <th>ACTION</th>
+     </tr>
+    </thead>
+    <tbody id="projectTable"></tbody>
+   </table>
+  </div>
+ </div>
+
+ <div class="card panel" id="newProjectSection">
+  <div class="panel-title">Create Recovery Scenario</div>
+  <div class="panel-sub" style="margin-bottom:18px">Add a fictional case to the local demonstration registry.</div>
+
+  <form id="projectForm">
+   <div class="field">
+    <label for="projectName">Recovery Project Name</label>
+    <input class="input" id="projectName" required maxlength="100" placeholder="Example: Demo Bridge Rehabilitation">
+   </div>
+   <div class="grid two-col">
+    <div class="field">
+     <label for="projectDistrict">District</label>
+     <select class="select" id="projectDistrict" required></select>
+    </div>
+    <div class="field">
+     <label for="projectType">Recovery Category</label>
+     <select class="select" id="projectType">
+      <option>Housing Restoration</option>
+      <option>Road Rehabilitation</option>
+      <option>Bridge Reconstruction</option>
+      <option>Water & Sanitation</option>
+      <option>Electricity Restoration</option>
+      <option>Healthcare Infrastructure</option>
+      <option>School Reconstruction</option>
+      <option>Community Recovery</option>
+     </select>
+    </div>
+   </div>
+   <div class="grid two-col">
+    <div class="field">
+     <label for="projectCost">Estimated Cost (₹)</label>
+     <input class="input" id="projectCost" type="number" min="1000" max="1000000000" step="1000" required placeholder="2500000">
+    </div>
+    <div class="field">
+     <label for="projectPriority">Priority</label>
+     <select class="select" id="projectPriority">
+      <option>Critical</option>
+      <option>High</option>
+      <option>Medium</option>
+      <option>Low</option>
+     </select>
+    </div>
+   </div>
+   <div class="field">
+    <label for="projectDescription">Scenario Description</label>
+    <textarea class="textarea" id="projectDescription" required maxlength="600" placeholder="Describe fictional recovery work, damage and expected outcomes..."></textarea>
+   </div>
+   <div class="field">
+    <label style="display:flex;align-items:flex-start;gap:9px;font-weight:500">
+     <input type="checkbox" id="demoConfirm" required>
+     I confirm this is fictional project data without personal information.
+    </label>
+   </div>
+   <button class="btn gold" type="submit">+ Create Recovery Case</button>
+  </form>
+
+  <div class="notice">
+   <strong>Local simulation only.</strong>
+   <div>Creating a case does not submit funding requests, create government records or assign reconstruction contractors.</div>
+  </div>
+ </div>
+</section>
+
+<section class="section grid two-col">
+ <div class="card panel">
+  <div class="section-head">
+   <div>
+    <div class="panel-title">Recovery Funding Overview</div>
+    <div class="panel-sub">Fictional estimates and illustrative budget coverage.</div>
+   </div>
+   <span class="tag">SAMPLE FINANCIAL DATA</span>
+  </div>
+  <div class="metric"><span>Total Estimated Cost</span><strong id="fundTotal">—</strong></div>
+  <div class="metric"><span>Illustrative Allocated Budget</span><strong id="fundAllocated">—</strong></div>
+  <div class="metric"><span>Illustrative Funding Gap</span><strong id="fundGap">—</strong></div>
+  <div class="metric"><span>Demo Funding Coverage</span><strong id="fundCoverage">—</strong></div>
+  <div class="progress"><span id="fundBar" style="width:0%"></span></div>
+  <div class="notice"><strong>Financial disclaimer:</strong> Budget coverage is calculated from invented allocation percentages, not bank accounts, grants or verified financial statements.</div>
+ </div>
+
+ <div class="card panel">
+  <div class="section-head">
+   <div>
+    <div class="panel-title">Recovery Category Breakdown</div>
+    <div class="panel-sub">Case distribution across recovery workstreams.</div>
+   </div>
+  </div>
+  <div id="categoryBreakdown"></div>
+ </div>
+</section>
+
+<section class="section">
+ <div class="section-head">
+  <div>
+   <h3>Recovery Lifecycle</h3>
+   <p>A proposed accountable process for moving from damage assessment to reconstruction closure.</p>
+  </div>
+  <span class="tag">WORKFLOW BLUEPRINT</span>
+ </div>
+ <div class="grid three-col" id="lifecycleGrid"></div>
+</section>
+
+<section class="section grid two-col">
+ <div class="card panel">
+  <div class="panel-title">Priority Recovery Portfolio</div>
+  <div class="panel-sub" style="margin-bottom:17px">Fictional high-priority projects ordered by status and estimated cost.</div>
+  <div id="priorityProjects"></div>
+ </div>
+ <div class="card panel">
+  <div class="panel-title">Recovery Activity Timeline</div>
+  <div class="panel-sub" style="margin-bottom:17px">Local session history, not an official audit record.</div>
+  <div class="timeline" id="activityTimeline"></div>
+ </div>
+</section>
+
+<div class="notice">
+ <strong>⚠ Operational Safety & Financial Governance.</strong>
+ <div>
+  No actual recovery work, financial transfer, approval, procurement or resource assignment is performed here.
+  A production deployment would require authenticated government workflows, verified damage assessments,
+  procurement controls, official budgets, independent audit trails and human authorization.
+  In an emergency in India, call <a href="tel:112" style="color:var(--gold2);font-weight:800">112</a>.
+ </div>
+</div>
+
+<footer class="footer">
+ KERALA FLOOD RELIEF COORDINATION AGENT · RECOVERY MANAGEMENT · SYNTHETIC DEMONSTRATION
+</footer>
+</div>
+</main>
+</div>
+
+<div class="overlay" id="reviewOverlay">
+ <div class="modal" role="dialog" aria-modal="true" aria-labelledby="reviewTitle">
+  <div class="modal-head">
+   <h3 id="reviewTitle">Recovery Project Review</h3>
+   <button class="btn" id="closeReview" aria-label="Close review">✕</button>
+  </div>
+  <p class="panel-sub">Simulated project review. No real approval or operational change occurs.</p>
+  <div id="reviewDetails"></div>
+  <div class="field" style="margin-top:17px">
+   <label for="reviewNote">Reviewer Rationale / Progress Note</label>
+   <textarea class="textarea" id="reviewNote" maxlength="500" placeholder="Enter a fictional review rationale..."></textarea>
+  </div>
+  <div class="field">
+   <label for="reviewProgress">Progress Percentage</label>
+   <input class="input" id="reviewProgress" type="number" min="0" max="100" step="1">
+  </div>
+  <div class="hero-actions" id="reviewActions"></div>
+ </div>
+</div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+
+const DISTRICTS=[
+ "Thiruvananthapuram","Kollam","Pathanamthitta","Alappuzha",
+ "Kottayam","Idukki","Ernakulam","Thrissur","Palakkad",
+ "Malappuram","Kozhikode","Wayanad","Kannur","Kasaragod"
+];
+
+const SEED_PROJECTS=[
+ {id:"REC-DEMO-001",name:"Fictional Riverside Housing Restoration",district:"Alappuzha",type:"Housing Restoration",priority:"Critical",cost:12500000,progress:45,status:"active",description:"Illustrative reconstruction of damaged housing in a fictional settlement.",allocation:.7},
+ {id:"REC-DEMO-002",name:"Demo Hill Road Rehabilitation",district:"Wayanad",type:"Road Rehabilitation",priority:"Critical",cost:8400000,progress:20,status:"active",description:"Synthetic road rehabilitation planning scenario.",allocation:.5},
+ {id:"REC-DEMO-003",name:"Sample Bridge Reconstruction",district:"Idukki",type:"Bridge Reconstruction",priority:"High",cost:19500000,progress:0,status:"review",description:"Fictional bridge engineering and cost-review workflow.",allocation:.3},
+ {id:"REC-DEMO-004",name:"Demo Drinking Water Restoration",district:"Thrissur",type:"Water & Sanitation",priority:"High",cost:3200000,progress:100,status:"completed",description:"Completed status for a fictional water restoration case.",allocation:1},
+ {id:"REC-DEMO-005",name:"Sample School Repair Program",district:"Ernakulam",type:"School Reconstruction",priority:"Medium",cost:4500000,progress:15,status:"active",description:"Synthetic school infrastructure recovery scenario.",allocation:.6},
+ {id:"REC-DEMO-006",name:"Fictional Power Network Restoration",district:"Pathanamthitta",type:"Electricity Restoration",priority:"High",cost:6200000,progress:0,status:"blocked",description:"Demonstration of a blocked recovery project requiring review.",allocation:.2},
+ {id:"REC-DEMO-007",name:"Demo Community Health Facility Repair",district:"Kottayam",type:"Healthcare Infrastructure",priority:"High",cost:5100000,progress:0,status:"planned",description:"Fictional health facility rehabilitation planning case.",allocation:.4}
+];
+
+const state={
+ projects:[],
+ selectedId:null,
+ nextId:8,
+ events:[]
+};
+
+function el(tag,className,text){
+ const node=document.createElement(tag);
+ if(className)node.className=className;
+ if(text!==undefined)node.textContent=String(text);
+ return node;
+}
+
+function money(value){
+ return "₹"+Math.round(value).toLocaleString("en-IN");
+}
+
+function compactMoney(value){
+ if(value>=10000000)return"₹"+(value/10000000).toFixed(2)+" Cr";
+ if(value>=100000)return"₹"+(value/100000).toFixed(1)+" L";
+ return money(value);
+}
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+ const node=el("div","toast",message);
+ document.body.appendChild(node);
+ setTimeout(()=>node.remove(),2800);
+}
+
+function logEvent(title,detail){
+ state.events.unshift({
+  title,detail,time:new Date().toLocaleTimeString("en-IN")
+ });
+ state.events=state.events.slice(0,9);
+ renderTimeline();
+}
+
+function renderTimeline(){
+ const root=$("activityTimeline");
+ root.replaceChildren();
+
+ state.events.forEach(event=>{
+  const row=el("div","event");
+  const icon=el("div","event-icon","⌂");
+  const body=el("div");
+
+  body.append(
+   el("strong","",event.title),
+   el("p","",event.detail),
+   el("small","",event.time)
+  );
+
+  row.append(icon,body);
+  root.appendChild(row);
+ });
+}
+
+function statusPill(status){
+ const labels={
+  planned:"PLANNED",
+  review:"PENDING REVIEW",
+  active:"ACTIVE",
+  completed:"COMPLETED",
+  blocked:"BLOCKED"
+ };
+ return el("span","pill "+status,labels[status]||status);
+}
+
+function renderKPIs(){
+ const projects=state.projects;
+ const cost=projects.reduce((sum,p)=>sum+p.cost,0);
+ const average=projects.length?
+  projects.reduce((sum,p)=>sum+p.progress,0)/projects.length:0;
+
+ $("kpiCases").textContent=projects.length;
+ $("kpiActive").textContent=projects.filter(p=>p.status==="active").length;
+ $("kpiCost").textContent=compactMoney(cost);
+ $("kpiProgress").textContent=Math.round(average)+"%";
+}
+
+function renderTable(){
+ const root=$("projectTable");
+ root.replaceChildren();
+
+ const query=$("searchInput").value.trim().toLowerCase();
+ const status=$("statusFilter").value;
+ const district=$("districtFilter").value;
+
+ const filtered=state.projects.filter(p=>
+  (p.name+" "+p.district+" "+p.id).toLowerCase().includes(query)&&
+  (status==="all"||p.status===status)&&
+  (district==="all"||p.district===district)
+ );
+
+ $("registryCount").textContent=filtered.length+" PROJECTS";
+
+ if(!filtered.length){
+  const tr=document.createElement("tr");
+  const td=document.createElement("td");
+  td.colSpan=6;
+  td.textContent="No matching recovery projects.";
+  tr.appendChild(td);
+  root.appendChild(tr);
+  return;
+ }
+
+ filtered.forEach(p=>{
+  const tr=document.createElement("tr");
+
+  const project=document.createElement("td");
+  project.append(
+   el("strong","",p.name),
+   el("small","",p.id+" · "+p.type)
+  );
+
+  const district=el("td","",p.district);
+  const status=document.createElement("td");
+  status.appendChild(statusPill(p.status));
+
+  const progress=document.createElement("td");
+  progress.appendChild(el("strong","",p.progress+"%"));
+  const bar=el("div","progress");
+  const fill=el("span");
+  fill.style.width=p.progress+"%";
+  bar.appendChild(fill);
+  progress.appendChild(bar);
+
+  const cost=el("td","",compactMoney(p.cost));
+  const action=document.createElement("td");
+  const button=el("button","small-btn","Inspect →");
+  button.addEventListener("click",()=>openReview(p.id));
+  action.appendChild(button);
+
+  tr.append(project,district,status,progress,cost,action);
+  root.appendChild(tr);
+ });
+}
+
+function renderFunding(){
+ const total=state.projects.reduce((sum,p)=>sum+p.cost,0);
+ const allocated=state.projects.reduce((sum,p)=>sum+p.cost*p.allocation,0);
+ const gap=Math.max(0,total-allocated);
+ const coverage=total?allocated/total*100:0;
+
+ $("fundTotal").textContent=money(total);
+ $("fundAllocated").textContent=money(allocated);
+ $("fundGap").textContent=money(gap);
+ $("fundCoverage").textContent=coverage.toFixed(1)+"%";
+ $("fundBar").style.width=coverage+"%";
+}
+
+function renderCategories(){
+ const root=$("categoryBreakdown");
+ root.replaceChildren();
+
+ const counts={};
+ state.projects.forEach(p=>{
+  counts[p.type]=(counts[p.type]||0)+1;
+ });
+
+ Object.entries(counts).sort((a,b)=>b[1]-a[1]).forEach(([type,count])=>{
+  const row=el("div","metric");
+  row.append(
+   el("span","",type),
+   el("strong","",count+" case"+(count===1?"":"s"))
+  );
+  root.appendChild(row);
+ });
+
+ if(!state.projects.length){
+  root.appendChild(el("p","panel-sub","No recovery categories yet."));
+ }
+}
+
+function renderPriority(){
+ const root=$("priorityProjects");
+ root.replaceChildren();
+
+ const weights={Critical:4,High:3,Medium:2,Low:1};
+
+ const projects=[...state.projects]
+  .filter(p=>p.status!=="completed")
+  .sort((a,b)=>
+   weights[b.priority]-weights[a.priority]||b.cost-a.cost
+  ).slice(0,5);
+
+ projects.forEach(p=>{
+  const card=el("div","project");
+  const head=el("div","project-head");
+  head.append(
+   el("strong","",p.name),
+   statusPill(p.status)
+  );
+
+  const bar=el("div","progress");
+  const fill=el("span");
+  fill.style.width=p.progress+"%";
+  bar.appendChild(fill);
+
+  const button=el("button","small-btn","Review Project →");
+  button.addEventListener("click",()=>openReview(p.id));
+
+  card.append(
+   head,
+   el("p","",p.district+" · "+p.priority+" priority · "+compactMoney(p.cost)),
+   bar,
+   el("p","",p.progress+"% simulated progress"),
+   button
+  );
+  root.appendChild(card);
+ });
+
+ if(!projects.length){
+  root.appendChild(el("p","panel-sub","No pending recovery projects."));
+ }
+}
+
+function renderLifecycle(){
+ const stages=[
+  ["01","Damage Assessment","Verify the nature and extent of damage using authorized sources."],
+  ["02","Recovery Prioritization","Review urgency, community needs and infrastructure dependencies."],
+  ["03","Budget Estimation","Prepare cost proposals and independently validate assumptions."],
+  ["04","Human Approval","Obtain authorized review before commitments or field actions."],
+  ["05","Implementation Monitoring","Track milestones, procurement and verified project progress."],
+  ["06","Audit & Closure","Document evidence, expenditures, outcomes and final approval."]
+ ];
+
+ const root=$("lifecycleGrid");
+ root.replaceChildren();
+
+ stages.forEach(([number,title,description])=>{
+  const card=el("div","stage");
+  card.append(
+   el("div","number",number),
+   el("strong","",title),
+   el("p","",description)
+  );
+  root.appendChild(card);
+ });
+}
+
+function renderAll(){
+ renderKPIs();
+ renderTable();
+ renderFunding();
+ renderCategories();
+ renderPriority();
+}
+
+function populateDistricts(){
+ DISTRICTS.forEach(name=>{
+  $("districtFilter").appendChild(new Option(name,name));
+  $("projectDistrict").appendChild(new Option(name,name));
+ });
+}
+
+function createProject(event){
+ event.preventDefault();
+
+ if(!$("demoConfirm").checked){
+  toast("Confirm that the project is fictional.");
+  return;
+ }
+
+ const cost=Number($("projectCost").value);
+ const name=$("projectName").value.trim();
+ const description=$("projectDescription").value.trim();
+
+ if(!name||!description||!Number.isFinite(cost)||cost<1000||cost>1000000000){
+  toast("Enter valid fictional project details.");
+  return;
+ }
+
+ const id="REC-DEMO-"+String(state.nextId++).padStart(3,"0");
+
+ state.projects.unshift({
+  id,
+  name,
+  district:$("projectDistrict").value,
+  type:$("projectType").value,
+  priority:$("projectPriority").value,
+  cost,
+  progress:0,
+  status:"planned",
+  description,
+  allocation:0
+ });
+
+ $("projectForm").reset();
+ renderAll();
+ logEvent("Recovery case created",id+" added to the local demonstration registry.");
+ toast("Fictional recovery case created");
+}
+
+function openReview(id){
+ const p=state.projects.find(project=>project.id===id);
+ if(!p)return;
+
+ state.selectedId=id;
+ $("reviewTitle").textContent=p.name;
+ $("reviewNote").value="";
+ $("reviewProgress").value=p.progress;
+
+ const root=$("reviewDetails");
+ root.replaceChildren();
+
+ [
+  ["Case Reference",p.id],
+  ["District",p.district],
+  ["Category",p.type],
+  ["Priority",p.priority],
+  ["Current Status",p.status.toUpperCase()],
+  ["Estimated Cost",money(p.cost)],
+  ["Fictional Allocated Budget",money(p.cost*p.allocation)],
+  ["Description",p.description]
+ ].forEach(([label,value])=>{
+  const box=el("div","detail");
+  box.append(el("small","",label),el("strong","",value));
+  root.appendChild(box);
+ });
+
+ const actions=$("reviewActions");
+ actions.replaceChildren();
+
+ const definitions=[
+  ["Submit for Review","review",""],
+  ["Mark Active","active","gold"],
+  ["Mark Blocked","blocked","red"],
+  ["Mark Completed","completed","blue"]
+ ];
+
+ definitions.forEach(([label,status,variant])=>{
+  const button=el("button","btn "+variant,label);
+  button.type="button";
+  button.addEventListener("click",()=>updateProject(status));
+  actions.appendChild(button);
+ });
+
+ $("reviewOverlay").classList.add("open");
+ $("closeReview").focus();
+}
+
+function updateProject(nextStatus){
+ const p=state.projects.find(project=>project.id===state.selectedId);
+ if(!p)return;
+
+ const note=$("reviewNote").value.trim();
+ const progress=Number($("reviewProgress").value);
+
+ if(!note){
+  toast("A fictional review rationale is required.");
+  return;
+ }
+
+ if(!Number.isInteger(progress)||progress<0||progress>100){
+  toast("Progress must be a whole number from 0 to 100.");
+  return;
+ }
+
+ if(nextStatus==="completed"&&progress!==100){
+  toast("Set progress to 100% before marking completed.");
+  return;
+ }
+
+ if(nextStatus!=="completed"&&progress===100){
+  toast("Use Completed status for 100% progress.");
+  return;
+ }
+
+ if(nextStatus==="active"&&p.status==="planned"){
+  toast("Submit the case for review before marking it active.");
+  return;
+ }
+
+ p.status=nextStatus;
+ p.progress=progress;
+
+ logEvent(
+  "Recovery project updated",
+  `${p.id} changed to ${nextStatus}. Demo rationale: ${note.slice(0,120)}`
+ );
+
+ closeReview();
+ renderAll();
+ toast("Local project status updated");
+}
+
+function closeReview(){
+ $("reviewOverlay").classList.remove("open");
+ state.selectedId=null;
+}
+
+function csvEscape(value){
+ let text=String(value??"");
+ if(/^\s*[=+\-@]/.test(text))text="'"+text;
+ return '"'+text.replace(/"/g,'""')+'"';
+}
+
+function exportCSV(){
+ const columns=[
+  "id","name","district","type","priority",
+  "cost","progress","status","allocation","description"
+ ];
+
+ const rows=[
+  columns.map(csvEscape).join(","),
+  ...state.projects.map(p=>
+   columns.map(key=>csvEscape(p[key])).join(",")
+  )
+ ];
+
+ const blob=new Blob(["\uFEFF"+rows.join("\r\n")],{
+  type:"text/csv;charset=utf-8"
+ });
+
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement("a");
+ link.href=url;
+ link.download="recovery-management-synthetic-demo.csv";
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ toast("Fictional recovery registry exported");
+}
+
+function resetDemo(){
+ state.projects=structuredClone(SEED_PROJECTS);
+ state.selectedId=null;
+ state.nextId=8;
+ state.events=[{
+  title:"Recovery workspace initialized",
+  detail:"Fictional reconstruction projects loaded.",
+  time:"Demo"
+ }];
+
+ $("searchInput").value="";
+ $("statusFilter").value="all";
+ $("districtFilter").value="all";
+ $("projectForm").reset();
+
+ closeReview();
+ renderAll();
+ renderTimeline();
+ toast("Recovery demonstration reset");
+}
+
+function initialize(){
+ populateDistricts();
+ renderLifecycle();
+ resetDemo();
+
+ $("projectForm").addEventListener("submit",createProject);
+ $("searchInput").addEventListener("input",renderTable);
+ $("statusFilter").addEventListener("change",renderTable);
+ $("districtFilter").addEventListener("change",renderTable);
+
+ $("newProjectShortcut").addEventListener("click",()=>{
+  $("newProjectSection").scrollIntoView({behavior:"smooth",block:"start"});
+  $("projectName").focus();
+ });
+
+ $("resetBtn").addEventListener("click",resetDemo);
+ $("exportBtn").addEventListener("click",exportCSV);
+ $("closeReview").addEventListener("click",closeReview);
+
+ $("reviewOverlay").addEventListener("click",event=>{
+  if(event.target===$("reviewOverlay"))closeReview();
+ });
+
+ document.addEventListener("keydown",event=>{
+  if(event.key==="Escape")closeReview();
+ });
+
+ $("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+ });
+}
+
+initialize();
+</script>
+</body>
+</html>

@@ -1,0 +1,1827 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Emergency Sos</title></head><body><h1>Emergency Sos</h1><p>Scaffold only — not operational.</p></body></html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#090b10">
+<title>Emergency SOS | Kerala Flood AI</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#090b10;
+ --sidebar:#0d1017;
+ --panel:#151922;
+ --panel2:#1b202b;
+ --gold:#d8b671;
+ --gold2:#f5daa0;
+ --text:#f4f1e9;
+ --muted:#9399a7;
+ --line:rgba(255,255,255,.085);
+ --green:#54d6a4;
+ --orange:#ffb66e;
+ --red:#ff777d;
+ --blue:#82adff;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--text);
+ font:13px "DM Sans",sans-serif;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,
+select:focus-visible,textarea:focus-visible{
+ outline:2px solid var(--gold);
+ outline-offset:3px;
+}
+::-webkit-scrollbar{width:7px}
+::-webkit-scrollbar-thumb{background:#343946;border-radius:10px}
+.app{
+ display:grid;
+ grid-template-columns:252px minmax(0,1fr);
+ min-height:100vh;
+}
+.sidebar{
+ position:sticky;
+ top:0;
+ height:100vh;
+ display:flex;
+ flex-direction:column;
+ background:var(--sidebar);
+ border-right:1px solid var(--line);
+ z-index:30;
+}
+.brand{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ padding:25px 19px;
+ border-bottom:1px solid var(--line);
+}
+.brand-logo{
+ width:43px;
+ height:43px;
+ display:grid;
+ place-items:center;
+ border-radius:13px;
+ background:linear-gradient(135deg,#f3dba5,#a47c3b);
+ color:#17130b;
+ font-size:23px;
+ font-weight:900;
+ box-shadow:0 7px 25px #d8b67129;
+}
+.brand strong{
+ font:800 13px Manrope,sans-serif;
+ letter-spacing:.4px;
+}
+.brand small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ letter-spacing:1.2px;
+ margin-top:5px;
+}
+.nav{padding:21px 13px;overflow:auto;flex:1}
+.nav-label{
+ color:#777e8d;
+ font-size:10px;
+ letter-spacing:1.7px;
+ font-weight:800;
+ margin:13px 12px;
+}
+.nav a{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ padding:12px 13px;
+ margin-bottom:5px;
+ border-radius:10px;
+ border:1px solid transparent;
+ text-decoration:none;
+ color:#a2a8b4;
+ font-size:12px;
+ font-weight:600;
+ transition:.2s;
+}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{
+ color:var(--gold2);
+ background:#d8b67119;
+ border-color:#d8b67130;
+}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.sidebar-footer{
+ padding:17px;
+ border-top:1px solid var(--line);
+}
+.profile{display:flex;align-items:center;gap:11px}
+.avatar{
+ width:38px;
+ height:38px;
+ display:grid;
+ place-items:center;
+ background:#383023;
+ color:var(--gold2);
+ border-radius:11px;
+ font-weight:800;
+}
+.profile strong{font-size:11px}
+.profile small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ margin-top:5px;
+}
+.main{
+ min-width:0;
+ background:
+  radial-gradient(ellipse at 60% -5%,#d8b67112,transparent 38%),
+  var(--bg);
+}
+.topbar{
+ min-height:82px;
+ padding:17px 30px;
+ border-bottom:1px solid var(--line);
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:14px;
+}
+.top-title{display:flex;align-items:center;gap:13px}
+.page-icon{
+ width:43px;
+ height:43px;
+ display:grid;
+ place-items:center;
+ color:var(--red);
+ background:#ff777d19;
+ border:1px solid #ff777d33;
+ border-radius:12px;
+ font-size:20px;
+}
+.top-title h1{
+ font:800 18px Manrope,sans-serif;
+ letter-spacing:-.5px;
+ margin:0;
+}
+.top-title p{
+ margin:5px 0 0;
+ color:var(--muted);
+ font-size:11px;
+}
+.top-actions{display:flex;align-items:center;gap:9px}
+.badge{
+ display:inline-flex;
+ align-items:center;
+ gap:7px;
+ padding:10px 12px;
+ border:1px solid #d8b67133;
+ background:#d8b67113;
+ color:var(--gold2);
+ border-radius:9px;
+ font-size:10px;
+ font-weight:800;
+}
+.dot{
+ width:7px;height:7px;
+ border-radius:50%;
+ background:var(--gold);
+ box-shadow:0 0 10px var(--gold);
+ animation:pulse 2s infinite;
+}
+.btn{
+ display:inline-flex;
+ justify-content:center;
+ align-items:center;
+ gap:8px;
+ padding:11px 15px;
+ border-radius:10px;
+ border:1px solid var(--line);
+ background:#1a1f29;
+ color:#e1e3e8;
+ font-size:11px;
+ font-weight:700;
+ transition:.2s;
+}
+.btn:hover{
+ border-color:#d8b67166;
+ transform:translateY(-1px);
+}
+.btn.gold{
+ background:linear-gradient(120deg,#c6a15e,#f1d49a);
+ color:#1b160e;
+ border:0;
+}
+.btn.danger{
+ background:linear-gradient(120deg,#bb3948,#ff737c);
+ color:white;
+ border:0;
+}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.content{
+ max-width:1700px;
+ margin:auto;
+ padding:28px 30px 42px;
+}
+.heading-row{
+ display:flex;
+ justify-content:space-between;
+ align-items:flex-end;
+ flex-wrap:wrap;
+ gap:16px;
+ margin-bottom:24px;
+}
+.eyebrow{
+ color:var(--gold);
+ letter-spacing:2px;
+ font-size:10px;
+ font-weight:800;
+ margin-bottom:10px;
+}
+.heading-row h2{
+ font:800 28px Manrope,sans-serif;
+ letter-spacing:-1px;
+ margin:0;
+}
+.heading-row p{
+ color:var(--muted);
+ margin:9px 0 0;
+ font-size:12px;
+ line-height:1.7;
+}
+.grid{display:grid;gap:16px}
+.kpi-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{
+ min-width:0;
+ background:linear-gradient(150deg,#181c26,#12161e);
+ border:1px solid var(--line);
+ border-radius:16px;
+ box-shadow:0 14px 35px #0002;
+ animation:rise .55s ease both;
+}
+.kpi{padding:21px;position:relative;overflow:hidden}
+.kpi:before{
+ content:"";
+ position:absolute;
+ right:-45px;top:-55px;
+ width:110px;height:110px;
+ border-radius:50%;
+ background:#d8b67109;
+}
+.kpi-top{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ color:#a7adba;
+ font-size:11px;
+ font-weight:700;
+}
+.kpi-icon{
+ width:36px;height:36px;
+ display:grid;place-items:center;
+ background:#d8b67119;
+ color:var(--gold);
+ border-radius:10px;
+ font-size:18px;
+}
+.kpi-value{
+ font:800 30px Manrope,sans-serif;
+ letter-spacing:-1px;
+ margin:15px 0 7px;
+}
+.kpi-bottom{color:var(--muted);font-size:10px}
+.kpi-bottom b{color:var(--gold)}
+.section-grid{
+ grid-template-columns:minmax(0,1.55fr) minmax(300px,1fr);
+ margin-top:17px;
+}
+.panel{padding:22px}
+.panel-head{
+ display:flex;
+ align-items:flex-start;
+ justify-content:space-between;
+ gap:12px;
+ margin-bottom:20px;
+}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{
+ color:var(--muted);
+ font-size:10px;
+ margin-top:7px;
+ line-height:1.6;
+}
+.panel-tag{
+ padding:7px 9px;
+ border:1px solid #d8b67129;
+ background:#d8b6710f;
+ color:var(--gold2);
+ border-radius:7px;
+ font-size:10px;
+ white-space:nowrap;
+}
+.emergency-hero{
+ position:relative;
+ overflow:hidden;
+ padding:29px;
+ background:
+  radial-gradient(circle at 80% 20%,#ff777d1b,transparent 35%),
+  linear-gradient(120deg,#201b24,#151922);
+ border:1px solid #ff777d30;
+ border-radius:17px;
+}
+.emergency-hero:after{
+ content:"";
+ position:absolute;
+ right:-90px;
+ top:-100px;
+ width:320px;height:320px;
+ border:1px solid #ff777d18;
+ border-radius:50%;
+ box-shadow:0 0 0 50px #ff777d08,0 0 0 100px #ff777d04;
+ pointer-events:none;
+}
+.hero-content{position:relative;z-index:1}
+.hero-label{
+ color:var(--red);
+ font-size:10px;
+ letter-spacing:2px;
+ font-weight:800;
+}
+.hero-title{
+ font:800 29px Manrope,sans-serif;
+ letter-spacing:-1px;
+ margin:12px 0;
+}
+.hero-description{
+ max-width:680px;
+ color:#b7b4bc;
+ font-size:12px;
+ line-height:1.9;
+}
+.hero-actions{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-top:19px;
+}
+.hero-notice{
+ margin-top:17px;
+ padding:12px 14px;
+ border:1px solid #ff777d30;
+ background:#ff777d0c;
+ border-radius:10px;
+ font-size:11px;
+ line-height:1.7;
+ color:#e5b4b8;
+ max-width:750px;
+}
+.form-grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:14px;
+}
+.field{display:grid;gap:8px}
+.field.full{grid-column:1/-1}
+.field label{
+ color:#adb3bf;
+ font-size:11px;
+ font-weight:700;
+}
+.field input,.field select,.field textarea{
+ width:100%;
+ background:#1e2430;
+ border:1px solid #343a46;
+ border-radius:10px;
+ color:white;
+ padding:12px;
+ outline:0;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+ border-color:var(--gold);
+}
+.field textarea{min-height:100px;resize:vertical}
+.field input::placeholder,.field textarea::placeholder{color:#777e8d}
+.location-row{
+ display:flex;
+ gap:9px;
+ align-items:center;
+}
+.location-row input{flex:1;min-width:0}
+.location-status{
+ font-size:10px;
+ color:var(--muted);
+ margin-top:7px;
+ line-height:1.6;
+}
+.category-grid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+}
+.category-option{
+ position:relative;
+ padding:15px 9px;
+ border:1px solid var(--line);
+ background:#1b202b;
+ border-radius:11px;
+ text-align:center;
+ cursor:pointer;
+ transition:.2s;
+}
+.category-option:hover{border-color:#d8b67177}
+.category-option.selected{
+ border-color:var(--gold);
+ background:#d8b67113;
+}
+.category-option input{
+ position:absolute;
+ opacity:0;
+ width:1px;height:1px;
+}
+.category-option:focus-within{
+ outline:2px solid var(--gold);
+ outline-offset:2px;
+}
+.category-icon{
+ display:block;
+ font-size:22px;
+ margin-bottom:9px;
+}
+.category-option strong{
+ font-size:10px;
+ font-weight:800;
+}
+.priority-options{
+ display:flex;
+ flex-wrap:wrap;
+ gap:9px;
+}
+.priority-option{
+ display:flex;
+ align-items:center;
+ gap:8px;
+ padding:10px 12px;
+ background:#1e2430;
+ border:1px solid var(--line);
+ border-radius:9px;
+ color:#cbd0d9;
+ font-size:11px;
+}
+.priority-option input{accent-color:var(--gold)}
+.form-actions{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-top:20px;
+}
+.sos-orb-wrap{
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ text-align:center;
+ padding:10px 0 23px;
+}
+.sos-orb{
+ width:155px;height:155px;
+ display:grid;
+ place-items:center;
+ border-radius:50%;
+ background:
+  radial-gradient(circle at 35% 25%,#ff9a9f,#c44352 45%,#6a1e29 80%);
+ border:7px solid #ff777d20;
+ box-shadow:
+  0 0 0 17px #ff777d0b,
+  0 0 0 35px #ff777d05,
+  0 0 55px #ff777d25,
+  inset -16px -16px 30px #0005;
+ animation:float 4s ease-in-out infinite;
+}
+.sos-orb span{
+ color:white;
+ font:900 39px Manrope,sans-serif;
+ letter-spacing:-2px;
+}
+.sos-orb-wrap h3{
+ font:800 18px Manrope,sans-serif;
+ margin:28px 0 7px;
+}
+.sos-orb-wrap p{
+ color:var(--muted);
+ max-width:280px;
+ font-size:11px;
+ line-height:1.8;
+}
+.status-card{
+ padding:16px;
+ border:1px solid var(--line);
+ background:#1b202b;
+ border-radius:12px;
+ margin-bottom:11px;
+}
+.status-card small{
+ color:var(--muted);
+ font-size:10px;
+}
+.status-card strong{
+ display:block;
+ color:var(--gold2);
+ font:800 17px Manrope,sans-serif;
+ margin-top:8px;
+}
+.status-card p{
+ color:#b5bbc5;
+ font-size:11px;
+ line-height:1.7;
+ margin:8px 0 0;
+}
+.table-wrap{overflow:auto}
+table{
+ width:100%;
+ border-collapse:collapse;
+ text-align:left;
+ white-space:nowrap;
+}
+th{
+ padding:14px 12px;
+ color:#8d94a2;
+ font-size:10px;
+ letter-spacing:.7px;
+ border-bottom:1px solid var(--line);
+}
+td{
+ padding:15px 12px;
+ color:#d7dbe2;
+ font-size:11px;
+ border-bottom:1px solid #ffffff0b;
+}
+tbody tr:hover{background:#d8b67108}
+.id{color:var(--gold2);font-weight:800;font-family:monospace}
+.status-pill{
+ display:inline-flex;
+ padding:6px 9px;
+ border-radius:7px;
+ font-size:10px;
+ font-weight:800;
+}
+.status-pill.pending{background:#ffb66e19;color:var(--orange)}
+.status-pill.reviewed{background:#82adff19;color:var(--blue)}
+.status-pill.closed{background:#54d6a419;color:var(--green)}
+.status-pill.critical{background:#ff777d19;color:var(--red)}
+.status-pill.high{background:#ffb66e19;color:var(--orange)}
+.status-pill.medium{background:#82adff19;color:var(--blue)}
+.inspect-btn{
+ background:#d8b67117;
+ color:var(--gold2);
+ border:1px solid #d8b67133;
+ padding:7px 10px;
+ border-radius:7px;
+ font-size:10px;
+ font-weight:800;
+}
+.inspect-btn:hover{background:#d8b6712e}
+.filters{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-bottom:17px;
+}
+.search,.select{
+ padding:11px 12px;
+ border-radius:10px;
+ border:1px solid #303541;
+ background:#191e28;
+ color:#e8e8e8;
+ outline:0;
+}
+.search{flex:1;min-width:190px}
+.search:focus,.select:focus{border-color:var(--gold)}
+.timeline{display:grid}
+.timeline-item{
+ display:flex;
+ gap:12px;
+ padding-bottom:20px;
+ position:relative;
+}
+.timeline-item:not(:last-child):before{
+ content:"";
+ position:absolute;
+ left:15px;
+ top:32px;
+ bottom:0;
+ width:1px;
+ background:#343a46;
+}
+.timeline-icon{
+ width:31px;height:31px;
+ flex-shrink:0;
+ display:grid;
+ place-items:center;
+ border-radius:9px;
+ background:#d8b67119;
+ border:1px solid #d8b67126;
+ color:var(--gold);
+}
+.timeline-item strong{font-size:11px}
+.timeline-item p{
+ margin:7px 0;
+ color:var(--muted);
+ font-size:10px;
+ line-height:1.7;
+}
+.timeline-item small{
+ color:#737b89;
+ font-size:10px;
+}
+.safety-note{
+ margin-top:18px;
+ padding:16px;
+ border:1px solid #d8b6712e;
+ background:#d8b6710e;
+ border-radius:12px;
+ color:#b6b1a6;
+ font-size:11px;
+ line-height:1.8;
+}
+.safety-note strong{color:var(--gold2)}
+.footer{
+ text-align:center;
+ color:#69707e;
+ font-size:10px;
+ padding-top:27px;
+}
+.modal-backdrop{
+ position:fixed;
+ inset:0;
+ z-index:100;
+ background:#000c;
+ backdrop-filter:blur(8px);
+ display:none;
+ align-items:center;
+ justify-content:center;
+ padding:18px;
+}
+.modal-backdrop.open{display:flex}
+.modal{
+ width:min(640px,100%);
+ max-height:90vh;
+ overflow:auto;
+ padding:25px;
+ background:#171b24;
+ border:1px solid #d8b6714d;
+ border-radius:18px;
+ box-shadow:0 30px 100px #0008;
+ animation:rise .3s ease;
+}
+.modal-head{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:12px;
+ margin-bottom:20px;
+}
+.modal-head h3{
+ font:800 17px Manrope,sans-serif;
+ margin:0;
+}
+.close-btn{
+ width:35px;height:35px;
+ border-radius:9px;
+ background:#272c37;
+ border:1px solid var(--line);
+ color:white;
+ font-size:19px;
+}
+.detail-grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:11px;
+}
+.detail{
+ padding:14px;
+ background:#1c212c;
+ border:1px solid var(--line);
+ border-radius:10px;
+ min-width:0;
+}
+.detail small{
+ display:block;
+ color:var(--muted);
+ margin-bottom:8px;
+}
+.detail strong{
+ font-size:12px;
+ color:#f0e9d9;
+ overflow-wrap:anywhere;
+}
+.detail.full{grid-column:1/-1}
+.toast{
+ position:fixed;
+ right:24px;
+ bottom:24px;
+ z-index:150;
+ padding:14px 18px;
+ background:#252b35;
+ color:var(--gold2);
+ border:1px solid #d8b67166;
+ border-radius:11px;
+ box-shadow:0 15px 45px #0008;
+ animation:rise .3s ease;
+}
+.menu-btn{display:none}
+@keyframes rise{
+ from{opacity:0;transform:translateY(15px)}
+ to{opacity:1;transform:translateY(0)}
+}
+@keyframes pulse{50%{opacity:.35}}
+@keyframes float{50%{transform:translateY(-7px)}}
+@media(max-width:1250px){
+ .kpi-grid{grid-template-columns:repeat(2,1fr)}
+ .section-grid{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+ .app{grid-template-columns:1fr}
+ .sidebar{
+  position:fixed;
+  width:260px;
+  transform:translateX(-100%);
+  transition:.3s;
+ }
+ .sidebar.open{transform:translateX(0)}
+ .menu-btn{display:inline-flex}
+ .topbar{padding:15px 20px}
+ .content{padding:20px}
+}
+@media(max-width:560px){
+ .kpi-grid{grid-template-columns:1fr}
+ .heading-row h2{font-size:23px}
+ .panel{padding:17px}
+ .top-actions .badge{display:none}
+ .form-grid,.detail-grid{grid-template-columns:1fr}
+ .field.full,.detail.full{grid-column:auto}
+ .category-grid{grid-template-columns:repeat(2,1fr)}
+ .modal{padding:18px}
+ .location-row{flex-wrap:wrap}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{
+  animation-duration:.01ms!important;
+  transition-duration:.01ms!important;
+ }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-logo">✦</div>
+  <div>
+   <strong>KERALA FLOOD AI</strong>
+   <small>INTELLIGENCE PLATFORM</small>
+  </div>
+ </div>
+
+ <nav class="nav">
+  <div class="nav-label">WORKSPACE</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="agent-command-center.html"><span class="nav-icon">✦</span>Agent Command Center</a>
+  <a href="ai-copilot.html"><span class="nav-icon">◇</span>AI Copilot</a>
+  <a href="analytics.html"><span class="nav-icon">▥</span>Analytics</a>
+
+  <div class="nav-label" style="margin-top:24px">EMERGENCY RESPONSE</div>
+  <a class="active" href="emergency-sos.html"><span class="nav-icon">⚑</span>Emergency SOS</a>
+  <a href="sos-dashboard.html"><span class="nav-icon">◉</span>SOS Management</a>
+  <a href="rescue-dashboard.html"><span class="nav-icon">⌁</span>Rescue Operations</a>
+  <a href="ambulance-dispatch.html"><span class="nav-icon">✚</span>Ambulance Dispatch</a>
+  <a href="district-dashboard.html"><span class="nav-icon">◈</span>District Dashboard</a>
+  <a href="shelters.html"><span class="nav-icon">⌂</span>Shelter Management</a>
+
+  <div class="nav-label" style="margin-top:24px">GOVERNANCE</div>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+  <a href="reports.html"><span class="nav-icon">▤</span>Reports</a>
+ </nav>
+
+ <div class="sidebar-footer">
+  <div class="profile">
+   <div class="avatar">OP</div>
+   <div>
+    <strong>Operations Workspace</strong>
+    <small>Emergency Coordination Demo</small>
+   </div>
+  </div>
+ </div>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+ <div class="top-title">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
+  <div class="page-icon">⚑</div>
+  <div>
+   <h1>Emergency SOS Intelligence</h1>
+   <p>Emergency intake · Location support · Human review</p>
+  </div>
+ </div>
+
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>DEMO MODE</span>
+  <button class="btn" id="resetBtn">↻ Reset</button>
+  <button class="btn gold" id="exportBtn">↓ Export CSV</button>
+ </div>
+</header>
+
+<div class="content">
+
+ <div class="heading-row">
+  <div>
+   <div class="eyebrow">EMERGENCY RESPONSE COORDINATION</div>
+   <h2>SOS & Rescue Assistance</h2>
+   <p>Create fictional SOS cases, review emergency scenarios and explore coordination workflows.</p>
+  </div>
+  <div class="badge">SIMULATED INTAKE ONLY</div>
+ </div>
+
+ <section class="emergency-hero">
+  <div class="hero-content">
+   <div class="hero-label">⚠ IMPORTANT EMERGENCY NOTICE</div>
+   <h2 class="hero-title">Need real emergency assistance?</h2>
+   <div class="hero-description">
+    This website is a portfolio demonstration and cannot request emergency rescue.
+    For a real emergency in India, contact the official emergency response service
+    using <strong>112</strong>. Do not rely on this demo to notify responders.
+   </div>
+
+   <div class="hero-actions">
+    <a class="btn danger" href="tel:112" style="text-decoration:none">
+     ☎ Call 112
+    </a>
+    <button class="btn" id="scrollFormBtn">
+     ＋ Create Demo SOS Case
+    </button>
+   </div>
+
+   <div class="hero-notice">
+    Demo submissions remain inside this webpage. No messages, calls,
+    ambulance requests, rescue dispatches or official notifications are sent.
+   </div>
+  </div>
+ </section>
+
+ <section class="grid kpi-grid" style="margin-top:17px">
+  <div class="card kpi">
+   <div class="kpi-top">Demo SOS Cases<div class="kpi-icon">⚑</div></div>
+   <div class="kpi-value" id="kpiTotal">0</div>
+   <div class="kpi-bottom"><b>DEMO</b> · Fictional case registry</div>
+  </div>
+
+  <div class="card kpi">
+   <div class="kpi-top">Critical Demo Cases<div class="kpi-icon">⚠</div></div>
+   <div class="kpi-value" id="kpiCritical">0</div>
+   <div class="kpi-bottom"><b>DEMO</b> · User-selected urgency</div>
+  </div>
+
+  <div class="card kpi">
+   <div class="kpi-top">Pending Review<div class="kpi-icon">◇</div></div>
+   <div class="kpi-value" id="kpiPending">0</div>
+   <div class="kpi-bottom"><b>DEMO</b> · No real dispatcher</div>
+  </div>
+
+  <div class="card kpi">
+   <div class="kpi-top">Demo Reviewed<div class="kpi-icon">✓</div></div>
+   <div class="kpi-value" id="kpiReviewed">0</div>
+   <div class="kpi-bottom"><b>DEMO</b> · Local review markers</div>
+  </div>
+ </section>
+
+ <section class="grid section-grid">
+
+  <div class="card panel" id="sosFormSection">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Create Emergency Scenario</div>
+     <div class="panel-sub">Demonstration form · Do not enter real sensitive emergency details</div>
+    </div>
+    <div class="panel-tag">SOS INTAKE</div>
+   </div>
+
+   <form id="sosForm">
+
+    <div class="field full" style="margin-bottom:18px">
+     <label>Emergency Category</label>
+
+     <div class="category-grid" id="categoryGrid">
+
+      <label class="category-option selected">
+       <input type="radio" name="category" value="Flood Trapped" checked>
+       <span class="category-icon">≋</span>
+       <strong>Flood Trapped</strong>
+      </label>
+
+      <label class="category-option">
+       <input type="radio" name="category" value="Medical Emergency">
+       <span class="category-icon">✚</span>
+       <strong>Medical</strong>
+      </label>
+
+      <label class="category-option">
+       <input type="radio" name="category" value="Landslide">
+       <span class="category-icon">⛰</span>
+       <strong>Landslide</strong>
+      </label>
+
+      <label class="category-option">
+       <input type="radio" name="category" value="Evacuation">
+       <span class="category-icon">⌁</span>
+       <strong>Evacuation</strong>
+      </label>
+
+      <label class="category-option">
+       <input type="radio" name="category" value="Missing Person">
+       <span class="category-icon">◇</span>
+       <strong>Missing Person</strong>
+      </label>
+
+      <label class="category-option">
+       <input type="radio" name="category" value="Other">
+       <span class="category-icon">⚑</span>
+       <strong>Other</strong>
+      </label>
+
+     </div>
+    </div>
+
+    <div class="form-grid">
+
+     <div class="field">
+      <label for="district">District</label>
+      <select id="district" required>
+       <option value="">Select district</option>
+      </select>
+     </div>
+
+     <div class="field">
+      <label for="peopleCount">People Affected (Demo)</label>
+      <input type="number" id="peopleCount" min="1" max="500"
+       value="1" required>
+     </div>
+
+     <div class="field full">
+      <label>Urgency (Reported)</label>
+      <div class="priority-options">
+       <label class="priority-option">
+        <input type="radio" name="priority" value="medium" checked>
+        Medium
+       </label>
+       <label class="priority-option">
+        <input type="radio" name="priority" value="high">
+        High
+       </label>
+       <label class="priority-option">
+        <input type="radio" name="priority" value="critical">
+        Critical
+       </label>
+      </div>
+     </div>
+
+     <div class="field full">
+      <label for="locationText">Scenario Location Description</label>
+      <input id="locationText" maxlength="180"
+       placeholder="Example: fictional village near a river" required>
+     </div>
+
+     <div class="field full">
+      <label for="coordinates">Optional Coordinates (Local Preview Only)</label>
+      <div class="location-row">
+       <input id="coordinates" readonly
+        placeholder="No location selected">
+       <button class="btn" id="locateBtn" type="button">⌖ Location</button>
+       <button class="btn" id="clearLocationBtn" type="button">Clear</button>
+      </div>
+      <div class="location-status" id="locationStatus">
+       Browser location is optional. Coordinates are not transmitted.
+      </div>
+     </div>
+
+     <div class="field full">
+      <label for="description">Scenario Description</label>
+      <textarea id="description" required maxlength="1200"
+       placeholder="Describe a fictional situation for workflow testing..."></textarea>
+     </div>
+
+    </div>
+
+    <div class="form-actions">
+     <button class="btn danger" type="submit" style="flex:1">
+      ⚑ Create Demo SOS Case
+     </button>
+     <button class="btn" type="reset">Clear Form</button>
+    </div>
+
+   </form>
+  </div>
+
+  <div class="card panel">
+
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">SOS Coordination Intelligence</div>
+     <div class="panel-sub">Simulation status and operator guidance</div>
+    </div>
+    <div class="panel-tag">REVIEW WORKFLOW</div>
+   </div>
+
+   <div class="sos-orb-wrap">
+    <div class="sos-orb"><span>SOS</span></div>
+    <h3>Emergency Response Workspace</h3>
+    <p>
+     Create a fictional case to see how emergency intake,
+     prioritization and human review could work.
+    </p>
+   </div>
+
+   <div class="status-card">
+    <small>SUBMISSION CHANNEL</small>
+    <strong>Local Browser Demo</strong>
+    <p>No backend API, SMS, WhatsApp or dispatch integration is active.</p>
+   </div>
+
+   <div class="status-card">
+    <small>AI TRIAGE</small>
+    <strong>Not Connected</strong>
+    <p>Urgency is selected by the form user. No medical or rescue classification model runs.</p>
+   </div>
+
+   <div class="status-card">
+    <small>LAST CREATED CASE</small>
+    <strong id="lastCase">None yet</strong>
+    <p id="lastCaseDetail">No demo SOS case has been created in this session.</p>
+   </div>
+
+   <div class="status-card">
+    <small>HUMAN OVERSIGHT</small>
+    <strong>Required for Real Deployment</strong>
+    <p>Authenticity checks, trained dispatchers and authorized response channels are essential.</p>
+   </div>
+
+  </div>
+
+ </section>
+
+ <section class="card panel" style="margin-top:17px">
+  <div class="panel-head">
+   <div>
+    <div class="panel-title">Emergency Case Registry</div>
+    <div class="panel-sub">Synthetic incidents and local demo submissions</div>
+   </div>
+   <div class="panel-tag">CASE MANAGEMENT</div>
+  </div>
+
+  <div class="filters">
+   <input class="search" id="searchInput"
+    placeholder="Search case, district, category..." aria-label="Search cases">
+
+   <select class="select" id="priorityFilter">
+    <option value="all">All Priorities</option>
+    <option value="critical">Critical</option>
+    <option value="high">High</option>
+    <option value="medium">Medium</option>
+   </select>
+
+   <select class="select" id="statusFilter">
+    <option value="all">All Statuses</option>
+    <option value="pending">Pending</option>
+    <option value="reviewed">Demo Reviewed</option>
+   </select>
+  </div>
+
+  <div class="table-wrap">
+   <table>
+    <thead>
+     <tr>
+      <th>Case ID</th>
+      <th>District</th>
+      <th>Category</th>
+      <th>Priority</th>
+      <th>People</th>
+      <th>Status</th>
+      <th>Action</th>
+     </tr>
+    </thead>
+    <tbody id="sosTable"></tbody>
+   </table>
+  </div>
+ </section>
+
+ <section class="grid section-grid">
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Emergency Activity Timeline</div>
+     <div class="panel-sub">Fictional and local session events</div>
+    </div>
+    <div class="panel-tag">EVENT LOG</div>
+   </div>
+
+   <div class="timeline" id="activityTimeline"></div>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Emergency Workflow Safeguards</div>
+     <div class="panel-sub">Requirements for production deployment</div>
+    </div>
+    <div class="panel-tag">SAFETY FIRST</div>
+   </div>
+
+   <div class="status-card">
+    <small>01 · VERIFICATION</small>
+    <strong style="font-size:13px">Authenticate Incident Reports</strong>
+    <p>Use duplicate detection, abuse prevention, location checks and trained operator verification.</p>
+   </div>
+
+   <div class="status-card">
+    <small>02 · DISPATCH</small>
+    <strong style="font-size:13px">Authorized Human Approval</strong>
+    <p>Do not automatically deploy ambulances or rescue teams from unverified AI outputs.</p>
+   </div>
+
+   <div class="status-card">
+    <small>03 · PRIVACY</small>
+    <strong style="font-size:13px">Protect Personal Information</strong>
+    <p>Minimize stored personal data, use role-based access, encryption and retention limits.</p>
+   </div>
+
+  </div>
+
+ </section>
+
+ <div class="safety-note">
+  <strong>⚠ This is not a functioning emergency service.</strong>
+  <div style="margin-top:7px">
+   SOS submissions, reviews and case counts are local demonstrations.
+   Nothing is sent to emergency services or other people.
+   For a real emergency in India, call 112 or use official local emergency channels.
+  </div>
+ </div>
+
+ <footer class="footer">
+  KERALA FLOOD RELIEF COORDINATION AGENT · EMERGENCY SOS INTELLIGENCE · DEMONSTRATION
+ </footer>
+
+</div>
+</main>
+</div>
+
+<div class="modal-backdrop" id="detailModal"
+ role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+
+ <div class="modal">
+  <div class="modal-head">
+   <h3 id="modalTitle">Emergency Case Details</h3>
+   <button class="close-btn" id="closeModal" aria-label="Close">×</button>
+  </div>
+
+  <div class="detail-grid" id="detailGrid"></div>
+
+  <div class="safety-note">
+   <strong>Local Review Only</strong>
+   <div style="margin-top:7px">
+    Marking this case reviewed does not contact or dispatch responders.
+   </div>
+  </div>
+
+  <button class="btn gold" id="reviewBtn"
+   style="width:100%;margin-top:15px">
+   Mark as Demo Reviewed
+  </button>
+ </div>
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const DISTRICTS=[
+ "Thiruvananthapuram","Kollam","Pathanamthitta",
+ "Alappuzha","Kottayam","Idukki","Ernakulam",
+ "Thrissur","Palakkad","Malappuram","Kozhikode",
+ "Wayanad","Kannur","Kasaragod"
+];
+
+const INITIAL_CASES=[
+ {
+  id:"DEMO-SOS-001",
+  district:"Wayanad",
+  category:"Flood Trapped",
+  priority:"critical",
+  people:4,
+  status:"pending",
+  location:"Fictional riverside settlement",
+  description:"Synthetic scenario involving a family awaiting assistance.",
+  coordinates:null
+ },
+ {
+  id:"DEMO-SOS-002",
+  district:"Alappuzha",
+  category:"Evacuation",
+  priority:"high",
+  people:12,
+  status:"pending",
+  location:"Fictional low-lying neighborhood",
+  description:"Synthetic scenario for evacuation coordination testing.",
+  coordinates:null
+ },
+ {
+  id:"DEMO-SOS-003",
+  district:"Idukki",
+  category:"Landslide",
+  priority:"critical",
+  people:3,
+  status:"reviewed",
+  location:"Fictional hillside location",
+  description:"Synthetic landslide incident used for dashboard testing.",
+  coordinates:null
+ },
+ {
+  id:"DEMO-SOS-004",
+  district:"Thrissur",
+  category:"Medical Emergency",
+  priority:"medium",
+  people:1,
+  status:"pending",
+  location:"Fictional community center",
+  description:"Synthetic medical assistance scenario.",
+  coordinates:null
+ }
+];
+
+const state={
+ cases:structuredClone(INITIAL_CASES),
+ selectedId:null,
+ nextId:5,
+ coordinates:null,
+ search:"",
+ priority:"all",
+ status:"all",
+ activities:[
+  {
+   title:"Demo emergency workspace initialized",
+   detail:"Synthetic SOS cases loaded. No real responders connected.",
+   time:"Demo dataset"
+  },
+  {
+   title:"Human review workflow ready",
+   detail:"Case review markers are local demonstration actions.",
+   time:"Demo dataset"
+  }
+ ]
+};
+
+/* =========================
+   UTILITIES
+========================= */
+
+function escapeHTML(value){
+ return String(value).replace(/[&<>"']/g,char=>({
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#39;"
+ })[char]);
+}
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+
+ const node=document.createElement("div");
+ node.className="toast";
+ node.textContent=message;
+
+ document.body.appendChild(node);
+
+ setTimeout(()=>node.remove(),3000);
+}
+
+function addActivity(title,detail){
+ state.activities.unshift({
+  title,
+  detail,
+  time:new Date().toLocaleTimeString("en-IN")
+ });
+
+ state.activities=state.activities.slice(0,8);
+ renderTimeline();
+}
+
+/* =========================
+   KPI CARDS
+========================= */
+
+function renderKPIs(){
+ $("kpiTotal").textContent=state.cases.length;
+
+ $("kpiCritical").textContent=
+  state.cases.filter(item=>item.priority==="critical").length;
+
+ $("kpiPending").textContent=
+  state.cases.filter(item=>item.status==="pending").length;
+
+ $("kpiReviewed").textContent=
+  state.cases.filter(item=>item.status==="reviewed").length;
+}
+
+/* =========================
+   CATEGORY SELECTION
+========================= */
+
+function renderCategorySelection(){
+ document.querySelectorAll(".category-option").forEach(label=>{
+  const radio=label.querySelector("input");
+  label.classList.toggle("selected",radio.checked);
+ });
+}
+
+/* =========================
+   LOCATION
+========================= */
+
+function clearLocation(){
+ state.coordinates=null;
+ $("coordinates").value="";
+ $("locationStatus").textContent=
+  "Browser location is optional. Coordinates are not transmitted.";
+}
+
+function requestLocation(){
+ if(!navigator.geolocation){
+  toast("Browser geolocation is unavailable");
+  return;
+ }
+
+ $("locationStatus").textContent=
+  "Requesting location permission...";
+
+ navigator.geolocation.getCurrentPosition(
+  position=>{
+   state.coordinates={
+    latitude:Number(position.coords.latitude.toFixed(5)),
+    longitude:Number(position.coords.longitude.toFixed(5))
+   };
+
+   $("coordinates").value=
+    `${state.coordinates.latitude}, ${state.coordinates.longitude}`;
+
+   $("locationStatus").textContent=
+    "Location captured locally. It will not be sent to a server.";
+
+   toast("Browser location captured locally");
+  },
+  error=>{
+   $("locationStatus").textContent=
+    "Location unavailable or permission denied.";
+
+   toast("Could not retrieve browser location");
+  },
+  {
+   enableHighAccuracy:false,
+   timeout:10000,
+   maximumAge:60000
+  }
+ );
+}
+
+/* =========================
+   FORM SUBMISSION
+========================= */
+
+function submitSOS(event){
+ event.preventDefault();
+
+ const district=$("district").value;
+ const category=
+  document.querySelector('input[name="category"]:checked')?.value;
+
+ const priority=
+  document.querySelector('input[name="priority"]:checked')?.value;
+
+ const people=Number($("peopleCount").value);
+ const location=$("locationText").value.trim();
+ const description=$("description").value.trim();
+
+ if(!district||!category||!priority||!location||!description){
+  toast("Complete all required scenario fields");
+  return;
+ }
+
+ if(!Number.isInteger(people)||people<1||people>500){
+  toast("Enter a valid number of people");
+  return;
+ }
+
+ const id=`DEMO-SOS-${String(state.nextId++).padStart(3,"0")}`;
+
+ const item={
+  id,
+  district,
+  category,
+  priority,
+  people,
+  location,
+  description,
+  coordinates:state.coordinates?{...state.coordinates}:null,
+  status:"pending"
+ };
+
+ state.cases.unshift(item);
+
+ $("lastCase").textContent=id;
+ $("lastCaseDetail").textContent=
+  `${district} · ${category} · ${priority.toUpperCase()} · Local demo only.`;
+
+ addActivity(
+  "Demo SOS case created",
+  `${id} · ${district} · No alert or dispatch was sent.`
+ );
+
+ $("sosForm").reset();
+ clearLocation();
+ renderCategorySelection();
+ renderKPIs();
+ renderTable();
+
+ toast("Demo case created — no emergency alert sent");
+}
+
+/* =========================
+   FILTERING
+========================= */
+
+function filteredCases(){
+ return state.cases.filter(item=>{
+  const text=[
+   item.id,
+   item.district,
+   item.category,
+   item.location,
+   item.description
+  ].join(" ").toLowerCase();
+
+  return text.includes(state.search.toLowerCase())&&
+   (state.priority==="all"||item.priority===state.priority)&&
+   (state.status==="all"||item.status===state.status);
+ });
+}
+
+/* =========================
+   CASE REGISTRY
+========================= */
+
+function renderTable(){
+ const cases=filteredCases();
+
+ $("sosTable").innerHTML=cases.map(item=>`
+  <tr>
+   <td class="id">${escapeHTML(item.id)}</td>
+   <td>${escapeHTML(item.district)}</td>
+   <td>${escapeHTML(item.category)}</td>
+   <td>
+    <span class="status-pill ${item.priority}">
+     ${item.priority.toUpperCase()}
+    </span>
+   </td>
+   <td>${item.people}</td>
+   <td>
+    <span class="status-pill ${item.status}">
+     ${item.status==="reviewed"?"DEMO REVIEWED":"PENDING"}
+    </span>
+   </td>
+   <td>
+    <button class="inspect-btn" data-id="${escapeHTML(item.id)}">
+     Inspect →
+    </button>
+   </td>
+  </tr>
+ `).join("");
+
+ if(!cases.length){
+  $("sosTable").innerHTML=`
+   <tr>
+    <td colspan="7" style="text-align:center;padding:30px">
+     No matching demo SOS cases.
+    </td>
+   </tr>
+  `;
+ }
+
+ document.querySelectorAll("[data-id]").forEach(button=>{
+  button.addEventListener("click",()=>{
+   openDetails(button.dataset.id);
+  });
+ });
+}
+
+/* =========================
+   ACTIVITY TIMELINE
+========================= */
+
+function renderTimeline(){
+ const container=$("activityTimeline");
+ container.replaceChildren();
+
+ state.activities.forEach(item=>{
+  const row=document.createElement("div");
+  row.className="timeline-item";
+
+  const icon=document.createElement("div");
+  icon.className="timeline-icon";
+  icon.textContent="⚑";
+
+  const content=document.createElement("div");
+
+  const title=document.createElement("strong");
+  title.textContent=item.title;
+
+  const description=document.createElement("p");
+  description.textContent=item.detail;
+
+  const time=document.createElement("small");
+  time.textContent=item.time;
+
+  content.append(title,description,time);
+  row.append(icon,content);
+  container.appendChild(row);
+ });
+}
+
+/* =========================
+   CASE DETAILS
+========================= */
+
+function openDetails(id){
+ const item=state.cases.find(record=>record.id===id);
+ if(!item)return;
+
+ state.selectedId=id;
+
+ const fields=[
+  ["Case ID",item.id],
+  ["District",item.district],
+  ["Category",item.category],
+  ["Priority",item.priority.toUpperCase()],
+  ["People Affected",String(item.people)],
+  ["Review Status",item.status==="reviewed"?"Demo reviewed":"Pending"],
+  ["Location",item.location],
+  ["Coordinates",
+   item.coordinates
+    ?`${item.coordinates.latitude}, ${item.coordinates.longitude}`
+    :"Not provided"
+  ],
+  ["Description",item.description]
+ ];
+
+ const container=$("detailGrid");
+ container.replaceChildren();
+
+ fields.forEach(([label,value],index)=>{
+  const box=document.createElement("div");
+  box.className="detail"+(index===fields.length-1?" full":"");
+
+  const labelNode=document.createElement("small");
+  labelNode.textContent=label;
+
+  const valueNode=document.createElement("strong");
+  valueNode.textContent=value;
+
+  box.append(labelNode,valueNode);
+  container.appendChild(box);
+ });
+
+ $("reviewBtn").disabled=item.status==="reviewed";
+ $("detailModal").classList.add("open");
+ $("closeModal").focus();
+}
+
+function closeDetails(){
+ $("detailModal").classList.remove("open");
+ state.selectedId=null;
+}
+
+function markReviewed(){
+ const item=state.cases.find(record=>record.id===state.selectedId);
+ if(!item)return;
+
+ item.status="reviewed";
+
+ addActivity(
+  "Demo review marker updated",
+  `${item.id} marked reviewed locally. No rescue action initiated.`
+ );
+
+ renderKPIs();
+ renderTable();
+ closeDetails();
+
+ toast("Demo review completed — no dispatch");
+}
+
+/* =========================
+   EXPORT
+========================= */
+
+function exportCSV(){
+ const columns=[
+  ["id","Case ID"],
+  ["district","District"],
+  ["category","Category"],
+  ["priority","Priority"],
+  ["people","People"],
+  ["status","Review Status"],
+  ["location","Scenario Location"],
+  ["description","Description"]
+ ];
+
+ function csv(value){
+  let text=String(value??"");
+
+  if(/^\s*[=+\-@]/.test(text)){
+   text="'"+text;
+  }
+
+  return `"${text.replace(/"/g,'""')}"`;
+ }
+
+ const rows=[
+  columns.map(column=>csv(column[1])).join(","),
+  ...filteredCases().map(item=>
+   columns.map(([key])=>csv(item[key])).join(",")
+  )
+ ];
+
+ const blob=new Blob(
+  ["\uFEFF"+rows.join("\r\n")],
+  {type:"text/csv;charset=utf-8"}
+ );
+
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement("a");
+
+ link.href=url;
+ link.download="kerala-emergency-sos-demo.csv";
+
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+
+ toast("Demo SOS CSV exported");
+}
+
+/* =========================
+   RESET
+========================= */
+
+function resetDemo(){
+ state.cases=structuredClone(INITIAL_CASES);
+ state.nextId=5;
+ state.search="";
+ state.priority="all";
+ state.status="all";
+
+ $("sosForm").reset();
+ $("searchInput").value="";
+ $("priorityFilter").value="all";
+ $("statusFilter").value="all";
+
+ clearLocation();
+ renderCategorySelection();
+
+ $("lastCase").textContent="None yet";
+ $("lastCaseDetail").textContent=
+  "No demo SOS case has been created in this session.";
+
+ state.activities=[
+  {
+   title:"Demo workspace reset",
+   detail:"Fictional SOS cases restored.",
+   time:new Date().toLocaleTimeString("en-IN")
+  }
+ ];
+
+ renderKPIs();
+ renderTable();
+ renderTimeline();
+
+ toast("Demo SOS workspace reset");
+}
+
+/* =========================
+   INITIALIZATION
+========================= */
+
+function initialize(){
+ DISTRICTS.forEach(district=>{
+  const option=document.createElement("option");
+  option.value=district;
+  option.textContent=district;
+  $("district").appendChild(option);
+ });
+
+ renderCategorySelection();
+ renderKPIs();
+ renderTable();
+ renderTimeline();
+}
+
+/* =========================
+   EVENT LISTENERS
+========================= */
+
+document.querySelectorAll('input[name="category"]').forEach(input=>{
+ input.addEventListener("change",renderCategorySelection);
+});
+
+$("locateBtn").addEventListener("click",requestLocation);
+$("clearLocationBtn").addEventListener("click",clearLocation);
+
+$("sosForm").addEventListener("submit",submitSOS);
+
+$("sosForm").addEventListener("reset",()=>{
+ setTimeout(()=>{
+  clearLocation();
+  renderCategorySelection();
+ },0);
+});
+
+$("searchInput").addEventListener("input",event=>{
+ state.search=event.target.value.trim();
+ renderTable();
+});
+
+$("priorityFilter").addEventListener("change",event=>{
+ state.priority=event.target.value;
+ renderTable();
+});
+
+$("statusFilter").addEventListener("change",event=>{
+ state.status=event.target.value;
+ renderTable();
+});
+
+$("reviewBtn").addEventListener("click",markReviewed);
+$("closeModal").addEventListener("click",closeDetails);
+
+$("detailModal").addEventListener("click",event=>{
+ if(event.target===$("detailModal")){
+  closeDetails();
+ }
+});
+
+document.addEventListener("keydown",event=>{
+ if(event.key==="Escape"){
+  closeDetails();
+ }
+});
+
+$("scrollFormBtn").addEventListener("click",()=>{
+ $("sosFormSection").scrollIntoView({
+  behavior:"smooth",
+  block:"start"
+ });
+});
+
+$("menuBtn").addEventListener("click",()=>{
+ $("sidebar").classList.toggle("open");
+});
+
+$("resetBtn").addEventListener("click",resetDemo);
+$("exportBtn").addEventListener("click",exportCSV);
+
+initialize();
+
+console.info(
+ "Emergency SOS demonstration initialized. No real alerts or dispatch are enabled."
+);
+</script>
+
+</body>
+</html>

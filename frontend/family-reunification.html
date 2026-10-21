@@ -1,0 +1,1321 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#090b10">
+<title>Family Reunification | Kerala Flood AI</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#090b10;
+ --sidebar:#0d1017;
+ --panel:#151922;
+ --panel2:#1b202b;
+ --gold:#d8b671;
+ --gold2:#f5daa0;
+ --text:#f4f1e9;
+ --muted:#9399a7;
+ --line:rgba(255,255,255,.085);
+ --green:#54d6a4;
+ --orange:#ffb66e;
+ --red:#ff777d;
+ --blue:#82adff;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--text);
+ font:13px "DM Sans",sans-serif;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+ outline:2px solid var(--gold);
+ outline-offset:3px;
+}
+a{color:inherit}
+.app{
+ display:grid;
+ grid-template-columns:252px minmax(0,1fr);
+ min-height:100vh;
+}
+.sidebar{
+ position:sticky;
+ top:0;
+ height:100vh;
+ display:flex;
+ flex-direction:column;
+ background:var(--sidebar);
+ border-right:1px solid var(--line);
+ z-index:30;
+}
+.brand{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ padding:25px 19px;
+ border-bottom:1px solid var(--line);
+}
+.brand-logo{
+ width:43px;
+ height:43px;
+ display:grid;
+ place-items:center;
+ border-radius:13px;
+ background:linear-gradient(135deg,#f3dba5,#a47c3b);
+ color:#17130b;
+ font-size:23px;
+ font-weight:900;
+ box-shadow:0 7px 25px #d8b67129;
+}
+.brand strong{
+ font:800 13px Manrope,sans-serif;
+ letter-spacing:.4px;
+}
+.brand small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ letter-spacing:1.2px;
+ margin-top:5px;
+}
+.nav{padding:21px 13px;overflow:auto;flex:1}
+.nav-label{
+ color:#777e8d;
+ font-size:10px;
+ letter-spacing:1.7px;
+ font-weight:800;
+ margin:13px 12px;
+}
+.nav a{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ padding:12px 13px;
+ margin-bottom:5px;
+ border-radius:10px;
+ border:1px solid transparent;
+ text-decoration:none;
+ color:#a2a8b4;
+ font-size:12px;
+ font-weight:600;
+ transition:.2s;
+}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{
+ color:var(--gold2);
+ background:#d8b67119;
+ border-color:#d8b67130;
+}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.sidebar-footer{
+ padding:17px;
+ border-top:1px solid var(--line);
+}
+.profile{display:flex;align-items:center;gap:11px}
+.avatar{
+ width:38px;
+ height:38px;
+ display:grid;
+ place-items:center;
+ background:#383023;
+ color:var(--gold2);
+ border-radius:11px;
+ font-weight:800;
+}
+.profile strong{font-size:11px}
+.profile small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ margin-top:5px;
+}
+.main{
+ min-width:0;
+ background:
+  radial-gradient(ellipse at 60% -5%,#d8b67112,transparent 38%),
+  var(--bg);
+}
+.topbar{
+ min-height:82px;
+ padding:17px 30px;
+ border-bottom:1px solid var(--line);
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:14px;
+}
+.top-title{display:flex;align-items:center;gap:13px}
+.page-icon{
+ width:43px;
+ height:43px;
+ display:grid;
+ place-items:center;
+ color:var(--gold);
+ background:#d8b67119;
+ border:1px solid #d8b67133;
+ border-radius:12px;
+ font-size:20px;
+}
+.top-title h1{
+ font:800 18px Manrope,sans-serif;
+ letter-spacing:-.5px;
+ margin:0;
+}
+.top-title p{
+ margin:5px 0 0;
+ color:var(--muted);
+ font-size:11px;
+}
+.top-actions{display:flex;align-items:center;gap:9px}
+.badge{
+ display:inline-flex;
+ align-items:center;
+ gap:7px;
+ padding:10px 12px;
+ border:1px solid #d8b67133;
+ background:#d8b67113;
+ color:var(--gold2);
+ border-radius:9px;
+ font-size:10px;
+ font-weight:800;
+}
+.dot{
+ width:7px;height:7px;
+ border-radius:50%;
+ background:var(--gold);
+ box-shadow:0 0 10px var(--gold);
+ animation:pulse 2s infinite;
+}
+.btn{
+ display:inline-flex;
+ justify-content:center;
+ align-items:center;
+ gap:8px;
+ padding:11px 15px;
+ border-radius:10px;
+ border:1px solid var(--line);
+ background:#1a1f29;
+ color:#e1e3e8;
+ font-size:11px;
+ font-weight:700;
+ transition:.2s;
+}
+.btn:hover{
+ border-color:#d8b67166;
+ transform:translateY(-1px);
+}
+.btn.gold{
+ background:linear-gradient(120deg,#c6a15e,#f1d49a);
+ color:#1b160e;
+ border:0;
+}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.content{
+ max-width:1700px;
+ margin:auto;
+ padding:28px 30px 42px;
+}
+.heading-row{
+ display:flex;
+ justify-content:space-between;
+ align-items:flex-end;
+ flex-wrap:wrap;
+ gap:16px;
+ margin-bottom:24px;
+}
+.eyebrow{
+ color:var(--gold);
+ letter-spacing:2px;
+ font-size:10px;
+ font-weight:800;
+ margin-bottom:10px;
+}
+.heading-row h2{
+ font:800 28px Manrope,sans-serif;
+ letter-spacing:-1px;
+ margin:0;
+}
+.heading-row p{
+ color:var(--muted);
+ margin:9px 0 0;
+ font-size:12px;
+ line-height:1.7;
+}
+.grid{display:grid;gap:16px}
+.kpi-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{
+ min-width:0;
+ background:linear-gradient(150deg,#181c26,#12161e);
+ border:1px solid var(--line);
+ border-radius:16px;
+ box-shadow:0 14px 35px #0002;
+ animation:rise .55s ease both;
+}
+.kpi{padding:21px;position:relative;overflow:hidden}
+.kpi:before{
+ content:"";
+ position:absolute;
+ right:-45px;top:-55px;
+ width:110px;height:110px;
+ border-radius:50%;
+ background:#d8b67109;
+}
+.kpi-top{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ color:#a7adba;
+ font-size:11px;
+ font-weight:700;
+}
+.kpi-icon{
+ width:36px;height:36px;
+ display:grid;place-items:center;
+ background:#d8b67119;
+ color:var(--gold);
+ border-radius:10px;
+ font-size:18px;
+}
+.kpi-value{
+ font:800 30px Manrope,sans-serif;
+ letter-spacing:-1px;
+ margin:15px 0 7px;
+}
+.kpi-bottom{color:var(--muted);font-size:10px}
+.kpi-bottom b{color:var(--gold)}
+.section-grid{
+ grid-template-columns:minmax(0,1.55fr) minmax(300px,1fr);
+ margin-top:17px;
+}
+.panel{padding:22px}
+.panel-head{
+ display:flex;
+ align-items:flex-start;
+ justify-content:space-between;
+ gap:12px;
+ margin-bottom:20px;
+}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{
+ color:var(--muted);
+ font-size:10px;
+ margin-top:7px;
+ line-height:1.6;
+}
+.panel-tag{
+ padding:7px 9px;
+ border:1px solid #d8b67129;
+ background:#d8b6710f;
+ color:var(--gold2);
+ border-radius:7px;
+ font-size:10px;
+ white-space:nowrap;
+}
+.hero{
+ position:relative;
+ overflow:hidden;
+ padding:28px;
+ background:
+  radial-gradient(circle at 80% 20%,#d8b67120,transparent 35%),
+  linear-gradient(120deg,#242018,#151922);
+ border:1px solid #d8b67135;
+ border-radius:17px;
+}
+.hero h3{
+ font:800 27px Manrope,sans-serif;
+ letter-spacing:-1px;
+ margin:12px 0;
+}
+.hero p{
+ max-width:780px;
+ color:#bcb7ae;
+ font-size:12px;
+ line-height:1.9;
+}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:19px}
+.form-grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:14px;
+}
+.field{display:grid;gap:8px;min-width:0}
+.field.full{grid-column:1/-1}
+.field label{
+ color:#adb3bf;
+ font-size:11px;
+ font-weight:700;
+}
+.field input,.field select,.field textarea{
+ width:100%;
+ background:#1e2430;
+ border:1px solid #343a46;
+ border-radius:10px;
+ color:white;
+ padding:12px;
+ outline:0;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+ border-color:var(--gold);
+}
+.field textarea{min-height:92px;resize:vertical}
+.field input::placeholder,.field textarea::placeholder{color:#777e8d}
+.checkbox-row{
+ display:flex;
+ align-items:flex-start;
+ gap:10px;
+ color:#b7bdc8;
+ font-size:11px;
+ line-height:1.7;
+}
+.checkbox-row input{width:auto;accent-color:var(--gold);margin-top:4px}
+.form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:19px}
+.profile-card{
+ display:flex;
+ gap:14px;
+ align-items:center;
+ padding:16px;
+ background:#1b202b;
+ border:1px solid var(--line);
+ border-radius:12px;
+ margin-bottom:11px;
+}
+.person-icon{
+ width:48px;height:48px;
+ flex-shrink:0;
+ display:grid;place-items:center;
+ border-radius:13px;
+ background:#d8b67117;
+ color:var(--gold);
+ font-size:23px;
+}
+.profile-card strong{font-size:12px}
+.profile-card small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ line-height:1.7;
+ margin-top:6px;
+}
+.stat-pill{
+ margin-left:auto;
+ color:var(--gold2);
+ font-weight:800;
+ font-size:11px;
+ white-space:nowrap;
+}
+.progress{height:7px;background:#303642;border-radius:10px;overflow:hidden;margin-top:12px}
+.progress span{height:100%;display:block;background:linear-gradient(90deg,#a68145,#f1d69c);border-radius:10px}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;text-align:left;white-space:nowrap}
+th{
+ padding:14px 12px;
+ color:#8d94a2;
+ font-size:10px;
+ letter-spacing:.7px;
+ border-bottom:1px solid var(--line);
+}
+td{
+ padding:15px 12px;
+ color:#d7dbe2;
+ font-size:11px;
+ border-bottom:1px solid #ffffff0b;
+}
+tbody tr:hover{background:#d8b67108}
+.id{color:var(--gold2);font-weight:800;font-family:monospace}
+.status-pill{
+ display:inline-flex;
+ padding:6px 9px;
+ border-radius:7px;
+ font-size:10px;
+ font-weight:800;
+}
+.status-pill.open{background:#ffb66e19;color:var(--orange)}
+.status-pill.review{background:#82adff19;color:var(--blue)}
+.status-pill.reunited{background:#54d6a419;color:var(--green)}
+.status-pill.high{background:#ff777d19;color:var(--red)}
+.status-pill.medium{background:#ffb66e19;color:var(--orange)}
+.status-pill.low{background:#82adff19;color:var(--blue)}
+.inspect-btn{
+ background:#d8b67117;
+ color:var(--gold2);
+ border:1px solid #d8b67133;
+ padding:7px 10px;
+ border-radius:7px;
+ font-size:10px;
+ font-weight:800;
+}
+.inspect-btn:hover{background:#d8b6712e}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:17px}
+.search,.select{
+ padding:11px 12px;
+ border-radius:10px;
+ border:1px solid #303541;
+ background:#191e28;
+ color:#e8e8e8;
+ outline:0;
+}
+.search{flex:1;min-width:190px}
+.search:focus,.select:focus{border-color:var(--gold)}
+.timeline{display:grid}
+.timeline-item{
+ display:flex;
+ gap:12px;
+ padding-bottom:20px;
+ position:relative;
+}
+.timeline-item:not(:last-child):before{
+ content:"";
+ position:absolute;
+ left:15px;
+ top:32px;
+ bottom:0;
+ width:1px;
+ background:#343a46;
+}
+.timeline-icon{
+ width:31px;height:31px;
+ flex-shrink:0;
+ display:grid;
+ place-items:center;
+ border-radius:9px;
+ background:#d8b67119;
+ border:1px solid #d8b67126;
+ color:var(--gold);
+}
+.timeline-item strong{font-size:11px}
+.timeline-item p{
+ margin:7px 0;
+ color:var(--muted);
+ font-size:10px;
+ line-height:1.7;
+}
+.timeline-item small{color:#737b89;font-size:10px}
+.notice{
+ margin-top:17px;
+ padding:16px;
+ border:1px solid #d8b6712e;
+ background:#d8b6710e;
+ border-radius:12px;
+ color:#b6b1a6;
+ font-size:11px;
+ line-height:1.8;
+}
+.notice strong{color:var(--gold2)}
+.footer{
+ text-align:center;
+ color:#69707e;
+ font-size:10px;
+ padding-top:27px;
+}
+.modal-backdrop{
+ position:fixed;
+ inset:0;
+ z-index:100;
+ background:#000c;
+ backdrop-filter:blur(8px);
+ display:none;
+ align-items:center;
+ justify-content:center;
+ padding:18px;
+}
+.modal-backdrop.open{display:flex}
+.modal{
+ width:min(640px,100%);
+ max-height:90vh;
+ overflow:auto;
+ padding:25px;
+ background:#171b24;
+ border:1px solid #d8b6714d;
+ border-radius:18px;
+ box-shadow:0 30px 100px #0008;
+ animation:rise .3s ease;
+}
+.modal-head{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:12px;
+ margin-bottom:20px;
+}
+.modal-head h3{font:800 17px Manrope,sans-serif;margin:0}
+.close-btn{
+ width:35px;height:35px;
+ border-radius:9px;
+ background:#272c37;
+ border:1px solid var(--line);
+ color:white;
+ font-size:19px;
+}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.detail{
+ padding:14px;
+ background:#1c212c;
+ border:1px solid var(--line);
+ border-radius:10px;
+ min-width:0;
+}
+.detail small{display:block;color:var(--muted);margin-bottom:8px}
+.detail strong{font-size:12px;color:#f0e9d9;overflow-wrap:anywhere}
+.detail.full{grid-column:1/-1}
+.modal-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.toast{
+ position:fixed;
+ right:24px;
+ bottom:24px;
+ z-index:150;
+ padding:14px 18px;
+ background:#252b35;
+ color:var(--gold2);
+ border:1px solid #d8b67166;
+ border-radius:11px;
+ box-shadow:0 15px 45px #0008;
+ animation:rise .3s ease;
+}
+.menu-btn{display:none}
+@keyframes rise{
+ from{opacity:0;transform:translateY(15px)}
+ to{opacity:1;transform:translateY(0)}
+}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1250px){
+ .kpi-grid{grid-template-columns:repeat(2,1fr)}
+ .section-grid{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+ .app{grid-template-columns:1fr}
+ .sidebar{position:fixed;width:260px;transform:translateX(-100%);transition:.3s}
+ .sidebar.open{transform:translateX(0)}
+ .menu-btn{display:inline-flex}
+ .topbar{padding:15px 20px}
+ .content{padding:20px}
+}
+@media(max-width:560px){
+ .kpi-grid,.form-grid,.detail-grid{grid-template-columns:1fr}
+ .field.full,.detail.full{grid-column:auto}
+ .heading-row h2{font-size:23px}
+ .panel{padding:17px}
+ .top-actions .badge{display:none}
+ .hero{padding:20px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-logo">✦</div>
+  <div><strong>KERALA FLOOD AI</strong><small>INTELLIGENCE PLATFORM</small></div>
+ </div>
+
+ <nav class="nav">
+  <div class="nav-label">WORKSPACE</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="agent-command-center.html"><span class="nav-icon">✦</span>Agent Command Center</a>
+  <a href="ai-copilot.html"><span class="nav-icon">◇</span>AI Copilot</a>
+  <a href="analytics.html"><span class="nav-icon">▥</span>Analytics</a>
+
+  <div class="nav-label" style="margin-top:24px">EMERGENCY RESPONSE</div>
+  <a href="emergency-sos.html"><span class="nav-icon">⚑</span>Emergency SOS</a>
+  <a href="evacuation-planning.html"><span class="nav-icon">⌁</span>Evacuation Planning</a>
+  <a href="rescue-dashboard.html"><span class="nav-icon">◉</span>Rescue Operations</a>
+  <a href="shelters.html"><span class="nav-icon">⌂</span>Shelter Management</a>
+  <a class="active" href="family-reunification.html"><span class="nav-icon">♡</span>Family Reunification</a>
+  <a href="district-dashboard.html"><span class="nav-icon">◈</span>District Dashboard</a>
+
+  <div class="nav-label" style="margin-top:24px">GOVERNANCE</div>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+  <a href="reports.html"><span class="nav-icon">▤</span>Reports</a>
+ </nav>
+
+ <div class="sidebar-footer">
+  <div class="profile">
+   <div class="avatar">OP</div>
+   <div><strong>Operations Workspace</strong><small>Protected Case Simulation</small></div>
+  </div>
+ </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-title">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="page-icon">♡</div>
+  <div><h1>Family Reunification Intelligence</h1><p>Missing persons · Family tracing · Confidential review</p></div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>DEMO MODE</span>
+  <button class="btn" id="resetBtn">↻ Reset</button>
+ </div>
+</header>
+
+<div class="content">
+
+ <div class="heading-row">
+  <div>
+   <div class="eyebrow">HUMANITARIAN RESPONSE INTELLIGENCE</div>
+   <h2>Family Reunification Center</h2>
+   <p>Simulate missing-person registration, protected case matching and family reunification workflows.</p>
+  </div>
+  <span class="badge">CONFIDENTIAL WORKFLOW DEMO</span>
+ </div>
+
+ <section class="hero">
+  <div class="eyebrow">FAMILY TRACING & PROTECTION</div>
+  <h3>Helping families reconnect, safely.</h3>
+  <p>
+   This demonstration illustrates how verified humanitarian organizations could
+   coordinate missing-person reports, shelter inquiries, identity checks and
+   reunification reviews while protecting sensitive information.
+   Do not enter real names, contact details or missing-person information.
+  </p>
+  <div class="hero-actions">
+   <button class="btn gold" id="newCaseBtn">＋ Register Fictional Case</button>
+   <a class="btn" href="emergency-sos.html" style="text-decoration:none">⚑ Emergency SOS Demo</a>
+  </div>
+ </section>
+
+ <section class="grid kpi-grid" style="margin-top:17px">
+  <div class="card kpi">
+   <div class="kpi-top">Total Demo Cases<div class="kpi-icon">♡</div></div>
+   <div class="kpi-value" id="kpiTotal">0</div>
+   <div class="kpi-bottom"><b>DEMO</b> · Fictional registry</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-top">Open Cases<div class="kpi-icon">◇</div></div>
+   <div class="kpi-value" id="kpiOpen">0</div>
+   <div class="kpi-bottom"><b>DEMO</b> · Awaiting review</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-top">Under Review<div class="kpi-icon">◉</div></div>
+   <div class="kpi-value" id="kpiReview">0</div>
+   <div class="kpi-bottom"><b>DEMO</b> · Local review status</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-top">Simulated Reunifications<div class="kpi-icon">✓</div></div>
+   <div class="kpi-value" id="kpiReunited">0</div>
+   <div class="kpi-bottom"><b>DEMO</b> · No actual family contact</div>
+  </div>
+ </section>
+
+ <section class="grid section-grid">
+
+  <div class="card panel" id="registrationPanel">
+   <div class="panel-head">
+    <div><div class="panel-title">Missing Person Scenario Registration</div><div class="panel-sub">Synthetic training records only · No real personal information</div></div>
+    <div class="panel-tag">CASE INTAKE</div>
+   </div>
+
+   <form id="caseForm">
+    <div class="form-grid">
+     <div class="field">
+      <label for="personCode">Fictional Person Code</label>
+      <input id="personCode" maxlength="35" placeholder="Example: PERSON-ALPHA" required>
+     </div>
+     <div class="field">
+      <label for="ageGroup">Age Group</label>
+      <select id="ageGroup">
+       <option value="Adult">Adult</option>
+       <option value="Child">Child</option>
+       <option value="Older Adult">Older Adult</option>
+      </select>
+     </div>
+     <div class="field">
+      <label for="district">District</label>
+      <select id="district" required><option value="">Select district</option></select>
+     </div>
+     <div class="field">
+      <label for="priority">Case Priority</label>
+      <select id="priority">
+       <option value="medium">Medium</option>
+       <option value="high">High</option>
+       <option value="low">Low</option>
+      </select>
+     </div>
+     <div class="field">
+      <label for="lastSeen">Fictional Last-Known Area</label>
+      <input id="lastSeen" maxlength="150" placeholder="Example: Demo Zone B" required>
+     </div>
+     <div class="field">
+      <label for="familyCode">Fictional Family Reference</label>
+      <input id="familyCode" maxlength="35" placeholder="Example: FAMILY-ALPHA" required>
+     </div>
+     <div class="field full">
+      <label for="description">Scenario Notes</label>
+      <textarea id="description" maxlength="800" placeholder="Describe a fictional tracing scenario without real identifying details..." required></textarea>
+     </div>
+     <div class="field full">
+      <label class="checkbox-row">
+       <input id="demoConfirm" type="checkbox" required>
+       I confirm that this record is fictional and contains no real identifying information.
+      </label>
+     </div>
+    </div>
+
+    <div class="form-actions">
+     <button class="btn gold" type="submit" style="flex:1">＋ Create Demo Tracing Case</button>
+     <button class="btn" type="reset">Clear</button>
+    </div>
+   </form>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div><div class="panel-title">Reunification Coordination Network</div><div class="panel-sub">Illustrative support capabilities</div></div>
+    <div class="panel-tag">PROTECTION WORKFLOW</div>
+   </div>
+
+   <div class="profile-card">
+    <div class="person-icon">⌂</div>
+    <div><strong>Shelter Inquiry</strong><small>Authorized searches of consented shelter records</small></div>
+    <span class="stat-pill">DEMO</span>
+   </div>
+   <div class="profile-card">
+    <div class="person-icon">◇</div>
+    <div><strong>Identity Verification</strong><small>Human-led checks before confirming a match</small></div>
+    <span class="stat-pill">DEMO</span>
+   </div>
+   <div class="profile-card">
+    <div class="person-icon">♡</div>
+    <div><strong>Family Contact Review</strong><small>Consent, safeguarding and relationship verification</small></div>
+    <span class="stat-pill">DEMO</span>
+   </div>
+   <div class="profile-card">
+    <div class="person-icon">✓</div>
+    <div><strong>Safe Reunification</strong><small>Authorized personnel confirm and document outcomes</small></div>
+    <span class="stat-pill">DEMO</span>
+   </div>
+
+   <div class="notice">
+    <strong>Privacy by Design</strong>
+    <div>Case details should be accessible only to authorized humanitarian workers. Children and other vulnerable individuals require additional safeguarding checks.</div>
+   </div>
+  </div>
+ </section>
+
+ <section class="card panel" style="margin-top:17px">
+  <div class="panel-head">
+   <div><div class="panel-title">Protected Case Registry</div><div class="panel-sub">Fictional records with simulated status transitions</div></div>
+   <div class="panel-tag">CASE TRACKING</div>
+  </div>
+
+  <div class="filters">
+   <input class="search" id="searchInput" placeholder="Search case ID, district or fictional code..." aria-label="Search fictional cases">
+   <select class="select" id="statusFilter">
+    <option value="all">All Statuses</option>
+    <option value="open">Open</option>
+    <option value="review">Under Review</option>
+    <option value="reunited">Demo Reunited</option>
+   </select>
+   <select class="select" id="districtFilter"><option value="all">All Districts</option></select>
+  </div>
+
+  <div class="table-wrap">
+   <table>
+    <thead>
+     <tr><th>Case ID</th><th>Person Code</th><th>District</th><th>Age Group</th><th>Priority</th><th>Status</th><th>Action</th></tr>
+    </thead>
+    <tbody id="caseTable"></tbody>
+   </table>
+  </div>
+ </section>
+
+ <section class="grid section-grid">
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div><div class="panel-title">Family Tracing Activity</div><div class="panel-sub">Local demonstration event timeline</div></div>
+    <div class="panel-tag">ACTIVITY</div>
+   </div>
+   <div class="timeline" id="timeline"></div>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div><div class="panel-title">Case Protection Controls</div><div class="panel-sub">Essential safeguards for a real system</div></div>
+    <div class="panel-tag">SAFETY</div>
+   </div>
+   <div class="profile-card"><div class="person-icon">▣</div><div><strong>Restricted Access</strong><small>RBAC, encryption and audit logs for sensitive records</small></div></div>
+   <div class="profile-card"><div class="person-icon">✓</div><div><strong>Consent-Based Matching</strong><small>Human confirmation before sharing personal details</small></div></div>
+   <div class="profile-card"><div class="person-icon">♙</div><div><strong>Child Safeguarding</strong><small>Identity and custody checks before reunification</small></div></div>
+   <div class="profile-card"><div class="person-icon">◷</div><div><strong>Data Retention</strong><small>Delete or archive information under approved policy</small></div></div>
+  </div>
+ </section>
+
+ <div class="notice">
+  <strong>⚠ Demonstration Only.</strong>
+  <div>All people, families, cases and reunification events are fictional. This interface does not locate missing persons, identify individuals, perform real matching or contact relatives. In a real emergency in India, use official emergency and humanitarian services.</div>
+ </div>
+
+ <footer class="footer">KERALA FLOOD RELIEF COORDINATION AGENT · FAMILY REUNIFICATION · PROTECTED SIMULATION</footer>
+
+</div>
+</main>
+</div>
+
+<div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+ <div class="modal">
+  <div class="modal-head">
+   <h3 id="modalTitle">Tracing Case Review</h3>
+   <button class="close-btn" id="closeModal" aria-label="Close">×</button>
+  </div>
+  <div class="detail-grid" id="modalDetails"></div>
+
+  <div class="notice">
+   <strong>Human Review Simulation</strong>
+   <div>These buttons only update fictional case statuses. No identities are verified, locations shared or families contacted.</div>
+  </div>
+
+  <div class="modal-actions">
+   <button class="btn" id="reviewBtn">◇ Mark Under Review</button>
+   <button class="btn gold" id="reuniteBtn">✓ Simulate Reunification</button>
+   <button class="btn" id="dismissBtn">Close</button>
+  </div>
+ </div>
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const DISTRICTS=[
+ "Thiruvananthapuram","Kollam","Pathanamthitta",
+ "Alappuzha","Kottayam","Idukki","Ernakulam",
+ "Thrissur","Palakkad","Malappuram","Kozhikode",
+ "Wayanad","Kannur","Kasaragod"
+];
+
+const INITIAL_CASES=[
+ {
+  id:"FAM-DEMO-001",
+  personCode:"PERSON-ALPHA",
+  familyCode:"FAMILY-ALPHA",
+  district:"Wayanad",
+  ageGroup:"Adult",
+  priority:"high",
+  lastSeen:"Fictional Zone W",
+  description:"Synthetic tracing exercise.",
+  status:"open"
+ },
+ {
+  id:"FAM-DEMO-002",
+  personCode:"PERSON-BETA",
+  familyCode:"FAMILY-BETA",
+  district:"Alappuzha",
+  ageGroup:"Older Adult",
+  priority:"high",
+  lastSeen:"Fictional Zone A",
+  description:"Synthetic shelter inquiry scenario.",
+  status:"review"
+ },
+ {
+  id:"FAM-DEMO-003",
+  personCode:"PERSON-GAMMA",
+  familyCode:"FAMILY-GAMMA",
+  district:"Thrissur",
+  ageGroup:"Adult",
+  priority:"medium",
+  lastSeen:"Fictional Zone T",
+  description:"Synthetic reunification demonstration.",
+  status:"reunited"
+ },
+ {
+  id:"FAM-DEMO-004",
+  personCode:"PERSON-DELTA",
+  familyCode:"FAMILY-DELTA",
+  district:"Idukki",
+  ageGroup:"Child",
+  priority:"high",
+  lastSeen:"Fictional Zone I",
+  description:"Synthetic child safeguarding workflow.",
+  status:"open"
+ }
+];
+
+const state={
+ cases:structuredClone(INITIAL_CASES),
+ nextId:5,
+ selectedId:null,
+ search:"",
+ status:"all",
+ district:"all",
+ events:[
+  {
+   title:"Demo tracing registry initialized",
+   detail:"Fictional missing-person scenarios loaded.",
+   time:"Demo dataset"
+  },
+  {
+   title:"Protected review workflow ready",
+   detail:"No real identity matching or family contact is enabled.",
+   time:"Demo dataset"
+  }
+ ]
+};
+
+function escapeHTML(value){
+ return String(value).replace(/[&<>"']/g,char=>({
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#39;"
+ })[char]);
+}
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+
+ const node=document.createElement("div");
+ node.className="toast";
+ node.textContent=message;
+
+ document.body.appendChild(node);
+ setTimeout(()=>node.remove(),3000);
+}
+
+function addEvent(title,detail){
+ state.events.unshift({
+  title,
+  detail,
+  time:new Date().toLocaleTimeString("en-IN")
+ });
+
+ state.events=state.events.slice(0,8);
+ renderTimeline();
+}
+
+function renderKPIs(){
+ $("kpiTotal").textContent=state.cases.length;
+
+ $("kpiOpen").textContent=
+  state.cases.filter(item=>item.status==="open").length;
+
+ $("kpiReview").textContent=
+  state.cases.filter(item=>item.status==="review").length;
+
+ $("kpiReunited").textContent=
+  state.cases.filter(item=>item.status==="reunited").length;
+}
+
+function filteredCases(){
+ return state.cases.filter(item=>{
+  const searchText=[
+   item.id,item.personCode,item.familyCode,item.district
+  ].join(" ").toLowerCase();
+
+  return searchText.includes(state.search.toLowerCase())&&
+   (state.status==="all"||item.status===state.status)&&
+   (state.district==="all"||item.district===state.district);
+ });
+}
+
+function renderTable(){
+ const cases=filteredCases();
+
+ $("caseTable").innerHTML=cases.map(item=>`
+  <tr>
+   <td class="id">${escapeHTML(item.id)}</td>
+   <td>${escapeHTML(item.personCode)}</td>
+   <td>${escapeHTML(item.district)}</td>
+   <td>${escapeHTML(item.ageGroup)}</td>
+   <td>
+    <span class="status-pill ${item.priority}">
+     ${item.priority.toUpperCase()}
+    </span>
+   </td>
+   <td>
+    <span class="status-pill ${item.status}">
+     ${item.status==="review"?"UNDER REVIEW":
+       item.status==="reunited"?"DEMO REUNITED":"OPEN"}
+    </span>
+   </td>
+   <td>
+    <button class="inspect-btn" data-id="${escapeHTML(item.id)}">
+     Inspect →
+    </button>
+   </td>
+  </tr>
+ `).join("");
+
+ if(!cases.length){
+  $("caseTable").innerHTML=`
+   <tr>
+    <td colspan="7" style="padding:30px;text-align:center">
+     No matching fictional cases.
+    </td>
+   </tr>
+  `;
+ }
+
+ document.querySelectorAll("[data-id]").forEach(button=>{
+  button.addEventListener("click",()=>{
+   openCase(button.dataset.id);
+  });
+ });
+}
+
+function renderTimeline(){
+ const container=$("timeline");
+ container.replaceChildren();
+
+ state.events.forEach(event=>{
+  const row=document.createElement("div");
+  row.className="timeline-item";
+
+  const icon=document.createElement("div");
+  icon.className="timeline-icon";
+  icon.textContent="♡";
+
+  const body=document.createElement("div");
+
+  const title=document.createElement("strong");
+  title.textContent=event.title;
+
+  const description=document.createElement("p");
+  description.textContent=event.detail;
+
+  const time=document.createElement("small");
+  time.textContent=event.time;
+
+  body.append(title,description,time);
+  row.append(icon,body);
+  container.appendChild(row);
+ });
+}
+
+function createCase(event){
+ event.preventDefault();
+
+ if(!$("demoConfirm").checked){
+  toast("Confirm that the scenario is fictional");
+  return;
+ }
+
+ const personCode=$("personCode").value.trim();
+ const familyCode=$("familyCode").value.trim();
+ const district=$("district").value;
+ const lastSeen=$("lastSeen").value.trim();
+ const description=$("description").value.trim();
+
+ if(!personCode||!familyCode||!district||!lastSeen||!description){
+  toast("Complete the required fictional case fields");
+  return;
+ }
+
+ const id=`FAM-DEMO-${String(state.nextId++).padStart(3,"0")}`;
+
+ state.cases.unshift({
+  id,
+  personCode,
+  familyCode,
+  district,
+  ageGroup:$("ageGroup").value,
+  priority:$("priority").value,
+  lastSeen,
+  description,
+  status:"open"
+ });
+
+ $("caseForm").reset();
+
+ addEvent(
+  "Fictional tracing case created",
+  `${id} · ${district} · No personal data transmitted.`
+ );
+
+ renderKPIs();
+ renderTable();
+ toast("Fictional tracing case created locally");
+}
+
+function openCase(id){
+ const item=state.cases.find(record=>record.id===id);
+ if(!item)return;
+
+ state.selectedId=id;
+
+ const fields=[
+  ["Case ID",item.id],
+  ["Person Code",item.personCode],
+  ["Family Reference",item.familyCode],
+  ["District",item.district],
+  ["Age Group",item.ageGroup],
+  ["Priority",item.priority.toUpperCase()],
+  ["Last-Known Demo Area",item.lastSeen],
+  ["Case Status",item.status.toUpperCase()],
+  ["Scenario Description",item.description]
+ ];
+
+ const container=$("modalDetails");
+ container.replaceChildren();
+
+ fields.forEach(([label,value],index)=>{
+  const box=document.createElement("div");
+  box.className="detail"+(index===fields.length-1?" full":"");
+
+  const labelNode=document.createElement("small");
+  labelNode.textContent=label;
+
+  const valueNode=document.createElement("strong");
+  valueNode.textContent=value;
+
+  box.append(labelNode,valueNode);
+  container.appendChild(box);
+ });
+
+ $("reviewBtn").disabled=item.status!=="open";
+ $("reuniteBtn").disabled=item.status!=="review";
+
+ $("modal").classList.add("open");
+ $("closeModal").focus();
+}
+
+function closeModal(){
+ $("modal").classList.remove("open");
+ state.selectedId=null;
+}
+
+function updateStatus(nextStatus){
+ const item=state.cases.find(record=>record.id===state.selectedId);
+ if(!item)return;
+
+ if(nextStatus==="review"&&item.status!=="open")return;
+ if(nextStatus==="reunited"&&item.status!=="review")return;
+
+ item.status=nextStatus;
+
+ addEvent(
+  nextStatus==="reunited"
+   ?"Simulated reunification recorded"
+   :"Fictional case moved to review",
+  `${item.id} updated locally. No family was contacted.`
+ );
+
+ renderKPIs();
+ renderTable();
+ closeModal();
+
+ toast(
+  nextStatus==="reunited"
+   ?"Demo reunification recorded"
+   :"Case marked under review"
+ );
+}
+
+function resetDemo(){
+ state.cases=structuredClone(INITIAL_CASES);
+ state.nextId=5;
+ state.search="";
+ state.status="all";
+ state.district="all";
+
+ $("caseForm").reset();
+ $("searchInput").value="";
+ $("statusFilter").value="all";
+ $("districtFilter").value="all";
+
+ state.events=[
+  {
+   title:"Demo workspace reset",
+   detail:"Fictional tracing cases restored.",
+   time:new Date().toLocaleTimeString("en-IN")
+  }
+ ];
+
+ renderKPIs();
+ renderTable();
+ renderTimeline();
+ toast("Family reunification demo reset");
+}
+
+function initialize(){
+ DISTRICTS.forEach(district=>{
+  const option=document.createElement("option");
+  option.value=district;
+  option.textContent=district;
+  $("district").appendChild(option);
+
+  const filterOption=document.createElement("option");
+  filterOption.value=district;
+  filterOption.textContent=district;
+  $("districtFilter").appendChild(filterOption);
+ });
+
+ $("caseForm").addEventListener("submit",createCase);
+
+ $("searchInput").addEventListener("input",event=>{
+  state.search=event.target.value.trim();
+  renderTable();
+ });
+
+ $("statusFilter").addEventListener("change",event=>{
+  state.status=event.target.value;
+  renderTable();
+ });
+
+ $("districtFilter").addEventListener("change",event=>{
+  state.district=event.target.value;
+  renderTable();
+ });
+
+ $("reviewBtn").addEventListener("click",()=>{
+  updateStatus("review");
+ });
+
+ $("reuniteBtn").addEventListener("click",()=>{
+  updateStatus("reunited");
+ });
+
+ $("closeModal").addEventListener("click",closeModal);
+ $("dismissBtn").addEventListener("click",closeModal);
+
+ $("modal").addEventListener("click",event=>{
+  if(event.target===$("modal"))closeModal();
+ });
+
+ document.addEventListener("keydown",event=>{
+  if(event.key==="Escape")closeModal();
+ });
+
+ $("newCaseBtn").addEventListener("click",()=>{
+  $("registrationPanel").scrollIntoView({
+   behavior:"smooth",
+   block:"start"
+  });
+  $("personCode").focus({preventScroll:true});
+ });
+
+ $("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+ });
+
+ $("resetBtn").addEventListener("click",resetDemo);
+
+ renderKPIs();
+ renderTable();
+ renderTimeline();
+}
+
+initialize();
+
+console.info(
+ "Family Reunification demonstration initialized. No real person tracing or matching is enabled."
+);
+</script>
+</body>
+</html>

@@ -1,0 +1,1419 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Flood Prediction</title></head><body><h1>Flood Prediction</h1><p>Scaffold only — not operational.</p></body></html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#090b10">
+<title>Flood Prediction | Kerala Flood AI</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#090b10;
+ --sidebar:#0d1017;
+ --panel:#151922;
+ --panel2:#1b202b;
+ --gold:#d8b671;
+ --gold-light:#f5daa0;
+ --text:#f4f1e9;
+ --muted:#9399a7;
+ --line:rgba(255,255,255,.085);
+ --green:#54d6a4;
+ --orange:#ffb66e;
+ --red:#ff777d;
+ --blue:#82adff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--text);
+ font:13px "DM Sans",sans-serif;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+button:focus-visible,input:focus-visible,select:focus-visible{
+ outline:2px solid var(--gold);
+ outline-offset:3px;
+}
+.app{
+ display:grid;
+ grid-template-columns:252px minmax(0,1fr);
+ min-height:100vh;
+}
+.sidebar{
+ position:sticky;
+ top:0;
+ height:100vh;
+ display:flex;
+ flex-direction:column;
+ background:var(--sidebar);
+ border-right:1px solid var(--line);
+ z-index:40;
+}
+.brand{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ padding:24px 18px;
+ border-bottom:1px solid var(--line);
+}
+.brand-logo{
+ width:43px;
+ height:43px;
+ display:grid;
+ place-items:center;
+ border-radius:13px;
+ background:linear-gradient(135deg,#f5daa0,#a47c3b);
+ color:#20170a;
+ font-size:23px;
+ font-weight:900;
+}
+.brand strong{
+ font:800 13px Manrope,sans-serif;
+ letter-spacing:.4px;
+}
+.brand small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ letter-spacing:1.2px;
+ margin-top:5px;
+}
+.nav{
+ padding:20px 13px;
+ overflow:auto;
+ flex:1;
+}
+.nav-label{
+ font-size:10px;
+ letter-spacing:1.6px;
+ color:#777e8d;
+ font-weight:800;
+ margin:14px 12px;
+}
+.nav a{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ padding:12px 13px;
+ margin-bottom:5px;
+ border:1px solid transparent;
+ border-radius:10px;
+ color:#a2a8b4;
+ font-size:12px;
+ font-weight:600;
+ transition:.2s;
+}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{
+ background:#d8b67119;
+ border-color:#d8b67130;
+ color:var(--gold-light);
+}
+.nav-icon{
+ width:20px;
+ text-align:center;
+ font-size:17px;
+}
+.sidebar-footer{
+ padding:17px;
+ border-top:1px solid var(--line);
+ display:flex;
+ align-items:center;
+ gap:10px;
+}
+.avatar{
+ width:38px;
+ height:38px;
+ display:grid;
+ place-items:center;
+ border-radius:11px;
+ background:#383023;
+ color:var(--gold-light);
+ font-weight:800;
+}
+.sidebar-footer strong{font-size:11px}
+.sidebar-footer small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ margin-top:5px;
+}
+.main{
+ min-width:0;
+ background:
+  radial-gradient(ellipse at 60% -5%,#d8b67112,transparent 38%),
+  var(--bg);
+}
+.topbar{
+ min-height:82px;
+ padding:17px 30px;
+ border-bottom:1px solid var(--line);
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:14px;
+}
+.top-left,.top-actions{
+ display:flex;
+ align-items:center;
+ gap:12px;
+}
+.page-icon{
+ width:43px;
+ height:43px;
+ display:grid;
+ place-items:center;
+ border-radius:12px;
+ color:var(--gold);
+ background:#d8b67119;
+ border:1px solid #d8b67133;
+ font-size:20px;
+}
+.top-left h1{
+ font:800 18px Manrope,sans-serif;
+ letter-spacing:-.5px;
+ margin:0;
+}
+.top-left p{
+ margin:5px 0 0;
+ color:var(--muted);
+ font-size:11px;
+}
+.badge{
+ display:inline-flex;
+ align-items:center;
+ gap:7px;
+ padding:10px 12px;
+ border:1px solid #d8b67133;
+ background:#d8b67113;
+ color:var(--gold-light);
+ border-radius:9px;
+ font-size:10px;
+ font-weight:800;
+}
+.dot{
+ width:7px;
+ height:7px;
+ border-radius:50%;
+ background:var(--gold);
+ animation:pulse 2s infinite;
+}
+.btn{
+ display:inline-flex;
+ justify-content:center;
+ align-items:center;
+ gap:8px;
+ padding:11px 15px;
+ border-radius:10px;
+ border:1px solid var(--line);
+ background:#1a1f29;
+ color:#e1e3e8;
+ font-size:11px;
+ font-weight:800;
+ transition:.2s;
+}
+.btn:hover{
+ border-color:#d8b67166;
+ transform:translateY(-1px);
+}
+.btn.gold{
+ background:linear-gradient(120deg,#c6a15e,#f1d49a);
+ color:#1b160e;
+ border:0;
+}
+.btn:disabled{
+ opacity:.45;
+ cursor:not-allowed;
+ transform:none;
+}
+.content{
+ max-width:1700px;
+ margin:auto;
+ padding:28px 30px 42px;
+}
+.eyebrow{
+ color:var(--gold);
+ letter-spacing:2px;
+ font-size:10px;
+ font-weight:800;
+ margin-bottom:10px;
+}
+.heading{
+ display:flex;
+ justify-content:space-between;
+ align-items:flex-end;
+ gap:16px;
+ flex-wrap:wrap;
+ margin-bottom:24px;
+}
+.heading h2{
+ font:800 28px Manrope,sans-serif;
+ letter-spacing:-1px;
+ margin:0;
+}
+.heading p{
+ color:var(--muted);
+ font-size:12px;
+ line-height:1.8;
+ margin:9px 0 0;
+}
+.grid{display:grid;gap:16px}
+.kpis{
+ grid-template-columns:repeat(4,minmax(0,1fr));
+}
+.card{
+ min-width:0;
+ background:linear-gradient(150deg,#181c26,#12161e);
+ border:1px solid var(--line);
+ border-radius:16px;
+ box-shadow:0 14px 35px #0002;
+ animation:rise .5s ease both;
+}
+.kpi{
+ padding:21px;
+ position:relative;
+ overflow:hidden;
+}
+.kpi:before{
+ content:"";
+ position:absolute;
+ right:-50px;
+ top:-60px;
+ width:120px;
+ height:120px;
+ background:#d8b67109;
+ border-radius:50%;
+}
+.kpi-head{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ color:#a7adba;
+ font-size:11px;
+ font-weight:700;
+}
+.kpi-icon{
+ width:36px;
+ height:36px;
+ display:grid;
+ place-items:center;
+ background:#d8b67119;
+ color:var(--gold);
+ border-radius:10px;
+ font-size:18px;
+}
+.kpi-number{
+ font:800 30px Manrope,sans-serif;
+ letter-spacing:-1px;
+ margin:15px 0 7px;
+}
+.kpi-caption{
+ color:var(--muted);
+ font-size:10px;
+}
+.kpi-caption b{color:var(--gold)}
+.columns{
+ grid-template-columns:minmax(0,1.55fr) minmax(310px,1fr);
+ margin-top:17px;
+}
+.panel{padding:22px}
+.panel-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:flex-start;
+ gap:12px;
+ margin-bottom:20px;
+}
+.panel-title{
+ font:800 14px Manrope,sans-serif;
+}
+.panel-sub{
+ font-size:10px;
+ color:var(--muted);
+ line-height:1.7;
+ margin-top:7px;
+}
+.tag{
+ padding:8px 10px;
+ border-radius:8px;
+ background:#d8b67110;
+ border:1px solid #d8b6712e;
+ color:var(--gold-light);
+ font-size:10px;
+ font-weight:800;
+ white-space:nowrap;
+}
+.hero{
+ position:relative;
+ overflow:hidden;
+ padding:28px;
+ background:
+  radial-gradient(circle at 85% 15%,#d8b67120,transparent 35%),
+  linear-gradient(120deg,#252017,#151922);
+ border:1px solid #d8b67138;
+ border-radius:17px;
+}
+.hero h3{
+ font:800 26px Manrope,sans-serif;
+ letter-spacing:-.8px;
+ margin:12px 0;
+}
+.hero p{
+ max-width:800px;
+ color:#b9b5ae;
+ font-size:12px;
+ line-height:1.9;
+}
+.hero-actions{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-top:19px;
+}
+.controls{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:15px;
+}
+.field{
+ display:grid;
+ gap:9px;
+ min-width:0;
+}
+.field label{
+ font-size:11px;
+ font-weight:700;
+ color:#aeb4c0;
+}
+.field select,.field input[type=number]{
+ width:100%;
+ padding:12px;
+ background:#1e2430;
+ color:var(--text);
+ border:1px solid #343a46;
+ border-radius:10px;
+}
+.field input[type=range]{
+ width:100%;
+ accent-color:var(--gold);
+ cursor:pointer;
+}
+.range-value{
+ display:flex;
+ justify-content:space-between;
+ color:var(--gold-light);
+ font-size:11px;
+ font-weight:800;
+}
+.horizon-buttons{
+ display:flex;
+ gap:8px;
+}
+.horizon-buttons button{
+ flex:1;
+ padding:11px 9px;
+ border-radius:9px;
+ border:1px solid #343a46;
+ background:#1e2430;
+ color:#b9bfca;
+ font-size:11px;
+ font-weight:800;
+}
+.horizon-buttons button.active{
+ background:#d8b6711e;
+ border-color:#d8b67170;
+ color:var(--gold-light);
+}
+.chart-wrap{
+ width:100%;
+ position:relative;
+ overflow:hidden;
+ background:#11151d;
+ border:1px solid var(--line);
+ border-radius:12px;
+ padding:15px 12px 8px;
+}
+.chart-wrap svg{
+ display:block;
+ width:100%;
+ height:auto;
+ min-height:240px;
+}
+.chart-legend{
+ display:flex;
+ flex-wrap:wrap;
+ gap:17px;
+ margin-top:13px;
+ color:#aab1be;
+ font-size:10px;
+}
+.legend-dot{
+ display:inline-block;
+ width:8px;
+ height:8px;
+ border-radius:50%;
+ margin-right:6px;
+}
+.chart-caption{
+ color:#7f8796;
+ font-size:10px;
+ line-height:1.7;
+ margin-top:13px;
+}
+.prediction-list{
+ display:grid;
+ gap:11px;
+}
+.prediction-row{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+ padding:15px;
+ background:#1b202b;
+ border:1px solid var(--line);
+ border-radius:11px;
+}
+.prediction-row strong{font-size:11px}
+.prediction-row small{
+ display:block;
+ margin-top:6px;
+ color:var(--muted);
+ font-size:10px;
+}
+.prediction-value{
+ font:800 18px Manrope,sans-serif;
+ color:var(--gold-light);
+ white-space:nowrap;
+}
+.progress{
+ height:7px;
+ background:#303642;
+ border-radius:10px;
+ overflow:hidden;
+ margin-top:10px;
+}
+.progress span{
+ display:block;
+ height:100%;
+ background:linear-gradient(90deg,#a68145,#f1d69c);
+ border-radius:10px;
+ transition:width .4s ease;
+}
+.model{
+ display:flex;
+ align-items:center;
+ gap:13px;
+ padding:15px;
+ border-radius:11px;
+ background:#1b202b;
+ border:1px solid var(--line);
+ margin-bottom:11px;
+}
+.model-icon{
+ width:42px;
+ height:42px;
+ display:grid;
+ place-items:center;
+ flex-shrink:0;
+ border-radius:11px;
+ color:var(--gold);
+ background:#d8b67118;
+ font-size:20px;
+}
+.model-info{flex:1;min-width:0}
+.model-info strong{font-size:11px}
+.model-info small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ line-height:1.7;
+ margin-top:5px;
+}
+.model-tag{
+ color:var(--gold-light);
+ font-size:9px;
+ font-weight:800;
+ white-space:nowrap;
+}
+.table-wrap{overflow:auto}
+table{
+ width:100%;
+ border-collapse:collapse;
+ text-align:left;
+ white-space:nowrap;
+}
+th{
+ padding:14px 12px;
+ color:#8d94a2;
+ font-size:10px;
+ letter-spacing:.7px;
+ border-bottom:1px solid var(--line);
+}
+td{
+ padding:15px 12px;
+ color:#d7dbe2;
+ font-size:11px;
+ border-bottom:1px solid #ffffff0b;
+}
+tbody tr:hover{background:#d8b67108}
+.pill{
+ display:inline-flex;
+ padding:6px 9px;
+ border-radius:7px;
+ font-size:10px;
+ font-weight:800;
+}
+.pill.low{background:#54d6a419;color:var(--green)}
+.pill.moderate{background:#82adff19;color:var(--blue)}
+.pill.high{background:#ffb66e19;color:var(--orange)}
+.pill.critical{background:#ff777d19;color:var(--red)}
+.insight{
+ padding:15px;
+ background:#1b202b;
+ border:1px solid var(--line);
+ border-radius:11px;
+ margin-bottom:11px;
+}
+.insight strong{
+ color:var(--gold-light);
+ font-size:11px;
+}
+.insight p{
+ color:#b2b9c4;
+ font-size:10px;
+ line-height:1.8;
+ margin:8px 0 0;
+}
+.notice{
+ margin-top:17px;
+ padding:16px;
+ background:#d8b6710e;
+ border:1px solid #d8b67130;
+ border-radius:12px;
+ color:#bbb4a5;
+ font-size:11px;
+ line-height:1.9;
+}
+.notice strong{color:var(--gold-light)}
+.footer{
+ text-align:center;
+ color:#69707e;
+ font-size:10px;
+ padding-top:27px;
+}
+.toast{
+ position:fixed;
+ right:24px;
+ bottom:24px;
+ z-index:100;
+ padding:14px 18px;
+ background:#252b35;
+ border:1px solid #d8b67166;
+ border-radius:11px;
+ color:var(--gold-light);
+ box-shadow:0 15px 45px #0008;
+}
+.menu-btn{display:none}
+@keyframes rise{
+ from{opacity:0;transform:translateY(14px)}
+ to{opacity:1;transform:translateY(0)}
+}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1250px){
+ .kpis{grid-template-columns:repeat(2,1fr)}
+ .columns{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+ .app{grid-template-columns:1fr}
+ .sidebar{
+  position:fixed;
+  width:260px;
+  transform:translateX(-100%);
+  transition:.3s;
+ }
+ .sidebar.open{transform:translateX(0)}
+ .menu-btn{display:inline-flex}
+ .topbar{padding:15px 20px}
+ .content{padding:20px}
+}
+@media(max-width:560px){
+ .kpis,.controls{grid-template-columns:1fr}
+ .heading h2{font-size:23px}
+ .panel{padding:17px}
+ .top-actions .badge{display:none}
+ .hero{padding:20px}
+ .top-actions .btn{padding:10px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{
+  animation-duration:.01ms!important;
+  transition-duration:.01ms!important;
+ }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-logo">✦</div>
+  <div>
+   <strong>KERALA FLOOD AI</strong>
+   <small>INTELLIGENCE PLATFORM</small>
+  </div>
+ </div>
+
+ <nav class="nav">
+  <div class="nav-label">WORKSPACE</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="agent-command-center.html"><span class="nav-icon">✦</span>Agent Command Center</a>
+  <a href="ai-copilot.html"><span class="nav-icon">◇</span>AI Copilot</a>
+  <a href="analytics.html"><span class="nav-icon">▥</span>Analytics</a>
+
+  <div class="nav-label" style="margin-top:24px">FLOOD INTELLIGENCE</div>
+  <a href="flood-alerts.html"><span class="nav-icon">⚑</span>Flood Alerts</a>
+  <a class="active" href="flood-prediction.html"><span class="nav-icon">◉</span>Flood Prediction</a>
+  <a href="flood-monitoring.html"><span class="nav-icon">≋</span>Flood Monitoring</a>
+  <a href="weather-monitoring.html"><span class="nav-icon">☁</span>Weather Monitoring</a>
+  <a href="river-monitoring.html"><span class="nav-icon">⌁</span>River Monitoring</a>
+  <a href="dam-monitoring.html"><span class="nav-icon">▥</span>Dam Monitoring</a>
+
+  <div class="nav-label" style="margin-top:24px">RESPONSE</div>
+  <a href="district-dashboard.html"><span class="nav-icon">◈</span>District Dashboard</a>
+  <a href="evacuation-planning.html"><span class="nav-icon">⌁</span>Evacuation Planning</a>
+  <a href="emergency-sos.html"><span class="nav-icon">⚑</span>Emergency SOS</a>
+
+  <div class="nav-label" style="margin-top:24px">GOVERNANCE</div>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+  <a href="reports.html"><span class="nav-icon">▤</span>Reports</a>
+ </nav>
+
+ <div class="sidebar-footer">
+  <div class="avatar">AI</div>
+  <div>
+   <strong>Forecast Workspace</strong>
+   <small>Simulation Mode</small>
+  </div>
+ </div>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+ <div class="top-left">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="page-icon">◉</div>
+  <div>
+   <h1>Flood Prediction Intelligence</h1>
+   <p>Forecast simulation · Model comparison · Risk interpretation</p>
+  </div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>SIMULATED DATA</span>
+  <button class="btn" id="resetBtn">↻ Reset</button>
+  <button class="btn gold" id="exportBtn">↓ Export CSV</button>
+ </div>
+</header>
+
+<div class="content">
+
+ <div class="heading">
+  <div>
+   <div class="eyebrow">PREDICTIVE FLOOD INTELLIGENCE</div>
+   <h2>Flood Forecasting Center</h2>
+   <p>Explore synthetic 24-, 48- and 72-hour scenarios across Kerala's 14 districts.</p>
+  </div>
+  <span class="badge">NOT A LIVE FORECAST</span>
+ </div>
+
+ <section class="hero">
+  <div class="eyebrow">SCENARIO-BASED FORECASTING</div>
+  <h3>Anticipate scenarios. Explain uncertainty.</h3>
+  <p>
+   Adjust hypothetical rainfall and river-level conditions to explore
+   illustrative flood-risk curves, district comparisons and forecasting
+   concepts. No trained model is executed in this standalone page.
+  </p>
+  <div class="hero-actions">
+   <button class="btn gold" id="runBtn">✦ Run Simulation</button>
+   <a href="flood-alerts.html" class="btn">⚑ Review Alert Drafts</a>
+  </div>
+ </section>
+
+ <section class="grid kpis" style="margin-top:17px">
+  <div class="card kpi">
+   <div class="kpi-head">Illustrative Risk Score<div class="kpi-icon">◉</div></div>
+   <div class="kpi-number" id="kpiRisk">--</div>
+   <div class="kpi-caption"><b>DEMO</b> · Arbitrary 0–100 scale</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Forecast Horizon<div class="kpi-icon">◷</div></div>
+   <div class="kpi-number" id="kpiHorizon">24h</div>
+   <div class="kpi-caption"><b>DEMO</b> · Scenario duration</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Peak Synthetic Index<div class="kpi-icon">↗</div></div>
+   <div class="kpi-number" id="kpiPeak">--</div>
+   <div class="kpi-caption"><b>DEMO</b> · Not water depth</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Districts in Comparison<div class="kpi-icon">◈</div></div>
+   <div class="kpi-number">14</div>
+   <div class="kpi-caption"><b>DEMO</b> · No real district risk ranking</div>
+  </div>
+ </section>
+
+ <section class="grid columns">
+
+  <div class="card panel" id="forecastPanel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Interactive Forecast Scenario</div>
+     <div class="panel-sub">Modify inputs and regenerate an illustrative forecast</div>
+    </div>
+    <span class="tag">SIMULATION ENGINE</span>
+   </div>
+
+   <div class="controls">
+    <div class="field">
+     <label for="districtSelect">Select District</label>
+     <select id="districtSelect"></select>
+    </div>
+    <div class="field">
+     <label>Forecast Horizon</label>
+     <div class="horizon-buttons">
+      <button type="button" class="active" data-horizon="24">24h</button>
+      <button type="button" data-horizon="48">48h</button>
+      <button type="button" data-horizon="72">72h</button>
+     </div>
+    </div>
+    <div class="field">
+     <label for="rainfall">Hypothetical Rainfall Input</label>
+     <input type="range" id="rainfall" min="0" max="300" step="5" value="110">
+     <div class="range-value"><span>0 mm</span><span id="rainfallValue">110 mm</span></div>
+    </div>
+    <div class="field">
+     <label for="riverLevel">Hypothetical River-Level Index</label>
+     <input type="range" id="riverLevel" min="0" max="100" step="1" value="65">
+     <div class="range-value"><span>0</span><span id="riverValue">65 / 100</span></div>
+    </div>
+   </div>
+
+   <div class="form-actions" style="display:flex;gap:10px;margin-top:20px">
+    <button class="btn gold" id="simulateBtn" style="flex:1">✦ Generate Scenario Forecast</button>
+   </div>
+
+   <div class="chart-wrap" style="margin-top:20px">
+    <svg id="forecastChart" viewBox="0 0 760 320" role="img" aria-label="Synthetic flood index forecast chart">
+     <defs>
+      <linearGradient id="areaGradient" x1="0" x2="0" y1="0" y2="1">
+       <stop offset="0%" stop-color="#d8b671" stop-opacity=".25"/>
+       <stop offset="100%" stop-color="#d8b671" stop-opacity="0"/>
+      </linearGradient>
+     </defs>
+     <g id="chartGrid"></g>
+     <path id="chartArea" fill="url(#areaGradient)"></path>
+     <path id="chartUpper" fill="none" stroke="#82adff" stroke-width="2" stroke-dasharray="6 5"></path>
+     <path id="chartLower" fill="none" stroke="#82adff" stroke-width="2" stroke-dasharray="6 5"></path>
+     <path id="chartLine" fill="none" stroke="#f5daa0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+     <g id="chartLabels"></g>
+    </svg>
+   </div>
+
+   <div class="chart-legend">
+    <span><i class="legend-dot" style="background:#f5daa0"></i>Central synthetic curve</span>
+    <span><i class="legend-dot" style="background:#82adff"></i>Illustrative uncertainty bounds</span>
+   </div>
+   <div class="chart-caption">
+    The dashed bounds are arbitrary scenario bands, not statistically calibrated prediction intervals.
+    The index is dimensionless and must not be interpreted as a flood height or probability.
+   </div>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Forecast Scenario Summary</div>
+     <div class="panel-sub">Selected district · Current hypothetical inputs</div>
+    </div>
+    <span class="tag">INTERPRETATION</span>
+   </div>
+
+   <div class="prediction-list">
+    <div class="prediction-row">
+     <div><strong>Selected District</strong><small>Geographic label only</small></div>
+     <div class="prediction-value" id="summaryDistrict" style="font-size:12px">--</div>
+    </div>
+    <div class="prediction-row">
+     <div><strong>Scenario Risk Index</strong><small>Weighted demonstration score</small></div>
+     <div class="prediction-value" id="summaryRisk">--</div>
+    </div>
+    <div class="prediction-row">
+     <div><strong>Peak Time</strong><small>Within simulated forecast horizon</small></div>
+     <div class="prediction-value" id="summaryPeakTime">--</div>
+    </div>
+    <div class="prediction-row">
+     <div><strong>Scenario Severity</strong><small>Illustrative classification</small></div>
+     <div id="summarySeverity"><span class="pill moderate">--</span></div>
+    </div>
+    <div class="prediction-row">
+     <div><strong>Source Integrity</strong><small>No verified hydrological input</small></div>
+     <div class="prediction-value" style="font-size:11px;color:var(--orange)">UNVERIFIED</div>
+    </div>
+   </div>
+
+   <div class="notice">
+    <strong>Interpretation Limit</strong>
+    <div>
+     A higher synthetic score only indicates a stronger hypothetical input combination.
+     It does not estimate real flood likelihood, inundation area or evacuation urgency.
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <section class="grid columns">
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Illustrative District Comparison</div>
+     <div class="panel-sub">Synthetic baseline variation for interface testing only</div>
+    </div>
+    <span class="tag">14 DISTRICTS</span>
+   </div>
+   <div class="table-wrap">
+    <table>
+     <thead>
+      <tr>
+       <th>District</th>
+       <th>Demo Index</th>
+       <th>Relative Indicator</th>
+       <th>Scenario Label</th>
+      </tr>
+     </thead>
+     <tbody id="districtTable"></tbody>
+    </table>
+   </div>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">AI Forecasting Architecture</div>
+     <div class="panel-sub">Planned backend models, not running in this HTML demo</div>
+    </div>
+    <span class="tag">MODEL PIPELINE</span>
+   </div>
+
+   <div class="model">
+    <div class="model-icon">◈</div>
+    <div class="model-info">
+     <strong>LSTM Rainfall & River Forecasting</strong>
+     <small>Time-series prediction using historical weather and hydrology features</small>
+    </div>
+    <span class="model-tag">PLANNED</span>
+   </div>
+
+   <div class="model">
+    <div class="model-icon">✦</div>
+    <div class="model-info">
+     <strong>Transformer Forecasting</strong>
+     <small>Multi-step temporal forecasting with feature attention</small>
+    </div>
+    <span class="model-tag">PLANNED</span>
+   </div>
+
+   <div class="model">
+    <div class="model-icon">▦</div>
+    <div class="model-info">
+     <strong>U-Net Flood Segmentation</strong>
+     <small>Satellite imagery segmentation for flood extent analysis</small>
+    </div>
+    <span class="model-tag">PLANNED</span>
+   </div>
+
+   <div class="model">
+    <div class="model-icon">◇</div>
+    <div class="model-info">
+     <strong>Temporal & Spatial Fusion</strong>
+     <small>Combining sensor, rainfall, terrain and imagery signals</small>
+    </div>
+    <span class="model-tag">PLANNED</span>
+   </div>
+
+   <div class="model">
+    <div class="model-icon">✓</div>
+    <div class="model-info">
+     <strong>Uncertainty & Model Validation</strong>
+     <small>Calibration, error analysis, drift monitoring and expert review</small>
+    </div>
+    <span class="model-tag">REQUIRED</span>
+   </div>
+  </div>
+ </section>
+
+ <section class="grid columns">
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Scenario Interpretation</div>
+     <div class="panel-sub">Automatically generated explanatory notes</div>
+    </div>
+    <span class="tag">EXPLAINABILITY</span>
+   </div>
+   <div id="insights"></div>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Forecast Review Controls</div>
+     <div class="panel-sub">Governance workflow demonstration</div>
+    </div>
+    <span class="tag">HUMAN OVERSIGHT</span>
+   </div>
+
+   <div class="insight">
+    <strong>01 · Verify Input Data</strong>
+    <p>Use official station observations, reliable timestamps and documented quality checks.</p>
+   </div>
+   <div class="insight">
+    <strong>02 · Evaluate Forecast Skill</strong>
+    <p>Validate models on held-out events, different monsoon seasons and geographically separated catchments.</p>
+   </div>
+   <div class="insight">
+    <strong>03 · Review Uncertainty</strong>
+    <p>Report uncertainty, known failure modes and limits of geographic coverage.</p>
+   </div>
+   <div class="insight">
+    <strong>04 · Human Authorization</strong>
+    <p>Only designated authorities can translate verified risk evidence into operational warnings.</p>
+   </div>
+
+   <button class="btn gold" id="reviewBtn" style="width:100%;margin-top:7px">
+    ✓ Record Demo Review
+   </button>
+   <div class="panel-sub" id="reviewStatus" style="margin-top:12px">
+    No simulated review recorded.
+   </div>
+  </div>
+ </section>
+
+ <div class="notice">
+  <strong>⚠ Forecast Simulation Only.</strong>
+  <div>
+   All inputs, forecast curves, district comparisons, risk scores and uncertainty bands are synthetic.
+   This interface is not connected to IMD, CWC, KSDMA or any operational forecasting service.
+   It must not be used to make evacuation, dam-release, rescue or public-warning decisions.
+  </div>
+ </div>
+
+ <footer class="footer">
+  KERALA FLOOD RELIEF COORDINATION AGENT · FLOOD PREDICTION · SYNTHETIC FORECASTING WORKSPACE
+ </footer>
+
+</div>
+</main>
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const DISTRICTS=[
+ "Thiruvananthapuram","Kollam","Pathanamthitta","Alappuzha",
+ "Kottayam","Idukki","Ernakulam","Thrissur","Palakkad",
+ "Malappuram","Kozhikode","Wayanad","Kannur","Kasaragod"
+];
+
+const BASELINES=[
+ 37,43,64,57,54,68,49,52,39,47,51,66,42,38
+];
+
+const state={
+ district:"Thrissur",
+ horizon:24,
+ rainfall:110,
+ river:65,
+ points:[],
+ risk:0,
+ peak:0,
+ peakHour:0,
+ review:false
+};
+
+function clamp(value,min,max){
+ return Math.max(min,Math.min(max,value));
+}
+
+function riskLabel(score){
+ if(score>=80)return "critical";
+ if(score>=65)return "high";
+ if(score>=40)return "moderate";
+ return "low";
+}
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+
+ const node=document.createElement("div");
+ node.className="toast";
+ node.textContent=message;
+ document.body.appendChild(node);
+
+ setTimeout(()=>node.remove(),3000);
+}
+
+function calculateRisk(rainfall,river){
+ return Math.round(
+  clamp(rainfall/300*100,0,100)*.55+
+  clamp(river,0,100)*.45
+ );
+}
+
+function generateForecast(){
+ state.district=$("districtSelect").value;
+ state.rainfall=Number($("rainfall").value);
+ state.river=Number($("riverLevel").value);
+
+ const base=calculateRisk(state.rainfall,state.river);
+ state.risk=base;
+
+ const count=13;
+ const interval=state.horizon/(count-1);
+
+ state.points=Array.from({length:count},(_,index)=>{
+  const hour=index*interval;
+  const phase=index/(count-1);
+
+  const rise=Math.sin(phase*Math.PI)*(
+   state.rainfall/300*24+
+   state.river/100*14
+  );
+
+  const trend=(phase-.5)*10;
+  const wave=Math.sin(index*1.7)*3;
+
+  const central=clamp(base+rise+trend+wave,0,100);
+  const spread=7+phase*8;
+
+  return{
+   hour,
+   central,
+   lower:clamp(central-spread,0,100),
+   upper:clamp(central+spread,0,100)
+  };
+ });
+
+ const peakPoint=state.points.reduce(
+  (best,point)=>point.central>best.central?point:best,
+  state.points[0]
+ );
+
+ state.peak=Math.round(peakPoint.central);
+ state.peakHour=Math.round(peakPoint.hour);
+ state.review=false;
+
+ renderAll();
+}
+
+function renderKPIs(){
+ $("kpiRisk").textContent=state.risk;
+ $("kpiHorizon").textContent=state.horizon+"h";
+ $("kpiPeak").textContent=state.peak;
+
+ $("summaryDistrict").textContent=state.district;
+ $("summaryRisk").textContent=state.risk+"/100";
+ $("summaryPeakTime").textContent="+"+state.peakHour+"h";
+
+ const severity=riskLabel(state.peak);
+
+ $("summarySeverity").innerHTML=
+  `<span class="pill ${severity}">${severity.toUpperCase()}</span>`;
+
+ $("reviewStatus").textContent=state.review
+  ?"Demo review recorded locally. No operational approval granted."
+  :"No simulated review recorded.";
+}
+
+function renderChart(){
+ const left=49;
+ const right=731;
+ const top=24;
+ const bottom=275;
+ const width=right-left;
+ const height=bottom-top;
+
+ const x=index=>left+index/(state.points.length-1)*width;
+ const y=value=>bottom-clamp(value,0,100)/100*height;
+
+ const linePath=key=>state.points.map((point,index)=>
+  `${index===0?"M":"L"} ${x(index).toFixed(1)} ${y(point[key]).toFixed(1)}`
+ ).join(" ");
+
+ const area=linePath("central")+
+  ` L ${x(state.points.length-1)} ${bottom} L ${left} ${bottom} Z`;
+
+ $("chartArea").setAttribute("d",area);
+ $("chartLine").setAttribute("d",linePath("central"));
+ $("chartUpper").setAttribute("d",linePath("upper"));
+ $("chartLower").setAttribute("d",linePath("lower"));
+
+ const ns="http://www.w3.org/2000/svg";
+ const grid=$("chartGrid");
+ const labels=$("chartLabels");
+
+ grid.replaceChildren();
+ labels.replaceChildren();
+
+ function svgElement(tag,attributes,text){
+  const node=document.createElementNS(ns,tag);
+  Object.entries(attributes).forEach(([key,value])=>
+   node.setAttribute(key,value)
+  );
+  if(text!==undefined)node.textContent=text;
+  return node;
+ }
+
+ for(let value=0;value<=100;value+=20){
+  const yy=y(value);
+
+  grid.appendChild(svgElement("line",{
+   x1:left,y1:yy,x2:right,y2:yy,
+   stroke:"#ffffff16","stroke-dasharray":"4 5"
+  }));
+
+  labels.appendChild(svgElement("text",{
+   x:35,y:yy+4,fill:"#8e96a5",
+   "font-size":11,"text-anchor":"end"
+  },String(value)));
+ }
+
+ state.points.forEach((point,index)=>{
+  if(index%2!==0) return;
+
+  labels.appendChild(svgElement("text",{
+   x:x(index),y:304,fill:"#8e96a5",
+   "font-size":11,"text-anchor":"middle"
+  },"+"+Math.round(point.hour)+"h"));
+ });
+}
+
+function renderDistricts(){
+ const selectedIndex=DISTRICTS.indexOf(state.district);
+
+ const records=DISTRICTS.map((name,index)=>{
+  const adjustment=BASELINES[index]-BASELINES[selectedIndex];
+
+  const score=clamp(
+   Math.round(state.risk+adjustment*.35),
+   0,100
+  );
+
+  return{name,score};
+ }).sort((a,b)=>b.score-a.score);
+
+ $("districtTable").innerHTML=records.map(item=>{
+  const label=riskLabel(item.score);
+
+  return `
+   <tr>
+    <td>${item.name}</td>
+    <td style="color:var(--gold-light);font-weight:800">
+     ${item.score}/100
+    </td>
+    <td style="min-width:130px">
+     <div class="progress">
+      <span style="width:${item.score}%"></span>
+     </div>
+    </td>
+    <td><span class="pill ${label}">${label.toUpperCase()}</span></td>
+   </tr>
+  `;
+ }).join("");
+}
+
+function renderInsights(){
+ const rainfallText=state.rainfall>=180
+  ?"The selected rainfall input is relatively large within this synthetic 0–300 mm scale."
+  :"The selected rainfall input is within the lower portion of this synthetic 0–300 mm scale.";
+
+ const riverText=state.river>=75
+  ?"The hypothetical river index is near the upper end of its artificial scale."
+  :"The hypothetical river index remains below the upper portion of its artificial scale.";
+
+ const insights=[
+  [
+   "Illustrative Rainfall Contribution",
+   rainfallText+" No duration-specific or catchment-specific rainfall model is applied."
+  ],
+  [
+   "Illustrative River-Level Contribution",
+   riverText+" This value is not an official gauge height or flood threshold."
+  ],
+  [
+   "Synthetic Peak Timing",
+   `The generated curve peaks near +${state.peakHour} hours. This timing comes from a mathematical demo function, not a learned forecasting model.`
+  ],
+  [
+   "Uncertainty Representation",
+   "Dashed chart bands widen over time for illustration. They have no statistical coverage guarantee."
+  ],
+  [
+   "District Comparison Limitation",
+   "District differences use arbitrary constants for visual testing and must not be interpreted as actual relative flood exposure."
+  ]
+ ];
+
+ $("insights").innerHTML=insights.map(([title,description])=>`
+  <div class="insight">
+   <strong>${title}</strong>
+   <p>${description}</p>
+  </div>
+ `).join("");
+}
+
+function renderAll(){
+ renderKPIs();
+ renderChart();
+ renderDistricts();
+ renderInsights();
+}
+
+function exportCSV(){
+ const rows=[
+  ["Hour","SyntheticIndex","IllustrativeLower","IllustrativeUpper"],
+  ...state.points.map(point=>[
+   point.hour,
+   point.central.toFixed(2),
+   point.lower.toFixed(2),
+   point.upper.toFixed(2)
+  ])
+ ];
+
+ const csv=rows.map(row=>row.join(",")).join("\r\n");
+ const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+ const url=URL.createObjectURL(blob);
+
+ const link=document.createElement("a");
+ link.href=url;
+ link.download="flood-prediction-demo.csv";
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ toast("Synthetic forecast CSV exported");
+}
+
+function resetSimulation(){
+ state.horizon=24;
+
+ $("districtSelect").value="Thrissur";
+ $("rainfall").value=110;
+ $("riverLevel").value=65;
+
+ document.querySelectorAll("[data-horizon]").forEach(button=>{
+  button.classList.toggle(
+   "active",
+   Number(button.dataset.horizon)===24
+  );
+ });
+
+ updateSliderLabels();
+ generateForecast();
+ toast("Forecast scenario reset");
+}
+
+function updateSliderLabels(){
+ $("rainfallValue").textContent=$("rainfall").value+" mm";
+ $("riverValue").textContent=$("riverLevel").value+" / 100";
+}
+
+function initialize(){
+ DISTRICTS.forEach(name=>{
+  const option=document.createElement("option");
+  option.value=name;
+  option.textContent=name;
+  $("districtSelect").appendChild(option);
+ });
+
+ $("districtSelect").value=state.district;
+
+ document.querySelectorAll("[data-horizon]").forEach(button=>{
+  button.addEventListener("click",()=>{
+   state.horizon=Number(button.dataset.horizon);
+
+   document.querySelectorAll("[data-horizon]").forEach(item=>{
+    item.classList.toggle("active",item===button);
+   });
+
+   generateForecast();
+  });
+ });
+
+ ["rainfall","riverLevel"].forEach(id=>{
+  $(id).addEventListener("input",updateSliderLabels);
+  $(id).addEventListener("change",generateForecast);
+ });
+
+ $("districtSelect").addEventListener("change",generateForecast);
+
+ $("simulateBtn").addEventListener("click",()=>{
+  generateForecast();
+  toast("Synthetic forecast regenerated");
+ });
+
+ $("runBtn").addEventListener("click",()=>{
+  generateForecast();
+
+  $("forecastPanel").scrollIntoView({
+   behavior:"smooth",
+   block:"start"
+  });
+
+  toast("Illustrative forecast generated");
+ });
+
+ $("reviewBtn").addEventListener("click",()=>{
+  state.review=true;
+  renderKPIs();
+  toast("Demo review recorded; no official approval issued");
+ });
+
+ $("resetBtn").addEventListener("click",resetSimulation);
+ $("exportBtn").addEventListener("click",exportCSV);
+
+ $("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+ });
+
+ updateSliderLabels();
+ generateForecast();
+}
+
+initialize();
+
+console.info(
+ "Flood Prediction demo initialized. All forecasts and model outputs are synthetic."
+);
+</script>
+</body>
+</html>

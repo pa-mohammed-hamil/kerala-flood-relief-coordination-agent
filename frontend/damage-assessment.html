@@ -1,0 +1,1103 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Damage Assessment</title></head><body><h1>Damage Assessment</h1><p>Scaffold only — not operational.</p></body></html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#090b10">
+<title>Damage Assessment | Kerala Flood AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#090b10;--side:#0d1017;--panel:#151922;--panel2:#1b202b;
+ --gold:#d8b671;--gold2:#f5daa0;--text:#f4f1e9;--muted:#9399a7;
+ --line:rgba(255,255,255,.085);--green:#54d6a4;
+ --orange:#ffb66e;--red:#ff777d;--blue:#82adff
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:13px "DM Sans",sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+ outline:2px solid var(--gold);outline-offset:3px
+}
+::-webkit-scrollbar{width:7px}
+::-webkit-scrollbar-thumb{background:#343946;border-radius:10px}
+.app{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+.sidebar{
+ position:sticky;top:0;height:100vh;background:var(--side);
+ border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:30
+}
+.brand{display:flex;align-items:center;gap:12px;padding:25px 19px;border-bottom:1px solid var(--line)}
+.brand-logo{
+ width:43px;height:43px;border-radius:13px;display:grid;place-items:center;
+ background:linear-gradient(135deg,#f3dba5,#a47c3b);color:#17130b;
+ font-size:23px;font-weight:900;box-shadow:0 7px 25px #d8b67129
+}
+.brand strong{font:800 13px Manrope,sans-serif;letter-spacing:.4px}
+.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:1.2px;margin-top:5px}
+.nav{padding:21px 13px;overflow:auto;flex:1}
+.nav-label{color:#777e8d;font-size:10px;letter-spacing:1.7px;font-weight:800;margin:13px 12px}
+.nav a{
+ display:flex;align-items:center;gap:12px;text-decoration:none;color:#a2a8b4;
+ padding:12px 13px;margin-bottom:5px;border-radius:10px;
+ border:1px solid transparent;font-size:12px;font-weight:600;transition:.2s
+}
+.nav a:hover{color:white;background:#1b202b}
+.nav a.active{color:var(--gold2);background:#d8b67119;border-color:#d8b67130}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.sidebar-footer{padding:17px;border-top:1px solid var(--line)}
+.profile{display:flex;align-items:center;gap:11px}
+.avatar{
+ width:38px;height:38px;display:grid;place-items:center;
+ background:#383023;color:var(--gold2);border-radius:11px;font-weight:800
+}
+.profile strong{font-size:11px}
+.profile small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.main{
+ min-width:0;background:radial-gradient(ellipse at 60% -5%,#d8b67112,transparent 38%),var(--bg)
+}
+.topbar{
+ min-height:82px;padding:17px 30px;border-bottom:1px solid var(--line);
+ display:flex;align-items:center;justify-content:space-between;gap:14px
+}
+.top-title{display:flex;align-items:center;gap:13px}
+.page-icon{
+ width:43px;height:43px;display:grid;place-items:center;
+ color:var(--gold);background:#d8b67119;border:1px solid #d8b67133;
+ border-radius:12px;font-size:20px
+}
+.top-title h1{font:800 18px Manrope,sans-serif;letter-spacing:-.5px;margin:0}
+.top-title p{margin:5px 0 0;color:var(--muted);font-size:11px}
+.top-actions{display:flex;align-items:center;gap:9px}
+.badge{
+ display:inline-flex;align-items:center;gap:7px;padding:10px 12px;
+ border:1px solid #d8b67133;background:#d8b67113;
+ color:var(--gold2);border-radius:9px;font-size:10px;font-weight:800
+}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);animation:pulse 2s infinite}
+.btn{
+ display:inline-flex;align-items:center;justify-content:center;gap:8px;
+ padding:11px 15px;border-radius:10px;border:1px solid var(--line);
+ background:#1a1f29;color:#e1e3e8;font-size:11px;font-weight:700;transition:.2s
+}
+.btn:hover{border-color:#d8b67166;transform:translateY(-1px)}
+.btn.gold{background:linear-gradient(120deg,#c6a15e,#f1d49a);color:#1b160e;border:0}
+.content{max-width:1700px;margin:auto;padding:28px 30px 42px}
+.heading-row{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;flex-wrap:wrap;margin-bottom:24px}
+.eyebrow{color:var(--gold);font-size:10px;font-weight:800;letter-spacing:2px;margin-bottom:10px}
+.heading-row h2{font:800 28px Manrope,sans-serif;letter-spacing:-1px;margin:0}
+.heading-row p{color:var(--muted);font-size:12px;line-height:1.7;margin:9px 0 0}
+.grid{display:grid;gap:16px}
+.kpi-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{
+ background:linear-gradient(150deg,#181c26,#12161e);
+ border:1px solid var(--line);border-radius:16px;min-width:0;
+ box-shadow:0 14px 35px #0002;animation:rise .55s ease both
+}
+.kpi{padding:21px;position:relative;overflow:hidden}
+.kpi:before{
+ content:"";position:absolute;right:-45px;top:-55px;width:110px;height:110px;
+ border-radius:50%;background:#d8b67109
+}
+.kpi-top{display:flex;align-items:center;justify-content:space-between;color:#a7adba;font-size:11px;font-weight:700}
+.kpi-icon{width:36px;height:36px;display:grid;place-items:center;background:#d8b67119;color:var(--gold);border-radius:10px;font-size:18px}
+.kpi-value{font:800 30px Manrope,sans-serif;letter-spacing:-1px;margin:15px 0 7px}
+.kpi-bottom{font-size:10px;color:var(--muted)}
+.kpi-bottom b{color:var(--gold)}
+.section-grid{grid-template-columns:minmax(0,1.55fr) minmax(300px,1fr);margin-top:17px}
+.panel{padding:22px}
+.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:20px}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{font-size:10px;color:var(--muted);margin-top:7px;line-height:1.6}
+.panel-tag{
+ padding:7px 9px;border:1px solid #d8b67129;background:#d8b6710f;
+ border-radius:7px;color:var(--gold2);font-size:10px;white-space:nowrap
+}
+.upload{
+ border:1.5px dashed #d8b67155;border-radius:14px;
+ background:radial-gradient(circle at center,#d8b6710d,transparent 70%),#121721;
+ min-height:220px;display:flex;align-items:center;justify-content:center;
+ flex-direction:column;gap:11px;padding:22px;text-align:center;transition:.2s
+}
+.upload.drag{border-color:var(--gold2);background:#d8b67118}
+.upload-icon{
+ width:58px;height:58px;display:grid;place-items:center;
+ border-radius:17px;background:#d8b67119;color:var(--gold);
+ font-size:29px;border:1px solid #d8b67130
+}
+.upload strong{font:800 14px Manrope,sans-serif}
+.upload p{color:var(--muted);font-size:11px;line-height:1.7;margin:0}
+.upload input{display:none}
+.preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px}
+.preview-item{height:115px;border-radius:10px;border:1px solid var(--line);overflow:hidden;position:relative;background:#1c212b}
+.preview-item img{width:100%;height:100%;object-fit:cover}
+.preview-item button{
+ position:absolute;top:6px;right:6px;width:25px;height:25px;border:0;
+ border-radius:7px;background:#0a0d13df;color:white
+}
+.preview-item .filename{
+ position:absolute;bottom:0;left:0;right:0;
+ padding:7px;background:linear-gradient(transparent,#000c);
+ font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:18px}
+.field{display:grid;gap:8px}
+.field.full{grid-column:1/-1}
+.field label{font-size:11px;color:#adb3bf;font-weight:700}
+.field input,.field select,.field textarea{
+ width:100%;background:#1e2430;border:1px solid #343a46;
+ border-radius:10px;color:white;padding:12px;outline:0
+}
+.field textarea{min-height:88px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold)}
+.field input::placeholder,.field textarea::placeholder{color:#777e8d}
+.result-placeholder{
+ min-height:270px;display:flex;align-items:center;justify-content:center;
+ flex-direction:column;gap:13px;text-align:center;color:var(--muted)
+}
+.result-placeholder .symbol{font-size:42px;color:var(--gold)}
+.result-placeholder p{font-size:11px;line-height:1.8;max-width:270px;margin:0}
+.result-card{
+ padding:16px;border:1px solid var(--line);background:#1b202b;
+ border-radius:12px;margin-bottom:11px
+}
+.result-card small{color:var(--muted);font-size:10px}
+.result-card strong{display:block;color:var(--gold2);font:800 19px Manrope,sans-serif;margin-top:8px}
+.result-card p{color:#b5bbc5;font-size:11px;line-height:1.7;margin:8px 0 0}
+.severity{display:inline-flex;padding:6px 10px;border-radius:7px;font-size:10px;font-weight:800}
+.severity.minor{background:#54d6a419;color:var(--green)}
+.severity.moderate{background:#ffb66e19;color:var(--orange)}
+.severity.severe{background:#ff777d19;color:var(--red)}
+.severity.unverified{background:#82adff19;color:var(--blue)}
+.progress{height:7px;border-radius:20px;background:#292f3a;overflow:hidden;margin-top:10px}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#94713b,#f1d392);border-radius:20px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:17px}
+.search,.select{
+ padding:11px 12px;border-radius:10px;border:1px solid #303541;
+ background:#191e28;color:#e8e8e8;outline:0
+}
+.search{flex:1;min-width:200px}
+.search:focus,.select:focus{border-color:var(--gold)}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;text-align:left;white-space:nowrap}
+th{padding:14px 12px;color:#8d94a2;font-size:10px;letter-spacing:.7px;border-bottom:1px solid var(--line)}
+td{padding:15px 12px;color:#d7dbe2;font-size:11px;border-bottom:1px solid #ffffff0b}
+tbody tr:hover{background:#d8b67108}
+.id{color:var(--gold2);font-weight:800;font-family:monospace}
+.inspect-btn{
+ background:#d8b67117;color:var(--gold2);border:1px solid #d8b67133;
+ padding:7px 10px;border-radius:7px;font-size:10px;font-weight:800
+}
+.inspect-btn:hover{background:#d8b6712e}
+.timeline{display:grid}
+.timeline-item{display:flex;gap:12px;padding-bottom:20px;position:relative}
+.timeline-item:not(:last-child):before{
+ content:"";position:absolute;left:15px;top:32px;bottom:0;
+ width:1px;background:#343a46
+}
+.timeline-icon{
+ width:31px;height:31px;flex-shrink:0;display:grid;place-items:center;
+ border-radius:9px;background:#d8b67119;border:1px solid #d8b67126;color:var(--gold)
+}
+.timeline-item strong{font-size:11px}
+.timeline-item p{margin:7px 0;color:var(--muted);font-size:10px;line-height:1.7}
+.timeline-item small{color:#737b89;font-size:10px}
+.safety-note{
+ margin-top:18px;padding:16px;border:1px solid #d8b6712e;
+ background:#d8b6710e;border-radius:12px;color:#b6b1a6;
+ font-size:11px;line-height:1.8
+}
+.safety-note strong{color:var(--gold2)}
+.footer{text-align:center;color:#69707e;font-size:10px;padding-top:27px}
+.modal-backdrop{
+ position:fixed;inset:0;z-index:100;background:#000c;
+ backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:18px
+}
+.modal-backdrop.open{display:flex}
+.modal{
+ width:min(640px,100%);max-height:90vh;overflow:auto;
+ padding:25px;background:#171b24;border:1px solid #d8b6714d;
+ border-radius:18px;box-shadow:0 30px 100px #0008;animation:rise .3s ease
+}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.modal-head h3{font:800 17px Manrope,sans-serif;margin:0}
+.close-btn{
+ width:35px;height:35px;border-radius:9px;background:#272c37;
+ border:1px solid var(--line);color:white;font-size:19px
+}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.detail{padding:14px;background:#1c212c;border:1px solid var(--line);border-radius:10px;min-width:0}
+.detail small{display:block;color:var(--muted);margin-bottom:8px}
+.detail strong{font-size:12px;color:#f0e9d9;overflow-wrap:anywhere}
+.detail.full{grid-column:1/-1}
+.toast{
+ position:fixed;right:24px;bottom:24px;z-index:150;padding:14px 18px;
+ background:#252b35;color:var(--gold2);border:1px solid #d8b67166;
+ border-radius:11px;box-shadow:0 15px 45px #0008;animation:rise .3s ease
+}
+.menu-btn{display:none}
+@keyframes rise{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1250px){
+ .kpi-grid{grid-template-columns:repeat(2,1fr)}
+ .section-grid{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+ .app{grid-template-columns:1fr}
+ .sidebar{position:fixed;width:260px;transform:translateX(-100%);transition:.3s}
+ .sidebar.open{transform:translateX(0)}
+ .menu-btn{display:inline-flex}
+ .topbar{padding:15px 20px}
+ .content{padding:20px}
+}
+@media(max-width:560px){
+ .kpi-grid{grid-template-columns:1fr}
+ .heading-row h2{font-size:23px}
+ .panel{padding:17px}
+ .top-actions .badge{display:none}
+ .form-grid,.detail-grid{grid-template-columns:1fr}
+ .field.full,.detail.full{grid-column:auto}
+ .preview-grid{grid-template-columns:repeat(2,1fr)}
+ .modal{padding:18px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-logo">✦</div>
+  <div><strong>KERALA FLOOD AI</strong><small>INTELLIGENCE PLATFORM</small></div>
+ </div>
+
+ <nav class="nav">
+  <div class="nav-label">WORKSPACE</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="agent-command-center.html"><span class="nav-icon">✦</span>Agent Command Center</a>
+  <a href="ai-copilot.html"><span class="nav-icon">◇</span>AI Copilot</a>
+  <a href="analytics.html"><span class="nav-icon">▥</span>Analytics</a>
+
+  <div class="nav-label" style="margin-top:24px">ASSESSMENT</div>
+  <a class="active" href="damage-assessment.html"><span class="nav-icon">▧</span>Damage Assessment</a>
+  <a href="flood-monitoring.html"><span class="nav-icon">≋</span>Flood Monitoring</a>
+  <a href="rescue-dashboard.html"><span class="nav-icon">⌁</span>Rescue Operations</a>
+  <a href="shelters.html"><span class="nav-icon">⌂</span>Shelter Management</a>
+
+  <div class="nav-label" style="margin-top:24px">GOVERNANCE</div>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+  <a href="reports.html"><span class="nav-icon">▤</span>Reports</a>
+ </nav>
+
+ <div class="sidebar-footer">
+  <div class="profile">
+   <div class="avatar">OP</div>
+   <div><strong>Operations Workspace</strong><small>Damage Intelligence</small></div>
+  </div>
+ </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-title">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle menu">☰</button>
+  <div class="page-icon">▧</div>
+  <div>
+   <h1>Damage Assessment Intelligence</h1>
+   <p>Evidence review · Impact analysis · Recovery planning</p>
+  </div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>DEMO MODE</span>
+  <button class="btn" id="resetBtn">↻ Reset</button>
+  <button class="btn gold" id="exportBtn">↓ Export CSV</button>
+ </div>
+</header>
+
+<div class="content">
+
+ <div class="heading-row">
+  <div>
+   <div class="eyebrow">AI-ASSISTED DISASTER RECOVERY</div>
+   <h2>Damage Assessment Workspace</h2>
+   <p>Upload photographic evidence, create assessment drafts and review fictional recovery estimates.</p>
+  </div>
+  <div class="badge">NO REAL IMAGE INFERENCE</div>
+ </div>
+
+ <section class="grid kpi-grid">
+  <div class="card kpi">
+   <div class="kpi-top">Assessment Records<div class="kpi-icon">▤</div></div>
+   <div class="kpi-value" id="kpiTotal">0</div>
+   <div class="kpi-bottom"><b>DEMO</b> · Local assessment registry</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-top">Severe Demo Cases<div class="kpi-icon">⚠</div></div>
+   <div class="kpi-value" id="kpiSevere">0</div>
+   <div class="kpi-bottom"><b>DEMO</b> · Fictional severity labels</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-top">Pending Human Review<div class="kpi-icon">◇</div></div>
+   <div class="kpi-value" id="kpiPending">0</div>
+   <div class="kpi-bottom"><b>DEMO</b> · Unverified draft records</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-top">Sample Repair Budget<div class="kpi-icon">₹</div></div>
+   <div class="kpi-value" id="kpiCost">₹0</div>
+   <div class="kpi-bottom"><b>DEMO</b> · Fictional planning figures</div>
+  </div>
+ </section>
+
+ <section class="grid section-grid">
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">New Damage Assessment</div>
+     <div class="panel-sub">Upload up to 3 images · JPG, PNG or WebP · 5 MB per image</div>
+    </div>
+    <div class="panel-tag">EVIDENCE INTAKE</div>
+   </div>
+
+   <div class="upload" id="dropZone">
+    <div class="upload-icon">⇧</div>
+    <strong>Upload Damage Evidence</strong>
+    <p>Drag images here or choose files.<br>Images stay in this browser session.</p>
+    <button class="btn gold" id="chooseFilesBtn" type="button">＋ Choose Images</button>
+    <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" multiple>
+   </div>
+
+   <div class="preview-grid" id="previewGrid"></div>
+
+   <form id="assessmentForm">
+    <div class="form-grid">
+     <div class="field">
+      <label for="districtInput">District</label>
+      <select id="districtInput" required>
+       <option value="">Select district</option>
+      </select>
+     </div>
+
+     <div class="field">
+      <label for="assetType">Affected Asset</label>
+      <select id="assetType" required>
+       <option value="Residential Building">Residential Building</option>
+       <option value="Commercial Building">Commercial Building</option>
+       <option value="Road / Bridge">Road / Bridge</option>
+       <option value="Agricultural Land">Agricultural Land</option>
+       <option value="Public Infrastructure">Public Infrastructure</option>
+      </select>
+     </div>
+
+     <div class="field">
+      <label for="reportedSeverity">Reported Damage Level</label>
+      <select id="reportedSeverity" required>
+       <option value="unverified">Unknown / Unverified</option>
+       <option value="minor">Minor (reported)</option>
+       <option value="moderate">Moderate (reported)</option>
+       <option value="severe">Severe (reported)</option>
+      </select>
+     </div>
+
+     <div class="field">
+      <label for="assetArea">Approximate Area (m², optional)</label>
+      <input id="assetArea" type="number" min="1" max="100000" step="1" placeholder="e.g. 120">
+     </div>
+
+     <div class="field full">
+      <label for="description">Damage Description</label>
+      <textarea id="description" required maxlength="1500"
+       placeholder="Describe visible damage, floodwater exposure, affected structures and uncertainties..."></textarea>
+     </div>
+    </div>
+
+    <button class="btn gold" type="submit" style="width:100%;margin-top:18px">
+     ✦ Create Assessment Draft
+    </button>
+   </form>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Assessment Intelligence</div>
+     <div class="panel-sub">Illustrative classification and planning output</div>
+    </div>
+    <div class="panel-tag">HUMAN REVIEW</div>
+   </div>
+
+   <div id="analysisResult" aria-live="polite">
+    <div class="result-placeholder">
+     <div class="symbol">✦</div>
+     <strong style="color:var(--gold2)">Ready for Assessment</strong>
+     <p>Submit the form to generate a clearly labeled, rule-based demo draft. Uploaded images are not analyzed.</p>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <section class="card panel" style="margin-top:17px">
+  <div class="panel-head">
+   <div>
+    <div class="panel-title">Damage Assessment Registry</div>
+    <div class="panel-sub">Fictional records and local session drafts</div>
+   </div>
+   <div class="panel-tag">CASE MANAGEMENT</div>
+  </div>
+
+  <div class="filters">
+   <input class="search" id="searchInput" placeholder="Search case ID, district, asset..." aria-label="Search assessments">
+   <select class="select" id="severityFilter">
+    <option value="all">All Severity</option>
+    <option value="unverified">Unverified</option>
+    <option value="minor">Minor</option>
+    <option value="moderate">Moderate</option>
+    <option value="severe">Severe</option>
+   </select>
+   <select class="select" id="reviewFilter">
+    <option value="all">All Review Status</option>
+    <option value="pending">Pending Review</option>
+    <option value="reviewed">Demo Reviewed</option>
+   </select>
+  </div>
+
+  <div class="table-wrap">
+   <table>
+    <thead>
+     <tr>
+      <th>Case ID</th><th>District</th><th>Asset Type</th>
+      <th>Reported Severity</th><th>Sample Cost</th>
+      <th>Review Status</th><th>Action</th>
+     </tr>
+    </thead>
+    <tbody id="assessmentTable"></tbody>
+   </table>
+  </div>
+ </section>
+
+ <section class="grid section-grid">
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Assessment Activity</div>
+     <div class="panel-sub">Local session and synthetic events</div>
+    </div>
+    <div class="panel-tag">TIMELINE</div>
+   </div>
+   <div class="timeline" id="activityTimeline"></div>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Recovery Intelligence Guidelines</div>
+     <div class="panel-sub">Human-centered damage review safeguards</div>
+    </div>
+    <div class="panel-tag">GOVERNANCE</div>
+   </div>
+
+   <div class="result-card">
+    <small>STEP 01</small>
+    <strong style="font-size:13px">Evidence Verification</strong>
+    <p>Check location, timestamps, image authenticity, permissions and duplicate submissions before accepting evidence.</p>
+   </div>
+
+   <div class="result-card">
+    <small>STEP 02</small>
+    <strong style="font-size:13px">Qualified Inspection</strong>
+    <p>Structural stability, habitability and bridge safety require competent field inspectors and engineers.</p>
+   </div>
+
+   <div class="result-card">
+    <small>STEP 03</small>
+    <strong style="font-size:13px">Cost Validation</strong>
+    <p>Use verified quantities, local schedules of rates, contractor quotations and approved relief rules for actual estimates.</p>
+   </div>
+  </div>
+ </section>
+
+ <div class="safety-note">
+  <strong>⚠ Safety & Accuracy Notice</strong>
+  <div style="margin-top:7px">
+   This page does not run a computer vision model or inspect uploaded images.
+   Severity values are user-reported, and repair figures are fictional planning examples.
+   No automated compensation, demolition, structural safety, emergency dispatch or rebuilding decisions are authorized.
+  </div>
+ </div>
+
+ <footer class="footer">
+  KERALA FLOOD RELIEF COORDINATION AGENT · DAMAGE & RECOVERY INTELLIGENCE · DEMONSTRATION
+ </footer>
+</div>
+</main>
+</div>
+
+<!-- INSPECTION MODAL -->
+<div class="modal-backdrop" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+ <div class="modal">
+  <div class="modal-head">
+   <h3 id="modalTitle">Assessment Case Details</h3>
+   <button class="close-btn" id="closeModal" aria-label="Close">×</button>
+  </div>
+  <div class="detail-grid" id="detailGrid"></div>
+  <div class="safety-note">
+   <strong>Local Demonstration Review</strong>
+   <div style="margin-top:7px">
+    A demo review is not official approval, structural certification or a compensation decision.
+   </div>
+  </div>
+  <button class="btn gold" id="markReviewedBtn" style="width:100%;margin-top:15px">
+   Mark as Demo Reviewed
+  </button>
+ </div>
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const DISTRICTS=[
+ "Thiruvananthapuram","Kollam","Pathanamthitta","Alappuzha",
+ "Kottayam","Idukki","Ernakulam","Thrissur","Palakkad",
+ "Malappuram","Kozhikode","Wayanad","Kannur","Kasaragod"
+];
+
+const INITIAL_RECORDS=[
+ {id:"DEMO-DMG-001",district:"Wayanad",asset:"Residential Building",severity:"severe",area:130,cost:0,review:"pending",description:"Fictional flood-damaged house case.",evidence:0},
+ {id:"DEMO-DMG-002",district:"Thrissur",asset:"Road / Bridge",severity:"moderate",area:250,cost:0,review:"pending",description:"Fictional road damage case.",evidence:0},
+ {id:"DEMO-DMG-003",district:"Ernakulam",asset:"Commercial Building",severity:"minor",area:95,cost:0,review:"reviewed",description:"Fictional shop water exposure case.",evidence:0},
+ {id:"DEMO-DMG-004",district:"Idukki",asset:"Agricultural Land",severity:"severe",area:850,cost:0,review:"pending",description:"Fictional crop and soil damage case.",evidence:0},
+ {id:"DEMO-DMG-005",district:"Alappuzha",asset:"Residential Building",severity:"unverified",area:110,cost:0,review:"pending",description:"Fictional property report requiring verification.",evidence:0}
+];
+
+const DEMO_RATES={
+ "Residential Building":900,
+ "Commercial Building":1250,
+ "Road / Bridge":1700,
+ "Agricultural Land":180,
+ "Public Infrastructure":1450
+};
+
+const SEVERITY_FACTORS={
+ minor:.15,
+ moderate:.45,
+ severe:.8
+};
+
+const state={
+ records:structuredClone(INITIAL_RECORDS),
+ files:[],
+ previews:[],
+ search:"",
+ severity:"all",
+ review:"all",
+ selectedId:null,
+ nextId:6,
+ activities:[
+  {title:"Demo registry initialized",detail:"Fictional damage records loaded.",time:"Demo dataset"},
+  {title:"Human review workflow available",detail:"No real approvals or dispatches are connected.",time:"Demo dataset"}
+ ]
+};
+
+function escapeHTML(value){
+ return String(value).replace(/[&<>"']/g,char=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ })[char]);
+}
+
+function formatINR(value){
+ return new Intl.NumberFormat("en-IN",{
+  style:"currency",currency:"INR",maximumFractionDigits:0
+ }).format(value);
+}
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+ const node=document.createElement("div");
+ node.className="toast";
+ node.textContent=message;
+ document.body.appendChild(node);
+ setTimeout(()=>node.remove(),3000);
+}
+
+function addActivity(title,detail){
+ state.activities.unshift({
+  title,detail,time:new Date().toLocaleTimeString("en-IN")
+ });
+ state.activities=state.activities.slice(0,8);
+ renderActivity();
+}
+
+function demoCost(asset,area,severity){
+ if(severity==="unverified")return null;
+ const rate=DEMO_RATES[asset]||0;
+ const factor=SEVERITY_FACTORS[severity]||0;
+ return Math.round(area*rate*factor);
+}
+
+function renderKPIs(){
+ const total=state.records.length;
+ const severe=state.records.filter(r=>r.severity==="severe").length;
+ const pending=state.records.filter(r=>r.review==="pending").length;
+ const totalCost=state.records.reduce((sum,r)=>sum+(r.cost||0),0);
+
+ $("kpiTotal").textContent=total.toLocaleString("en-IN");
+ $("kpiSevere").textContent=severe.toLocaleString("en-IN");
+ $("kpiPending").textContent=pending.toLocaleString("en-IN");
+ $("kpiCost").textContent=formatINR(totalCost);
+}
+
+function validateFiles(files){
+ const allowed=["image/jpeg","image/png","image/webp"];
+ const accepted=[];
+
+ for(const file of files){
+  if(state.files.length+accepted.length>=3){
+   toast("Maximum 3 images allowed");
+   break;
+  }
+  if(!allowed.includes(file.type)){
+   toast(`Unsupported image: ${file.name}`);
+   continue;
+  }
+  if(file.size>5*1024*1024){
+   toast(`File exceeds 5 MB: ${file.name}`);
+   continue;
+  }
+  accepted.push(file);
+ }
+ state.files.push(...accepted);
+ renderPreviews();
+}
+
+function clearPreviews(){
+ state.previews.forEach(url=>URL.revokeObjectURL(url));
+ state.previews=[];
+}
+
+function renderPreviews(){
+ clearPreviews();
+ const container=$("previewGrid");
+ container.replaceChildren();
+
+ state.files.forEach((file,index)=>{
+  const url=URL.createObjectURL(file);
+  state.previews.push(url);
+
+  const wrapper=document.createElement("div");
+  wrapper.className="preview-item";
+
+  const image=document.createElement("img");
+  image.src=url;
+  image.alt=`Evidence preview ${index+1}`;
+
+  const name=document.createElement("div");
+  name.className="filename";
+  name.textContent=file.name;
+
+  const remove=document.createElement("button");
+  remove.type="button";
+  remove.textContent="×";
+  remove.setAttribute("aria-label",`Remove ${file.name}`);
+  remove.addEventListener("click",()=>{
+   state.files.splice(index,1);
+   renderPreviews();
+  });
+
+  wrapper.append(image,name,remove);
+  container.appendChild(wrapper);
+ });
+}
+
+function renderResult(record){
+ const costText=record.cost===null
+  ?"Not calculated — severity unverified"
+  :formatINR(record.cost);
+
+ $("analysisResult").innerHTML=`
+  <div class="result-card">
+   <small>ASSESSMENT REFERENCE</small>
+   <strong>${escapeHTML(record.id)}</strong>
+   <p>Local draft generated. No model inference or image interpretation was performed.</p>
+  </div>
+
+  <div class="result-card">
+   <small>REPORTED SEVERITY</small>
+   <div style="margin-top:11px">
+    <span class="severity ${record.severity}">
+     ${record.severity.toUpperCase()} · SELF-REPORTED
+    </span>
+   </div>
+   <p>Classification is based only on the form selection, not visual evidence.</p>
+  </div>
+
+  <div class="result-card">
+   <small>ILLUSTRATIVE REPAIR BUDGET</small>
+   <strong>${escapeHTML(costText)}</strong>
+   <p>
+    ${record.cost===null
+      ?"An unknown severity cannot produce even a demo estimate."
+      :"Calculated using fictional asset rates and severity factors. Not a quotation, valuation or compensation amount."}
+   </p>
+  </div>
+
+  <div class="result-card">
+   <small>EVIDENCE SUMMARY</small>
+   <strong>${record.evidence} image(s)</strong>
+   <p>Images were previewed locally only; no pixels were analyzed or uploaded.</p>
+  </div>
+
+  <div class="result-card">
+   <small>RECOMMENDED NEXT STEP</small>
+   <strong style="font-size:13px">Qualified Human Assessment</strong>
+   <p>Verify the report, inspect the asset safely and obtain an authorized cost assessment.</p>
+  </div>
+ `;
+}
+
+function submitAssessment(event){
+ event.preventDefault();
+
+ const district=$("districtInput").value;
+ const asset=$("assetType").value;
+ const severity=$("reportedSeverity").value;
+ const description=$("description").value.trim();
+ const areaInput=$("assetArea").value;
+ const area=areaInput===""?null:Number(areaInput);
+
+ if(!district||!description){
+  toast("District and description are required");
+  return;
+ }
+
+ if(area!==null&&(!Number.isFinite(area)||area<1||area>100000)){
+  toast("Enter a valid area between 1 and 100000 m²");
+  return;
+ }
+
+ const id=`DEMO-DMG-${String(state.nextId++).padStart(3,"0")}`;
+
+ const record={
+  id,district,asset,severity,area,
+  cost:area===null?null:demoCost(asset,area,severity),
+  review:"pending",
+  description,
+  evidence:state.files.length
+ };
+
+ state.records.unshift(record);
+ renderResult(record);
+
+ addActivity(
+  "Assessment draft created",
+  `${id} · ${district} · Local demo record, no AI inference.`
+ );
+
+ $("assessmentForm").reset();
+ state.files=[];
+ renderPreviews();
+ renderKPIs();
+ renderTable();
+
+ toast("Local assessment draft created");
+}
+
+function filteredRecords(){
+ return state.records.filter(record=>{
+  const haystack=[
+   record.id,record.district,record.asset,record.description
+  ].join(" ").toLowerCase();
+
+  return haystack.includes(state.search.toLowerCase())&&
+   (state.severity==="all"||record.severity===state.severity)&&
+   (state.review==="all"||record.review===state.review);
+ });
+}
+
+function renderTable(){
+ const rows=filteredRecords();
+
+ $("assessmentTable").innerHTML=rows.map(record=>`
+  <tr>
+   <td class="id">${escapeHTML(record.id)}</td>
+   <td>${escapeHTML(record.district)}</td>
+   <td>${escapeHTML(record.asset)}</td>
+   <td>
+    <span class="severity ${record.severity}">
+     ${record.severity.toUpperCase()}
+    </span>
+   </td>
+   <td>${record.cost===null?"Not estimated":escapeHTML(formatINR(record.cost))}</td>
+   <td>
+    <span class="severity ${record.review==="reviewed"?"minor":"moderate"}">
+     ${record.review==="reviewed"?"DEMO REVIEWED":"PENDING"}
+    </span>
+   </td>
+   <td>
+    <button class="inspect-btn" data-id="${escapeHTML(record.id)}">Inspect →</button>
+   </td>
+  </tr>
+ `).join("");
+
+ if(!rows.length){
+  $("assessmentTable").innerHTML=`
+   <tr><td colspan="7" style="text-align:center;padding:30px">
+    No matching assessment records.
+   </td></tr>
+  `;
+ }
+
+ document.querySelectorAll("[data-id]").forEach(button=>{
+  button.addEventListener("click",()=>openDetails(button.dataset.id));
+ });
+}
+
+function renderActivity(){
+ const container=$("activityTimeline");
+ container.replaceChildren();
+
+ state.activities.forEach(item=>{
+  const row=document.createElement("div");
+  row.className="timeline-item";
+
+  const icon=document.createElement("div");
+  icon.className="timeline-icon";
+  icon.textContent="◇";
+
+  const content=document.createElement("div");
+
+  const title=document.createElement("strong");
+  title.textContent=item.title;
+
+  const description=document.createElement("p");
+  description.textContent=item.detail;
+
+  const time=document.createElement("small");
+  time.textContent=item.time;
+
+  content.append(title,description,time);
+  row.append(icon,content);
+  container.appendChild(row);
+ });
+}
+
+function openDetails(id){
+ const record=state.records.find(item=>item.id===id);
+ if(!record)return;
+
+ state.selectedId=id;
+
+ const fields=[
+  ["Case ID",record.id],
+  ["District",record.district],
+  ["Asset",record.asset],
+  ["Reported Severity",record.severity.toUpperCase()],
+  ["Approximate Area",record.area===null?"Not provided":`${record.area} m²`],
+  ["Demo Cost",record.cost===null?"Not estimated":formatINR(record.cost)],
+  ["Evidence Count",`${record.evidence} local image(s)`],
+  ["Review Status",record.review==="reviewed"?"Demo reviewed":"Pending"],
+  ["Description",record.description]
+ ];
+
+ const container=$("detailGrid");
+ container.replaceChildren();
+
+ fields.forEach(([label,value],index)=>{
+  const box=document.createElement("div");
+  box.className="detail"+(index===fields.length-1?" full":"");
+
+  const labelNode=document.createElement("small");
+  labelNode.textContent=label;
+
+  const valueNode=document.createElement("strong");
+  valueNode.textContent=value;
+
+  box.append(labelNode,valueNode);
+  container.appendChild(box);
+ });
+
+ $("markReviewedBtn").disabled=record.review==="reviewed";
+ $("detailModal").classList.add("open");
+ $("closeModal").focus();
+}
+
+function closeDetails(){
+ $("detailModal").classList.remove("open");
+ state.selectedId=null;
+}
+
+function markReviewed(){
+ const record=state.records.find(item=>item.id===state.selectedId);
+ if(!record)return;
+
+ record.review="reviewed";
+
+ addActivity(
+  "Demo review marker added",
+  `${record.id} marked reviewed locally. No official approval.`
+ );
+
+ renderKPIs();
+ renderTable();
+ closeDetails();
+ toast("Demo review status updated");
+}
+
+function exportCSV(){
+ const columns=[
+  ["id","Case ID"],["district","District"],["asset","Asset"],
+  ["severity","Reported Severity"],["area","Area m2"],
+  ["cost","Demo Cost INR"],["review","Review Status"],
+  ["evidence","Evidence Count"],["description","Description"]
+ ];
+
+ const escapeCSV=value=>{
+  let text=String(value??"");
+  if(/^\s*[=+\-@]/.test(text))text="'"+text;
+  return `"${text.replace(/"/g,'""')}"`;
+ };
+
+ const rows=[
+  columns.map(column=>escapeCSV(column[1])).join(","),
+  ...filteredRecords().map(record=>
+   columns.map(([key])=>escapeCSV(record[key])).join(",")
+  )
+ ];
+
+ const blob=new Blob(
+  ["\uFEFF"+rows.join("\r\n")],
+  {type:"text/csv;charset=utf-8"}
+ );
+
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement("a");
+ link.href=url;
+ link.download="kerala-damage-assessment-demo.csv";
+
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ toast("Synthetic assessment CSV exported");
+}
+
+function resetDemo(){
+ clearPreviews();
+ state.files=[];
+ state.records=structuredClone(INITIAL_RECORDS);
+ state.nextId=6;
+ state.activities=[
+  {title:"Demo registry reset",detail:"Fictional records restored.",time:new Date().toLocaleTimeString("en-IN")}
+ ];
+ $("assessmentForm").reset();
+ $("searchInput").value="";
+ $("severityFilter").value="all";
+ $("reviewFilter").value="all";
+ state.search="";
+ state.severity="all";
+ state.review="all";
+ renderPreviews();
+ renderKPIs();
+ renderTable();
+ renderActivity();
+ $("analysisResult").innerHTML=`
+  <div class="result-placeholder">
+   <div class="symbol">✦</div>
+   <strong style="color:var(--gold2)">Ready for Assessment</strong>
+   <p>Submit a report to create a new demo draft. Uploaded images are not analyzed.</p>
+  </div>
+ `;
+ toast("Demo workspace reset");
+}
+
+function initialize(){
+ DISTRICTS.forEach(district=>{
+  const option=document.createElement("option");
+  option.value=district;
+  option.textContent=district;
+  $("districtInput").appendChild(option);
+ });
+
+ renderKPIs();
+ renderTable();
+ renderActivity();
+}
+
+$("chooseFilesBtn").addEventListener("click",()=>$("fileInput").click());
+
+$("fileInput").addEventListener("change",event=>{
+ validateFiles([...event.target.files]);
+ event.target.value="";
+});
+
+const dropZone=$("dropZone");
+
+dropZone.addEventListener("dragover",event=>{
+ event.preventDefault();
+ dropZone.classList.add("drag");
+});
+
+dropZone.addEventListener("dragleave",()=>{
+ dropZone.classList.remove("drag");
+});
+
+dropZone.addEventListener("drop",event=>{
+ event.preventDefault();
+ dropZone.classList.remove("drag");
+ validateFiles([...event.dataTransfer.files]);
+});
+
+$("assessmentForm").addEventListener("submit",submitAssessment);
+
+$("searchInput").addEventListener("input",event=>{
+ state.search=event.target.value.trim();
+ renderTable();
+});
+
+$("severityFilter").addEventListener("change",event=>{
+ state.severity=event.target.value;
+ renderTable();
+});
+
+$("reviewFilter").addEventListener("change",event=>{
+ state.review=event.target.value;
+ renderTable();
+});
+
+$("markReviewedBtn").addEventListener("click",markReviewed);
+$("closeModal").addEventListener("click",closeDetails);
+
+$("detailModal").addEventListener("click",event=>{
+ if(event.target===$("detailModal"))closeDetails();
+});
+
+document.addEventListener("keydown",event=>{
+ if(event.key==="Escape")closeDetails();
+});
+
+$("menuBtn").addEventListener("click",()=>{
+ $("sidebar").classList.toggle("open");
+});
+
+$("resetBtn").addEventListener("click",resetDemo);
+$("exportBtn").addEventListener("click",exportCSV);
+
+window.addEventListener("beforeunload",clearPreviews);
+
+initialize();
+</script>
+</body>
+</html>

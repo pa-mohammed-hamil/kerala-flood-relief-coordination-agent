@@ -1,0 +1,1041 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#090b10">
+<title>Human Approval | Kerala Flood AI</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#090b10;
+ --side:#0d1017;
+ --panel:#151922;
+ --panel2:#1b202b;
+ --gold:#d8b671;
+ --gold2:#f5daa0;
+ --text:#f4f1e9;
+ --muted:#9399a7;
+ --line:rgba(255,255,255,.085);
+ --green:#54d6a4;
+ --orange:#ffb66e;
+ --red:#ff777d;
+ --blue:#82adff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:13px "DM Sans",sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+ outline:2px solid var(--gold);outline-offset:3px
+}
+.app{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+.sidebar{
+ position:sticky;top:0;height:100vh;display:flex;flex-direction:column;
+ background:var(--side);border-right:1px solid var(--line);z-index:40
+}
+.brand{display:flex;align-items:center;gap:12px;padding:24px 18px;border-bottom:1px solid var(--line)}
+.brand-icon{
+ width:43px;height:43px;display:grid;place-items:center;border-radius:13px;
+ background:linear-gradient(135deg,#f5daa0,#a47c3b);color:#20170a;font-size:23px;font-weight:900
+}
+.brand strong{font:800 13px Manrope,sans-serif;letter-spacing:.4px}
+.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:1.2px;margin-top:5px}
+.nav{padding:20px 13px;overflow:auto;flex:1}
+.nav-label{font-size:10px;letter-spacing:1.6px;color:#777e8d;font-weight:800;margin:14px 12px}
+.nav a{
+ display:flex;align-items:center;gap:12px;padding:12px 13px;margin-bottom:5px;
+ border:1px solid transparent;border-radius:10px;color:#a2a8b4;font-size:12px;font-weight:600;transition:.2s
+}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{background:#d8b67119;border-color:#d8b67130;color:var(--gold2)}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.side-footer{padding:17px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:11px;background:#383023;color:var(--gold2);display:grid;place-items:center;font-weight:800}
+.side-footer strong{font-size:11px}
+.side-footer small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.main{
+ min-width:0;
+ background:radial-gradient(ellipse at 65% -5%,#d8b67112,transparent 38%),var(--bg)
+}
+.topbar{
+ min-height:82px;padding:17px 30px;border-bottom:1px solid var(--line);
+ display:flex;justify-content:space-between;align-items:center;gap:14px
+}
+.top-left,.top-actions{display:flex;align-items:center;gap:12px}
+.page-icon{
+ width:43px;height:43px;border-radius:12px;background:#d8b67119;border:1px solid #d8b67133;
+ color:var(--gold);display:grid;place-items:center;font-size:20px
+}
+.top-left h1{font:800 18px Manrope,sans-serif;letter-spacing:-.5px;margin:0}
+.top-left p{margin:5px 0 0;color:var(--muted);font-size:11px}
+.badge,.tag{
+ display:inline-flex;align-items:center;gap:7px;padding:9px 11px;
+ background:#d8b67112;border:1px solid #d8b67130;color:var(--gold2);
+ border-radius:9px;font-size:10px;font-weight:800
+}
+.dot{width:7px;height:7px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite}
+.btn{
+ display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 15px;
+ border-radius:10px;border:1px solid var(--line);background:#1a1f29;color:#e1e3e8;
+ font-size:11px;font-weight:800;transition:.2s
+}
+.btn:hover{border-color:#d8b67166;transform:translateY(-1px)}
+.btn.gold{background:linear-gradient(120deg,#c6a15e,#f1d49a);color:#1b160e;border:0}
+.btn.danger{border-color:#ff777d50;background:#ff777d13;color:var(--red)}
+.btn.blue{border-color:#82adff50;background:#82adff13;color:var(--blue)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.content{max-width:1700px;margin:auto;padding:28px 30px 42px}
+.eyebrow{color:var(--gold);font-size:10px;letter-spacing:2px;font-weight:800;margin-bottom:10px}
+.heading{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;flex-wrap:wrap;margin-bottom:24px}
+.heading h2{font:800 28px Manrope,sans-serif;letter-spacing:-1px;margin:0}
+.heading p{color:var(--muted);font-size:12px;line-height:1.8;margin:9px 0 0}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{
+ min-width:0;background:linear-gradient(150deg,#181c26,#12161e);
+ border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 35px #0002;
+ animation:rise .5s ease both
+}
+.kpi{padding:21px;position:relative;overflow:hidden}
+.kpi:before{
+ content:"";position:absolute;width:115px;height:115px;right:-50px;top:-55px;
+ background:#d8b67109;border-radius:50%
+}
+.kpi-head{display:flex;align-items:center;justify-content:space-between;color:#a7adba;font-size:11px;font-weight:700}
+.kpi-icon{
+ width:36px;height:36px;border-radius:10px;background:#d8b67119;
+ color:var(--gold);display:grid;place-items:center;font-size:18px
+}
+.kpi-number{font:800 30px Manrope,sans-serif;letter-spacing:-1px;margin:15px 0 7px}
+.kpi-caption{font-size:10px;color:var(--muted)}
+.kpi-caption b{color:var(--gold)}
+.columns{grid-template-columns:minmax(0,1.6fr) minmax(310px,1fr);margin-top:17px}
+.panel{padding:22px}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:20px}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{color:var(--muted);font-size:10px;line-height:1.7;margin-top:7px}
+.hero{
+ padding:28px;border:1px solid #d8b67138;border-radius:17px;
+ background:radial-gradient(circle at 85% 15%,#d8b67120,transparent 35%),linear-gradient(120deg,#252017,#151922)
+}
+.hero h3{font:800 26px Manrope,sans-serif;letter-spacing:-.8px;margin:12px 0}
+.hero p{max-width:850px;color:#b9b5ae;font-size:12px;line-height:1.9}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.search,.select{
+ padding:11px 12px;border-radius:10px;border:1px solid #303541;
+ background:#191e28;color:#e8e8e8;outline:0
+}
+.search{flex:1;min-width:180px}
+.search:focus,.select:focus{border-color:var(--gold)}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;white-space:nowrap;text-align:left}
+th{padding:14px 12px;color:#8d94a2;font-size:10px;letter-spacing:.7px;border-bottom:1px solid var(--line)}
+td{padding:15px 12px;color:#d7dbe2;font-size:11px;border-bottom:1px solid #ffffff0b}
+tbody tr:hover{background:#d8b67108}
+.id{color:var(--gold2);font-family:monospace;font-weight:800}
+.pill{display:inline-flex;padding:6px 9px;border-radius:7px;font-size:10px;font-weight:800}
+.pill.pending{background:#82adff19;color:var(--blue)}
+.pill.approved{background:#54d6a419;color:var(--green)}
+.pill.rejected{background:#ff777d19;color:var(--red)}
+.pill.escalated{background:#ffb66e19;color:var(--orange)}
+.pill.critical{background:#ff777d19;color:var(--red)}
+.pill.high{background:#ffb66e19;color:var(--orange)}
+.pill.medium{background:#82adff19;color:var(--blue)}
+.pill.low{background:#54d6a419;color:var(--green)}
+.small-btn{
+ padding:8px 10px;border-radius:8px;border:1px solid #d8b67133;
+ background:#d8b67116;color:var(--gold2);font-size:10px;font-weight:800
+}
+.small-btn:hover{background:#d8b6712d}
+.policy{
+ display:flex;gap:13px;align-items:flex-start;padding:15px;
+ background:#1b202b;border:1px solid var(--line);border-radius:11px;margin-bottom:11px
+}
+.policy-icon{
+ width:38px;height:38px;flex-shrink:0;border-radius:10px;
+ background:#d8b67118;color:var(--gold);display:grid;place-items:center;font-size:18px
+}
+.policy strong{font-size:11px}
+.policy p{color:var(--muted);font-size:10px;line-height:1.8;margin:7px 0 0}
+.metric{padding:15px;background:#1b202b;border:1px solid var(--line);border-radius:11px;margin-bottom:11px}
+.metric-head{display:flex;justify-content:space-between;gap:10px}
+.metric strong{font-size:11px}
+.metric b{font-size:12px;color:var(--gold2)}
+.progress{height:8px;background:#303642;border-radius:10px;overflow:hidden;margin-top:12px}
+.progress span{
+ display:block;height:100%;border-radius:10px;
+ background:linear-gradient(90deg,#a68145,#f1d69c);transition:width .3s
+}
+.timeline{display:grid;gap:15px}
+.event{display:flex;gap:12px}
+.event-icon{
+ width:32px;height:32px;flex-shrink:0;display:grid;place-items:center;
+ border-radius:10px;background:#d8b67118;color:var(--gold)
+}
+.event strong{font-size:11px}
+.event p{color:var(--muted);font-size:10px;line-height:1.7;margin:7px 0}
+.event small{color:#777e8d;font-size:10px}
+.notice{
+ padding:16px;background:#d8b6710e;border:1px solid #d8b67130;
+ border-radius:12px;color:#bbb4a5;font-size:11px;line-height:1.9;margin-top:17px
+}
+.notice strong{color:var(--gold2)}
+.footer{padding-top:27px;text-align:center;color:#69707e;font-size:10px}
+.modal-backdrop{
+ position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;
+ padding:18px;background:#000c;backdrop-filter:blur(7px)
+}
+.modal-backdrop.open{display:flex}
+.modal{
+ width:min(740px,100%);max-height:90vh;overflow:auto;padding:25px;
+ background:#171b24;border:1px solid #d8b6714b;border-radius:18px;
+ box-shadow:0 30px 100px #0008
+}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.modal-head h3{font:800 17px Manrope,sans-serif;margin:0}
+.close{
+ width:35px;height:35px;border:1px solid var(--line);
+ background:#282d38;color:white;border-radius:9px;font-size:19px
+}
+.details{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.detail{
+ background:#1d222d;border:1px solid var(--line);border-radius:10px;
+ padding:14px;overflow-wrap:anywhere
+}
+.detail.full{grid-column:1/-1}
+.detail small{display:block;color:var(--muted);font-size:10px;margin-bottom:8px}
+.detail strong{font-size:12px;line-height:1.6}
+.form-field{display:grid;gap:8px;margin-top:16px}
+.form-field label{color:#aeb4c0;font-size:11px;font-weight:700}
+.form-field textarea,.form-field input{
+ width:100%;background:#1e2430;color:var(--text);
+ border:1px solid #343a46;border-radius:10px;padding:12px;outline:0
+}
+.form-field textarea{min-height:90px;resize:vertical}
+.form-field input::placeholder,.form-field textarea::placeholder{color:#7a818e}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}
+.toast{
+ position:fixed;right:22px;bottom:22px;z-index:200;padding:14px 17px;
+ background:#252b35;border:1px solid #d8b67166;color:var(--gold2);
+ border-radius:11px;box-shadow:0 15px 45px #0008
+}
+.menu-btn{display:none}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1250px){
+ .kpis{grid-template-columns:repeat(2,1fr)}
+ .columns{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+ .app{grid-template-columns:1fr}
+ .sidebar{position:fixed;width:260px;transform:translateX(-100%);transition:.3s}
+ .sidebar.open{transform:translateX(0)}
+ .menu-btn{display:inline-flex}
+ .topbar{padding:15px 20px}
+ .content{padding:20px}
+}
+@media(max-width:560px){
+ .kpis,.details{grid-template-columns:1fr}
+ .detail.full{grid-column:auto}
+ .heading h2{font-size:23px}
+ .panel{padding:17px}
+ .hero{padding:20px}
+ .top-actions .badge{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-icon">✦</div>
+  <div>
+   <strong>KERALA FLOOD AI</strong>
+   <small>INTELLIGENCE PLATFORM</small>
+  </div>
+ </div>
+
+ <nav class="nav">
+  <div class="nav-label">WORKSPACE</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="agent-command-center.html"><span class="nav-icon">✦</span>Agent Command Center</a>
+  <a href="ai-copilot.html"><span class="nav-icon">◇</span>AI Copilot</a>
+  <a href="analytics.html"><span class="nav-icon">▥</span>Analytics</a>
+
+  <div class="nav-label" style="margin-top:24px">EMERGENCY OPERATIONS</div>
+  <a href="emergency-sos.html"><span class="nav-icon">⚑</span>Emergency SOS</a>
+  <a href="rescue-dashboard.html"><span class="nav-icon">◉</span>Rescue Operations</a>
+  <a href="evacuation-planning.html"><span class="nav-icon">⌁</span>Evacuation Planning</a>
+  <a href="hospital-capacity.html"><span class="nav-icon">✚</span>Hospital Capacity</a>
+  <a href="flood-alerts.html"><span class="nav-icon">☁</span>Flood Alerts</a>
+
+  <div class="nav-label" style="margin-top:24px">AI GOVERNANCE</div>
+  <a class="active" href="human-approval.html"><span class="nav-icon">✓</span>Human Approval</a>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+  <a href="reports.html"><span class="nav-icon">▤</span>Reports</a>
+ </nav>
+
+ <div class="side-footer">
+  <div class="avatar">HA</div>
+  <div>
+   <strong>Governance Workspace</strong>
+   <small>Simulation Mode</small>
+  </div>
+ </div>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+ <div class="top-left">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="page-icon">✓</div>
+  <div>
+   <h1>Human Approval & Governance</h1>
+   <p>AI decisions · Review queues · Safety controls</p>
+  </div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>DEMO MODE</span>
+  <button class="btn" id="resetBtn">↻ Reset</button>
+  <button class="btn gold" id="exportBtn">↓ Export CSV</button>
+ </div>
+</header>
+
+<div class="content">
+
+ <div class="heading">
+  <div>
+   <div class="eyebrow">HUMAN-IN-THE-LOOP GOVERNANCE</div>
+   <h2>AI Decision Approval Center</h2>
+   <p>Inspect fictional agent recommendations before recording simulated human decisions.</p>
+  </div>
+  <span class="tag">NO OPERATIONAL AUTHORITY</span>
+ </div>
+
+ <section class="hero">
+  <div class="eyebrow">CONTROLLED AI WORKFLOWS</div>
+  <h3>AI recommends. Humans remain accountable.</h3>
+  <p>
+   Review evidence summaries, inspect simulated agent reasoning,
+   document decisions and escalate unresolved cases. This standalone
+   workspace performs no real emergency operations.
+  </p>
+  <div class="hero-actions">
+   <button class="btn gold" id="openQueueBtn">✓ Open Review Queue</button>
+   <a class="btn" href="audit-logs.html">◷ Audit Dashboard</a>
+  </div>
+ </section>
+
+ <section class="grid kpis" style="margin-top:17px">
+  <div class="card kpi">
+   <div class="kpi-head">Pending Reviews<div class="kpi-icon">◷</div></div>
+   <div class="kpi-number" id="kpiPending">0</div>
+   <div class="kpi-caption"><b>DEMO</b> · Awaiting fictional reviewer</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Critical Requests<div class="kpi-icon">⚑</div></div>
+   <div class="kpi-number" id="kpiCritical">0</div>
+   <div class="kpi-caption"><b>DEMO</b> · Priority labels only</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Demo Approved<div class="kpi-icon">✓</div></div>
+   <div class="kpi-number" id="kpiApproved">0</div>
+   <div class="kpi-caption"><b>DEMO</b> · No real action executed</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Escalated Requests<div class="kpi-icon">↗</div></div>
+   <div class="kpi-number" id="kpiEscalated">0</div>
+   <div class="kpi-caption"><b>DEMO</b> · Local queue status</div>
+  </div>
+ </section>
+
+ <section class="grid columns">
+
+  <div class="card panel" id="queuePanel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">AI Decision Review Queue</div>
+     <div class="panel-sub">Synthetic requests from simulated AI agents</div>
+    </div>
+    <span class="tag">HUMAN REVIEW REQUIRED</span>
+   </div>
+
+   <div class="filters">
+    <input id="searchInput" class="search" placeholder="Search request, agent or district..." aria-label="Search requests">
+    <select id="riskFilter" class="select">
+     <option value="all">All Risk Levels</option>
+     <option value="critical">Critical</option>
+     <option value="high">High</option>
+     <option value="medium">Medium</option>
+     <option value="low">Low</option>
+    </select>
+    <select id="statusFilter" class="select">
+     <option value="all">All Statuses</option>
+     <option value="pending">Pending</option>
+     <option value="approved">Demo Approved</option>
+     <option value="rejected">Rejected</option>
+     <option value="escalated">Escalated</option>
+    </select>
+   </div>
+
+   <div class="table-wrap">
+    <table>
+     <thead>
+      <tr>
+       <th>Request ID</th>
+       <th>Agent</th>
+       <th>District</th>
+       <th>Proposed Action</th>
+       <th>Risk</th>
+       <th>Status</th>
+       <th>Inspect</th>
+      </tr>
+     </thead>
+     <tbody id="requestTable"></tbody>
+    </table>
+   </div>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Approval Safety Policies</div>
+     <div class="panel-sub">Operational safeguards required before production use</div>
+    </div>
+    <span class="tag">GOVERNANCE RULES</span>
+   </div>
+
+   <div class="policy">
+    <div class="policy-icon">⚑</div>
+    <div>
+     <strong>Emergency Alert Authorization</strong>
+     <p>Verify official data and obtain authorized human approval before issuing real warnings.</p>
+    </div>
+   </div>
+
+   <div class="policy">
+    <div class="policy-icon">⌁</div>
+    <div>
+     <strong>Evacuation & Rescue Oversight</strong>
+     <p>Confirm local conditions, responder availability and approved emergency procedures.</p>
+    </div>
+   </div>
+
+   <div class="policy">
+    <div class="policy-icon">✚</div>
+    <div>
+     <strong>Medical Decision Boundaries</strong>
+     <p>Require clinical personnel for medical triage, transfers and treatment decisions.</p>
+    </div>
+   </div>
+
+   <div class="policy">
+    <div class="policy-icon">▥</div>
+    <div>
+     <strong>Dam & Infrastructure Safety</strong>
+     <p>Only designated operators may authorize dam releases or infrastructure control actions.</p>
+    </div>
+   </div>
+
+   <div class="policy">
+    <div class="policy-icon">◷</div>
+    <div>
+     <strong>Traceable Audit Records</strong>
+     <p>Production decisions require authenticated identities, tamper-resistant logs and timestamps.</p>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <section class="grid columns">
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Decision Status Distribution</div>
+     <div class="panel-sub">Current synthetic request lifecycle</div>
+    </div>
+    <span class="tag">WORKFLOW ANALYTICS</span>
+   </div>
+   <div id="statusMetrics"></div>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div>
+     <div class="panel-title">Review Activity Timeline</div>
+     <div class="panel-sub">Events generated within this page</div>
+    </div>
+    <span class="tag">LOCAL AUDIT PREVIEW</span>
+   </div>
+   <div class="timeline" id="timeline"></div>
+  </div>
+ </section>
+
+ <div class="notice">
+  <strong>⚠ Demonstration Only.</strong>
+  <div>
+   All requests, evidence summaries, agents and reviewer decisions are fictional.
+   Approval, rejection and escalation only modify in-memory demo records.
+   This page has no authenticated reviewer identity, no persistent audit trail,
+   and no connection to operational emergency systems.
+  </div>
+ </div>
+
+ <footer class="footer">
+  KERALA FLOOD RELIEF COORDINATION AGENT · HUMAN APPROVAL · SYNTHETIC GOVERNANCE WORKSPACE
+ </footer>
+
+</div>
+</main>
+</div>
+
+<div class="modal-backdrop" id="reviewModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+ <div class="modal">
+  <div class="modal-head">
+   <h3 id="modalTitle">Review AI Decision</h3>
+   <button class="close" id="closeModalBtn" aria-label="Close">×</button>
+  </div>
+
+  <div class="details" id="decisionDetails"></div>
+
+  <div class="form-field">
+   <label for="reviewerName">Demo Reviewer Label</label>
+   <input id="reviewerName" maxlength="70" placeholder="Example: Training Reviewer">
+  </div>
+
+  <div class="form-field">
+   <label for="reviewNotes">Decision Rationale</label>
+   <textarea id="reviewNotes" maxlength="1000" placeholder="Document why the fictional recommendation is approved, rejected or escalated."></textarea>
+  </div>
+
+  <div class="notice">
+   <strong>Simulated Decisions Only</strong>
+   <div>
+    Clicking approve does not trigger alerts, medical transfers, evacuation,
+    rescue dispatch, gate control or any external API.
+   </div>
+  </div>
+
+  <div class="modal-actions">
+   <button class="btn gold" id="approveBtn">✓ Demo Approve</button>
+   <button class="btn danger" id="rejectBtn">✕ Reject</button>
+   <button class="btn blue" id="escalateBtn">↗ Escalate</button>
+   <button class="btn" id="dismissBtn">Cancel</button>
+  </div>
+ </div>
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const INITIAL_REQUESTS=[
+ {
+  id:"APR-DEMO-001",
+  agent:"Flood Prediction Agent",
+  district:"Wayanad",
+  action:"Draft Flood Risk Advisory",
+  risk:"critical",
+  status:"pending",
+  confidence:"Uncalibrated demo value: 87%",
+  evidence:"Synthetic rainfall and river-level scenario.",
+  recommendation:"Prepare an illustrative flood advisory draft for review.",
+  limitations:"No official station readings or validated forecast.",
+  reviewer:"",
+  rationale:""
+ },
+ {
+  id:"APR-DEMO-002",
+  agent:"Rescue Coordinator Agent",
+  district:"Thrissur",
+  action:"Review Rescue Resource Proposal",
+  risk:"high",
+  status:"pending",
+  confidence:"Uncalibrated demo value: 81%",
+  evidence:"Fictional SOS and team availability records.",
+  recommendation:"Review a proposed resource assignment.",
+  limitations:"No real incident verification or responder confirmation.",
+  reviewer:"",
+  rationale:""
+ },
+ {
+  id:"APR-DEMO-003",
+  agent:"Medical Response Agent",
+  district:"Ernakulam",
+  action:"Review Medical Referral Draft",
+  risk:"critical",
+  status:"pending",
+  confidence:"Not applicable",
+  evidence:"Fictional hospital and referral information.",
+  recommendation:"Request clinical review of a demo transfer scenario.",
+  limitations:"No verified hospital capacity or clinical assessment.",
+  reviewer:"",
+  rationale:""
+ },
+ {
+  id:"APR-DEMO-004",
+  agent:"Evacuation Agent",
+  district:"Alappuzha",
+  action:"Review Evacuation Plan Draft",
+  risk:"high",
+  status:"pending",
+  confidence:"Uncalibrated demo value: 79%",
+  evidence:"Synthetic road and shelter assumptions.",
+  recommendation:"Inspect a proposed evacuation route scenario.",
+  limitations:"Road accessibility and shelter safety unverified.",
+  reviewer:"",
+  rationale:""
+ },
+ {
+  id:"APR-DEMO-005",
+  agent:"Relief Logistics Agent",
+  district:"Kozhikode",
+  action:"Review Relief Allocation",
+  risk:"medium",
+  status:"pending",
+  confidence:"Not applicable",
+  evidence:"Fictional inventory and shelter demand.",
+  recommendation:"Review a hypothetical supplies allocation.",
+  limitations:"No verified inventory or receiving-site acceptance.",
+  reviewer:"",
+  rationale:""
+ },
+ {
+  id:"APR-DEMO-006",
+  agent:"Weather Agent",
+  district:"Idukki",
+  action:"Review Weather Bulletin Draft",
+  risk:"high",
+  status:"approved",
+  confidence:"Uncalibrated demo value: 84%",
+  evidence:"Synthetic precipitation series.",
+  recommendation:"Generate an internal demonstration bulletin.",
+  limitations:"No verified weather observations.",
+  reviewer:"Demo Reviewer",
+  rationale:"Previously reviewed fictional training example."
+ },
+ {
+  id:"APR-DEMO-007",
+  agent:"Damage Assessment Agent",
+  district:"Pathanamthitta",
+  action:"Review Damage Assessment",
+  risk:"medium",
+  status:"rejected",
+  confidence:"Uncalibrated demo value: 61%",
+  evidence:"Illustrative image assessment output.",
+  recommendation:"Prepare a draft damage classification.",
+  limitations:"No validated visual inspection or structural assessment.",
+  reviewer:"Demo Reviewer",
+  rationale:"Insufficient fictional evidence."
+ },
+ {
+  id:"APR-DEMO-008",
+  agent:"Shelter Allocation Agent",
+  district:"Kottayam",
+  action:"Review Shelter Placement",
+  risk:"high",
+  status:"escalated",
+  confidence:"Not applicable",
+  evidence:"Synthetic shelter occupancy and accessibility.",
+  recommendation:"Review a fictional accommodation proposal.",
+  limitations:"No accessibility, suitability or capacity verification.",
+  reviewer:"Demo Reviewer",
+  rationale:"Requires specialized review in this scenario."
+ }
+];
+
+const state={
+ requests:structuredClone(INITIAL_REQUESTS),
+ selectedId:null,
+ search:"",
+ risk:"all",
+ status:"all",
+ events:[
+  {
+   title:"Governance demonstration initialized",
+   detail:"Synthetic approval queue loaded. No operational system connected.",
+   time:"Demo dataset"
+  },
+  {
+   title:"Human oversight policy active",
+   detail:"All high-impact actions remain disabled in this standalone page.",
+   time:"Demo dataset"
+  }
+ ]
+};
+
+function escapeHTML(value){
+ return String(value).replace(/[&<>"']/g,char=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ })[char]);
+}
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+
+ const node=document.createElement("div");
+ node.className="toast";
+ node.textContent=message;
+ document.body.appendChild(node);
+
+ setTimeout(()=>node.remove(),3000);
+}
+
+function addEvent(title,detail){
+ state.events.unshift({
+  title,
+  detail,
+  time:new Date().toLocaleTimeString("en-IN")
+ });
+
+ state.events=state.events.slice(0,10);
+ renderTimeline();
+}
+
+function renderKPIs(){
+ $("kpiPending").textContent=state.requests.filter(r=>r.status==="pending").length;
+ $("kpiCritical").textContent=state.requests.filter(r=>r.risk==="critical").length;
+ $("kpiApproved").textContent=state.requests.filter(r=>r.status==="approved").length;
+ $("kpiEscalated").textContent=state.requests.filter(r=>r.status==="escalated").length;
+}
+
+function filteredRequests(){
+ return state.requests.filter(request=>{
+  const searchable=[
+   request.id,request.agent,request.district,request.action
+  ].join(" ").toLowerCase();
+
+  return searchable.includes(state.search.toLowerCase())&&
+   (state.risk==="all"||request.risk===state.risk)&&
+   (state.status==="all"||request.status===state.status);
+ });
+}
+
+function renderRequests(){
+ const requests=filteredRequests();
+
+ $("requestTable").innerHTML=requests.map(request=>`
+  <tr>
+   <td class="id">${escapeHTML(request.id)}</td>
+   <td>${escapeHTML(request.agent)}</td>
+   <td>${escapeHTML(request.district)}</td>
+   <td>${escapeHTML(request.action)}</td>
+   <td><span class="pill ${request.risk}">${request.risk.toUpperCase()}</span></td>
+   <td>
+    <span class="pill ${request.status}">
+     ${request.status==="approved"?"DEMO APPROVED":request.status.toUpperCase()}
+    </span>
+   </td>
+   <td>
+    <button class="small-btn" data-request="${request.id}">
+     Inspect →
+    </button>
+   </td>
+  </tr>
+ `).join("");
+
+ if(!requests.length){
+  $("requestTable").innerHTML=
+   '<tr><td colspan="7" style="padding:30px;text-align:center">No matching demo requests.</td></tr>';
+ }
+
+ document.querySelectorAll("[data-request]").forEach(button=>{
+  button.addEventListener("click",()=>openReview(button.dataset.request));
+ });
+}
+
+function renderMetrics(){
+ const statuses=[
+  ["Pending","pending"],
+  ["Demo Approved","approved"],
+  ["Rejected","rejected"],
+  ["Escalated","escalated"]
+ ];
+
+ const total=Math.max(1,state.requests.length);
+
+ $("statusMetrics").innerHTML=statuses.map(([label,status])=>{
+  const count=state.requests.filter(r=>r.status===status).length;
+  const percent=Math.round(count/total*100);
+
+  return `
+   <div class="metric">
+    <div class="metric-head">
+     <strong>${label}</strong>
+     <b>${count} · ${percent}%</b>
+    </div>
+    <div class="progress">
+     <span style="width:${percent}%"></span>
+    </div>
+   </div>
+  `;
+ }).join("");
+}
+
+function renderTimeline(){
+ const container=$("timeline");
+ container.replaceChildren();
+
+ state.events.forEach(event=>{
+  const row=document.createElement("div");
+  row.className="event";
+
+  const icon=document.createElement("div");
+  icon.className="event-icon";
+  icon.textContent="✓";
+
+  const body=document.createElement("div");
+
+  const title=document.createElement("strong");
+  title.textContent=event.title;
+
+  const detail=document.createElement("p");
+  detail.textContent=event.detail;
+
+  const time=document.createElement("small");
+  time.textContent=event.time;
+
+  body.append(title,detail,time);
+  row.appendChild(icon);
+  row.appendChild(body);
+  container.appendChild(row);
+ });
+}
+
+function buildDetails(fields){
+ const container=$("decisionDetails");
+ container.replaceChildren();
+
+ fields.forEach(([label,value],index)=>{
+  const box=document.createElement("div");
+  box.className="detail"+(index>=fields.length-3?" full":"");
+
+  const small=document.createElement("small");
+  small.textContent=label;
+
+  const strong=document.createElement("strong");
+  strong.textContent=value;
+
+  box.append(small,strong);
+  container.appendChild(box);
+ });
+}
+
+function openReview(id){
+ const request=state.requests.find(r=>r.id===id);
+ if(!request)return;
+
+ state.selectedId=id;
+
+ buildDetails([
+  ["Request ID",request.id],
+  ["Originating Agent",request.agent],
+  ["District",request.district],
+  ["Risk Classification",request.risk.toUpperCase()],
+  ["Review Status",request.status.toUpperCase()],
+  ["Confidence Display",request.confidence],
+  ["Proposed Action",request.action],
+  ["Evidence Summary",request.evidence],
+  ["Agent Recommendation",request.recommendation],
+  ["Known Limitations",request.limitations]
+ ]);
+
+ $("reviewerName").value=request.reviewer;
+ $("reviewNotes").value=request.rationale;
+
+ const canReview=request.status==="pending"||request.status==="escalated";
+
+ $("approveBtn").disabled=!canReview;
+ $("rejectBtn").disabled=!canReview;
+ $("escalateBtn").disabled=request.status!=="pending";
+
+ $("reviewModal").classList.add("open");
+ $("closeModalBtn").focus();
+}
+
+function closeModal(){
+ $("reviewModal").classList.remove("open");
+ state.selectedId=null;
+}
+
+function applyDecision(status){
+ const request=state.requests.find(r=>r.id===state.selectedId);
+ if(!request)return;
+
+ const reviewer=$("reviewerName").value.trim();
+ const rationale=$("reviewNotes").value.trim();
+
+ if(!reviewer||!rationale){
+  toast("Enter a demo reviewer label and decision rationale");
+  return;
+ }
+
+ if(reviewer.length>70||rationale.length>1000){
+  toast("Review details exceed the permitted length");
+  return;
+ }
+
+ const validTransition=
+  (request.status==="pending"&&["approved","rejected","escalated"].includes(status))||
+  (request.status==="escalated"&&["approved","rejected"].includes(status));
+
+ if(!validTransition){
+  toast("This demo request cannot make that status transition");
+  return;
+ }
+
+ request.status=status;
+ request.reviewer=reviewer;
+ request.rationale=rationale;
+
+ addEvent(
+  `Demo request ${status}`,
+  `${request.id} updated by ${reviewer}. No external action was executed.`
+ );
+
+ renderAll();
+ closeModal();
+ toast(`Decision recorded: ${status} (demo only)`);
+}
+
+function csvEscape(value){
+ let text=String(value??"");
+ if(/^\s*[=+\-@]/.test(text))text="'"+text;
+ return `"${text.replace(/"/g,'""')}"`;
+}
+
+function exportCSV(){
+ const fields=[
+  "id","agent","district","action","risk","status",
+  "confidence","evidence","recommendation","limitations",
+  "reviewer","rationale"
+ ];
+
+ const rows=[
+  fields.map(csvEscape).join(","),
+  ...state.requests.map(request=>
+   fields.map(field=>csvEscape(request[field])).join(",")
+  )
+ ];
+
+ const blob=new Blob(["\uFEFF"+rows.join("\r\n")],{
+  type:"text/csv;charset=utf-8"
+ });
+
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement("a");
+
+ link.href=url;
+ link.download="human-approval-demo.csv";
+
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ toast("Synthetic approval records exported");
+}
+
+function resetDemo(){
+ state.requests=structuredClone(INITIAL_REQUESTS);
+ state.selectedId=null;
+ state.search="";
+ state.risk="all";
+ state.status="all";
+
+ state.events=[{
+  title:"Governance demonstration reset",
+  detail:"Original fictional approval queue restored.",
+  time:new Date().toLocaleTimeString("en-IN")
+ }];
+
+ $("searchInput").value="";
+ $("riskFilter").value="all";
+ $("statusFilter").value="all";
+
+ closeModal();
+ renderAll();
+ toast("Demo approval queue reset");
+}
+
+function renderAll(){
+ renderKPIs();
+ renderRequests();
+ renderMetrics();
+ renderTimeline();
+}
+
+function initialize(){
+ $("searchInput").addEventListener("input",event=>{
+  state.search=event.target.value.trim();
+  renderRequests();
+ });
+
+ $("riskFilter").addEventListener("change",event=>{
+  state.risk=event.target.value;
+  renderRequests();
+ });
+
+ $("statusFilter").addEventListener("change",event=>{
+  state.status=event.target.value;
+  renderRequests();
+ });
+
+ $("openQueueBtn").addEventListener("click",()=>{
+  $("queuePanel").scrollIntoView({
+   behavior:"smooth",
+   block:"start"
+  });
+ });
+
+ $("approveBtn").addEventListener("click",()=>applyDecision("approved"));
+ $("rejectBtn").addEventListener("click",()=>applyDecision("rejected"));
+ $("escalateBtn").addEventListener("click",()=>applyDecision("escalated"));
+
+ $("closeModalBtn").addEventListener("click",closeModal);
+ $("dismissBtn").addEventListener("click",closeModal);
+
+ $("reviewModal").addEventListener("click",event=>{
+  if(event.target===$("reviewModal"))closeModal();
+ });
+
+ document.addEventListener("keydown",event=>{
+  if(event.key==="Escape")closeModal();
+ });
+
+ $("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+ });
+
+ $("resetBtn").addEventListener("click",resetDemo);
+ $("exportBtn").addEventListener("click",exportCSV);
+
+ renderAll();
+}
+
+initialize();
+
+console.info(
+ "Human Approval demo initialized. No operational approvals or external actions are supported."
+);
+</script>
+</body>
+</html>

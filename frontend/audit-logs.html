@@ -1,0 +1,1879 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Audit Logs</title></head><body><h1>Audit Logs</h1><p>Scaffold only — not operational.</p></body></html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090b10">
+<title>Audit Logs | Kerala Flood AI</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#090b10;
+  --sidebar:#0d1017;
+  --panel:#151922;
+  --panel2:#1b202b;
+  --gold:#d8b671;
+  --gold-light:#f5daa0;
+  --text:#f4f1e9;
+  --muted:#9399a7;
+  --line:rgba(255,255,255,.085);
+  --green:#54d6a4;
+  --red:#ff777d;
+  --orange:#ffb66e;
+  --blue:#82adff;
+  --purple:#b49bff;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:"DM Sans",sans-serif;
+  font-size:13px;
+}
+
+button,input,select{font:inherit}
+button{cursor:pointer}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible{
+  outline:2px solid var(--gold);
+  outline-offset:3px;
+}
+
+::-webkit-scrollbar{width:7px}
+::-webkit-scrollbar-thumb{background:#343946;border-radius:10px}
+
+.app{
+  display:grid;
+  grid-template-columns:252px minmax(0,1fr);
+  min-height:100vh;
+}
+
+.sidebar{
+  position:sticky;
+  top:0;
+  height:100vh;
+  background:var(--sidebar);
+  border-right:1px solid var(--line);
+  display:flex;
+  flex-direction:column;
+  z-index:30;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:25px 19px;
+  border-bottom:1px solid var(--line);
+}
+
+.brand-logo{
+  height:43px;
+  width:43px;
+  border-radius:13px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#f3dba5,#a47c3b);
+  color:#17130b;
+  font-size:23px;
+  font-weight:900;
+  box-shadow:0 7px 25px rgba(216,182,113,.17);
+}
+
+.brand strong{
+  font-family:Manrope,sans-serif;
+  font-size:13px;
+  letter-spacing:.4px;
+}
+
+.brand small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  letter-spacing:1.2px;
+  margin-top:5px;
+}
+
+.nav{
+  padding:21px 13px;
+  overflow:auto;
+  flex:1;
+}
+
+.nav-label{
+  color:#777e8d;
+  font-size:10px;
+  letter-spacing:1.7px;
+  font-weight:800;
+  margin:13px 12px;
+}
+
+.nav a{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-decoration:none;
+  color:#a2a8b4;
+  padding:12px 13px;
+  margin-bottom:5px;
+  border-radius:10px;
+  border:1px solid transparent;
+  font-weight:600;
+  font-size:12px;
+  transition:.2s;
+}
+
+.nav a:hover{
+  color:white;
+  background:#1b202b;
+}
+
+.nav a.active{
+  color:var(--gold-light);
+  background:rgba(216,182,113,.1);
+  border-color:rgba(216,182,113,.19);
+}
+
+.nav-icon{
+  width:20px;
+  text-align:center;
+  font-size:17px;
+}
+
+.sidebar-footer{
+  padding:17px;
+  border-top:1px solid var(--line);
+}
+
+.profile{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.avatar{
+  height:38px;
+  width:38px;
+  display:grid;
+  place-items:center;
+  background:#383023;
+  color:var(--gold-light);
+  border-radius:11px;
+  font-weight:800;
+}
+
+.profile strong{font-size:11px}
+
+.profile small{
+  display:block;
+  font-size:10px;
+  color:var(--muted);
+  margin-top:5px;
+}
+
+.main{
+  min-width:0;
+  background:
+    radial-gradient(ellipse at 60% -5%,rgba(216,182,113,.07),transparent 38%),
+    var(--bg);
+}
+
+.topbar{
+  min-height:82px;
+  padding:17px 30px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+}
+
+.top-title{
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+
+.page-icon{
+  height:43px;
+  width:43px;
+  display:grid;
+  place-items:center;
+  color:var(--gold);
+  background:rgba(216,182,113,.1);
+  border:1px solid rgba(216,182,113,.2);
+  border-radius:12px;
+  font-size:20px;
+}
+
+.top-title h1{
+  font-family:Manrope,sans-serif;
+  font-size:18px;
+  letter-spacing:-.5px;
+  margin:0;
+}
+
+.top-title p{
+  margin:5px 0 0;
+  font-size:11px;
+  color:var(--muted);
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  border:1px solid rgba(216,182,113,.2);
+  color:var(--gold-light);
+  background:rgba(216,182,113,.075);
+  border-radius:9px;
+  padding:10px 12px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.gold-dot{
+  height:7px;
+  width:7px;
+  border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 10px var(--gold);
+  animation:pulse 2s infinite;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:11px 15px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:#1a1f29;
+  color:#e1e3e8;
+  font-weight:700;
+  font-size:11px;
+  transition:.2s;
+}
+
+.btn:hover{
+  border-color:rgba(216,182,113,.4);
+  transform:translateY(-1px);
+}
+
+.btn.gold{
+  background:linear-gradient(120deg,#c6a15e,#f1d49a);
+  color:#1b160e;
+  border:0;
+}
+
+.content{
+  max-width:1650px;
+  padding:28px 30px 42px;
+  margin:auto;
+}
+
+.heading-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:15px;
+  flex-wrap:wrap;
+  margin-bottom:24px;
+}
+
+.eyebrow{
+  color:var(--gold);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:2px;
+  margin-bottom:10px;
+}
+
+.heading-row h2{
+  font-family:Manrope,sans-serif;
+  font-size:27px;
+  letter-spacing:-1px;
+  margin:0;
+}
+
+.heading-row p{
+  margin:9px 0 0;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+}
+
+.grid{
+  display:grid;
+  gap:16px;
+}
+
+.kpi-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+.card{
+  background:linear-gradient(150deg,#181c26,#12161e);
+  border:1px solid var(--line);
+  border-radius:16px;
+  min-width:0;
+  box-shadow:0 14px 35px rgba(0,0,0,.1);
+  animation:rise .55s ease both;
+}
+
+.kpi{
+  padding:21px;
+  position:relative;
+  overflow:hidden;
+}
+
+.kpi::before{
+  content:"";
+  position:absolute;
+  width:110px;
+  height:110px;
+  border-radius:50%;
+  background:rgba(216,182,113,.035);
+  top:-55px;
+  right:-45px;
+}
+
+.kpi-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  color:#a7adba;
+  font-size:11px;
+  font-weight:700;
+}
+
+.kpi-icon{
+  height:36px;
+  width:36px;
+  display:grid;
+  place-items:center;
+  background:rgba(216,182,113,.1);
+  border-radius:10px;
+  color:var(--gold);
+  font-size:18px;
+}
+
+.kpi-value{
+  font-family:Manrope,sans-serif;
+  font-size:30px;
+  font-weight:800;
+  margin:15px 0 7px;
+  letter-spacing:-1px;
+}
+
+.kpi-bottom{
+  color:var(--muted);
+  font-size:10px;
+}
+
+.kpi-bottom span{
+  color:var(--gold);
+  font-weight:800;
+}
+
+.section-grid{
+  grid-template-columns:minmax(0,1.65fr) minmax(280px,1fr);
+  margin-top:17px;
+}
+
+.panel{
+  padding:22px;
+}
+
+.panel-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.panel-title{
+  font-family:Manrope,sans-serif;
+  font-size:14px;
+  font-weight:800;
+}
+
+.panel-sub{
+  font-size:10px;
+  color:var(--muted);
+  margin-top:7px;
+}
+
+.panel-tag{
+  border:1px solid rgba(216,182,113,.16);
+  background:rgba(216,182,113,.06);
+  border-radius:7px;
+  padding:7px 9px;
+  font-size:10px;
+  color:var(--gold-light);
+  white-space:nowrap;
+}
+
+.filters{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:19px;
+}
+
+.search-box{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#191e28;
+  border:1px solid #303541;
+  border-radius:10px;
+  padding:0 13px;
+  flex:1;
+  min-width:210px;
+}
+
+.search-box:focus-within{
+  border-color:var(--gold);
+}
+
+.search-box span{
+  color:var(--gold);
+  font-size:17px;
+}
+
+.search-box input{
+  background:transparent;
+  border:0;
+  outline:0;
+  color:white;
+  padding:12px 0;
+  width:100%;
+  font-size:12px;
+}
+
+.search-box input::placeholder{
+  color:#777e8d;
+}
+
+.select{
+  background:#191e28;
+  color:#e8e8e8;
+  border:1px solid #303541;
+  border-radius:10px;
+  padding:11px 12px;
+  outline:0;
+  min-width:130px;
+}
+
+.table-wrap{
+  overflow:auto;
+}
+
+table{
+  border-collapse:collapse;
+  width:100%;
+  text-align:left;
+  white-space:nowrap;
+}
+
+th{
+  padding:14px 12px;
+  font-size:10px;
+  letter-spacing:.7px;
+  color:#8d94a2;
+  border-bottom:1px solid var(--line);
+  font-weight:800;
+}
+
+td{
+  padding:15px 12px;
+  border-bottom:1px solid rgba(255,255,255,.045);
+  font-size:11px;
+  color:#d7dbe2;
+}
+
+tbody tr{
+  transition:.2s;
+}
+
+tbody tr:hover{
+  background:rgba(216,182,113,.035);
+}
+
+.event-id{
+  color:var(--gold-light);
+  font-weight:800;
+  font-family:monospace;
+}
+
+.event-type{
+  font-weight:700;
+}
+
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:5px 9px;
+  border-radius:7px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.pill.info{
+  background:rgba(130,173,255,.1);
+  color:var(--blue);
+}
+
+.pill.success{
+  background:rgba(84,214,164,.1);
+  color:var(--green);
+}
+
+.pill.warning{
+  background:rgba(255,182,110,.1);
+  color:var(--orange);
+}
+
+.pill.critical{
+  background:rgba(255,119,125,.1);
+  color:var(--red);
+}
+
+.view-btn{
+  background:rgba(216,182,113,.09);
+  color:var(--gold-light);
+  border:1px solid rgba(216,182,113,.2);
+  padding:7px 10px;
+  border-radius:7px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.view-btn:hover{
+  background:rgba(216,182,113,.18);
+}
+
+.pagination{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  padding-top:19px;
+}
+
+.pagination-info{
+  color:var(--muted);
+  font-size:11px;
+}
+
+.pagination-actions{
+  display:flex;
+  gap:7px;
+}
+
+.timeline{
+  display:grid;
+  gap:0;
+}
+
+.timeline-item{
+  display:flex;
+  gap:13px;
+  position:relative;
+  padding-bottom:22px;
+}
+
+.timeline-item:not(:last-child)::before{
+  content:"";
+  position:absolute;
+  left:16px;
+  top:35px;
+  bottom:0;
+  width:1px;
+  background:#343a46;
+}
+
+.timeline-icon{
+  height:33px;
+  width:33px;
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  background:rgba(216,182,113,.1);
+  color:var(--gold);
+  border:1px solid rgba(216,182,113,.13);
+}
+
+.timeline-content{
+  padding-top:2px;
+}
+
+.timeline-content strong{
+  display:block;
+  font-size:11px;
+}
+
+.timeline-content p{
+  font-size:10px;
+  color:var(--muted);
+  margin:7px 0;
+  line-height:1.6;
+}
+
+.timeline-content small{
+  font-size:10px;
+  color:#747c8b;
+}
+
+.category-bars{
+  display:grid;
+  gap:16px;
+}
+
+.category-row{
+  display:grid;
+  gap:8px;
+}
+
+.category-label{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:#c7cbd3;
+}
+
+.category-label strong{
+  color:var(--gold-light);
+}
+
+.bar-track{
+  height:7px;
+  background:#292f3a;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.bar-fill{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,#94713b,#f1d392);
+  border-radius:20px;
+  transition:width .8s ease;
+}
+
+.safety-card{
+  border:1px solid rgba(216,182,113,.18);
+  background:rgba(216,182,113,.055);
+  border-radius:12px;
+  padding:17px;
+  margin-top:18px;
+}
+
+.safety-card strong{
+  color:var(--gold-light);
+  font-size:12px;
+}
+
+.safety-card p{
+  color:#aeb4bf;
+  font-size:11px;
+  line-height:1.8;
+  margin:10px 0 0;
+}
+
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(0,0,0,.78);
+  backdrop-filter:blur(8px);
+}
+
+.modal-backdrop.open{
+  display:flex;
+}
+
+.modal{
+  width:min(650px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:#171b24;
+  border:1px solid rgba(216,182,113,.3);
+  border-radius:18px;
+  padding:25px;
+  box-shadow:0 30px 100px rgba(0,0,0,.5);
+  animation:rise .3s ease;
+}
+
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.modal-head h3{
+  font-family:Manrope,sans-serif;
+  margin:0;
+  font-size:17px;
+}
+
+.close-btn{
+  width:34px;
+  height:34px;
+  border-radius:9px;
+  background:#272c37;
+  border:1px solid var(--line);
+  color:white;
+  font-size:18px;
+}
+
+.detail-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.detail{
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#1c212c;
+  min-width:0;
+}
+
+.detail-label{
+  font-size:10px;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+
+.detail-value{
+  font-size:12px;
+  color:#f0e9d9;
+  overflow-wrap:anywhere;
+}
+
+.detail.full{
+  grid-column:1/-1;
+}
+
+.footer{
+  text-align:center;
+  padding-top:26px;
+  color:#69707e;
+  font-size:10px;
+}
+
+.toast{
+  position:fixed;
+  bottom:24px;
+  right:24px;
+  padding:14px 18px;
+  background:#252b35;
+  color:var(--gold-light);
+  border:1px solid rgba(216,182,113,.4);
+  border-radius:11px;
+  z-index:150;
+  box-shadow:0 15px 45px #0008;
+  animation:rise .3s ease;
+}
+
+.menu-btn{display:none}
+
+@keyframes rise{
+  from{opacity:0;transform:translateY(15px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes pulse{
+  50%{opacity:.35}
+}
+
+@media(max-width:1250px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .section-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:900px){
+  .app{grid-template-columns:1fr}
+
+  .sidebar{
+    position:fixed;
+    width:260px;
+    transform:translateX(-100%);
+    transition:.3s;
+  }
+
+  .sidebar.open{transform:translateX(0)}
+  .menu-btn{display:inline-flex}
+  .topbar{padding:15px 20px}
+  .content{padding:20px}
+}
+
+@media(max-width:560px){
+  .kpi-grid{grid-template-columns:1fr}
+  .heading-row h2{font-size:23px}
+  .panel{padding:17px}
+  .top-actions .badge{display:none}
+  .filters>*{width:100%}
+  .detail-grid{grid-template-columns:1fr}
+  .detail.full{grid-column:auto}
+  .modal{padding:18px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="brand">
+    <div class="brand-logo">✦</div>
+    <div>
+      <strong>KERALA FLOOD AI</strong>
+      <small>INTELLIGENCE PLATFORM</small>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-label">WORKSPACE</div>
+
+    <a href="index.html">
+      <span class="nav-icon">▦</span>Overview
+    </a>
+
+    <a href="agent-command-center.html">
+      <span class="nav-icon">◈</span>Agent Command Center
+    </a>
+
+    <a href="ai-copilot.html">
+      <span class="nav-icon">✦</span>AI Copilot
+    </a>
+
+    <a href="ambulance-dispatch.html">
+      <span class="nav-icon">✚</span>Ambulance Dispatch
+    </a>
+
+    <a href="analytics.html">
+      <span class="nav-icon">▥</span>Analytics Dashboard
+    </a>
+
+    <div class="nav-label" style="margin-top:24px">
+      GOVERNANCE
+    </div>
+
+    <a class="active" href="audit-logs.html">
+      <span class="nav-icon">◷</span>Audit Logs
+    </a>
+
+    <a href="reports.html">
+      <span class="nav-icon">▤</span>Reports
+    </a>
+
+    <a href="settings.html">
+      <span class="nav-icon">⚙</span>Settings
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="profile">
+      <div class="avatar">OP</div>
+      <div>
+        <strong>Operations Workspace</strong>
+        <small>Security & Governance</small>
+      </div>
+    </div>
+  </div>
+
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+  <div class="top-title">
+    <button class="btn menu-btn" id="menuBtn">☰</button>
+    <div class="page-icon">◷</div>
+    <div>
+      <h1>Audit Logs & Governance</h1>
+      <p>Security · AI decisions · Human approvals</p>
+    </div>
+  </div>
+
+  <div class="top-actions">
+    <div class="badge">
+      <span class="gold-dot"></span>
+      DEMO RECORDS
+    </div>
+
+    <button class="btn" id="refreshBtn">↻ Refresh</button>
+
+    <button class="btn gold" id="exportBtn">
+      ↓ Export CSV
+    </button>
+  </div>
+</header>
+
+<div class="content">
+
+  <div class="heading-row">
+    <div>
+      <div class="eyebrow">SECURITY & ACCOUNTABILITY</div>
+      <h2>Audit Intelligence Center</h2>
+      <p>
+        Inspect simulated platform events, agent decisions,
+        approvals and access activity.
+      </p>
+    </div>
+
+    <div class="badge">
+      READ-ONLY DEMONSTRATION
+    </div>
+  </div>
+
+  <section class="grid kpi-grid">
+
+    <div class="card kpi">
+      <div class="kpi-top">
+        Total Audit Events
+        <div class="kpi-icon">▤</div>
+      </div>
+      <div class="kpi-value" id="totalEvents">0</div>
+      <div class="kpi-bottom">
+        <span>DEMO</span> · Selected records
+      </div>
+    </div>
+
+    <div class="card kpi">
+      <div class="kpi-top">
+        Security Alerts
+        <div class="kpi-icon">⚠</div>
+      </div>
+      <div class="kpi-value" id="securityAlerts">0</div>
+      <div class="kpi-bottom">
+        <span>DEMO</span> · Security events
+      </div>
+    </div>
+
+    <div class="card kpi">
+      <div class="kpi-top">
+        Human Reviews
+        <div class="kpi-icon">◇</div>
+      </div>
+      <div class="kpi-value" id="humanReviews">0</div>
+      <div class="kpi-bottom">
+        <span>DEMO</span> · Review records
+      </div>
+    </div>
+
+    <div class="card kpi">
+      <div class="kpi-top">
+        Critical Events
+        <div class="kpi-icon">⚑</div>
+      </div>
+      <div class="kpi-value" id="criticalEvents">0</div>
+      <div class="kpi-bottom">
+        <span>DEMO</span> · Critical severity
+      </div>
+    </div>
+
+  </section>
+
+  <section class="grid section-grid">
+
+    <div class="card panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Audit Event Explorer</div>
+          <div class="panel-sub">
+            Search and inspect fictional event records
+          </div>
+        </div>
+        <div class="panel-tag">EVENT LOG</div>
+      </div>
+
+      <div class="filters">
+        <label class="search-box">
+          <span>⌕</span>
+          <input
+            id="searchInput"
+            placeholder="Search event ID, user, action..."
+            aria-label="Search audit logs"
+          >
+        </label>
+
+        <select class="select" id="categoryFilter">
+          <option value="all">All Categories</option>
+          <option value="authentication">Authentication</option>
+          <option value="agent">AI Agent</option>
+          <option value="approval">Human Approval</option>
+          <option value="security">Security</option>
+          <option value="rescue">Rescue</option>
+          <option value="data">Data Access</option>
+        </select>
+
+        <select class="select" id="severityFilter">
+          <option value="all">All Severity</option>
+          <option value="info">Info</option>
+          <option value="success">Success</option>
+          <option value="warning">Warning</option>
+          <option value="critical">Critical</option>
+        </select>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Event ID</th>
+              <th>Time</th>
+              <th>Actor</th>
+              <th>Action</th>
+              <th>Category</th>
+              <th>Severity</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+
+          <tbody id="auditTable"></tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <div class="pagination-info" id="paginationInfo"></div>
+
+        <div class="pagination-actions">
+          <button class="btn" id="prevBtn">← Previous</button>
+          <button class="btn" id="nextBtn">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Recent Activity</div>
+          <div class="panel-sub">
+            Latest fictional governance events
+          </div>
+        </div>
+        <div class="panel-tag">TIMELINE</div>
+      </div>
+
+      <div class="timeline" id="activityTimeline"></div>
+    </div>
+
+  </section>
+
+  <section class="grid section-grid">
+
+    <div class="card panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Event Category Distribution</div>
+          <div class="panel-sub">
+            Number of records by event category
+          </div>
+        </div>
+        <div class="panel-tag">DISTRIBUTION</div>
+      </div>
+
+      <div class="category-bars" id="categoryBars"></div>
+    </div>
+
+    <div class="card panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Governance Status</div>
+          <div class="panel-sub">
+            Demo environment capabilities
+          </div>
+        </div>
+        <div class="panel-tag">COMPLIANCE</div>
+      </div>
+
+      <div class="safety-card" style="margin-top:0">
+        <strong>◇ Audit Integrity Notice</strong>
+        <p>
+          This interface does not provide tamper-proof
+          audit storage, verified identity, cryptographic
+          signatures, immutable retention or real
+          approval authorization.
+        </p>
+      </div>
+
+      <div class="safety-card">
+        <strong>⚑ Emergency Governance</strong>
+        <p>
+          Dispatch, evacuation, medical coordination,
+          public alerts and shelter decisions require
+          authenticated human approval and trusted
+          operational systems.
+        </p>
+      </div>
+    </div>
+
+  </section>
+
+  <footer class="footer">
+    KERALA FLOOD RELIEF COORDINATION AGENT
+    · SECURITY & AUDIT INTELLIGENCE
+    · DEMONSTRATION
+  </footer>
+
+</div>
+</main>
+</div>
+
+<!-- EVENT DETAILS MODAL -->
+<div class="modal-backdrop" id="detailModal" role="dialog"
+     aria-modal="true" aria-labelledby="modalTitle">
+
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modalTitle">Audit Event Details</h3>
+      <button class="close-btn" id="closeModal" aria-label="Close">×</button>
+    </div>
+
+    <div class="detail-grid" id="detailGrid"></div>
+
+    <div class="safety-card">
+      <strong>Read-only Event Inspection</strong>
+      <p>
+        This is a synthetic audit record.
+        It does not prove that an operational action occurred.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* =========================================================
+   AUDIT LOGS DEMONSTRATION
+========================================================= */
+
+const CONFIG = {
+  demoMode: true,
+  apiEndpoint: "/api/v1/audit-logs",
+  pageSize: 8
+};
+
+const $ = id => document.getElementById(id);
+
+const CATEGORIES = [
+  "authentication",
+  "agent",
+  "approval",
+  "security",
+  "rescue",
+  "data"
+];
+
+const ACTIONS = {
+  authentication: [
+    "User login",
+    "Session created",
+    "Session expired",
+    "MFA verification"
+  ],
+  agent: [
+    "Agent workflow started",
+    "Agent recommendation generated",
+    "Agent checkpoint saved",
+    "Agent workflow completed"
+  ],
+  approval: [
+    "Human review requested",
+    "Review decision recorded",
+    "Recommendation rejected",
+    "Approval workflow opened"
+  ],
+  security: [
+    "Access denied",
+    "Permission validation",
+    "Suspicious request blocked",
+    "Rate limit triggered"
+  ],
+  rescue: [
+    "Rescue plan drafted",
+    "Incident record reviewed",
+    "Resource recommendation generated",
+    "Dispatch proposal reviewed"
+  ],
+  data: [
+    "Document retrieved",
+    "Dataset accessed",
+    "Report generated",
+    "Data export requested"
+  ]
+};
+
+const ACTORS = [
+  "Operations Admin",
+  "District Coordinator",
+  "Supervisor Agent",
+  "Rescue Agent",
+  "Weather Agent",
+  "Security Service",
+  "Review Officer",
+  "RAG Service"
+];
+
+const state = {
+  records: [],
+  search: "",
+  category: "all",
+  severity: "all",
+  page: 1
+};
+
+/* =========================================================
+   SYNTHETIC DATA
+========================================================= */
+
+function seededRandom(seed) {
+  const value = Math.sin(seed * 13.127) * 43758.5453;
+  return value - Math.floor(value);
+}
+
+function generateAuditRecords() {
+  const records = [];
+
+  const baseTime = Date.UTC(
+    2026, 9, 15, 12, 0, 0
+  );
+
+  for (let index = 0; index < 96; index++) {
+    const category = CATEGORIES[
+      index % CATEGORIES.length
+    ];
+
+    const actions = ACTIONS[category];
+
+    const action = actions[
+      Math.floor(
+        seededRandom(index + 7) * actions.length
+      )
+    ];
+
+    let severity = "info";
+
+    if (category === "security") {
+      severity = index % 4 === 0
+        ? "critical"
+        : "warning";
+
+    } else if (category === "approval") {
+      severity = "warning";
+
+    } else if (
+      category === "authentication" ||
+      category === "rescue"
+    ) {
+      severity = "success";
+    }
+
+    const actor = ACTORS[
+      Math.floor(
+        seededRandom(index + 20) * ACTORS.length
+      )
+    ];
+
+    const timestamp = new Date(
+      baseTime - index * 17 * 60000
+    ).toISOString();
+
+    records.push({
+      id: `AUD-${String(index + 1).padStart(5,"0")}`,
+      timestamp,
+      actor,
+      action,
+      category,
+      severity,
+      resource: `DEMO-RESOURCE-${1000 + index}`,
+      requestId: `REQ-${3000 + index}`,
+      outcome: severity === "critical"
+        ? "Blocked / review required"
+        : severity === "warning"
+          ? "Review required"
+          : "Recorded",
+      description:
+        `Synthetic ${category} event generated for interface testing. ` +
+        `No real operational activity occurred.`
+    });
+  }
+
+  return records;
+}
+
+state.records = generateAuditRecords();
+
+/* =========================================================
+   FILTERING
+========================================================= */
+
+function filteredRecords() {
+  return state.records.filter(record => {
+    const searchText = [
+      record.id,
+      record.actor,
+      record.action,
+      record.category,
+      record.resource,
+      record.requestId
+    ].join(" ").toLowerCase();
+
+    const matchesSearch = searchText.includes(
+      state.search.toLowerCase()
+    );
+
+    const matchesCategory =
+      state.category === "all" ||
+      record.category === state.category;
+
+    const matchesSeverity =
+      state.severity === "all" ||
+      record.severity === state.severity;
+
+    return matchesSearch &&
+      matchesCategory &&
+      matchesSeverity;
+  });
+}
+
+function formatTime(timestamp) {
+  return new Date(timestamp).toLocaleString(
+    "en-IN",
+    {
+      day:"2-digit",
+      month:"short",
+      year:"numeric",
+      hour:"2-digit",
+      minute:"2-digit",
+      timeZone:"UTC"
+    }
+  ) + " UTC";
+}
+
+function capitalize(value) {
+  return value.charAt(0).toUpperCase() +
+    value.slice(1);
+}
+
+/* =========================================================
+   KPI COUNTERS
+========================================================= */
+
+function animateCounter(element, target) {
+  const start = performance.now();
+  const duration = 600;
+
+  function frame(now) {
+    const progress = Math.min(
+      1,
+      (now - start) / duration
+    );
+
+    const eased = 1 - Math.pow(1 - progress,3);
+
+    element.textContent = Math.round(
+      target * eased
+    ).toLocaleString("en-IN");
+
+    if (progress < 1) {
+      requestAnimationFrame(frame);
+    }
+  }
+
+  requestAnimationFrame(frame);
+}
+
+function renderKPIs() {
+  const records = filteredRecords();
+
+  animateCounter($("totalEvents"), records.length);
+
+  animateCounter(
+    $("securityAlerts"),
+    records.filter(
+      record => record.category === "security"
+    ).length
+  );
+
+  animateCounter(
+    $("humanReviews"),
+    records.filter(
+      record => record.category === "approval"
+    ).length
+  );
+
+  animateCounter(
+    $("criticalEvents"),
+    records.filter(
+      record => record.severity === "critical"
+    ).length
+  );
+}
+
+/* =========================================================
+   AUDIT TABLE
+========================================================= */
+
+function renderTable() {
+  const records = filteredRecords();
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(records.length / CONFIG.pageSize)
+  );
+
+  state.page = Math.min(
+    state.page,
+    totalPages
+  );
+
+  const start = (
+    state.page - 1
+  ) * CONFIG.pageSize;
+
+  const pageRecords = records.slice(
+    start,
+    start + CONFIG.pageSize
+  );
+
+  const tbody = $("auditTable");
+  tbody.replaceChildren();
+
+  pageRecords.forEach(record => {
+    const tr = document.createElement("tr");
+
+    const cells = [
+      record.id,
+      formatTime(record.timestamp),
+      record.actor,
+      record.action,
+      capitalize(record.category),
+      capitalize(record.severity)
+    ];
+
+    cells.forEach((value,index) => {
+      const td = document.createElement("td");
+
+      if (index === 0) {
+        td.className = "event-id";
+      }
+
+      if (index === 3) {
+        td.className = "event-type";
+      }
+
+      if (index === 5) {
+        const pill = document.createElement("span");
+        pill.className = `pill ${record.severity}`;
+        pill.textContent = value;
+        td.appendChild(pill);
+      } else {
+        td.textContent = value;
+      }
+
+      tr.appendChild(td);
+    });
+
+    const actionCell = document.createElement("td");
+
+    const button = document.createElement("button");
+    button.className = "view-btn";
+    button.textContent = "Inspect →";
+
+    button.addEventListener("click", () => {
+      openDetails(record.id);
+    });
+
+    actionCell.appendChild(button);
+    tr.appendChild(actionCell);
+    tbody.appendChild(tr);
+  });
+
+  if (!pageRecords.length) {
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
+
+    td.colSpan = 7;
+    td.textContent = "No matching audit records.";
+    td.style.textAlign = "center";
+    td.style.padding = "30px";
+
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+  }
+
+  $("paginationInfo").textContent =
+    `${records.length} matching events · Page ${state.page} of ${totalPages}`;
+
+  $("prevBtn").disabled = state.page <= 1;
+  $("nextBtn").disabled = state.page >= totalPages;
+}
+
+/* =========================================================
+   EVENT DETAILS
+========================================================= */
+
+function openDetails(id) {
+  const record = state.records.find(
+    item => item.id === id
+  );
+
+  if (!record) return;
+
+  const fields = [
+    ["Event ID",record.id],
+    ["Timestamp",formatTime(record.timestamp)],
+    ["Actor",record.actor],
+    ["Action",record.action],
+    ["Category",capitalize(record.category)],
+    ["Severity",capitalize(record.severity)],
+    ["Resource",record.resource],
+    ["Request ID",record.requestId],
+    ["Outcome",record.outcome],
+    ["Description",record.description]
+  ];
+
+  const container = $("detailGrid");
+  container.replaceChildren();
+
+  fields.forEach(([label,value],index) => {
+    const box = document.createElement("div");
+    box.className = "detail" +
+      (index === fields.length - 1 ? " full" : "");
+
+    const labelNode = document.createElement("div");
+    labelNode.className = "detail-label";
+    labelNode.textContent = label;
+
+    const valueNode = document.createElement("div");
+    valueNode.className = "detail-value";
+    valueNode.textContent = value;
+
+    box.append(labelNode,valueNode);
+    container.appendChild(box);
+  });
+
+  $("detailModal").classList.add("open");
+  $("closeModal").focus();
+}
+
+function closeDetails() {
+  $("detailModal").classList.remove("open");
+}
+
+/* =========================================================
+   ACTIVITY TIMELINE
+========================================================= */
+
+function renderTimeline() {
+  const records = filteredRecords().slice(0,6);
+
+  const icons = {
+    authentication:"◉",
+    agent:"✦",
+    approval:"◇",
+    security:"⚠",
+    rescue:"⚑",
+    data:"▤"
+  };
+
+  const container = $("activityTimeline");
+  container.replaceChildren();
+
+  records.forEach(record => {
+    const item = document.createElement("div");
+    item.className = "timeline-item";
+
+    const icon = document.createElement("div");
+    icon.className = "timeline-icon";
+    icon.textContent = icons[record.category];
+
+    const content = document.createElement("div");
+    content.className = "timeline-content";
+
+    const title = document.createElement("strong");
+    title.textContent = record.action;
+
+    const description = document.createElement("p");
+    description.textContent =
+      `${record.actor} · ${record.id}`;
+
+    const time = document.createElement("small");
+    time.textContent = formatTime(record.timestamp);
+
+    content.append(title,description,time);
+    item.append(icon,content);
+
+    container.appendChild(item);
+  });
+
+  if (!records.length) {
+    container.textContent = "No matching activity.";
+  }
+}
+
+/* =========================================================
+   CATEGORY DISTRIBUTION
+========================================================= */
+
+function renderCategoryBars() {
+  const records = filteredRecords();
+
+  const categories = CATEGORIES.map(category => ({
+    category,
+    count: records.filter(
+      record => record.category === category
+    ).length
+  }));
+
+  const maximum = Math.max(
+    1,
+    ...categories.map(item => item.count)
+  );
+
+  const container = $("categoryBars");
+  container.replaceChildren();
+
+  categories.forEach(item => {
+    const row = document.createElement("div");
+    row.className = "category-row";
+
+    const label = document.createElement("div");
+    label.className = "category-label";
+
+    const name = document.createElement("span");
+    name.textContent = capitalize(item.category);
+
+    const value = document.createElement("strong");
+    value.textContent = item.count;
+
+    label.append(name,value);
+
+    const track = document.createElement("div");
+    track.className = "bar-track";
+
+    const fill = document.createElement("div");
+    fill.className = "bar-fill";
+
+    track.appendChild(fill);
+    row.append(label,track);
+    container.appendChild(row);
+
+    requestAnimationFrame(() => {
+      fill.style.width =
+        `${item.count / maximum * 100}%`;
+    });
+  });
+}
+
+/* =========================================================
+   CSV EXPORT
+========================================================= */
+
+function exportCSV() {
+  const records = filteredRecords();
+
+  const columns = [
+    "id",
+    "timestamp",
+    "actor",
+    "action",
+    "category",
+    "severity",
+    "resource",
+    "requestId",
+    "outcome",
+    "description"
+  ];
+
+  const csv = [
+    columns.join(","),
+    ...records.map(record => (
+      columns.map(column => {
+        const value = String(record[column] ?? "");
+
+        // Protect spreadsheet viewers from formula injection.
+        const safeValue = /^[\s]*[=+\-@]/.test(value)
+          ? "'" + value
+          : value;
+
+        return `"${safeValue.replace(/"/g,'""')}"`;
+      }).join(",")
+    ))
+  ].join("\r\n");
+
+  const blob = new Blob(
+    ["\uFEFF" + csv],
+    {type:"text/csv;charset=utf-8"}
+  );
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "kerala-flood-demo-audit-logs.csv";
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url),1000);
+
+  toast("Synthetic audit records exported");
+}
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+function toast(message) {
+  document.querySelector(".toast")?.remove();
+
+  const node = document.createElement("div");
+  node.className = "toast";
+  node.textContent = message;
+
+  document.body.appendChild(node);
+
+  setTimeout(() => node.remove(),3000);
+}
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function renderAll() {
+  renderKPIs();
+  renderTable();
+  renderTimeline();
+  renderCategoryBars();
+}
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+$("searchInput").addEventListener("input",event => {
+  state.search = event.target.value.trim();
+  state.page = 1;
+  renderAll();
+});
+
+$("categoryFilter").addEventListener("change",event => {
+  state.category = event.target.value;
+  state.page = 1;
+  renderAll();
+});
+
+$("severityFilter").addEventListener("change",event => {
+  state.severity = event.target.value;
+  state.page = 1;
+  renderAll();
+});
+
+$("prevBtn").addEventListener("click",() => {
+  if (state.page > 1) {
+    state.page--;
+    renderTable();
+  }
+});
+
+$("nextBtn").addEventListener("click",() => {
+  const totalPages = Math.ceil(
+    filteredRecords().length / CONFIG.pageSize
+  );
+
+  if (state.page < totalPages) {
+    state.page++;
+    renderTable();
+  }
+});
+
+$("refreshBtn").addEventListener("click",() => {
+  renderAll();
+  toast("Demo audit records refreshed");
+});
+
+$("exportBtn").addEventListener("click",exportCSV);
+
+$("closeModal").addEventListener("click",closeDetails);
+
+$("detailModal").addEventListener("click",event => {
+  if (event.target === $("detailModal")) {
+    closeDetails();
+  }
+});
+
+document.addEventListener("keydown",event => {
+  if (event.key === "Escape") {
+    closeDetails();
+  }
+});
+
+$("menuBtn").addEventListener("click",() => {
+  $("sidebar").classList.toggle("open");
+});
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+function initialize() {
+  renderAll();
+
+  console.info(
+    "Kerala Flood Audit Logs initialized with fictional data."
+  );
+}
+
+initialize();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1533 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090b10">
+<title>Rescue Dispatch | Kerala Flood AI</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#090b10;
+ --sidebar:#0d1017;
+ --panel:#151922;
+ --panel2:#1b202b;
+ --gold:#d8b671;
+ --gold2:#f5daa0;
+ --text:#f4f1e9;
+ --muted:#9399a7;
+ --line:rgba(255,255,255,.085);
+ --green:#54d6a4;
+ --orange:#ffb66e;
+ --red:#ff777d;
+ --blue:#82adff;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--text);
+ font:13px "DM Sans",sans-serif;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+.app{
+ display:grid;
+ grid-template-columns:252px minmax(0,1fr);
+ min-height:100vh;
+}
+
+.sidebar{
+ position:sticky;
+ top:0;
+ height:100vh;
+ background:var(--sidebar);
+ border-right:1px solid var(--line);
+ display:flex;
+ flex-direction:column;
+ z-index:40;
+}
+
+.brand{
+ padding:23px 17px;
+ display:flex;
+ gap:12px;
+ align-items:center;
+ border-bottom:1px solid var(--line);
+}
+
+.brand-icon{
+ width:43px;
+ height:43px;
+ display:grid;
+ place-items:center;
+ border-radius:13px;
+ background:linear-gradient(135deg,#f5daa0,#a47c3b);
+ color:#20170a;
+ font-size:23px;
+}
+
+.brand strong{font:800 13px Manrope,sans-serif}
+.brand small{
+ display:block;
+ font-size:10px;
+ letter-spacing:1.2px;
+ color:var(--muted);
+ margin-top:5px;
+}
+
+.nav{padding:17px 12px;overflow:auto;flex:1}
+.nav-label{
+ color:#777e8d;
+ font-size:10px;
+ letter-spacing:1.5px;
+ font-weight:800;
+ margin:17px 12px 9px;
+}
+
+.nav a{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ padding:12px 13px;
+ margin-bottom:5px;
+ border:1px solid transparent;
+ border-radius:10px;
+ color:#a2a8b4;
+ font-size:12px;
+ font-weight:600;
+}
+
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{
+ background:#d8b67119;
+ border-color:#d8b67130;
+ color:var(--gold2);
+}
+
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.side-footer{
+ padding:17px;
+ border-top:1px solid var(--line);
+ display:flex;
+ align-items:center;
+ gap:10px;
+}
+.avatar{
+ width:38px;height:38px;
+ border-radius:11px;
+ background:#383023;
+ color:var(--gold2);
+ display:grid;
+ place-items:center;
+ font-weight:800;
+}
+.side-footer strong{font-size:11px}
+.side-footer small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ margin-top:5px;
+}
+
+.main{
+ min-width:0;
+ background:
+  radial-gradient(ellipse at 65% -5%,#d8b67112,transparent 38%),
+  var(--bg);
+}
+
+.topbar{
+ min-height:80px;
+ padding:16px 28px;
+ border-bottom:1px solid var(--line);
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+}
+
+.top-left,.top-actions{
+ display:flex;
+ align-items:center;
+ gap:11px;
+ flex-wrap:wrap;
+}
+
+.page-icon{
+ width:43px;height:43px;
+ border-radius:12px;
+ background:#d8b67119;
+ border:1px solid #d8b67133;
+ color:var(--gold);
+ display:grid;
+ place-items:center;
+ font-size:20px;
+}
+
+.top-left h1{
+ font:800 18px Manrope,sans-serif;
+ margin:0;
+}
+.top-left p{
+ color:var(--muted);
+ font-size:11px;
+ margin:5px 0 0;
+}
+
+.badge,.tag{
+ display:inline-flex;
+ align-items:center;
+ gap:7px;
+ padding:9px 11px;
+ background:#d8b67112;
+ border:1px solid #d8b67130;
+ color:var(--gold2);
+ border-radius:9px;
+ font-size:10px;
+ font-weight:800;
+}
+
+.dot{
+ width:7px;height:7px;
+ border-radius:50%;
+ background:var(--gold);
+ animation:pulse 2s infinite;
+}
+
+.btn{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ gap:8px;
+ padding:11px 15px;
+ border-radius:10px;
+ border:1px solid var(--line);
+ background:#1a1f29;
+ color:#e1e3e8;
+ font-size:11px;
+ font-weight:800;
+ transition:.2s;
+}
+
+.btn:hover{
+ border-color:#d8b67166;
+ transform:translateY(-1px);
+}
+
+.btn.gold{
+ background:linear-gradient(120deg,#c6a15e,#f1d49a);
+ color:#1b160e;
+ border:0;
+}
+
+.btn.red{
+ color:var(--red);
+ background:#ff777d12;
+ border-color:#ff777d40;
+}
+
+.btn.blue{
+ color:var(--blue);
+ background:#82adff12;
+ border-color:#82adff40;
+}
+
+.btn:disabled{
+ opacity:.5;
+ cursor:not-allowed;
+ transform:none;
+}
+
+.content{
+ max-width:1700px;
+ margin:auto;
+ padding:27px 29px 44px;
+}
+
+.eyebrow{
+ color:var(--gold);
+ font-size:10px;
+ letter-spacing:2px;
+ font-weight:800;
+ margin-bottom:10px;
+}
+
+.heading{
+ display:flex;
+ justify-content:space-between;
+ align-items:flex-end;
+ gap:15px;
+ flex-wrap:wrap;
+ margin-bottom:22px;
+}
+
+.heading h2{
+ font:800 28px Manrope,sans-serif;
+ letter-spacing:-1px;
+ margin:0;
+}
+
+.heading p{
+ color:var(--muted);
+ font-size:12px;
+ line-height:1.8;
+ margin:9px 0 0;
+}
+
+.hero{
+ padding:26px;
+ border-radius:18px;
+ border:1px solid #d8b67138;
+ background:
+  radial-gradient(circle at 85% 15%,#d8b67120,transparent 35%),
+  linear-gradient(120deg,#252017,#151922);
+}
+
+.hero h3{
+ font:800 25px Manrope,sans-serif;
+ letter-spacing:-.8px;
+ margin:12px 0;
+}
+
+.hero p{
+ color:#b9b5ae;
+ font-size:12px;
+ line-height:1.9;
+ max-width:850px;
+}
+
+.hero-actions{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-top:19px;
+}
+
+.grid{display:grid;gap:16px}
+.kpis{
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ margin-top:17px;
+}
+
+.card{
+ min-width:0;
+ background:linear-gradient(150deg,#181c26,#12161e);
+ border:1px solid var(--line);
+ border-radius:16px;
+ box-shadow:0 14px 35px #0002;
+ animation:rise .5s ease both;
+}
+
+.kpi{padding:20px}
+.kpi-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ color:#a7adba;
+ font-size:11px;
+ font-weight:700;
+}
+.kpi-icon{
+ width:36px;height:36px;
+ border-radius:10px;
+ background:#d8b67119;
+ color:var(--gold);
+ display:grid;
+ place-items:center;
+ font-size:18px;
+}
+.kpi-number{
+ font:800 29px Manrope,sans-serif;
+ letter-spacing:-1px;
+ margin:15px 0 7px;
+}
+.kpi-caption{
+ font-size:10px;
+ color:var(--muted);
+ line-height:1.7;
+}
+.kpi-caption b{color:var(--gold)}
+
+.section{margin-top:25px}
+.section-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:flex-end;
+ gap:14px;
+ flex-wrap:wrap;
+ margin-bottom:15px;
+}
+.section-head h3{
+ font:800 19px Manrope,sans-serif;
+ letter-spacing:-.5px;
+ margin:0;
+}
+.section-head p{
+ color:var(--muted);
+ font-size:11px;
+ line-height:1.8;
+ margin:7px 0 0;
+}
+
+.panel{padding:21px}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{
+ color:var(--muted);
+ font-size:10px;
+ line-height:1.8;
+ margin-top:6px;
+}
+
+.columns{
+ grid-template-columns:minmax(0,1.6fr) minmax(310px,1fr);
+}
+.two-col{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+.input,.select,.textarea{
+ width:100%;
+ padding:12px 13px;
+ border:1px solid #343a46;
+ border-radius:10px;
+ background:#1b202b;
+ color:var(--text);
+ outline:none;
+}
+.input:focus,.select:focus,.textarea:focus{
+ border-color:var(--gold);
+}
+.textarea{min-height:85px;resize:vertical}
+.field{display:grid;gap:8px;margin-bottom:15px}
+.field label{
+ font-size:11px;
+ font-weight:800;
+ color:#c9ccd4;
+}
+
+.filters{
+ display:flex;
+ gap:9px;
+ flex-wrap:wrap;
+ margin-bottom:16px;
+}
+.filters .input{flex:1;min-width:170px}
+.filters .select{width:auto;min-width:130px}
+
+.pill{
+ display:inline-flex;
+ align-items:center;
+ padding:7px 10px;
+ border-radius:8px;
+ font-size:10px;
+ font-weight:800;
+ white-space:nowrap;
+}
+.pill.critical,.pill.cancelled,.pill.unavailable{
+ color:var(--red);background:#ff777d19
+}
+.pill.high,.pill.review,.pill.assigned,.pill.active{
+ color:var(--orange);background:#ffb66e19
+}
+.pill.medium,.pill.pending{
+ color:var(--blue);background:#82adff19
+}
+.pill.low,.pill.available,.pill.completed{
+ color:var(--green);background:#54d6a419
+}
+.pill.approved{
+ color:var(--gold2);background:#d8b67119
+}
+
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:900px}
+th{
+ text-align:left;
+ color:#89909d;
+ font-size:10px;
+ letter-spacing:.7px;
+ padding:14px 11px;
+ border-bottom:1px solid var(--line);
+}
+td{
+ padding:15px 11px;
+ border-bottom:1px solid var(--line);
+ font-size:11px;
+ color:#c4c9d3;
+}
+td strong{color:var(--text);font-size:11px}
+td small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ margin-top:5px;
+}
+
+.small-btn{
+ padding:8px 10px;
+ border-radius:8px;
+ border:1px solid #d8b67140;
+ background:#d8b67115;
+ color:var(--gold2);
+ font-size:10px;
+ font-weight:800;
+}
+
+.team-card,.vehicle-card,.queue-card{
+ padding:15px;
+ background:#1b202b;
+ border:1px solid var(--line);
+ border-radius:11px;
+ margin-bottom:10px;
+}
+.item-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ flex-wrap:wrap;
+}
+.item-head strong{font-size:11px}
+.item-description{
+ color:var(--muted);
+ font-size:10px;
+ line-height:1.8;
+ margin:9px 0;
+}
+
+.metric{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ padding:13px 0;
+ border-bottom:1px solid var(--line);
+}
+.metric span{color:var(--muted);font-size:11px}
+.metric strong{font-size:12px}
+
+.timeline{display:grid;gap:14px}
+.event{display:flex;gap:12px}
+.event-icon{
+ width:33px;height:33px;
+ flex-shrink:0;
+ display:grid;
+ place-items:center;
+ border-radius:10px;
+ background:#d8b67118;
+ color:var(--gold);
+}
+.event strong{font-size:11px}
+.event p{
+ font-size:10px;
+ color:var(--muted);
+ line-height:1.7;
+ margin:7px 0;
+}
+.event small{font-size:10px;color:#777e8d}
+
+.notice{
+ padding:16px;
+ background:#d8b6710e;
+ border:1px solid #d8b67130;
+ border-radius:12px;
+ color:#bbb4a5;
+ font-size:11px;
+ line-height:1.9;
+ margin-top:17px;
+}
+.notice strong{color:var(--gold2)}
+
+.footer{
+ padding-top:26px;
+ text-align:center;
+ color:#69707e;
+ font-size:10px;
+}
+
+.overlay{
+ position:fixed;
+ inset:0;
+ z-index:100;
+ background:#000b;
+ display:none;
+ align-items:center;
+ justify-content:center;
+ padding:18px;
+}
+.overlay.open{display:flex}
+.modal{
+ width:min(700px,100%);
+ max-height:90vh;
+ overflow:auto;
+ background:#181d27;
+ border:1px solid #d8b67144;
+ border-radius:17px;
+ padding:24px;
+ box-shadow:0 30px 90px #0009;
+}
+.modal-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+}
+.modal-head h3{
+ font:800 18px Manrope,sans-serif;
+ margin:0;
+}
+.detail{
+ padding:13px;
+ background:#10151e;
+ border:1px solid var(--line);
+ border-radius:9px;
+ margin-top:12px;
+}
+.detail small{
+ display:block;
+ color:var(--muted);
+ font-size:10px;
+ margin-bottom:8px;
+}
+.detail strong{
+ font-size:11px;
+ overflow-wrap:anywhere;
+}
+
+.toast{
+ position:fixed;
+ right:20px;
+ bottom:20px;
+ z-index:150;
+ padding:14px 17px;
+ background:#252b35;
+ border:1px solid #d8b67166;
+ color:var(--gold2);
+ border-radius:11px;
+ box-shadow:0 15px 45px #0008;
+}
+
+.menu-btn{display:none}
+@keyframes rise{
+ from{opacity:0;transform:translateY(14px)}
+ to{opacity:1;transform:translateY(0)}
+}
+@keyframes pulse{50%{opacity:.35}}
+
+@media(max-width:1250px){
+ .kpis{grid-template-columns:repeat(2,1fr)}
+ .columns{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+ .app{grid-template-columns:1fr}
+ .sidebar{
+  position:fixed;width:260px;
+  transform:translateX(-100%);
+  transition:.3s;
+ }
+ .sidebar.open{transform:translateX(0)}
+ .menu-btn{display:inline-flex}
+ .topbar{padding:15px 20px}
+ .content{padding:20px}
+}
+@media(max-width:560px){
+ .kpis,.two-col{grid-template-columns:1fr}
+ .heading h2{font-size:23px}
+ .panel{padding:16px}
+ .top-actions .badge{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{
+  animation-duration:.01ms!important;
+  transition-duration:.01ms!important;
+ }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-icon">✦</div>
+  <div>
+   <strong>KERALA FLOOD AI</strong>
+   <small>INTELLIGENCE PLATFORM</small>
+  </div>
+ </div>
+
+ <nav class="nav">
+  <div class="nav-label">WORKSPACE</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Project Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+
+  <div class="nav-label">EMERGENCY OPERATIONS</div>
+  <a href="emergency-sos.html"><span class="nav-icon">✚</span>Emergency SOS</a>
+  <a href="incident-management.html"><span class="nav-icon">!</span>Incident Management</a>
+  <a href="rescue-dashboard.html"><span class="nav-icon">⚑</span>Rescue Dashboard</a>
+  <a class="active" href="rescue-dispatch.html"><span class="nav-icon">↗</span>Rescue Dispatch</a>
+  <a href="evacuation-planning.html"><span class="nav-icon">◇</span>Evacuation Planning</a>
+  <a href="ambulance-dispatch.html"><span class="nav-icon">✚</span>Ambulance Dispatch</a>
+
+  <div class="nav-label">COORDINATION</div>
+  <a href="relief-dashboard.html"><span class="nav-icon">▣</span>Relief Dashboard</a>
+  <a href="volunteer-management.html"><span class="nav-icon">♧</span>Volunteers</a>
+  <a href="human-approval.html"><span class="nav-icon">✓</span>Human Approval</a>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+  <a href="reports.html"><span class="nav-icon">▥</span>Reports</a>
+ </nav>
+
+ <div class="side-footer">
+  <div class="avatar">RD</div>
+  <div>
+   <strong>Dispatch Coordination</strong>
+   <small>Simulation Workspace</small>
+  </div>
+ </div>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+ <div class="top-left">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="page-icon">↗</div>
+  <div>
+   <h1>Rescue Dispatch</h1>
+   <p>Mission assignments · Rescue teams · Vehicle allocation</p>
+  </div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>SIMULATION ONLY</span>
+  <button class="btn" id="resetBtn">↻ Reset</button>
+  <button class="btn gold" id="exportBtn">↓ Export CSV</button>
+ </div>
+</header>
+
+<div class="content">
+
+ <div class="heading">
+  <div>
+   <div class="eyebrow">RESCUE DISPATCH INTELLIGENCE</div>
+   <h2>Rescue Dispatch & Assignment Center</h2>
+   <p>Coordinate fictional rescue teams, vehicles and human-reviewed dispatch scenarios.</p>
+  </div>
+  <span class="tag">SYNTHETIC OPERATIONS</span>
+ </div>
+
+ <section class="hero">
+  <div class="eyebrow">HUMAN-CONTROLLED DISPATCH WORKFLOW</div>
+  <h3>Assign the Right Team. Coordinate Every Mission.</h3>
+  <p>
+   Review synthetic rescue requests, select suitable teams and vehicles,
+   authorize simulated assignments and monitor mission status.
+   Dispatch actions update only this page's browser memory.
+  </p>
+  <div class="hero-actions">
+   <button class="btn gold" id="dispatchShortcut">+ Review Dispatch Queue</button>
+   <a class="btn" href="#dispatchSection">View Assignments ↓</a>
+   <a class="btn blue" href="rescue-dashboard.html">Rescue Dashboard →</a>
+  </div>
+ </section>
+
+ <section class="grid kpis">
+  <div class="card kpi">
+   <div class="kpi-head">Dispatch Requests<div class="kpi-icon">▤</div></div>
+   <div class="kpi-number" id="kpiRequests">0</div>
+   <div class="kpi-caption"><b>FICTIONAL</b> · Rescue dispatch scenarios</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Pending Approval<div class="kpi-icon">✓</div></div>
+   <div class="kpi-number" id="kpiPending">0</div>
+   <div class="kpi-caption"><b>DEMO QUEUE</b> · Awaiting human review</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Active Dispatches<div class="kpi-icon">↗</div></div>
+   <div class="kpi-number" id="kpiActive">0</div>
+   <div class="kpi-caption"><b>SIMULATED</b> · No real responders contacted</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Available Teams<div class="kpi-icon">♧</div></div>
+   <div class="kpi-number" id="kpiTeams">0</div>
+   <div class="kpi-caption"><b>FICTIONAL</b> · Unassigned demo teams</div>
+  </div>
+ </section>
+
+ <section class="section grid columns" id="dispatchSection">
+  <div class="card panel">
+   <div class="section-head">
+    <div>
+     <div class="panel-title">Rescue Dispatch Queue</div>
+     <div class="panel-sub">Inspect fictional requests and progress them through review and assignment.</div>
+    </div>
+    <span class="tag" id="dispatchCount">0 REQUESTS</span>
+   </div>
+
+   <div class="filters">
+    <input class="input" id="searchInput" placeholder="Search dispatch, district, rescue type..." aria-label="Search dispatch requests">
+    <select class="select" id="statusFilter" aria-label="Filter status">
+     <option value="all">All Statuses</option>
+     <option value="pending">Pending</option>
+     <option value="review">Review</option>
+     <option value="approved">Approved</option>
+     <option value="active">Active</option>
+     <option value="completed">Completed</option>
+     <option value="cancelled">Cancelled</option>
+    </select>
+    <select class="select" id="districtFilter" aria-label="Filter district">
+     <option value="all">All Districts</option>
+    </select>
+   </div>
+
+   <div class="table-wrap">
+    <table>
+     <thead>
+      <tr>
+       <th>DISPATCH ID</th>
+       <th>DISTRICT</th>
+       <th>RESCUE TYPE</th>
+       <th>PEOPLE</th>
+       <th>PRIORITY</th>
+       <th>STATUS</th>
+       <th>ASSIGNMENT</th>
+       <th>ACTION</th>
+      </tr>
+     </thead>
+     <tbody id="dispatchTable"></tbody>
+    </table>
+   </div>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-title">Create Dispatch Scenario</div>
+   <div class="panel-sub" style="margin-bottom:18px">
+    Add a fictional rescue request for assignment planning.
+   </div>
+
+   <form id="requestForm">
+    <div class="field">
+     <label for="requestDistrict">District</label>
+     <select class="select" id="requestDistrict" required></select>
+    </div>
+
+    <div class="field">
+     <label for="requestType">Rescue Type</label>
+     <select class="select" id="requestType">
+      <option>Boat Rescue</option>
+      <option>Flood Evacuation</option>
+      <option>Medical Evacuation</option>
+      <option>Stranded Group Assistance</option>
+      <option>Emergency Supply Support</option>
+     </select>
+    </div>
+
+    <div class="grid two-col">
+     <div class="field">
+      <label for="requestPeople">People Involved</label>
+      <input class="input" id="requestPeople" type="number" min="1" max="1000" step="1" required placeholder="12">
+     </div>
+     <div class="field">
+      <label for="requestPriority">Priority</label>
+      <select class="select" id="requestPriority">
+       <option value="critical">Critical</option>
+       <option value="high" selected>High</option>
+       <option value="medium">Medium</option>
+       <option value="low">Low</option>
+      </select>
+     </div>
+    </div>
+
+    <div class="field">
+     <label for="requestNote">Fictional Situation Description</label>
+     <textarea class="textarea" id="requestNote" maxlength="500" required placeholder="Describe a fictional rescue assignment scenario..."></textarea>
+    </div>
+
+    <div class="field">
+     <label style="display:flex;align-items:flex-start;gap:9px;font-weight:500">
+      <input type="checkbox" id="demoConfirm" required>
+      I confirm this is fictional and contains no real emergency information.
+     </label>
+    </div>
+
+    <button class="btn gold" type="submit">+ Add Dispatch Request</button>
+   </form>
+
+   <div class="notice">
+    <strong>Emergency warning:</strong>
+    <div>
+     This dashboard cannot request rescue services.
+     For an actual emergency in India, call
+     <a href="tel:112" style="color:var(--gold2)">112</a>.
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <section class="section grid two-col">
+  <div class="card panel">
+   <div class="section-head">
+    <div>
+     <div class="panel-title">Rescue Team Availability</div>
+     <div class="panel-sub">Fictional response teams and simulated assignment status.</div>
+    </div>
+   </div>
+   <div id="teamList"></div>
+  </div>
+
+  <div class="card panel">
+   <div class="section-head">
+    <div>
+     <div class="panel-title">Rescue Vehicle Fleet</div>
+     <div class="panel-sub">Synthetic boats and response vehicles.</div>
+    </div>
+   </div>
+   <div id="vehicleList"></div>
+  </div>
+ </section>
+
+ <section class="section grid two-col">
+  <div class="card panel">
+   <div class="section-head">
+    <div>
+     <div class="panel-title">Dispatch Status Breakdown</div>
+     <div class="panel-sub">Current fictional mission lifecycle distribution.</div>
+    </div>
+   </div>
+   <div id="statusMetrics"></div>
+  </div>
+
+  <div class="card panel">
+   <div class="section-head">
+    <div>
+     <div class="panel-title">Dispatch Activity Timeline</div>
+     <div class="panel-sub">Local session actions, not an official dispatch audit log.</div>
+    </div>
+   </div>
+   <div class="timeline" id="activityTimeline"></div>
+  </div>
+ </section>
+
+ <div class="notice">
+  <strong>⚠ Simulation & Safety Notice.</strong>
+  <div>
+   All rescue requests, assignments, vehicles, people counts, approvals and mission
+   results are fictional. The dashboard has no real-time GPS, route validation,
+   radio network, emergency services integration or dispatch capability.
+   A production system requires authenticated operators, authoritative resource
+   availability, safe-route verification, human command authorization and audit trails.
+   Real emergencies in India: <a href="tel:112" style="color:var(--gold2)">112</a>.
+  </div>
+ </div>
+
+ <footer class="footer">
+  KERALA FLOOD RELIEF COORDINATION AGENT · RESCUE DISPATCH · SYNTHETIC DEMONSTRATION
+ </footer>
+
+</div>
+</main>
+</div>
+
+<div class="overlay" id="dispatchOverlay">
+ <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-head">
+   <h3 id="modalTitle">Dispatch Review</h3>
+   <button class="btn" id="closeModal" aria-label="Close dispatch review">✕</button>
+  </div>
+
+  <p class="panel-sub">
+   Review and simulate authorization, team assignment and vehicle allocation.
+  </p>
+
+  <div id="dispatchDetails"></div>
+
+  <div class="field" style="margin-top:17px">
+   <label for="teamSelect">Available Rescue Team</label>
+   <select class="select" id="teamSelect"></select>
+  </div>
+
+  <div class="field">
+   <label for="vehicleSelect">Available Rescue Vehicle</label>
+   <select class="select" id="vehicleSelect"></select>
+  </div>
+
+  <div class="field">
+   <label for="reviewNote">Human Review / Dispatch Rationale</label>
+   <textarea class="textarea" id="reviewNote" maxlength="500" placeholder="Enter a fictional authorization or status update rationale..."></textarea>
+  </div>
+
+  <div class="hero-actions" id="dispatchActions"></div>
+ </div>
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const DISTRICTS=[
+ "Thiruvananthapuram","Kollam","Pathanamthitta","Alappuzha",
+ "Kottayam","Idukki","Ernakulam","Thrissur","Palakkad",
+ "Malappuram","Kozhikode","Wayanad","Kannur","Kasaragod"
+];
+
+const TEAM_SEED=[
+ {id:"TEAM-01",name:"Demo Water Rescue Alpha",type:"Boat Rescue",district:"Alappuzha",members:6},
+ {id:"TEAM-02",name:"Demo Evacuation Bravo",type:"Flood Evacuation",district:"Wayanad",members:8},
+ {id:"TEAM-03",name:"Demo Medical Response",type:"Medical Evacuation",district:"Ernakulam",members:5},
+ {id:"TEAM-04",name:"Demo Rescue Delta",type:"Stranded Group Assistance",district:"Thrissur",members:7},
+ {id:"TEAM-05",name:"Demo Support Echo",type:"Emergency Supply Support",district:"Kottayam",members:4},
+ {id:"TEAM-06",name:"Demo Water Rescue Foxtrot",type:"Boat Rescue",district:"Kollam",members:6}
+];
+
+const VEHICLE_SEED=[
+ {id:"VEH-01",name:"Demo Rescue Boat 01",type:"boat",district:"Alappuzha"},
+ {id:"VEH-02",name:"Demo Rescue Boat 02",type:"boat",district:"Kollam"},
+ {id:"VEH-03",name:"Demo 4×4 Response 01",type:"road",district:"Wayanad"},
+ {id:"VEH-04",name:"Demo Medical Transport 01",type:"medical",district:"Ernakulam"},
+ {id:"VEH-05",name:"Demo 4×4 Response 02",type:"road",district:"Thrissur"},
+ {id:"VEH-06",name:"Demo Supply Transport 01",type:"supply",district:"Kottayam"}
+];
+
+const DISPATCH_SEED=[
+ {id:"DSP-001",district:"Wayanad",type:"Flood Evacuation",people:12,priority:"critical",status:"review",teamId:null,vehicleId:null,note:"Fictional evacuation request."},
+ {id:"DSP-002",district:"Alappuzha",type:"Boat Rescue",people:7,priority:"high",status:"approved",teamId:null,vehicleId:null,note:"Sample water rescue assignment."},
+ {id:"DSP-003",district:"Thrissur",type:"Stranded Group Assistance",people:5,priority:"medium",status:"pending",teamId:null,vehicleId:null,note:"Fictional assistance request."},
+ {id:"DSP-004",district:"Ernakulam",type:"Medical Evacuation",people:2,priority:"critical",status:"active",teamId:"TEAM-03",vehicleId:"VEH-04",note:"Synthetic medical evacuation case."},
+ {id:"DSP-005",district:"Kottayam",type:"Emergency Supply Support",people:18,priority:"medium",status:"completed",teamId:"TEAM-05",vehicleId:"VEH-06",note:"Fictional completed supply mission."},
+ {id:"DSP-006",district:"Idukki",type:"Flood Evacuation",people:10,priority:"high",status:"review",teamId:null,vehicleId:null,note:"Sample district evacuation request."}
+];
+
+const state={
+ teams:[],
+ vehicles:[],
+ requests:[],
+ events:[],
+ selectedId:null,
+ nextId:7
+};
+
+function el(tag,className,text){
+ const node=document.createElement(tag);
+ if(className)node.className=className;
+ if(text!==undefined)node.textContent=String(text);
+ return node;
+}
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+ const node=el("div","toast",message);
+ document.body.appendChild(node);
+ setTimeout(()=>node.remove(),2800);
+}
+
+function pill(value){
+ return el("span","pill "+value,value.toUpperCase());
+}
+
+function teamById(id){
+ return state.teams.find(team=>team.id===id);
+}
+
+function vehicleById(id){
+ return state.vehicles.find(vehicle=>vehicle.id===id);
+}
+
+function isTeamBusy(id){
+ return state.requests.some(request=>
+  request.teamId===id&&request.status==="active"
+ );
+}
+
+function isVehicleBusy(id){
+ return state.requests.some(request=>
+  request.vehicleId===id&&request.status==="active"
+ );
+}
+
+function vehicleTypeForMission(type){
+ if(type==="Boat Rescue")return"boat";
+ if(type==="Medical Evacuation")return"medical";
+ if(type==="Emergency Supply Support")return"supply";
+ return"road";
+}
+
+function logEvent(title,detail){
+ state.events.unshift({
+  title,detail,time:new Date().toLocaleTimeString("en-IN")
+ });
+ state.events=state.events.slice(0,10);
+ renderTimeline();
+}
+
+function renderTimeline(){
+ const root=$("activityTimeline");
+ root.replaceChildren();
+
+ state.events.forEach(event=>{
+  const row=el("div","event");
+  const icon=el("div","event-icon","↗");
+  const body=el("div");
+
+  body.append(
+   el("strong","",event.title),
+   el("p","",event.detail),
+   el("small","",event.time)
+  );
+
+  row.append(icon,body);
+  root.appendChild(row);
+ });
+}
+
+function renderKPIs(){
+ $("kpiRequests").textContent=state.requests.length;
+ $("kpiPending").textContent=state.requests.filter(r=>
+  r.status==="pending"||r.status==="review"
+ ).length;
+ $("kpiActive").textContent=state.requests.filter(r=>r.status==="active").length;
+ $("kpiTeams").textContent=state.teams.filter(t=>!isTeamBusy(t.id)).length;
+}
+
+function renderTable(){
+ const root=$("dispatchTable");
+ root.replaceChildren();
+
+ const query=$("searchInput").value.trim().toLowerCase();
+ const status=$("statusFilter").value;
+ const district=$("districtFilter").value;
+
+ const rows=state.requests.filter(request=>
+  (request.id+" "+request.district+" "+request.type).toLowerCase().includes(query)&&
+  (status==="all"||request.status===status)&&
+  (district==="all"||request.district===district)
+ );
+
+ $("dispatchCount").textContent=rows.length+" REQUESTS";
+
+ if(!rows.length){
+  const tr=document.createElement("tr");
+  const td=el("td","","No matching fictional dispatch requests.");
+  td.colSpan=8;
+  tr.appendChild(td);
+  root.appendChild(tr);
+  return;
+ }
+
+ rows.forEach(request=>{
+  const tr=document.createElement("tr");
+
+  const name=document.createElement("td");
+  name.appendChild(el("strong","",request.id));
+
+  const priority=document.createElement("td");
+  priority.appendChild(pill(request.priority));
+
+  const statusCell=document.createElement("td");
+  statusCell.appendChild(pill(request.status));
+
+  const assignment=document.createElement("td");
+  assignment.append(
+   el("strong","",request.teamId||"Unassigned"),
+   el("small","",request.vehicleId||"No vehicle")
+  );
+
+  const action=document.createElement("td");
+  const button=el("button","small-btn","Inspect →");
+  button.addEventListener("click",()=>openDispatch(request.id));
+  action.appendChild(button);
+
+  tr.append(
+   name,
+   el("td","",request.district),
+   el("td","",request.type),
+   el("td","",request.people),
+   priority,
+   statusCell,
+   assignment,
+   action
+  );
+
+  root.appendChild(tr);
+ });
+}
+
+function renderTeams(){
+ const root=$("teamList");
+ root.replaceChildren();
+
+ state.teams.forEach(team=>{
+  const busy=isTeamBusy(team.id);
+  const card=el("div","team-card");
+  const head=el("div","item-head");
+
+  head.append(
+   el("strong","",team.name),
+   pill(busy?"assigned":"available")
+  );
+
+  card.append(
+   head,
+   el("p","item-description",
+    `${team.type} · ${team.district} · ${team.members} fictional members`)
+  );
+
+  root.appendChild(card);
+ });
+}
+
+function renderVehicles(){
+ const root=$("vehicleList");
+ root.replaceChildren();
+
+ state.vehicles.forEach(vehicle=>{
+  const busy=isVehicleBusy(vehicle.id);
+  const card=el("div","vehicle-card");
+  const head=el("div","item-head");
+
+  head.append(
+   el("strong","",vehicle.name),
+   pill(busy?"assigned":"available")
+  );
+
+  card.append(
+   head,
+   el("p","item-description",
+    `${vehicle.id} · ${vehicle.type.toUpperCase()} · ${vehicle.district}`)
+  );
+
+  root.appendChild(card);
+ });
+}
+
+function renderStatusMetrics(){
+ const root=$("statusMetrics");
+ root.replaceChildren();
+
+ ["pending","review","approved","active","completed","cancelled"].forEach(status=>{
+  const count=state.requests.filter(r=>r.status===status).length;
+  const row=el("div","metric");
+
+  row.append(
+   el("span","",status.toUpperCase()),
+   el("strong","",count+" requests")
+  );
+
+  root.appendChild(row);
+ });
+}
+
+function renderAll(){
+ renderKPIs();
+ renderTable();
+ renderTeams();
+ renderVehicles();
+ renderStatusMetrics();
+}
+
+function createRequest(event){
+ event.preventDefault();
+
+ const people=Number($("requestPeople").value);
+ const note=$("requestNote").value.trim();
+
+ if(!Number.isInteger(people)||people<1||people>1000||!note){
+  toast("Enter valid fictional request details.");
+  return;
+ }
+
+ if(!$("demoConfirm").checked){
+  toast("Confirm this is fictional data.");
+  return;
+ }
+
+ const id="DSP-"+String(state.nextId++).padStart(3,"0");
+
+ state.requests.unshift({
+  id,
+  district:$("requestDistrict").value,
+  type:$("requestType").value,
+  people,
+  priority:$("requestPriority").value,
+  status:"pending",
+  teamId:null,
+  vehicleId:null,
+  note
+ });
+
+ $("requestForm").reset();
+ renderAll();
+
+ logEvent(
+  "Dispatch request created",
+  id+" added to the fictional dispatch queue."
+ );
+
+ toast("Fictional dispatch request created");
+}
+
+function openDispatch(id){
+ const request=state.requests.find(r=>r.id===id);
+ if(!request)return;
+
+ state.selectedId=id;
+ $("modalTitle").textContent=id+" · Dispatch Review";
+ $("reviewNote").value="";
+
+ const root=$("dispatchDetails");
+ root.replaceChildren();
+
+ [
+  ["District",request.district],
+  ["Rescue Type",request.type],
+  ["People Involved",request.people+" (fictional)"],
+  ["Priority",request.priority.toUpperCase()],
+  ["Dispatch Status",request.status.toUpperCase()],
+  ["Assigned Team",teamById(request.teamId)?.name||"Unassigned"],
+  ["Assigned Vehicle",vehicleById(request.vehicleId)?.name||"Unassigned"],
+  ["Scenario Notes",request.note]
+ ].forEach(([label,value])=>{
+  const box=el("div","detail");
+  box.append(el("small","",label),el("strong","",value));
+  root.appendChild(box);
+ });
+
+ const teamSelect=$("teamSelect");
+ teamSelect.replaceChildren();
+ teamSelect.appendChild(new Option("Select compatible available team",""));
+
+ state.teams.forEach(team=>{
+  if(team.type===request.type&&(!isTeamBusy(team.id)||team.id===request.teamId)){
+   teamSelect.appendChild(
+    new Option(team.name+" · "+team.district,team.id)
+   );
+  }
+ });
+
+ const vehicleSelect=$("vehicleSelect");
+ vehicleSelect.replaceChildren();
+ vehicleSelect.appendChild(new Option("Select compatible available vehicle",""));
+
+ const requiredVehicleType=vehicleTypeForMission(request.type);
+
+ state.vehicles.forEach(vehicle=>{
+  if(vehicle.type===requiredVehicleType&&
+     (!isVehicleBusy(vehicle.id)||vehicle.id===request.vehicleId)){
+   vehicleSelect.appendChild(
+    new Option(vehicle.name+" · "+vehicle.district,vehicle.id)
+   );
+  }
+ });
+
+ teamSelect.value=request.teamId||"";
+ vehicleSelect.value=request.vehicleId||"";
+
+ const canAssign=request.status==="approved";
+ teamSelect.disabled=!canAssign;
+ vehicleSelect.disabled=!canAssign;
+
+ const actions=$("dispatchActions");
+ actions.replaceChildren();
+
+ const transitions={
+  pending:[["Submit for Review","review",""],["Cancel","cancelled","red"]],
+  review:[["Approve Dispatch","approved","gold"],["Cancel","cancelled","red"]],
+  approved:[["Simulate Dispatch","active","gold"],["Cancel","cancelled","red"]],
+  active:[["Complete Mission","completed","blue"]],
+  completed:[],
+  cancelled:[]
+ };
+
+ (transitions[request.status]||[]).forEach(([label,next,variant])=>{
+  const button=el("button","btn "+variant,label);
+  button.addEventListener("click",()=>transition(next));
+  actions.appendChild(button);
+ });
+
+ if(!actions.children.length){
+  actions.appendChild(
+   el("p","panel-sub","No further transitions for this fictional dispatch.")
+  );
+ }
+
+ $("dispatchOverlay").classList.add("open");
+ $("closeModal").focus();
+}
+
+function transition(nextStatus){
+ const request=state.requests.find(r=>r.id===state.selectedId);
+ if(!request)return;
+
+ const transitions={
+  pending:["review","cancelled"],
+  review:["approved","cancelled"],
+  approved:["active","cancelled"],
+  active:["completed"],
+  completed:[],
+  cancelled:[]
+ };
+
+ if(!(transitions[request.status]||[]).includes(nextStatus)){
+  toast("Invalid dispatch transition.");
+  return;
+ }
+
+ const rationale=$("reviewNote").value.trim();
+
+ if(!rationale){
+  toast("A fictional review rationale is required.");
+  return;
+ }
+
+ if(nextStatus==="active"){
+  const team=teamById($("teamSelect").value);
+  const vehicle=vehicleById($("vehicleSelect").value);
+
+  if(!team||!vehicle){
+   toast("Select a compatible team and vehicle.");
+   return;
+  }
+
+  if(team.type!==request.type||
+     vehicle.type!==vehicleTypeForMission(request.type)){
+   toast("Team or vehicle is incompatible with this scenario.");
+   return;
+  }
+
+  if(isTeamBusy(team.id)||isVehicleBusy(vehicle.id)){
+   toast("Selected resource is already assigned.");
+   return;
+  }
+
+  request.teamId=team.id;
+  request.vehicleId=vehicle.id;
+ }
+
+ request.status=nextStatus;
+
+ logEvent(
+  "Dispatch workflow updated",
+  `${request.id} → ${nextStatus}. Rationale: ${rationale.slice(0,120)}`
+ );
+
+ closeDispatch();
+ renderAll();
+ toast("Fictional dispatch updated: "+nextStatus);
+}
+
+function closeDispatch(){
+ $("dispatchOverlay").classList.remove("open");
+ state.selectedId=null;
+}
+
+function csvEscape(value){
+ let text=String(value??"");
+ if(/^\s*[=+\-@]/.test(text))text="'"+text;
+ return '"'+text.replace(/"/g,'""')+'"';
+}
+
+function exportCSV(){
+ const columns=[
+  "id","district","type","people","priority",
+  "status","teamId","vehicleId","note"
+ ];
+
+ const rows=[
+  columns.map(csvEscape).join(","),
+  ...state.requests.map(request=>
+   columns.map(key=>csvEscape(request[key])).join(",")
+  )
+ ];
+
+ const blob=new Blob(["\uFEFF"+rows.join("\r\n")],{
+  type:"text/csv;charset=utf-8"
+ });
+
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement("a");
+ link.href=url;
+ link.download="rescue-dispatch-synthetic-demo.csv";
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ toast("Synthetic dispatch CSV exported");
+}
+
+function populateSelects(){
+ DISTRICTS.forEach(district=>{
+  $("districtFilter").appendChild(new Option(district,district));
+  $("requestDistrict").appendChild(new Option(district,district));
+ });
+}
+
+function resetDemo(){
+ state.teams=structuredClone(TEAM_SEED);
+ state.vehicles=structuredClone(VEHICLE_SEED);
+ state.requests=structuredClone(DISPATCH_SEED);
+ state.nextId=7;
+
+ state.events=[{
+  title:"Dispatch workspace initialized",
+  detail:"Fictional dispatch requests, rescue teams and vehicles loaded.",
+  time:"Demo"
+ }];
+
+ $("searchInput").value="";
+ $("statusFilter").value="all";
+ $("districtFilter").value="all";
+ $("requestForm").reset();
+
+ closeDispatch();
+ renderAll();
+ renderTimeline();
+ toast("Dispatch demonstration reset");
+}
+
+function initialize(){
+ populateSelects();
+ resetDemo();
+
+ $("requestForm").addEventListener("submit",createRequest);
+ $("searchInput").addEventListener("input",renderTable);
+ $("statusFilter").addEventListener("change",renderTable);
+ $("districtFilter").addEventListener("change",renderTable);
+
+ $("dispatchShortcut").addEventListener("click",()=>{
+  $("dispatchSection").scrollIntoView({
+   behavior:"smooth",
+   block:"start"
+  });
+ });
+
+ $("resetBtn").addEventListener("click",resetDemo);
+ $("exportBtn").addEventListener("click",exportCSV);
+ $("closeModal").addEventListener("click",closeDispatch);
+
+ $("dispatchOverlay").addEventListener("click",event=>{
+  if(event.target===$("dispatchOverlay"))closeDispatch();
+ });
+
+ document.addEventListener("keydown",event=>{
+  if(event.key==="Escape")closeDispatch();
+ });
+
+ $("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+ });
+}
+
+initialize();
+</script>
+</body>
+</html>

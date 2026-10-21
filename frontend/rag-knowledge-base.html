@@ -1,0 +1,979 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b10">
+<title>RAG Knowledge Base | Kerala Flood AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#090b10;--sidebar:#0d1017;--panel:#151922;--panel2:#1b202b;
+ --gold:#d8b671;--gold2:#f5daa0;--text:#f4f1e9;--muted:#9399a7;
+ --line:rgba(255,255,255,.085);--green:#54d6a4;--orange:#ffb66e;
+ --red:#ff777d;--blue:#82adff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:13px "DM Sans",sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.app{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;background:var(--sidebar);border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:40}
+.brand{padding:24px 18px;display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--line)}
+.brand-icon{width:43px;height:43px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#f5daa0,#a47c3b);color:#20170a;font-size:23px}
+.brand strong{font:800 13px Manrope,sans-serif}
+.brand small{display:block;font-size:10px;letter-spacing:1.2px;color:var(--muted);margin-top:5px}
+.nav{padding:18px 13px;overflow:auto;flex:1}
+.nav-label{color:#777e8d;font-size:10px;letter-spacing:1.5px;font-weight:800;margin:17px 12px 9px}
+.nav a{display:flex;align-items:center;gap:12px;padding:12px 13px;margin-bottom:5px;border:1px solid transparent;border-radius:10px;color:#a2a8b4;font-size:12px;font-weight:600;transition:.2s}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{background:#d8b67119;border-color:#d8b67130;color:var(--gold2)}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.side-footer{padding:17px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:11px;background:#383023;color:var(--gold2);display:grid;place-items:center;font-weight:800}
+.side-footer strong{font-size:11px}
+.side-footer small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.main{min-width:0;background:radial-gradient(ellipse at 65% -5%,#d8b67112,transparent 38%),var(--bg)}
+.topbar{min-height:82px;padding:17px 30px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:14px}
+.top-left,.top-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.page-icon{width:43px;height:43px;border-radius:12px;background:#d8b67119;border:1px solid #d8b67133;color:var(--gold);display:grid;place-items:center;font-size:20px}
+.top-left h1{font:800 18px Manrope,sans-serif;margin:0}
+.top-left p{color:var(--muted);font-size:11px;margin:5px 0 0}
+.badge,.tag{display:inline-flex;align-items:center;gap:7px;padding:9px 11px;background:#d8b67112;border:1px solid #d8b67130;color:var(--gold2);border-radius:9px;font-size:10px;font-weight:800}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 15px;border-radius:10px;border:1px solid var(--line);background:#1a1f29;color:#e1e3e8;font-size:11px;font-weight:800;transition:.2s}
+.btn:hover{border-color:#d8b67166;transform:translateY(-1px)}
+.btn.gold{background:linear-gradient(120deg,#c6a15e,#f1d49a);color:#1b160e;border:0}
+.btn.red{color:var(--red);background:#ff777d12;border-color:#ff777d40}
+.btn.blue{color:var(--blue);background:#82adff12;border-color:#82adff40}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.content{max-width:1700px;margin:auto;padding:28px 30px 45px}
+.eyebrow{color:var(--gold);font-size:10px;letter-spacing:2px;font-weight:800;margin-bottom:10px}
+.heading{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+.heading h2{font:800 28px Manrope,sans-serif;letter-spacing:-1px;margin:0}
+.heading p{color:var(--muted);font-size:12px;line-height:1.8;margin:9px 0 0}
+.hero{padding:27px;border-radius:18px;border:1px solid #d8b67138;background:radial-gradient(circle at 85% 15%,#d8b67120,transparent 35%),linear-gradient(120deg,#252017,#151922)}
+.hero h3{font:800 26px Manrope,sans-serif;letter-spacing:-.8px;margin:12px 0}
+.hero p{color:#b9b5ae;font-size:12px;line-height:1.9;max-width:850px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:17px}
+.card{min-width:0;background:linear-gradient(150deg,#181c26,#12161e);border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 35px #0002;animation:rise .5s ease both}
+.kpi{padding:21px}
+.kpi-head{display:flex;justify-content:space-between;align-items:center;color:#a7adba;font-size:11px;font-weight:700}
+.kpi-icon{width:36px;height:36px;border-radius:10px;background:#d8b67119;color:var(--gold);display:grid;place-items:center;font-size:18px}
+.kpi-number{font:800 30px Manrope,sans-serif;letter-spacing:-1px;margin:15px 0 7px}
+.kpi-caption{font-size:10px;color:var(--muted);line-height:1.7}
+.kpi-caption b{color:var(--gold)}
+.section{margin-top:25px}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:15px}
+.section-head h3{font:800 19px Manrope,sans-serif;letter-spacing:-.5px;margin:0}
+.section-head p{color:var(--muted);font-size:11px;line-height:1.8;margin:7px 0 0}
+.panel{padding:21px}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{color:var(--muted);font-size:10px;line-height:1.8;margin-top:6px}
+.columns{grid-template-columns:minmax(0,1.45fr) minmax(310px,1fr)}
+.two-col{grid-template-columns:repeat(2,minmax(0,1fr))}
+.input,.select,.textarea{width:100%;padding:12px 13px;border:1px solid #343a46;border-radius:10px;background:#1b202b;color:var(--text);outline:none}
+.input:focus,.select:focus,.textarea:focus{border-color:var(--gold)}
+.textarea{resize:vertical;min-height:100px}
+.field{display:grid;gap:8px;margin-bottom:15px}
+.field label{font-size:11px;font-weight:800;color:#c9ccd4}
+.pill{display:inline-flex;align-items:center;padding:7px 10px;border-radius:8px;font-size:10px;font-weight:800;white-space:nowrap}
+.pill.ready{color:var(--green);background:#54d6a419}
+.pill.demo{color:var(--gold2);background:#d8b67119}
+.pill.warning{color:var(--orange);background:#ffb66e19}
+.pill.error{color:var(--red);background:#ff777d19}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
+.filters .input{flex:1;min-width:170px}
+.filters .select{width:auto;min-width:130px}
+.doc-list,.results,.timeline{display:grid;gap:10px}
+.doc{padding:16px;background:#1b202b;border:1px solid var(--line);border-radius:12px}
+.doc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.doc-title{font:800 12px Manrope,sans-serif;overflow-wrap:anywhere}
+.doc p{font-size:10px;color:var(--muted);line-height:1.8;margin:9px 0}
+.doc-meta{display:flex;gap:7px;flex-wrap:wrap;margin:11px 0}
+.doc-actions{display:flex;gap:8px;flex-wrap:wrap}
+.small-btn{padding:8px 10px;border-radius:8px;border:1px solid #d8b67140;background:#d8b67115;color:var(--gold2);font-size:10px;font-weight:800}
+.result{padding:16px;background:#1b202b;border:1px solid var(--line);border-radius:12px}
+.result-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.result strong{font-size:11px}
+.result p{font-size:11px;color:#c0c5cf;line-height:1.8;margin:12px 0}
+.score-row{display:flex;gap:14px;flex-wrap:wrap;font-size:10px;color:var(--muted)}
+.score-row b{color:var(--gold2)}
+.answer{background:#1b202b;border:1px solid #d8b67140;border-radius:12px;padding:18px;margin-top:15px}
+.answer h4{font:800 12px Manrope,sans-serif;color:var(--gold2);margin:0 0 10px}
+.answer p{font-size:11px;line-height:1.9;color:#c8ccd4;white-space:pre-wrap}
+.pipeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:17px}
+.pipeline-step{padding:16px 10px;text-align:center;background:#1b202b;border:1px solid var(--line);border-radius:11px}
+.pipeline-step span{font-size:20px;color:var(--gold)}
+.pipeline-step strong{display:block;font-size:11px;margin-top:10px}
+.pipeline-step small{display:block;font-size:9px;color:var(--muted);line-height:1.7;margin-top:6px}
+.metric{margin:17px 0}
+.metric-head{display:flex;justify-content:space-between;gap:10px;font-size:11px;margin-bottom:9px}
+.metric-head span:last-child{color:var(--gold2);font-weight:800}
+.progress{height:9px;background:#303642;border-radius:10px;overflow:hidden}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#a68145,#f1d69c);border-radius:10px}
+.event{display:flex;gap:12px}
+.event-icon{width:33px;height:33px;flex-shrink:0;display:grid;place-items:center;border-radius:10px;background:#d8b67118;color:var(--gold)}
+.event strong{font-size:11px}
+.event p{font-size:10px;color:var(--muted);line-height:1.7;margin:7px 0}
+.event small{font-size:10px;color:#777e8d}
+.notice{padding:16px;background:#d8b6710e;border:1px solid #d8b67130;border-radius:12px;color:#bbb4a5;font-size:11px;line-height:1.9;margin-top:17px}
+.notice strong{color:var(--gold2)}
+.footer{padding-top:26px;text-align:center;color:#69707e;font-size:10px}
+.overlay{position:fixed;inset:0;z-index:100;background:#000b;display:none;align-items:center;justify-content:center;padding:18px}
+.overlay.open{display:flex}
+.modal{width:min(650px,100%);max-height:90vh;overflow:auto;background:#181d27;border:1px solid #d8b67144;border-radius:17px;padding:24px;box-shadow:0 30px 90px #0009}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.modal-head h3{font:800 18px Manrope,sans-serif;margin:0}
+.detail{padding:13px;background:#10151e;border:1px solid var(--line);border-radius:9px;margin-top:12px}
+.detail small{display:block;color:var(--muted);font-size:10px;margin-bottom:8px}
+.detail strong{font-size:11px;overflow-wrap:anywhere}
+.detail pre{white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.8 "DM Sans",sans-serif;color:#c5cad4}
+.toast{position:fixed;right:20px;bottom:20px;z-index:150;padding:14px 17px;background:#252b35;border:1px solid #d8b67166;color:var(--gold2);border-radius:11px;box-shadow:0 15px 45px #0008}
+.menu-btn{display:none}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1250px){.kpis{grid-template-columns:repeat(2,1fr)}.columns{grid-template-columns:1fr}}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{position:fixed;width:260px;transform:translateX(-100%);transition:.3s}.sidebar.open{transform:translateX(0)}.menu-btn{display:inline-flex}.topbar{padding:15px 20px}.content{padding:20px}}
+@media(max-width:560px){.kpis,.two-col{grid-template-columns:1fr}.pipeline{grid-template-columns:repeat(2,1fr)}.heading h2{font-size:23px}.panel{padding:16px}.top-actions .badge{display:none}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-icon">✦</div>
+  <div><strong>KERALA FLOOD AI</strong><small>INTELLIGENCE PLATFORM</small></div>
+ </div>
+ <nav class="nav">
+  <div class="nav-label">WORKSPACE</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Project Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="agent-command-center.html"><span class="nav-icon">✦</span>Agent Command Center</a>
+  <a href="multi-agent-monitor.html"><span class="nav-icon">◎</span>Multi-Agent Monitor</a>
+  <a href="ai-copilot.html"><span class="nav-icon">◇</span>AI Copilot</a>
+  <a class="active" href="rag-knowledge-base.html"><span class="nav-icon">▤</span>RAG Knowledge Base</a>
+
+  <div class="nav-label">INTELLIGENCE</div>
+  <a href="flood-prediction.html"><span class="nav-icon">≈</span>Flood Prediction</a>
+  <a href="flood-alerts.html"><span class="nav-icon">☁</span>Flood Alerts</a>
+  <a href="district-dashboard.html"><span class="nav-icon">▦</span>District Dashboard</a>
+  <a href="damage-assessment.html"><span class="nav-icon">▣</span>Damage Assessment</a>
+
+  <div class="nav-label">OPERATIONS</div>
+  <a href="incident-management.html"><span class="nav-icon">◉</span>Incident Management</a>
+  <a href="emergency-sos.html"><span class="nav-icon">⚑</span>Emergency SOS</a>
+  <a href="medical-emergency.html"><span class="nav-icon">✚</span>Medical Emergency</a>
+
+  <div class="nav-label">GOVERNANCE</div>
+  <a href="human-approval.html"><span class="nav-icon">✓</span>Human Approval</a>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+ </nav>
+ <div class="side-footer">
+  <div class="avatar">RAG</div>
+  <div><strong>Knowledge Intelligence</strong><small>Local Retrieval Demo</small></div>
+ </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-left">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="page-icon">▤</div>
+  <div><h1>RAG Knowledge Base</h1><p>Document intelligence · Retrieval · Grounded answers</p></div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>LOCAL RAG DEMO</span>
+  <button class="btn" id="resetBtn">↻ Reset</button>
+  <button class="btn gold" id="exportBtn">↓ Export Index</button>
+ </div>
+</header>
+
+<div class="content">
+<div class="heading">
+ <div>
+  <div class="eyebrow">ADVANCED RETRIEVAL-AUGMENTED GENERATION</div>
+  <h2>Disaster Knowledge Intelligence</h2>
+  <p>Explore an advanced RAG architecture with document ingestion, source retrieval, citations and evaluation.</p>
+ </div>
+ <span class="tag">BROWSER-LOCAL SIMULATION</span>
+</div>
+
+<section class="hero">
+ <div class="eyebrow">DOCUMENT KNOWLEDGE · EVIDENCE-FIRST DESIGN</div>
+ <h3>Turn Documents Into Searchable, Citable Knowledge.</h3>
+ <p>
+  Upload small text documents, explore sample disaster-response knowledge,
+  inspect retrieval results and generate extractive, citation-linked responses.
+  This prototype uses keyword-based ranking and score blending. Production
+  BM25, embeddings, vector databases, rerankers, OCR and LLM inference are not connected.
+ </p>
+ <div class="hero-actions">
+  <button class="btn gold" id="uploadShortcut">+ Add Document</button>
+  <button class="btn" id="searchShortcut">⌕ Search Knowledge</button>
+  <a class="btn blue" href="ai-copilot.html">Open AI Copilot →</a>
+ </div>
+</section>
+
+<section class="grid kpis">
+ <div class="card kpi"><div class="kpi-head">Knowledge Documents<div class="kpi-icon">▤</div></div><div class="kpi-number" id="kpiDocs">0</div><div class="kpi-caption"><b>LOCAL</b> · Synthetic seed and uploads</div></div>
+ <div class="card kpi"><div class="kpi-head">Text Chunks<div class="kpi-icon">▦</div></div><div class="kpi-number" id="kpiChunks">0</div><div class="kpi-caption"><b>DEMO</b> · Character-based splitting</div></div>
+ <div class="card kpi"><div class="kpi-head">Search Queries<div class="kpi-icon">⌕</div></div><div class="kpi-number" id="kpiQueries">0</div><div class="kpi-caption"><b>SESSION</b> · Browser-local searches</div></div>
+ <div class="card kpi"><div class="kpi-head">Citable Results<div class="kpi-icon">✓</div></div><div class="kpi-number" id="kpiResults">0</div><div class="kpi-caption"><b>DEMO</b> · Last retrieval results</div></div>
+</section>
+
+<section class="section grid columns">
+ <div class="card panel" id="searchSection">
+  <div class="section-head">
+   <div><div class="panel-title">Knowledge Search & Grounded Answer Demo</div><div class="panel-sub">Search local text chunks and inspect ranked citations.</div></div>
+   <span class="tag">KEYWORD RETRIEVAL</span>
+  </div>
+  <form id="searchForm">
+   <div class="field">
+    <label for="queryInput">Ask a Knowledge Question</label>
+    <textarea class="textarea" id="queryInput" placeholder="Example: What are the recommended steps for a fictional flood incident?" required></textarea>
+   </div>
+   <div class="grid two-col">
+    <div class="field">
+     <label for="retrievalMode">Retrieval Mode</label>
+     <select class="select" id="retrievalMode">
+      <option value="hybrid">Hybrid-Style Keyword Blend</option>
+      <option value="keyword">Term-Frequency Ranking</option>
+      <option value="overlap">Token-Overlap Ranking</option>
+     </select>
+    </div>
+    <div class="field">
+     <label for="topK">Top-K Results</label>
+     <select class="select" id="topK">
+      <option value="3">Top 3</option>
+      <option value="5" selected>Top 5</option>
+      <option value="8">Top 8</option>
+     </select>
+    </div>
+   </div>
+   <button class="btn gold" type="submit">⌕ Search & Build Extractive Answer</button>
+  </form>
+
+  <div id="answerContainer"></div>
+
+  <div class="section-head" style="margin-top:23px">
+   <div><div class="panel-title">Retrieved Source Chunks</div><div class="panel-sub">Scores are local ranking indicators, not calibrated relevance probabilities.</div></div>
+   <span class="tag" id="resultCount">0 RESULTS</span>
+  </div>
+  <div class="results" id="resultList">
+   <p class="panel-sub">Run a search to inspect evidence chunks.</p>
+  </div>
+ </div>
+
+ <div class="card panel" id="uploadSection">
+  <div class="panel-title">Knowledge Ingestion Studio</div>
+  <div class="panel-sub" style="margin-bottom:18px">Add local UTF-8 text files. Files are not uploaded to a server.</div>
+
+  <div class="field">
+   <label for="fileInput">Select Text Documents</label>
+   <input class="input" type="file" id="fileInput" accept=".txt,.md,.csv,.json,text/plain,text/markdown,text/csv,application/json" multiple>
+  </div>
+  <div class="field">
+   <label for="documentCategory">Document Category</label>
+   <select class="select" id="documentCategory">
+    <option>Flood Preparedness</option>
+    <option>Emergency Operations</option>
+    <option>Medical Coordination</option>
+    <option>Rescue & Evacuation</option>
+    <option>Shelter Management</option>
+    <option>Research Notes</option>
+   </select>
+  </div>
+  <div class="field">
+   <label for="chunkSize">Chunk Size (Characters)</label>
+   <select class="select" id="chunkSize">
+    <option value="400">400</option>
+    <option value="700" selected>700</option>
+    <option value="1000">1000</option>
+   </select>
+  </div>
+  <button class="btn gold" id="ingestBtn">+ Ingest Selected Text Files</button>
+
+  <div class="notice">
+   <strong>Supported in this standalone demo</strong>
+   <div>TXT, Markdown, CSV and JSON are treated as plain text. Maximum 3 files per batch, 1 MB per file. PDF parsing, OCR, embeddings and document malware scanning require a secure backend. Do not upload confidential or personal information.</div>
+  </div>
+
+  <div class="section-head" style="margin-top:24px">
+   <div><div class="panel-title">Knowledge Base Documents</div><div class="panel-sub">Inspect and remove browser-local documents.</div></div>
+   <span class="tag" id="docCount">0 DOCS</span>
+  </div>
+  <div class="filters">
+   <input class="input" id="docSearch" placeholder="Search document titles..." aria-label="Search documents">
+  </div>
+  <div class="doc-list" id="docList"></div>
+ </div>
+</section>
+
+<section class="section">
+ <div class="section-head">
+  <div><h3>Proposed Advanced RAG Pipeline</h3><p>Production architecture components shown for implementation planning.</p></div>
+  <span class="tag">ARCHITECTURE BLUEPRINT</span>
+ </div>
+ <div class="card panel">
+  <div class="pipeline" id="pipelineGrid"></div>
+ </div>
+</section>
+
+<section class="section grid two-col">
+ <div class="card panel">
+  <div class="panel-title">RAG Evaluation Framework</div>
+  <div class="panel-sub">Illustrative metric placeholders, not measured model performance.</div>
+  <div id="evaluationMetrics"></div>
+  <div class="notice"><strong>Production evaluation:</strong> measure Recall@K, Precision@K, MRR, NDCG, citation accuracy, groundedness, answer relevance, latency and cost on labeled test sets.</div>
+ </div>
+ <div class="card panel">
+  <div class="panel-title">Knowledge Base Activity</div>
+  <div class="panel-sub" style="margin-bottom:18px">Local session actions, not an authoritative audit log.</div>
+  <div class="timeline" id="timeline"></div>
+ </div>
+</section>
+
+<div class="notice">
+ <strong>⚠ Emergency Knowledge Safety.</strong>
+ <div>Sample content is educational and fictional, not verified operational guidance. Search results must not be used to make real rescue, evacuation, medical or public-alert decisions. A production system requires trusted source verification, versioning, access controls, human review, and current official guidance. In an emergency in India, call 112.</div>
+</div>
+
+<footer class="footer">KERALA FLOOD RELIEF COORDINATION AGENT · RAG KNOWLEDGE BASE · LOCAL PROTOTYPE</footer>
+</div>
+</main>
+</div>
+
+<div class="overlay" id="docModalOverlay">
+ <div class="modal" role="dialog" aria-modal="true" aria-labelledby="docModalTitle">
+  <div class="modal-head">
+   <h3 id="docModalTitle">Document Inspection</h3>
+   <button class="btn" id="closeDocModal">✕</button>
+  </div>
+  <p class="panel-sub">Browser-local document and chunk inspection.</p>
+  <div id="docModalContent"></div>
+ </div>
+</div>
+
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+
+const SEED_DOCS=[
+ {
+  id:"KB-DEMO-001",
+  title:"Synthetic Flood Preparedness Notes",
+  category:"Flood Preparedness",
+  source:"Built-in fictional example",
+  text:"Flood preparedness includes understanding official warnings, preparing essential supplies, protecting important documents, and following local authority instructions. Avoid entering floodwater. Evacuation routes and shelters must be verified through authorized agencies. This is demonstration text, not a live advisory."
+ },
+ {
+  id:"KB-DEMO-002",
+  title:"Fictional Emergency Incident Workflow",
+  category:"Emergency Operations",
+  source:"Built-in fictional example",
+  text:"A proposed emergency workflow includes incident intake, source verification, risk assessment, coordination review, authorized human approval, and audit logging. An AI-generated recommendation should not directly dispatch rescue teams or issue public alerts. The workflow described here is a software architecture example."
+ },
+ {
+  id:"KB-DEMO-003",
+  title:"Sample Rescue Coordination Procedure",
+  category:"Rescue & Evacuation",
+  source:"Built-in fictional example",
+  text:"Rescue coordination software can track fictional incidents, resource proposals, task priorities, and human decisions. Actual rescue routing requires verified road conditions, current location information, official operational procedures, and authorized dispatch systems. Never rely on synthetic routes for real evacuation."
+ },
+ {
+  id:"KB-DEMO-004",
+  title:"Demo Shelter Management Concepts",
+  category:"Shelter Management",
+  source:"Built-in fictional example",
+  text:"A shelter management platform may record verified facility capacity, accessibility needs, supply inventory, and admission workflows. Capacity information must come from authorized operators. Fictional shelter records cannot be used for accommodation decisions."
+ },
+ {
+  id:"KB-DEMO-005",
+  title:"Illustrative Medical Coordination Workflow",
+  category:"Medical Coordination",
+  source:"Built-in fictional example",
+  text:"Medical coordination requires verified hospital capacity, clinical oversight, patient privacy, consent where applicable, and authorized emergency response. An AI assistant may prepare a draft referral summary, but must not independently make clinical decisions or assign ambulances."
+ },
+ {
+  id:"KB-DEMO-006",
+  title:"Proposed RAG Evidence Governance",
+  category:"Research Notes",
+  source:"Built-in fictional example",
+  text:"Retrieval augmented generation can combine document parsing, chunking, keyword retrieval, embedding search, reranking, evidence citation, and grounded answer generation. Evaluation should measure retrieval recall, ranking quality, citation correctness, groundedness, latency, and safety. Source provenance and version control are essential."
+ }
+];
+
+const state={
+ docs:[],
+ chunks:[],
+ queryCount:0,
+ results:[],
+ nextDoc:7,
+ events:[
+  {title:"Knowledge base initialized",detail:"Fictional reference documents loaded.",time:"Demo"},
+  {title:"External model calls disabled",detail:"Retrieval uses browser-local keyword matching only.",time:"Demo"}
+ ]
+};
+
+function el(tag,className,text){
+ const node=document.createElement(tag);
+ if(className)node.className=className;
+ if(text!==undefined)node.textContent=String(text);
+ return node;
+}
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+ const node=el("div","toast",message);
+ document.body.appendChild(node);
+ setTimeout(()=>node.remove(),2800);
+}
+
+function logEvent(title,detail){
+ state.events.unshift({title,detail,time:new Date().toLocaleTimeString("en-IN")});
+ state.events=state.events.slice(0,9);
+ renderTimeline();
+}
+
+function renderTimeline(){
+ const root=$("timeline");
+ root.replaceChildren();
+
+ state.events.forEach(event=>{
+  const row=el("div","event");
+  const icon=el("div","event-icon","▤");
+  const body=el("div");
+
+  body.append(
+   el("strong","",event.title),
+   el("p","",event.detail),
+   el("small","",event.time)
+  );
+
+  row.append(icon,body);
+  root.appendChild(row);
+ });
+}
+
+function splitText(text,size=700){
+ const normalized=text.replace(/\r\n/g,"\n").trim();
+ const chunks=[];
+ let offset=0;
+
+ while(offset<normalized.length){
+  let end=Math.min(offset+size,normalized.length);
+
+  if(end<normalized.length){
+   const splitAt=normalized.lastIndexOf(" ",end);
+   if(splitAt>offset+Math.floor(size*.55))end=splitAt;
+  }
+
+  const piece=normalized.slice(offset,end).trim();
+  if(piece)chunks.push(piece);
+  offset=end;
+
+  while(normalized[offset]===" ")offset++;
+ }
+
+ return chunks;
+}
+
+function rebuildIndex(){
+ state.chunks=[];
+
+ state.docs.forEach(doc=>{
+  const size=doc.chunkSize||700;
+  const pieces=splitText(doc.text,size);
+
+  pieces.forEach((content,index)=>{
+   state.chunks.push({
+    id:doc.id+"-CH"+String(index+1).padStart(2,"0"),
+    docId:doc.id,
+    title:doc.title,
+    category:doc.category,
+    content,
+    chunkNumber:index+1
+   });
+  });
+ });
+
+ renderKPIs();
+}
+
+function renderKPIs(){
+ $("kpiDocs").textContent=state.docs.length;
+ $("kpiChunks").textContent=state.chunks.length;
+ $("kpiQueries").textContent=state.queryCount;
+ $("kpiResults").textContent=state.results.length;
+ $("docCount").textContent=state.docs.length+" DOCS";
+}
+
+function renderDocs(){
+ const root=$("docList");
+ root.replaceChildren();
+
+ const query=$("docSearch").value.toLowerCase().trim();
+ const filtered=state.docs.filter(d=>
+  (d.title+" "+d.category).toLowerCase().includes(query)
+ );
+
+ if(!filtered.length){
+  root.appendChild(el("p","panel-sub","No matching documents."));
+  return;
+ }
+
+ filtered.forEach(doc=>{
+  const card=el("div","doc");
+  const top=el("div","doc-top");
+
+  top.append(
+   el("div","doc-title",doc.title),
+   el("span","pill ready","LOCAL")
+  );
+
+  const chunkCount=state.chunks.filter(c=>c.docId===doc.id).length;
+  const meta=el("div","doc-meta");
+
+  meta.append(
+   el("span","tag",doc.category),
+   el("span","tag",chunkCount+" chunks")
+  );
+
+  const actions=el("div","doc-actions");
+  const inspect=el("button","small-btn","Inspect →");
+  inspect.addEventListener("click",()=>inspectDoc(doc.id));
+
+  const remove=el("button","small-btn","Remove");
+  remove.addEventListener("click",()=>removeDoc(doc.id));
+
+  actions.append(inspect,remove);
+  card.append(
+   top,
+   el("p","",doc.source+" · "+doc.text.length+" characters"),
+   meta,
+   actions
+  );
+
+  root.appendChild(card);
+ });
+}
+
+function inspectDoc(id){
+ const doc=state.docs.find(d=>d.id===id);
+ if(!doc)return;
+
+ $("docModalTitle").textContent=doc.title;
+ const root=$("docModalContent");
+ root.replaceChildren();
+
+ const details=[
+  ["Document ID",doc.id],
+  ["Category",doc.category],
+  ["Source",doc.source],
+  ["Characters",doc.text.length]
+ ];
+
+ details.forEach(([label,value])=>{
+  const card=el("div","detail");
+  card.append(el("small","",label),el("strong","",value));
+  root.appendChild(card);
+ });
+
+ state.chunks.filter(c=>c.docId===id).forEach(chunk=>{
+  const card=el("div","detail");
+  card.append(
+   el("small","",chunk.id+" · Chunk "+chunk.chunkNumber),
+   el("pre","",chunk.content)
+  );
+  root.appendChild(card);
+ });
+
+ $("docModalOverlay").classList.add("open");
+ $("closeDocModal").focus();
+}
+
+function closeDocModal(){
+ $("docModalOverlay").classList.remove("open");
+}
+
+function removeDoc(id){
+ const doc=state.docs.find(d=>d.id===id);
+ if(!doc)return;
+
+ state.docs=state.docs.filter(d=>d.id!==id);
+ rebuildIndex();
+ state.results=[];
+ $("resultList").replaceChildren(
+  el("p","panel-sub","Knowledge base changed. Run a new search.")
+ );
+ $("answerContainer").replaceChildren();
+
+ renderDocs();
+ logEvent("Document removed",doc.title+" removed from the local index.");
+ toast("Local document removed");
+}
+
+function tokenize(text){
+ return (text.toLowerCase().match(/[\p{L}\p{N}]+/gu)||[])
+  .filter(word=>word.length>2);
+}
+
+function termFrequency(tokens,term){
+ return tokens.reduce((count,item)=>count+(item===term?1:0),0);
+}
+
+function scoreChunk(queryTokens,chunk,mode){
+ const contentTokens=tokenize(chunk.content);
+ const queryTerms=[...new Set(queryTokens)];
+ const matched=queryTerms.filter(t=>contentTokens.includes(t));
+
+ const overlap=queryTerms.length?matched.length/queryTerms.length:0;
+ const frequency=queryTerms.reduce((sum,t)=>
+  sum+Math.min(termFrequency(contentTokens,t),4),0
+ );
+
+ const normalizedFrequency=Math.min(
+  1,frequency/Math.max(queryTerms.length*2,1)
+ );
+
+ let score;
+
+ if(mode==="keyword")score=normalizedFrequency;
+ else if(mode==="overlap")score=overlap;
+ else score=.55*overlap+.45*normalizedFrequency;
+
+ return{
+  ...chunk,
+  score:Math.round(score*100),
+  overlap:Math.round(overlap*100),
+  frequency:Math.round(normalizedFrequency*100)
+ };
+}
+
+function runSearch(event){
+ if(event)event.preventDefault();
+
+ const query=$("queryInput").value.trim();
+ if(!query){
+  toast("Enter a knowledge question.");
+  return;
+ }
+
+ const tokens=tokenize(query);
+ if(!tokens.length){
+  toast("Enter searchable words.");
+  return;
+ }
+
+ const mode=$("retrievalMode").value;
+ const topK=Number($("topK").value);
+
+ state.results=state.chunks
+  .map(chunk=>scoreChunk(tokens,chunk,mode))
+  .filter(result=>result.score>0)
+  .sort((a,b)=>b.score-a.score||a.id.localeCompare(b.id))
+  .slice(0,topK);
+
+ state.queryCount++;
+ renderKPIs();
+ renderResults();
+ renderAnswer(query);
+
+ logEvent(
+  "Local retrieval executed",
+  `${state.results.length} matching chunks found using ${mode} keyword ranking.`
+ );
+}
+
+function renderResults(){
+ const root=$("resultList");
+ root.replaceChildren();
+ $("resultCount").textContent=state.results.length+" RESULTS";
+
+ if(!state.results.length){
+  root.appendChild(el("p","panel-sub","No matching source chunks were found."));
+  return;
+ }
+
+ state.results.forEach((result,index)=>{
+  const card=el("div","result");
+  const head=el("div","result-head");
+
+  head.append(
+   el("strong","",`[${index+1}] ${result.title}`),
+   el("span","pill demo",result.score+"% DEMO SCORE")
+  );
+
+  const scores=el("div","score-row");
+  [
+   ["Overlap",result.overlap+"%"],
+   ["Frequency",result.frequency+"%"],
+   ["Chunk",result.id]
+  ].forEach(([label,value])=>{
+   const item=el("span");
+   item.append(el("b","",label+": "),document.createTextNode(value));
+   scores.appendChild(item);
+  });
+
+  card.append(
+   head,
+   el("p","",result.content),
+   scores
+  );
+  root.appendChild(card);
+ });
+}
+
+function renderAnswer(query){
+ const root=$("answerContainer");
+ root.replaceChildren();
+
+ const card=el("div","answer");
+ card.appendChild(el("h4","","Extractive Evidence Summary · Not LLM Generated"));
+
+ if(!state.results.length){
+  card.appendChild(el(
+   "p","",
+   "No matching evidence was found in the local demonstration knowledge base. No answer can be supported by these documents."
+  ));
+  root.appendChild(card);
+  return;
+ }
+
+ const selected=state.results.slice(0,3);
+ const answerParts=selected.map((result,index)=>{
+  const firstSentence=result.content.match(/[^.!?]+[.!?]?/)?.[0]?.trim()||result.content;
+  return `[${index+1}] ${firstSentence}`;
+ });
+
+ card.append(
+  el("p","",`Question: ${query}\n\nRetrieved excerpts:\n${answerParts.join("\n\n")}\n\nThis summary is assembled from local source text. It is not a verified answer, and the citation numbers refer only to the retrieved chunks shown below.`)
+ );
+
+ root.appendChild(card);
+}
+
+async function ingestFiles(){
+ const files=Array.from($("fileInput").files||[]);
+
+ if(!files.length){
+  toast("Select at least one text document.");
+  return;
+ }
+
+ if(files.length>3){
+  toast("Maximum 3 files per batch.");
+  return;
+ }
+
+ if(files.some(file=>file.size>1024*1024)){
+  toast("Each file must be 1 MB or smaller.");
+  return;
+ }
+
+ const allowed=/\.(txt|md|csv|json)$/i;
+
+ if(files.some(file=>!allowed.test(file.name))){
+  toast("Only TXT, MD, CSV and JSON text files are supported.");
+  return;
+ }
+
+ const button=$("ingestBtn");
+ button.disabled=true;
+ button.textContent="Reading local files...";
+
+ try{
+  for(const file of files){
+   const text=await file.text();
+
+   if(!text.trim())continue;
+
+   const id="KB-DEMO-"+String(state.nextDoc++).padStart(3,"0");
+
+   state.docs.push({
+    id,
+    title:file.name.slice(0,120),
+    category:$("documentCategory").value,
+    source:"Local user-selected text file",
+    text:text.slice(0,1024*1024),
+    chunkSize:Number($("chunkSize").value)
+   });
+
+   logEvent("Text document ingested",file.name+" added to the browser-local index.");
+  }
+
+  rebuildIndex();
+  renderDocs();
+  $("fileInput").value="";
+  toast("Text ingestion completed locally");
+ }catch(error){
+  toast("Unable to read one or more files.");
+ }finally{
+  button.disabled=false;
+  button.textContent="+ Ingest Selected Text Files";
+ }
+}
+
+function renderPipeline(){
+ const steps=[
+  ["01","▤","Ingestion","Document loading"],
+  ["02","✂","Parsing","OCR / text extraction"],
+  ["03","▦","Chunking","Context segmentation"],
+  ["04","◇","Embedding","Vector representation"],
+  ["05","⌕","Retrieval","BM25 + vector"],
+  ["06","↕","Reranking","Evidence relevance"],
+  ["07","✓","Grounding","Citation validation"],
+  ["08","✦","Answer","Reviewed LLM output"]
+ ];
+
+ const root=$("pipelineGrid");
+ root.replaceChildren();
+
+ steps.forEach(([number,icon,title,description])=>{
+  const card=el("div","pipeline-step");
+  card.append(
+   el("span","",icon),
+   el("strong","",number+" · "+title),
+   el("small","",description)
+  );
+  root.appendChild(card);
+ });
+}
+
+function renderEvaluation(){
+ const root=$("evaluationMetrics");
+ root.replaceChildren();
+
+ const metrics=[
+  ["Illustrative Recall@K",82],
+  ["Illustrative Precision@K",78],
+  ["Illustrative Citation Accuracy",90],
+  ["Illustrative Groundedness",86]
+ ];
+
+ metrics.forEach(([name,value])=>{
+  const card=el("div","metric");
+  const head=el("div","metric-head");
+  head.append(
+   el("span","",name),
+   el("span","",value+"% · SAMPLE")
+  );
+
+  const bar=el("div","progress");
+  const fill=el("span");
+  fill.style.width=value+"%";
+  bar.appendChild(fill);
+
+  card.append(head,bar);
+  root.appendChild(card);
+ });
+}
+
+function csvEscape(value){
+ let text=String(value??"");
+ if(/^\s*[=+\-@]/.test(text))text="'"+text;
+ return '"'+text.replace(/"/g,'""')+'"';
+}
+
+function exportIndex(){
+ const columns=["id","docId","title","category","chunkNumber","content"];
+ const rows=[
+  columns.map(csvEscape).join(","),
+  ...state.chunks.map(chunk=>
+   columns.map(key=>csvEscape(chunk[key])).join(",")
+  )
+ ];
+
+ const blob=new Blob(["\uFEFF"+rows.join("\r\n")],{
+  type:"text/csv;charset=utf-8"
+ });
+
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement("a");
+ link.href=url;
+ link.download="rag-knowledge-base-local-index.csv";
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ toast("Local knowledge index exported");
+}
+
+function resetDemo(){
+ state.docs=structuredClone(SEED_DOCS).map(doc=>({...doc,chunkSize:700}));
+ state.queryCount=0;
+ state.results=[];
+ state.nextDoc=7;
+ state.events=[{
+  title:"Knowledge base reset",
+  detail:"Original fictional documents restored.",
+  time:new Date().toLocaleTimeString("en-IN")
+ }];
+
+ $("queryInput").value="";
+ $("docSearch").value="";
+ $("fileInput").value="";
+ $("answerContainer").replaceChildren();
+ $("resultList").replaceChildren(
+  el("p","panel-sub","Run a search to inspect evidence chunks.")
+ );
+ $("resultCount").textContent="0 RESULTS";
+
+ rebuildIndex();
+ renderDocs();
+ renderTimeline();
+ toast("Knowledge base reset");
+}
+
+function initialize(){
+ renderPipeline();
+ renderEvaluation();
+ resetDemo();
+
+ $("searchForm").addEventListener("submit",runSearch);
+ $("ingestBtn").addEventListener("click",ingestFiles);
+ $("docSearch").addEventListener("input",renderDocs);
+
+ $("uploadShortcut").addEventListener("click",()=>{
+  $("uploadSection").scrollIntoView({behavior:"smooth",block:"start"});
+  $("fileInput").focus();
+ });
+
+ $("searchShortcut").addEventListener("click",()=>{
+  $("searchSection").scrollIntoView({behavior:"smooth",block:"start"});
+  $("queryInput").focus();
+ });
+
+ $("resetBtn").addEventListener("click",resetDemo);
+ $("exportBtn").addEventListener("click",exportIndex);
+ $("closeDocModal").addEventListener("click",closeDocModal);
+
+ $("docModalOverlay").addEventListener("click",event=>{
+  if(event.target===$("docModalOverlay"))closeDocModal();
+ });
+
+ document.addEventListener("keydown",event=>{
+  if(event.key==="Escape")closeDocModal();
+ });
+
+ $("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+ });
+}
+
+initialize();
+</script>
+</body>
+</html>

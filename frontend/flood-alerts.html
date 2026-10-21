@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Flood Alerts</title></head><body><h1>Flood Alerts</h1><p>Scaffold only — not operational.</p></body></html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#090b10">
+<title>Flood Alerts | Kerala Flood AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#090b10;--side:#0d1017;--panel:#151922;--panel2:#1b202b;
+ --gold:#d8b671;--gold2:#f5daa0;--text:#f4f1e9;--muted:#9399a7;
+ --line:rgba(255,255,255,.085);--green:#54d6a4;--orange:#ffb66e;
+ --red:#ff777d;--blue:#82adff;--purple:#c5a0ff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:13px "DM Sans",sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+ outline:2px solid var(--gold);outline-offset:3px
+}
+a{color:inherit;text-decoration:none}
+.app{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+.sidebar{
+ position:sticky;top:0;height:100vh;background:var(--side);
+ border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:40
+}
+.brand{padding:24px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line)}
+.brand-icon{
+ height:43px;width:43px;border-radius:13px;
+ background:linear-gradient(135deg,#f5daa0,#a47c3b);
+ color:#20170a;display:grid;place-items:center;font-size:23px;font-weight:900
+}
+.brand strong{font:800 13px Manrope,sans-serif;letter-spacing:.4px}
+.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:1.2px;margin-top:5px}
+.nav{padding:20px 13px;overflow:auto;flex:1}
+.nav-label{font-size:10px;letter-spacing:1.6px;color:#777e8d;font-weight:800;margin:14px 12px}
+.nav a{
+ display:flex;align-items:center;gap:12px;padding:12px 13px;margin-bottom:5px;
+ border:1px solid transparent;border-radius:10px;color:#a2a8b4;
+ font-size:12px;font-weight:600;transition:.2s
+}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{background:#d8b67119;border-color:#d8b67130;color:var(--gold2)}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.side-foot{padding:17px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.avatar{
+ height:37px;width:37px;border-radius:11px;display:grid;
+ place-items:center;background:#383023;color:var(--gold2);font-weight:800
+}
+.side-foot strong{font-size:11px}
+.side-foot small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.main{
+ min-width:0;
+ background:radial-gradient(ellipse at 65% -5%,#d8b67112,transparent 38%),var(--bg)
+}
+.topbar{
+ min-height:82px;padding:17px 30px;border-bottom:1px solid var(--line);
+ display:flex;justify-content:space-between;align-items:center;gap:14px
+}
+.top-left,.top-actions{display:flex;align-items:center;gap:12px}
+.page-icon{
+ width:43px;height:43px;border-radius:12px;background:#d8b67119;
+ border:1px solid #d8b67133;color:var(--gold);display:grid;place-items:center;font-size:20px
+}
+.top-left h1{font:800 18px Manrope,sans-serif;letter-spacing:-.5px;margin:0}
+.top-left p{margin:5px 0 0;color:var(--muted);font-size:11px}
+.badge,.tag{
+ display:inline-flex;align-items:center;gap:7px;padding:9px 11px;
+ background:#d8b67112;border:1px solid #d8b67130;color:var(--gold2);
+ border-radius:9px;font-size:10px;font-weight:800
+}
+.dot{height:7px;width:7px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite}
+.btn{
+ padding:11px 15px;border-radius:10px;border:1px solid var(--line);
+ background:#1a1f29;color:#e1e3e8;font-size:11px;font-weight:800;transition:.2s
+}
+.btn:hover{border-color:#d8b67166;transform:translateY(-1px)}
+.btn.gold{background:linear-gradient(120deg,#c6a15e,#f1d49a);color:#1b160e;border:0}
+.btn.red{background:#ff777d17;color:#ff9da1;border-color:#ff777d40}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.content{max-width:1700px;margin:auto;padding:28px 30px 42px}
+.eyebrow{color:var(--gold);font-size:10px;font-weight:800;letter-spacing:2px;margin-bottom:10px}
+.heading{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:23px}
+.heading h2{font:800 28px Manrope,sans-serif;letter-spacing:-1px;margin:0}
+.heading p{font-size:12px;color:var(--muted);line-height:1.8;margin:9px 0 0}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{
+ background:linear-gradient(150deg,#181c26,#12161e);border:1px solid var(--line);
+ border-radius:16px;min-width:0;box-shadow:0 14px 35px #0002;animation:rise .45s ease both
+}
+.kpi{padding:21px;overflow:hidden;position:relative}
+.kpi:after{
+ content:"";position:absolute;width:120px;height:120px;border-radius:50%;
+ background:#d8b67109;right:-55px;top:-60px
+}
+.kpi-head{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#a7adba;font-weight:700}
+.kpi-icon{
+ height:36px;width:36px;border-radius:10px;background:#d8b67119;
+ color:var(--gold);display:grid;place-items:center;font-size:18px
+}
+.kpi-number{font:800 30px Manrope,sans-serif;letter-spacing:-1px;margin:15px 0 7px}
+.kpi-caption{color:var(--muted);font-size:10px}
+.kpi-caption b{color:var(--gold)}
+.columns{grid-template-columns:minmax(0,1.55fr) minmax(310px,1fr);margin-top:17px}
+.panel{padding:22px}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:20px}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{font-size:10px;color:var(--muted);line-height:1.7;margin-top:7px}
+.hero{
+ position:relative;overflow:hidden;
+ background:radial-gradient(circle at 85% 15%,#d8b67120,transparent 35%),
+ linear-gradient(120deg,#252017,#151922);
+ border:1px solid #d8b67138;border-radius:17px;padding:27px
+}
+.hero h3{font:800 25px Manrope,sans-serif;letter-spacing:-.8px;margin:12px 0}
+.hero p{max-width:800px;color:#b9b5ae;font-size:12px;line-height:1.9}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:grid;gap:8px;min-width:0}
+.field.full{grid-column:1/-1}
+.field label{font-size:11px;font-weight:700;color:#aeb4c0}
+.field input,.field select,.field textarea{
+ width:100%;background:#1e2430;color:#f4f1e9;
+ border:1px solid #343a46;border-radius:10px;padding:12px;outline:0
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold)}
+.field textarea{resize:vertical;min-height:100px}
+.field input::placeholder,.field textarea::placeholder{color:#7a818e}
+.form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:17px}
+.search,.select{
+ padding:11px 12px;border-radius:10px;border:1px solid #303541;
+ background:#191e28;color:#e8e8e8;outline:0
+}
+.search{flex:1;min-width:190px}
+.search:focus,.select:focus{border-color:var(--gold)}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;white-space:nowrap;text-align:left}
+th{
+ font-size:10px;color:#89909f;letter-spacing:.6px;
+ border-bottom:1px solid var(--line);padding:14px 12px
+}
+td{font-size:11px;color:#d4d9e2;border-bottom:1px solid #ffffff0b;padding:15px 12px}
+tbody tr:hover{background:#d8b67108}
+.id{color:var(--gold2);font-family:monospace;font-weight:800}
+.pill{display:inline-flex;padding:6px 9px;border-radius:7px;font-size:9px;font-weight:800}
+.pill.low{background:#54d6a419;color:var(--green)}
+.pill.moderate{background:#82adff19;color:var(--blue)}
+.pill.high{background:#ffb66e19;color:var(--orange)}
+.pill.critical{background:#ff777d19;color:var(--red)}
+.pill.draft{background:#82adff19;color:var(--blue)}
+.pill.pending{background:#ffb66e19;color:var(--orange)}
+.pill.approved{background:#54d6a419;color:var(--green)}
+.pill.closed{background:#aab0bd19;color:#aab0bd}
+.small-btn{
+ padding:8px 10px;border-radius:8px;border:1px solid #d8b67133;
+ background:#d8b67116;color:var(--gold2);font-size:10px;font-weight:800
+}
+.small-btn:hover{background:#d8b6712d}
+.district-list{display:grid;gap:10px}
+.district-item{
+ display:flex;align-items:center;gap:12px;padding:13px;
+ background:#1b202b;border:1px solid var(--line);border-radius:11px
+}
+.district-icon{
+ width:35px;height:35px;display:grid;place-items:center;
+ background:#d8b67117;color:var(--gold);border-radius:10px;font-size:17px
+}
+.district-info{flex:1;min-width:0}
+.district-info strong{font-size:11px}
+.district-info small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.district-count{font:800 15px Manrope,sans-serif;color:var(--gold2)}
+.insight{
+ padding:15px;background:#1b202b;border:1px solid var(--line);
+ border-radius:11px;margin-bottom:10px
+}
+.insight strong{font-size:11px;color:var(--gold2)}
+.insight p{color:#b2b9c4;font-size:10px;line-height:1.8;margin:9px 0 0}
+.timeline{display:grid;gap:14px}
+.event{display:flex;gap:12px}
+.event-icon{
+ height:32px;width:32px;flex-shrink:0;display:grid;place-items:center;
+ border-radius:10px;background:#d8b67118;color:var(--gold)
+}
+.event strong{font-size:11px}
+.event p{color:var(--muted);font-size:10px;line-height:1.7;margin:7px 0}
+.event small{color:#777e8d;font-size:10px}
+.notice{
+ padding:16px;border:1px solid #d8b67130;background:#d8b6710e;
+ border-radius:12px;color:#bbb4a5;font-size:11px;line-height:1.9;margin-top:18px
+}
+.notice strong{color:var(--gold2)}
+.footer{padding-top:27px;text-align:center;color:#69707e;font-size:10px}
+.modal-backdrop{
+ position:fixed;inset:0;background:#000c;backdrop-filter:blur(7px);
+ z-index:100;display:none;align-items:center;justify-content:center;padding:18px
+}
+.modal-backdrop.open{display:flex}
+.modal{
+ width:min(680px,100%);max-height:90vh;overflow:auto;background:#171b24;
+ border:1px solid #d8b6714b;border-radius:18px;padding:25px;box-shadow:0 30px 100px #0008
+}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.modal-head h3{font:800 17px Manrope,sans-serif;margin:0}
+.close{height:35px;width:35px;border:1px solid var(--line);background:#282d38;color:white;border-radius:9px;font-size:19px}
+.details{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.detail{background:#1d222d;border:1px solid var(--line);border-radius:10px;padding:14px;overflow-wrap:anywhere}
+.detail small{display:block;color:var(--muted);font-size:10px;margin-bottom:8px}
+.detail strong{font-size:12px}
+.detail.full{grid-column:1/-1}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}
+.toast{
+ position:fixed;right:22px;bottom:22px;z-index:200;padding:14px 17px;
+ background:#252b35;border:1px solid #d8b67166;color:var(--gold2);
+ border-radius:11px;box-shadow:0 15px 45px #0008
+}
+.menu-btn{display:none}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1250px){.kpis{grid-template-columns:repeat(2,1fr)}.columns{grid-template-columns:1fr}}
+@media(max-width:900px){
+ .app{grid-template-columns:1fr}
+ .sidebar{position:fixed;width:260px;transform:translateX(-100%);transition:.3s}
+ .sidebar.open{transform:translateX(0)}
+ .menu-btn{display:inline-block}
+ .topbar{padding:15px 20px}
+ .content{padding:20px}
+}
+@media(max-width:560px){
+ .kpis,.form-grid,.details{grid-template-columns:1fr}
+ .field.full,.detail.full{grid-column:auto}
+ .heading h2{font-size:23px}
+ .panel{padding:17px}
+ .top-actions .badge{display:none}
+ .hero{padding:20px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-icon">✦</div>
+  <div><strong>KERALA FLOOD AI</strong><small>INTELLIGENCE PLATFORM</small></div>
+ </div>
+ <nav class="nav">
+  <div class="nav-label">WORKSPACE</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="agent-command-center.html"><span class="nav-icon">✦</span>Agent Command Center</a>
+  <a href="ai-copilot.html"><span class="nav-icon">◇</span>AI Copilot</a>
+  <a href="analytics.html"><span class="nav-icon">▥</span>Analytics</a>
+  <div class="nav-label" style="margin-top:24px">FLOOD INTELLIGENCE</div>
+  <a class="active" href="flood-alerts.html"><span class="nav-icon">⚑</span>Flood Alerts</a>
+  <a href="flood-monitoring.html"><span class="nav-icon">≋</span>Flood Monitoring</a>
+  <a href="weather-monitoring.html"><span class="nav-icon">☁</span>Weather Monitoring</a>
+  <a href="river-monitoring.html"><span class="nav-icon">⌁</span>River Monitoring</a>
+  <a href="dam-monitoring.html"><span class="nav-icon">▥</span>Dam Monitoring</a>
+  <div class="nav-label" style="margin-top:24px">EMERGENCY RESPONSE</div>
+  <a href="district-dashboard.html"><span class="nav-icon">◈</span>District Dashboard</a>
+  <a href="emergency-sos.html"><span class="nav-icon">⚑</span>Emergency SOS</a>
+  <a href="evacuation-planning.html"><span class="nav-icon">⌁</span>Evacuation Planning</a>
+  <a href="family-reunification.html"><span class="nav-icon">♡</span>Family Reunification</a>
+  <div class="nav-label" style="margin-top:24px">GOVERNANCE</div>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+  <a href="reports.html"><span class="nav-icon">▤</span>Reports</a>
+ </nav>
+ <div class="side-foot">
+  <div class="avatar">OP</div>
+  <div><strong>Operations Workspace</strong><small>Early Warning Simulation</small></div>
+ </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-left">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="page-icon">⚑</div>
+  <div><h1>Flood Alert Intelligence</h1><p>Risk monitoring · Advisory drafts · Human approval</p></div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>DEMO DATA</span>
+  <button class="btn" id="resetBtn">↻ Reset</button>
+  <button class="btn gold" id="exportBtn">↓ Export CSV</button>
+ </div>
+</header>
+
+<div class="content">
+ <div class="heading">
+  <div>
+   <div class="eyebrow">KERALA EARLY WARNING INTELLIGENCE</div>
+   <h2>Flood Alert Command Center</h2>
+   <p>Review fictional district flood-risk scenarios and simulate authorized advisory approval workflows.</p>
+  </div>
+  <span class="tag">14 DISTRICTS · NO LIVE FEED</span>
+ </div>
+
+ <section class="hero">
+  <div class="eyebrow">EARLY WARNING & RISK INTELLIGENCE</div>
+  <h3>From risk signals to responsible action.</h3>
+  <p>
+   Explore simulated rainfall, river-level and flood-severity signals.
+   Prepare advisory drafts, examine assumptions and document simulated review decisions.
+   This dashboard does not issue official flood warnings or verify current conditions.
+  </p>
+  <div class="hero-actions">
+   <button class="btn gold" id="newAlertBtn">＋ Create Alert Draft</button>
+   <a href="flood-monitoring.html" class="btn">≋ Flood Monitoring</a>
+  </div>
+ </section>
+
+ <section class="grid kpis" style="margin-top:17px">
+  <div class="card kpi">
+   <div class="kpi-head">Total Alert Scenarios<div class="kpi-icon">⚑</div></div>
+   <div class="kpi-number" id="kpiTotal">0</div>
+   <div class="kpi-caption"><b>DEMO</b> · Fictional records</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Critical Severity<div class="kpi-icon">!</div></div>
+   <div class="kpi-number" id="kpiCritical">0</div>
+   <div class="kpi-caption"><b>DEMO</b> · Not official warnings</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Pending Review<div class="kpi-icon">◇</div></div>
+   <div class="kpi-number" id="kpiPending">0</div>
+   <div class="kpi-caption"><b>DEMO</b> · Human approval queue</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Approved Demo Drafts<div class="kpi-icon">✓</div></div>
+   <div class="kpi-number" id="kpiApproved">0</div>
+   <div class="kpi-caption"><b>DEMO</b> · Never broadcast</div>
+  </div>
+ </section>
+
+ <section class="grid columns">
+  <div class="card panel" id="alertBuilder">
+   <div class="panel-head">
+    <div><div class="panel-title">Flood Alert Scenario Builder</div><div class="panel-sub">Create an internal, fictional early-warning advisory</div></div>
+    <span class="tag">DRAFT ENGINE</span>
+   </div>
+   <form id="alertForm">
+    <div class="form-grid">
+     <div class="field">
+      <label for="district">District</label>
+      <select id="district" required><option value="">Select district</option></select>
+     </div>
+     <div class="field">
+      <label for="alertType">Hazard Type</label>
+      <select id="alertType">
+       <option value="River Flooding">River Flooding</option>
+       <option value="Urban Flooding">Urban Flooding</option>
+       <option value="Flash Flood Scenario">Flash Flood Scenario</option>
+       <option value="Coastal Flooding">Coastal Flooding</option>
+       <option value="Reservoir-Related Scenario">Reservoir-Related Scenario</option>
+      </select>
+     </div>
+     <div class="field">
+      <label for="rainfall">Illustrative Rainfall (mm)</label>
+      <input id="rainfall" type="number" min="0" max="500" step="1" value="90" required>
+     </div>
+     <div class="field">
+      <label for="river">Illustrative River Level (% of Demo Scale)</label>
+      <input id="river" type="number" min="0" max="100" step="1" value="68" required>
+     </div>
+     <div class="field">
+      <label for="severity">Severity Label</label>
+      <select id="severity">
+       <option value="low">Low</option>
+       <option value="moderate">Moderate</option>
+       <option value="high">High</option>
+       <option value="critical">Critical</option>
+      </select>
+     </div>
+     <div class="field">
+      <label for="source">Source Verification State</label>
+      <select id="source">
+       <option value="Unverified synthetic input">Unverified synthetic input</option>
+       <option value="Training scenario">Training scenario</option>
+       <option value="Verification required">Verification required</option>
+      </select>
+     </div>
+     <div class="field full">
+      <label for="area">Fictional Affected Area</label>
+      <input id="area" maxlength="140" required placeholder="Example: Demo Ward A / Training Zone">
+     </div>
+     <div class="field full">
+      <label for="message">Draft Advisory Text</label>
+      <textarea id="message" maxlength="1000" required placeholder="Write a fictional training advisory. No real evacuation instructions or public warnings."></textarea>
+     </div>
+    </div>
+    <div class="form-actions">
+     <button class="btn gold" type="submit" style="flex:1">✦ Create Demo Alert</button>
+     <button class="btn" type="reset">Clear</button>
+    </div>
+   </form>
+  </div>
+
+  <div class="card panel">
+   <div class="panel-head">
+    <div><div class="panel-title">District Scenario Overview</div><div class="panel-sub">Alert distribution across Kerala districts</div></div>
+    <span class="tag">REGIONAL VIEW</span>
+   </div>
+   <div class="district-list" id="districtList"></div>
+   <div class="notice">
+    <strong>Not a live risk ranking.</strong>
+    <div>District counts represent only fictional records in this demonstration.</div>
+   </div>
+  </div>
+ </section>
+
+ <section class="card panel" style="margin-top:17px">
+  <div class="panel-head">
+   <div><div class="panel-title">Flood Alert Registry</div><div class="panel-sub">Search, filter and review simulated alert records</div></div>
+   <span class="tag">ALERT OPERATIONS</span>
+  </div>
+  <div class="filters">
+   <input id="searchInput" class="search" placeholder="Search alert ID, district, hazard or area..." aria-label="Search alerts">
+   <select id="severityFilter" class="select">
+    <option value="all">All Severities</option>
+    <option value="critical">Critical</option>
+    <option value="high">High</option>
+    <option value="moderate">Moderate</option>
+    <option value="low">Low</option>
+   </select>
+   <select id="statusFilter" class="select">
+    <option value="all">All Statuses</option>
+    <option value="draft">Draft</option>
+    <option value="pending">Pending Review</option>
+    <option value="approved">Demo Approved</option>
+    <option value="closed">Closed</option>
+   </select>
+  </div>
+  <div class="table-wrap">
+   <table>
+    <thead><tr><th>Alert ID</th><th>District</th><th>Hazard</th><th>Rainfall</th><th>River Scale</th><th>Severity</th><th>Status</th><th>Review</th></tr></thead>
+    <tbody id="alertTable"></tbody>
+   </table>
+  </div>
+ </section>
+
+ <section class="grid columns">
+  <div class="card panel">
+   <div class="panel-head">
+    <div><div class="panel-title">Risk Assessment Explanation</div><div class="panel-sub">Transparent illustrative scoring — not a validated flood model</div></div>
+    <span class="tag">RULE-BASED DEMO</span>
+   </div>
+   <div id="insightList"></div>
+  </div>
+  <div class="card panel">
+   <div class="panel-head">
+    <div><div class="panel-title">Advisory Review Pipeline</div><div class="panel-sub">Human authorization and delivery controls</div></div>
+    <span class="tag">GOVERNANCE</span>
+   </div>
+   <div class="insight"><strong>01 · Data Verification</strong><p>Check official provenance, timestamps, geographic relevance, station health and conflicting reports.</p></div>
+   <div class="insight"><strong>02 · Risk Interpretation</strong><p>Review flood model confidence, uncertainty, population exposure and known infrastructure limitations.</p></div>
+   <div class="insight"><strong>03 · Authorized Approval</strong><p>Designated officials review the exact message and approve it under their established emergency procedures.</p></div>
+   <div class="insight"><strong>04 · Controlled Distribution</strong><p>Production alerts require authenticated, approved channels, delivery logs, corrections and cancellation mechanisms.</p></div>
+  </div>
+ </section>
+
+ <section class="grid columns">
+  <div class="card panel">
+   <div class="panel-head">
+    <div><div class="panel-title">Coordination Activity</div><div class="panel-sub">Local simulation events only</div></div>
+    <span class="tag">TIMELINE</span>
+   </div>
+   <div class="timeline" id="timeline"></div>
+  </div>
+  <div class="card panel">
+   <div class="panel-head">
+    <div><div class="panel-title">Trusted Source Integration Plan</div><div class="panel-sub">Production adapters requiring authorization and verification</div></div>
+    <span class="tag">INTEGRATIONS</span>
+   </div>
+   <div class="insight"><strong>IMD Weather Warnings</strong><p>Verified weather advisories and rainfall observations with freshness checks.</p></div>
+   <div class="insight"><strong>CWC Flood Forecasts</strong><p>Official river-level and flood forecast information where available.</p></div>
+   <div class="insight"><strong>KSDMA / District Authorities</strong><p>Authoritative emergency bulletins and district-specific instructions.</p></div>
+   <div class="insight"><strong>Official Public Alert Channels</strong><p>Separate permissioned delivery services, disabled throughout this demo.</p></div>
+  </div>
+ </section>
+
+ <div class="notice">
+  <strong>⚠ Demonstration Only.</strong>
+  <div>All rainfall readings, river percentages, severity levels, district alerts and risk insights are fictional. “Approved” is only a local training status. This dashboard does not provide real-time flood information, send alerts or issue evacuation orders. Follow official authorities during emergencies; in India, emergency assistance is available through 112.</div>
+ </div>
+
+ <footer class="footer">KERALA FLOOD RELIEF COORDINATION AGENT · FLOOD ALERTS · SIMULATION ENVIRONMENT</footer>
+</div>
+</main>
+</div>
+
+<div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+ <div class="modal">
+  <div class="modal-head">
+   <h3 id="modalTitle">Alert Review</h3>
+   <button class="close" id="closeModal" aria-label="Close">×</button>
+  </div>
+  <div class="details" id="modalDetails"></div>
+  <div class="notice">
+   <strong>Approval is simulated.</strong>
+   <div>No SMS, email, WhatsApp, push notification, official warning or external API request will occur.</div>
+  </div>
+  <div class="modal-actions">
+   <button class="btn" id="submitReviewBtn">◇ Submit for Demo Review</button>
+   <button class="btn gold" id="approveBtn">✓ Approve Demo Draft</button>
+   <button class="btn red" id="closeAlertBtn">× Close Demo Alert</button>
+   <button class="btn" id="dismissBtn">Dismiss</button>
+  </div>
+ </div>
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const DISTRICTS=[
+ "Thiruvananthapuram","Kollam","Pathanamthitta","Alappuzha",
+ "Kottayam","Idukki","Ernakulam","Thrissur","Palakkad",
+ "Malappuram","Kozhikode","Wayanad","Kannur","Kasaragod"
+];
+
+const INITIAL_ALERTS=[
+ {id:"FLD-DEMO-001",district:"Wayanad",type:"Flash Flood Scenario",area:"Fictional Zone W",rainfall:165,river:88,severity:"critical",source:"Training scenario",message:"Fictional critical-severity training scenario. No public advisory issued.",status:"pending"},
+ {id:"FLD-DEMO-002",district:"Alappuzha",type:"River Flooding",area:"Fictional Zone A",rainfall:118,river:81,severity:"high",source:"Training scenario",message:"Fictional river-flood training scenario.",status:"draft"},
+ {id:"FLD-DEMO-003",district:"Thrissur",type:"Urban Flooding",area:"Fictional Zone T",rainfall:92,river:65,severity:"moderate",source:"Training scenario",message:"Fictional urban-flood training scenario.",status:"approved"},
+ {id:"FLD-DEMO-004",district:"Idukki",type:"Reservoir-Related Scenario",area:"Fictional Zone I",rainfall:142,river:84,severity:"high",source:"Training scenario",message:"Fictional reservoir-related training scenario; not a dam status report.",status:"pending"},
+ {id:"FLD-DEMO-005",district:"Ernakulam",type:"Urban Flooding",area:"Fictional Zone E",rainfall:76,river:53,severity:"low",source:"Training scenario",message:"Fictional urban drainage exercise.",status:"closed"},
+ {id:"FLD-DEMO-006",district:"Pathanamthitta",type:"River Flooding",area:"Fictional Zone P",rainfall:153,river:91,severity:"critical",source:"Training scenario",message:"Fictional high-water exercise; no official warning.",status:"draft"},
+ {id:"FLD-DEMO-007",district:"Kottayam",type:"River Flooding",area:"Fictional Zone K",rainfall:108,river:72,severity:"high",source:"Training scenario",message:"Fictional river-level monitoring exercise.",status:"pending"},
+ {id:"FLD-DEMO-008",district:"Kozhikode",type:"Coastal Flooding",area:"Fictional Zone C",rainfall:64,river:41,severity:"moderate",source:"Training scenario",message:"Fictional coastal flooding exercise.",status:"approved"}
+];
+
+const state={
+ alerts:structuredClone(INITIAL_ALERTS),
+ nextId:9,
+ selectedId:null,
+ search:"",
+ severity:"all",
+ status:"all",
+ events:[
+  {title:"Alert simulator initialized",detail:"Synthetic flood scenarios loaded. No external alert feeds connected.",time:"Demo dataset"},
+  {title:"Human review workflow ready",detail:"Approval changes local training status only.",time:"Demo dataset"}
+ ]
+};
+
+function escapeHTML(value){
+ return String(value).replace(/[&<>"']/g,char=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ })[char]);
+}
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+ const node=document.createElement("div");
+ node.className="toast";
+ node.textContent=message;
+ document.body.appendChild(node);
+ setTimeout(()=>node.remove(),3000);
+}
+
+function addEvent(title,detail){
+ state.events.unshift({title,detail,time:new Date().toLocaleTimeString("en-IN")});
+ state.events=state.events.slice(0,8);
+ renderTimeline();
+}
+
+function renderKPIs(){
+ $("kpiTotal").textContent=state.alerts.length;
+ $("kpiCritical").textContent=state.alerts.filter(a=>a.severity==="critical"&&a.status!=="closed").length;
+ $("kpiPending").textContent=state.alerts.filter(a=>a.status==="pending").length;
+ $("kpiApproved").textContent=state.alerts.filter(a=>a.status==="approved").length;
+}
+
+function filteredAlerts(){
+ return state.alerts.filter(a=>{
+  const searchable=[a.id,a.district,a.type,a.area].join(" ").toLowerCase();
+  return searchable.includes(state.search.toLowerCase())&&
+   (state.severity==="all"||a.severity===state.severity)&&
+   (state.status==="all"||a.status===state.status);
+ });
+}
+
+function renderTable(){
+ const records=filteredAlerts();
+
+ $("alertTable").innerHTML=records.map(a=>`
+  <tr>
+   <td class="id">${escapeHTML(a.id)}</td>
+   <td>${escapeHTML(a.district)}</td>
+   <td>${escapeHTML(a.type)}</td>
+   <td>${a.rainfall} mm</td>
+   <td>${a.river}%</td>
+   <td><span class="pill ${a.severity}">${a.severity.toUpperCase()}</span></td>
+   <td><span class="pill ${a.status}">${a.status==="approved"?"DEMO APPROVED":a.status.toUpperCase()}</span></td>
+   <td><button class="small-btn" data-id="${escapeHTML(a.id)}">Inspect →</button></td>
+  </tr>
+ `).join("");
+
+ if(!records.length){
+  $("alertTable").innerHTML='<tr><td colspan="8" style="text-align:center;padding:28px">No matching demo alerts.</td></tr>';
+ }
+
+ document.querySelectorAll("[data-id]").forEach(button=>{
+  button.addEventListener("click",()=>openAlert(button.dataset.id));
+ });
+}
+
+function renderDistricts(){
+ const counts=DISTRICTS.map(name=>({
+  name,
+  count:state.alerts.filter(a=>a.district===name&&a.status!=="closed").length
+ })).sort((a,b)=>b.count-a.count||a.name.localeCompare(b.name));
+
+ $("districtList").innerHTML=counts.map(d=>`
+  <div class="district-item">
+   <div class="district-icon">◈</div>
+   <div class="district-info">
+    <strong>${escapeHTML(d.name)}</strong>
+    <small>${d.count} active fictional alert scenario${d.count===1?"":"s"}</small>
+   </div>
+   <div class="district-count">${d.count}</div>
+  </div>
+ `).join("");
+}
+
+function calculateIllustrativeScore(rainfall,river){
+ const rainPart=Math.min(100,rainfall/2.5);
+ return Math.round(rainPart*.55+river*.45);
+}
+
+function renderInsights(){
+ const rainfall=Number($("rainfall").value)||0;
+ const river=Number($("river").value)||0;
+ const score=calculateIllustrativeScore(rainfall,river);
+ const scoreLabel=score>=80?"High synthetic score":score>=55?"Elevated synthetic score":"Lower synthetic score";
+
+ const insights=[
+  ["Illustrative Composite Score",`${score}/100 · ${scoreLabel}. A simple weighted arithmetic example, not a trained or validated flood-risk prediction.`],
+  ["Rainfall Input",`${rainfall} mm was entered manually for the exercise. Duration, location, soil conditions and catchment response are not modeled.`],
+  ["River-Level Input",`${river}% is a fictional normalized scale, not a river gauge reading or official flood threshold.`],
+  ["Risk Uncertainty","Real flood forecasting requires verified hydrological observations, model validation, uncertainty estimation and official interpretation."],
+  ["Public Communication","Drafts must remain internal until authorized officials verify information and approve the final wording through approved channels."]
+ ];
+
+ $("insightList").innerHTML=insights.map(([title,description])=>`
+  <div class="insight">
+   <strong>${escapeHTML(title)}</strong>
+   <p>${escapeHTML(description)}</p>
+  </div>
+ `).join("");
+}
+
+function renderTimeline(){
+ const container=$("timeline");
+ container.replaceChildren();
+
+ state.events.forEach(event=>{
+  const row=document.createElement("div");
+  row.className="event";
+  const icon=document.createElement("div");
+  icon.className="event-icon";
+  icon.textContent="⚑";
+  const body=document.createElement("div");
+  const title=document.createElement("strong");
+  title.textContent=event.title;
+  const desc=document.createElement("p");
+  desc.textContent=event.detail;
+  const time=document.createElement("small");
+  time.textContent=event.time;
+  body.append(title,desc,time);
+  row.append(icon,body);
+  container.appendChild(row);
+ });
+}
+
+function createAlert(event){
+ event.preventDefault();
+
+ const district=$("district").value;
+ const rainfall=Number($("rainfall").value);
+ const river=Number($("river").value);
+ const area=$("area").value.trim();
+ const message=$("message").value.trim();
+
+ if(!district||!area||!message||
+  !Number.isFinite(rainfall)||rainfall<0||rainfall>500||
+  !Number.isFinite(river)||river<0||river>100){
+  toast("Complete all required demo fields with valid values");
+  return;
+ }
+
+ const id=`FLD-DEMO-${String(state.nextId++).padStart(3,"0")}`;
+
+ state.alerts.unshift({
+  id,
+  district,
+  type:$("alertType").value,
+  area,
+  rainfall,
+  river,
+  severity:$("severity").value,
+  source:$("source").value,
+  message,
+  status:"draft"
+ });
+
+ $("alertForm").reset();
+ renderAll();
+ addEvent("Demo alert draft created",`${id} · ${district} · No external warning was sent.`);
+ toast("Fictional flood alert draft created");
+}
+
+function openAlert(id){
+ const alert=state.alerts.find(a=>a.id===id);
+ if(!alert)return;
+
+ state.selectedId=id;
+
+ const fields=[
+  ["Alert ID",alert.id],
+  ["District",alert.district],
+  ["Hazard Type",alert.type],
+  ["Fictional Area",alert.area],
+  ["Illustrative Rainfall",`${alert.rainfall} mm`],
+  ["Illustrative River Scale",`${alert.river}%`],
+  ["Severity",alert.severity.toUpperCase()],
+  ["Review Status",alert.status.toUpperCase()],
+  ["Source",alert.source],
+  ["Draft Advisory",alert.message]
+ ];
+
+ const container=$("modalDetails");
+ container.replaceChildren();
+
+ fields.forEach(([label,value],index)=>{
+  const box=document.createElement("div");
+  box.className="detail"+(index===fields.length-1?" full":"");
+  const small=document.createElement("small");
+  small.textContent=label;
+  const strong=document.createElement("strong");
+  strong.textContent=value;
+  box.append(small,strong);
+  container.appendChild(box);
+ });
+
+ $("submitReviewBtn").disabled=alert.status!=="draft";
+ $("approveBtn").disabled=alert.status!=="pending";
+ $("closeAlertBtn").disabled=alert.status==="closed";
+
+ $("modal").classList.add("open");
+ $("closeModal").focus();
+}
+
+function closeModal(){
+ $("modal").classList.remove("open");
+ state.selectedId=null;
+}
+
+function updateAlertStatus(nextStatus){
+ const alert=state.alerts.find(a=>a.id===state.selectedId);
+ if(!alert)return;
+
+ const allowed={
+  draft:["pending","closed"],
+  pending:["approved","closed"],
+  approved:["closed"],
+  closed:[]
+ };
+
+ if(!allowed[alert.status].includes(nextStatus))return;
+
+ alert.status=nextStatus;
+
+ addEvent(
+  `Demo alert marked ${nextStatus}`,
+  `${alert.id} updated locally. No messages or official warnings transmitted.`
+ );
+
+ renderAll();
+ closeModal();
+ toast(`Alert status changed to ${nextStatus}`);
+}
+
+function exportCSV(){
+ const fields=["id","district","type","area","rainfall","river","severity","source","status","message"];
+
+ function csv(value){
+  let text=String(value??"");
+  if(/^\s*[=+\-@]/.test(text))text="'"+text;
+  return `"${text.replace(/"/g,'""')}"`;
+ }
+
+ const rows=[
+  fields.map(csv).join(","),
+  ...state.alerts.map(a=>fields.map(key=>csv(a[key])).join(","))
+ ];
+
+ const blob=new Blob(["\uFEFF"+rows.join("\r\n")],{type:"text/csv;charset=utf-8"});
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement("a");
+ link.href=url;
+ link.download="kerala-flood-alerts-demo.csv";
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ toast("Demo alert registry exported");
+}
+
+function resetDemo(){
+ state.alerts=structuredClone(INITIAL_ALERTS);
+ state.nextId=9;
+ state.search="";
+ state.severity="all";
+ state.status="all";
+ state.events=[{
+  title:"Flood alert simulation reset",
+  detail:"Original fictional alert scenarios restored.",
+  time:new Date().toLocaleTimeString("en-IN")
+ }];
+
+ $("alertForm").reset();
+ $("searchInput").value="";
+ $("severityFilter").value="all";
+ $("statusFilter").value="all";
+
+ renderAll();
+ toast("Flood alert demo reset");
+}
+
+function renderAll(){
+ renderKPIs();
+ renderTable();
+ renderDistricts();
+ renderInsights();
+ renderTimeline();
+}
+
+function initialize(){
+ DISTRICTS.forEach(name=>{
+  const option=document.createElement("option");
+  option.value=name;
+  option.textContent=name;
+  $("district").appendChild(option);
+ });
+
+ $("alertForm").addEventListener("submit",createAlert);
+
+ $("searchInput").addEventListener("input",event=>{
+  state.search=event.target.value.trim();
+  renderTable();
+ });
+
+ $("severityFilter").addEventListener("change",event=>{
+  state.severity=event.target.value;
+  renderTable();
+ });
+
+ $("statusFilter").addEventListener("change",event=>{
+  state.status=event.target.value;
+  renderTable();
+ });
+
+ ["rainfall","river"].forEach(id=>{
+  $(id).addEventListener("input",renderInsights);
+ });
+
+ $("newAlertBtn").addEventListener("click",()=>{
+  $("alertBuilder").scrollIntoView({behavior:"smooth",block:"start"});
+  $("district").focus({preventScroll:true});
+ });
+
+ $("submitReviewBtn").addEventListener("click",()=>updateAlertStatus("pending"));
+ $("approveBtn").addEventListener("click",()=>updateAlertStatus("approved"));
+ $("closeAlertBtn").addEventListener("click",()=>updateAlertStatus("closed"));
+
+ $("closeModal").addEventListener("click",closeModal);
+ $("dismissBtn").addEventListener("click",closeModal);
+
+ $("modal").addEventListener("click",event=>{
+  if(event.target===$("modal"))closeModal();
+ });
+
+ document.addEventListener("keydown",event=>{
+  if(event.key==="Escape")closeModal();
+ });
+
+ $("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+ });
+
+ $("resetBtn").addEventListener("click",resetDemo);
+ $("exportBtn").addEventListener("click",exportCSV);
+
+ renderAll();
+}
+
+initialize();
+
+console.info(
+ "Kerala Flood Alerts demonstration initialized. No official flood data or notification services connected."
+);
+</script>
+</body>
+</html>

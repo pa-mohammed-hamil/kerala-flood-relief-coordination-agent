@@ -1,0 +1,950 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090b10">
+<title>Relief Inventory | Kerala Flood AI</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --bg:#090b10;--sidebar:#0d1017;--panel:#151922;--panel2:#1b202b;
+ --gold:#d8b671;--gold2:#f5daa0;--text:#f4f1e9;--muted:#9399a7;
+ --line:rgba(255,255,255,.085);--green:#54d6a4;--orange:#ffb66e;
+ --red:#ff777d;--blue:#82adff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:13px "DM Sans",sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+.app{display:grid;grid-template-columns:252px minmax(0,1fr);min-height:100vh}
+.sidebar{
+ position:sticky;top:0;height:100vh;background:var(--sidebar);
+ border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:40
+}
+.brand{padding:23px 17px;display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--line)}
+.brand-icon{
+ width:43px;height:43px;display:grid;place-items:center;border-radius:13px;
+ background:linear-gradient(135deg,#f5daa0,#a47c3b);color:#20170a;font-size:23px
+}
+.brand strong{font:800 13px Manrope,sans-serif}
+.brand small{display:block;font-size:10px;letter-spacing:1.2px;color:var(--muted);margin-top:5px}
+.nav{padding:17px 12px;overflow:auto;flex:1}
+.nav-label{color:#777e8d;font-size:10px;letter-spacing:1.5px;font-weight:800;margin:17px 12px 9px}
+.nav a{
+ display:flex;align-items:center;gap:12px;padding:12px 13px;margin-bottom:5px;
+ border:1px solid transparent;border-radius:10px;color:#a2a8b4;font-size:12px;font-weight:600
+}
+.nav a:hover{background:#1b202b;color:white}
+.nav a.active{background:#d8b67119;border-color:#d8b67130;color:var(--gold2)}
+.nav-icon{width:20px;text-align:center;font-size:17px}
+.side-footer{padding:17px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.avatar{
+ width:38px;height:38px;border-radius:11px;background:#383023;
+ color:var(--gold2);display:grid;place-items:center;font-weight:800
+}
+.side-footer strong{font-size:11px}
+.side-footer small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+
+.main{min-width:0;background:radial-gradient(ellipse at 65% -5%,#d8b67112,transparent 38%),var(--bg)}
+.topbar{
+ min-height:80px;padding:16px 28px;border-bottom:1px solid var(--line);
+ display:flex;justify-content:space-between;align-items:center;gap:12px
+}
+.top-left,.top-actions{display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.page-icon{
+ width:43px;height:43px;border-radius:12px;background:#d8b67119;
+ border:1px solid #d8b67133;color:var(--gold);display:grid;place-items:center;font-size:20px
+}
+.top-left h1{font:800 18px Manrope,sans-serif;margin:0}
+.top-left p{color:var(--muted);font-size:11px;margin:5px 0 0}
+.badge,.tag{
+ display:inline-flex;align-items:center;gap:7px;padding:9px 11px;background:#d8b67112;
+ border:1px solid #d8b67130;color:var(--gold2);border-radius:9px;font-size:10px;font-weight:800
+}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+.btn{
+ display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 15px;
+ border-radius:10px;border:1px solid var(--line);background:#1a1f29;
+ color:#e1e3e8;font-size:11px;font-weight:800;transition:.2s
+}
+.btn:hover{border-color:#d8b67166;transform:translateY(-1px)}
+.btn.gold{background:linear-gradient(120deg,#c6a15e,#f1d49a);color:#1b160e;border:0}
+.btn.red{color:var(--red);background:#ff777d12;border-color:#ff777d40}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+.content{max-width:1700px;margin:auto;padding:27px 29px 44px}
+.eyebrow{color:var(--gold);font-size:10px;letter-spacing:2px;font-weight:800;margin-bottom:10px}
+.heading{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+.heading h2{font:800 28px Manrope,sans-serif;letter-spacing:-1px;margin:0}
+.heading p{color:var(--muted);font-size:12px;line-height:1.8;margin:9px 0 0}
+.hero{
+ padding:26px;border-radius:18px;border:1px solid #d8b67138;
+ background:radial-gradient(circle at 85% 15%,#d8b67120,transparent 35%),linear-gradient(120deg,#252017,#151922)
+}
+.hero h3{font:800 25px Manrope,sans-serif;letter-spacing:-.8px;margin:12px 0}
+.hero p{color:#b9b5ae;font-size:12px;line-height:1.9;max-width:850px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:19px}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:17px}
+.card{
+ min-width:0;background:linear-gradient(150deg,#181c26,#12161e);
+ border:1px solid var(--line);border-radius:16px;box-shadow:0 14px 35px #0002;
+ animation:rise .5s ease both
+}
+.kpi{padding:20px}
+.kpi-head{display:flex;justify-content:space-between;align-items:center;color:#a7adba;font-size:11px;font-weight:700}
+.kpi-icon{
+ width:36px;height:36px;border-radius:10px;background:#d8b67119;
+ color:var(--gold);display:grid;place-items:center;font-size:18px
+}
+.kpi-number{font:800 29px Manrope,sans-serif;letter-spacing:-1px;margin:15px 0 7px}
+.kpi-caption{font-size:10px;color:var(--muted);line-height:1.7}
+.kpi-caption b{color:var(--gold)}
+
+.section{margin-top:25px}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:15px}
+.section-head h3{font:800 19px Manrope,sans-serif;letter-spacing:-.5px;margin:0}
+.section-head p{color:var(--muted);font-size:11px;line-height:1.8;margin:7px 0 0}
+.panel{padding:21px}
+.panel-title{font:800 14px Manrope,sans-serif}
+.panel-sub{color:var(--muted);font-size:10px;line-height:1.8;margin-top:6px}
+.columns{grid-template-columns:minmax(0,1.6fr) minmax(310px,1fr)}
+.two-col{grid-template-columns:repeat(2,minmax(0,1fr))}
+.input,.select{
+ width:100%;padding:12px 13px;border:1px solid #343a46;
+ border-radius:10px;background:#1b202b;color:var(--text);outline:none
+}
+.input:focus,.select:focus{border-color:var(--gold)}
+.field{display:grid;gap:8px;margin-bottom:15px}
+.field label{font-size:11px;font-weight:800;color:#c9ccd4}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
+.filters .input{flex:1;min-width:170px}
+.filters .select{width:auto;min-width:125px}
+.pill{
+ display:inline-flex;align-items:center;padding:7px 10px;border-radius:8px;
+ font-size:10px;font-weight:800;white-space:nowrap
+}
+.pill.healthy{color:var(--green);background:#54d6a419}
+.pill.low{color:var(--orange);background:#ffb66e19}
+.pill.critical{color:var(--red);background:#ff777d19}
+.pill.expiring{color:var(--orange);background:#ffb66e19}
+.pill.expired{color:var(--red);background:#ff777d19}
+.pill.normal{color:var(--blue);background:#82adff19}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:820px}
+th{text-align:left;color:#89909d;font-size:10px;letter-spacing:.7px;padding:14px 11px;border-bottom:1px solid var(--line)}
+td{padding:15px 11px;border-bottom:1px solid var(--line);font-size:11px;color:#c4c9d3}
+td strong{color:var(--text);font-size:11px}
+td small{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.progress{height:8px;background:#303642;border-radius:10px;overflow:hidden;margin-top:8px}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#a68145,#f1d69c);border-radius:10px}
+.small-btn{
+ padding:8px 10px;border-radius:8px;border:1px solid #d8b67140;
+ background:#d8b67115;color:var(--gold2);font-size:10px;font-weight:800
+}
+.stock-card,.alert-card{
+ padding:15px;background:#1b202b;border:1px solid var(--line);
+ border-radius:11px;margin-bottom:10px
+}
+.item-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.item-head strong{font-size:11px}
+.item-description{color:var(--muted);font-size:10px;line-height:1.8;margin:9px 0}
+.metric{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid var(--line)}
+.metric span{color:var(--muted);font-size:11px}
+.metric strong{font-size:12px}
+.timeline{display:grid;gap:14px}
+.event{display:flex;gap:12px}
+.event-icon{
+ width:33px;height:33px;flex-shrink:0;display:grid;place-items:center;
+ border-radius:10px;background:#d8b67118;color:var(--gold)
+}
+.event strong{font-size:11px}
+.event p{font-size:10px;color:var(--muted);line-height:1.7;margin:7px 0}
+.event small{font-size:10px;color:#777e8d}
+.notice{
+ padding:16px;background:#d8b6710e;border:1px solid #d8b67130;
+ border-radius:12px;color:#bbb4a5;font-size:11px;line-height:1.9;margin-top:17px
+}
+.notice strong{color:var(--gold2)}
+.footer{padding-top:26px;text-align:center;color:#69707e;font-size:10px}
+.overlay{
+ position:fixed;inset:0;z-index:100;background:#000b;display:none;
+ align-items:center;justify-content:center;padding:18px
+}
+.overlay.open{display:flex}
+.modal{
+ width:min(620px,100%);max-height:90vh;overflow:auto;background:#181d27;
+ border:1px solid #d8b67144;border-radius:17px;padding:24px;box-shadow:0 30px 90px #0009
+}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.modal-head h3{font:800 18px Manrope,sans-serif;margin:0}
+.detail{
+ padding:13px;background:#10151e;border:1px solid var(--line);
+ border-radius:9px;margin-top:12px
+}
+.detail small{display:block;color:var(--muted);font-size:10px;margin-bottom:8px}
+.detail strong{font-size:11px;overflow-wrap:anywhere}
+.toast{
+ position:fixed;right:20px;bottom:20px;z-index:150;padding:14px 17px;
+ background:#252b35;border:1px solid #d8b67166;color:var(--gold2);
+ border-radius:11px;box-shadow:0 15px 45px #0008
+}
+.menu-btn{display:none}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{50%{opacity:.35}}
+@media(max-width:1250px){.kpis{grid-template-columns:repeat(2,1fr)}.columns{grid-template-columns:1fr}}
+@media(max-width:900px){
+ .app{grid-template-columns:1fr}
+ .sidebar{position:fixed;width:260px;transform:translateX(-100%);transition:.3s}
+ .sidebar.open{transform:translateX(0)}
+ .menu-btn{display:inline-flex}
+ .topbar{padding:15px 20px}
+ .content{padding:20px}
+}
+@media(max-width:560px){
+ .kpis,.two-col{grid-template-columns:1fr}
+ .heading h2{font-size:23px}
+ .panel{padding:16px}
+ .top-actions .badge{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+  <div class="brand-icon">✦</div>
+  <div><strong>KERALA FLOOD AI</strong><small>INTELLIGENCE PLATFORM</small></div>
+ </div>
+ <nav class="nav">
+  <div class="nav-label">WORKSPACE</div>
+  <a href="index.html"><span class="nav-icon">▦</span>Project Overview</a>
+  <a href="command-center.html"><span class="nav-icon">◈</span>Command Center</a>
+  <a href="analytics.html"><span class="nav-icon">▥</span>Analytics</a>
+
+  <div class="nav-label">RELIEF OPERATIONS</div>
+  <a href="relief-dashboard.html"><span class="nav-icon">◇</span>Relief Dashboard</a>
+  <a href="relief-distribution.html"><span class="nav-icon">▣</span>Relief Distribution</a>
+  <a class="active" href="relief-inventory.html"><span class="nav-icon">▤</span>Relief Inventory</a>
+  <a href="shelters.html"><span class="nav-icon">⌂</span>Shelter Management</a>
+  <a href="volunteer-management.html"><span class="nav-icon">♧</span>Volunteer Management</a>
+  <a href="recovery-management.html"><span class="nav-icon">⚒</span>Recovery Management</a>
+
+  <div class="nav-label">GOVERNANCE</div>
+  <a href="human-approval.html"><span class="nav-icon">✓</span>Human Approval</a>
+  <a href="audit-logs.html"><span class="nav-icon">◷</span>Audit Logs</a>
+  <a href="reports.html"><span class="nav-icon">▧</span>Reports</a>
+ </nav>
+ <div class="side-footer">
+  <div class="avatar">RI</div>
+  <div><strong>Inventory Intelligence</strong><small>Simulation Workspace</small></div>
+ </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+ <div class="top-left">
+  <button class="btn menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+  <div class="page-icon">▤</div>
+  <div><h1>Relief Inventory</h1><p>Warehouse stock · Resource availability · Stock reconciliation</p></div>
+ </div>
+ <div class="top-actions">
+  <span class="badge"><span class="dot"></span>SYNTHETIC DATA</span>
+  <button class="btn" id="resetBtn">↻ Reset</button>
+  <button class="btn gold" id="exportBtn">↓ Export CSV</button>
+ </div>
+</header>
+
+<div class="content">
+ <div class="heading">
+  <div>
+   <div class="eyebrow">RESOURCE & WAREHOUSE INTELLIGENCE</div>
+   <h2>Relief Inventory Management</h2>
+   <p>Monitor fictional stock availability, shortages, expiry dates, reservations and inventory movements.</p>
+  </div>
+  <span class="tag">3 DEMO WAREHOUSES</span>
+ </div>
+
+ <section class="hero">
+  <div class="eyebrow">WAREHOUSE RESOURCE CONTROL</div>
+  <h3>Track Every Resource. Prepare for Every Need.</h3>
+  <p>
+   Explore a proposed warehouse inventory workflow for flood relief operations.
+   Review available supplies, identify low-stock items, record fictional receipts,
+   make simulated adjustments and inspect stock transaction history.
+  </p>
+  <div class="hero-actions">
+   <button class="btn gold" id="receiveShortcut">+ Receive Stock</button>
+   <a class="btn" href="#inventorySection">View Inventory ↓</a>
+   <a class="btn" href="relief-distribution.html">Distribution Center →</a>
+  </div>
+ </section>
+
+ <section class="grid kpis">
+  <div class="card kpi">
+   <div class="kpi-head">Inventory Records<div class="kpi-icon">▤</div></div>
+   <div class="kpi-number" id="kpiRecords">0</div>
+   <div class="kpi-caption"><b>SYNTHETIC</b> · Warehouse resource batches</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Low / Critical Stock<div class="kpi-icon">!</div></div>
+   <div class="kpi-number" id="kpiLow">0</div>
+   <div class="kpi-caption"><b>DEMO ALERTS</b> · Below configured thresholds</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Reserved Stock Lines<div class="kpi-icon">◇</div></div>
+   <div class="kpi-number" id="kpiReserved">0</div>
+   <div class="kpi-caption"><b>FICTIONAL</b> · Batches with reservations</div>
+  </div>
+  <div class="card kpi">
+   <div class="kpi-head">Expiring / Expired Batches<div class="kpi-icon">◷</div></div>
+   <div class="kpi-number" id="kpiExpiry">0</div>
+   <div class="kpi-caption"><b>ILLUSTRATIVE</b> · Within next 30 days or expired</div>
+  </div>
+ </section>
+
+ <section class="section grid columns" id="inventorySection">
+  <div class="card panel">
+   <div class="section-head">
+    <div>
+     <div class="panel-title">Warehouse Inventory Registry</div>
+     <div class="panel-sub">Search stock batches and inspect quantities, reservations and expiry status.</div>
+    </div>
+    <span class="tag" id="recordCount">0 RECORDS</span>
+   </div>
+
+   <div class="filters">
+    <input class="input" id="searchInput" placeholder="Search item, batch, warehouse..." aria-label="Search inventory">
+    <select class="select" id="warehouseFilter" aria-label="Filter warehouse">
+     <option value="all">All Warehouses</option>
+    </select>
+    <select class="select" id="stockFilter" aria-label="Filter stock status">
+     <option value="all">All Stock</option>
+     <option value="healthy">Healthy</option>
+     <option value="low">Low Stock</option>
+     <option value="critical">Critical</option>
+    </select>
+   </div>
+
+   <div class="table-wrap">
+    <table>
+     <thead>
+      <tr>
+       <th>RESOURCE / BATCH</th>
+       <th>WAREHOUSE</th>
+       <th>AVAILABLE</th>
+       <th>RESERVED</th>
+       <th>STATUS</th>
+       <th>EXPIRY</th>
+       <th>ACTION</th>
+      </tr>
+     </thead>
+     <tbody id="inventoryTable"></tbody>
+    </table>
+   </div>
+  </div>
+
+  <div class="card panel" id="receiveSection">
+   <div class="panel-title">Stock Movement Simulator</div>
+   <div class="panel-sub" style="margin-bottom:18px">Receive or adjust fictional stock for an existing batch.</div>
+
+   <form id="movementForm">
+    <div class="field">
+     <label for="movementItem">Inventory Batch</label>
+     <select class="select" id="movementItem" required></select>
+    </div>
+    <div class="field">
+     <label for="movementType">Movement Type</label>
+     <select class="select" id="movementType">
+      <option value="receive">Receive Stock (+)</option>
+      <option value="remove">Remove Available Stock (-)</option>
+      <option value="reserve">Reserve Stock (+ reserved)</option>
+      <option value="release">Release Reservation (- reserved)</option>
+     </select>
+    </div>
+    <div class="field">
+     <label for="movementQuantity">Quantity</label>
+     <input class="input" id="movementQuantity" type="number" min="1" max="100000" step="1" required placeholder="100">
+    </div>
+    <div class="field">
+     <label for="movementReason">Fictional Movement Reason</label>
+     <input class="input" id="movementReason" maxlength="180" required placeholder="Example: Sample supply receipt">
+    </div>
+    <div class="field">
+     <label style="display:flex;align-items:flex-start;gap:9px;font-weight:500">
+      <input type="checkbox" id="demoConfirm" required>
+      I confirm this is a fictional stock movement.
+     </label>
+    </div>
+    <button type="submit" class="btn gold">Apply Demo Movement</button>
+   </form>
+
+   <div class="notice">
+    <strong>Inventory accounting:</strong>
+    <div>
+     Available quantity = total on-hand stock minus reserved quantity.
+     Removal is limited to unreserved stock; reservations cannot exceed availability.
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <section class="section grid two-col">
+  <div class="card panel">
+   <div class="section-head">
+    <div>
+     <div class="panel-title">Stock Health & Shortage Alerts</div>
+     <div class="panel-sub">Threshold-based indicators using fictional quantities.</div>
+    </div>
+   </div>
+   <div id="stockHealth"></div>
+  </div>
+
+  <div class="card panel">
+   <div class="section-head">
+    <div>
+     <div class="panel-title">Expiry & Batch Monitoring</div>
+     <div class="panel-sub">Expiry status is based on sample dates and the browser's current date.</div>
+    </div>
+   </div>
+   <div id="expiryList"></div>
+  </div>
+ </section>
+
+ <section class="section grid two-col">
+  <div class="card panel">
+   <div class="section-head">
+    <div>
+     <div class="panel-title">Warehouse Summary</div>
+     <div class="panel-sub">Per-location batch counts and low-stock indicators.</div>
+    </div>
+   </div>
+   <div id="warehouseSummary"></div>
+  </div>
+
+  <div class="card panel">
+   <div class="section-head">
+    <div>
+     <div class="panel-title">Inventory Transaction Timeline</div>
+     <div class="panel-sub">Browser-local changes only, not a production audit trail.</div>
+    </div>
+   </div>
+   <div class="timeline" id="activityTimeline"></div>
+  </div>
+ </section>
+
+ <div class="notice">
+  <strong>⚠ Demonstration Disclaimer.</strong>
+  <div>
+   All inventory records, stock movements, reservations, warehouse names and alerts are synthetic.
+   This page does not synchronize with the separate relief distribution page or any real warehouse.
+   Operational use requires a shared transactional backend, verified stock counts, lot-level
+   traceability, access controls, expiry quarantine, and audit logging.
+   For emergencies in India, call <a href="tel:112" style="color:var(--gold2)">112</a>.
+  </div>
+ </div>
+
+ <footer class="footer">
+  KERALA FLOOD RELIEF COORDINATION AGENT · RELIEF INVENTORY · SYNTHETIC DEMONSTRATION
+ </footer>
+</div>
+</main>
+</div>
+
+<div class="overlay" id="detailOverlay">
+ <div class="modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+  <div class="modal-head">
+   <h3 id="detailTitle">Inventory Batch</h3>
+   <button class="btn" id="closeDetail" aria-label="Close details">✕</button>
+  </div>
+  <p class="panel-sub">Synthetic stock details and sample batch information.</p>
+  <div id="detailContent"></div>
+  <div class="hero-actions">
+   <button class="btn gold" id="useBatchBtn">Select for Stock Movement →</button>
+  </div>
+ </div>
+</div>
+
+<script>
+"use strict";
+
+const $=id=>document.getElementById(id);
+
+const WAREHOUSES=[
+ "Central Demo Warehouse",
+ "Northern Demo Depot",
+ "Southern Demo Depot"
+];
+
+const SEED=[
+ {id:"INV-001",name:"Drinking Water",batch:"WTR-2601",warehouse:WAREHOUSES[0],unit:"litres",stock:9000,reserved:1600,threshold:2000,capacity:15000,expiry:"2027-06-30"},
+ {id:"INV-002",name:"Food Kits",batch:"FD-2602",warehouse:WAREHOUSES[1],unit:"kits",stock:1800,reserved:420,threshold:500,capacity:3000,expiry:"2027-03-15"},
+ {id:"INV-003",name:"Medical Kits",batch:"MED-2603",warehouse:WAREHOUSES[0],unit:"kits",stock:160,reserved:30,threshold:200,capacity:1000,expiry:"2026-11-04"},
+ {id:"INV-004",name:"Blankets",batch:"BLK-2604",warehouse:WAREHOUSES[1],unit:"pieces",stock:2100,reserved:350,threshold:400,capacity:3000,expiry:null},
+ {id:"INV-005",name:"Hygiene Kits",batch:"HYG-2605",warehouse:WAREHOUSES[2],unit:"kits",stock:850,reserved:150,threshold:250,capacity:1500,expiry:"2027-08-30"},
+ {id:"INV-006",name:"Tarpaulin Sheets",batch:"TRP-2606",warehouse:WAREHOUSES[2],unit:"pieces",stock:180,reserved:40,threshold:200,capacity:1200,expiry:null},
+ {id:"INV-007",name:"Drinking Water",batch:"WTR-2607",warehouse:WAREHOUSES[2],unit:"litres",stock:3200,reserved:500,threshold:1000,capacity:5000,expiry:"2027-02-28"},
+ {id:"INV-008",name:"Food Kits",batch:"FD-2608",warehouse:WAREHOUSES[0],unit:"kits",stock:70,reserved:20,threshold:150,capacity:900,expiry:"2026-10-25"},
+ {id:"INV-009",name:"Medical Kits",batch:"MED-2609",warehouse:WAREHOUSES[1],unit:"kits",stock:350,reserved:60,threshold:100,capacity:700,expiry:"2027-01-30"},
+ {id:"INV-010",name:"Blankets",batch:"BLK-2610",warehouse:WAREHOUSES[2],unit:"pieces",stock:900,reserved:100,threshold:200,capacity:1400,expiry:null}
+];
+
+const state={
+ items:[],
+ events:[],
+ selectedId:null
+};
+
+function el(tag,className,text){
+ const node=document.createElement(tag);
+ if(className)node.className=className;
+ if(text!==undefined)node.textContent=String(text);
+ return node;
+}
+
+function toast(message){
+ document.querySelector(".toast")?.remove();
+ const node=el("div","toast",message);
+ document.body.appendChild(node);
+ setTimeout(()=>node.remove(),2800);
+}
+
+function available(item){
+ return item.stock-item.reserved;
+}
+
+function stockStatus(item){
+ const qty=available(item);
+ if(qty<=item.threshold*0.5)return"critical";
+ if(qty<=item.threshold)return"low";
+ return"healthy";
+}
+
+function daysUntil(dateString){
+ if(!dateString)return null;
+
+ const now=new Date();
+ const today=Date.UTC(now.getFullYear(),now.getMonth(),now.getDate());
+ const target=new Date(dateString+"T00:00:00Z").getTime();
+
+ return Math.round((target-today)/86400000);
+}
+
+function expiryStatus(item){
+ const days=daysUntil(item.expiry);
+ if(days===null)return"normal";
+ if(days<0)return"expired";
+ if(days<=30)return"expiring";
+ return"normal";
+}
+
+function pill(value){
+ return el("span","pill "+value,value.toUpperCase());
+}
+
+function logEvent(title,detail){
+ state.events.unshift({
+  title,detail,time:new Date().toLocaleTimeString("en-IN")
+ });
+ state.events=state.events.slice(0,10);
+ renderTimeline();
+}
+
+function renderTimeline(){
+ const root=$("activityTimeline");
+ root.replaceChildren();
+
+ state.events.forEach(event=>{
+  const row=el("div","event");
+  const icon=el("div","event-icon","▤");
+  const body=el("div");
+
+  body.append(
+   el("strong","",event.title),
+   el("p","",event.detail),
+   el("small","",event.time)
+  );
+
+  row.append(icon,body);
+  root.appendChild(row);
+ });
+}
+
+function renderKPIs(){
+ $("kpiRecords").textContent=state.items.length;
+ $("kpiLow").textContent=state.items.filter(item=>stockStatus(item)!=="healthy").length;
+ $("kpiReserved").textContent=state.items.filter(item=>item.reserved>0).length;
+ $("kpiExpiry").textContent=state.items.filter(item=>["expiring","expired"].includes(expiryStatus(item))).length;
+}
+
+function renderTable(){
+ const root=$("inventoryTable");
+ root.replaceChildren();
+
+ const query=$("searchInput").value.trim().toLowerCase();
+ const warehouse=$("warehouseFilter").value;
+ const status=$("stockFilter").value;
+
+ const filtered=state.items.filter(item=>
+  (item.name+" "+item.batch+" "+item.warehouse).toLowerCase().includes(query)&&
+  (warehouse==="all"||item.warehouse===warehouse)&&
+  (status==="all"||stockStatus(item)===status)
+ );
+
+ $("recordCount").textContent=filtered.length+" RECORDS";
+
+ if(!filtered.length){
+  const tr=document.createElement("tr");
+  const td=el("td","","No matching inventory batches.");
+  td.colSpan=7;
+  tr.appendChild(td);
+  root.appendChild(tr);
+  return;
+ }
+
+ filtered.forEach(item=>{
+  const tr=document.createElement("tr");
+
+  const name=document.createElement("td");
+  name.append(
+   el("strong","",item.name),
+   el("small","",item.batch+" · "+item.id)
+  );
+
+  const warehouse=el("td","",item.warehouse);
+  const qty=el("td","",available(item).toLocaleString("en-IN")+" "+item.unit);
+  const reserved=el("td","",item.reserved.toLocaleString("en-IN")+" "+item.unit);
+
+  const statusCell=document.createElement("td");
+  statusCell.appendChild(pill(stockStatus(item)));
+
+  const expiry=document.createElement("td");
+  expiry.append(
+   el("strong","",item.expiry||"Not applicable"),
+   el("small","",expiryStatus(item).toUpperCase())
+  );
+
+  const action=document.createElement("td");
+  const button=el("button","small-btn","Inspect →");
+  button.addEventListener("click",()=>openDetail(item.id));
+  action.appendChild(button);
+
+  tr.append(name,warehouse,qty,reserved,statusCell,expiry,action);
+  root.appendChild(tr);
+ });
+}
+
+function renderStockHealth(){
+ const root=$("stockHealth");
+ root.replaceChildren();
+
+ state.items.forEach(item=>{
+  const qty=available(item);
+  const percentage=item.capacity?qty/item.capacity*100:0;
+
+  const card=el("div","stock-card");
+  const head=el("div","item-head");
+
+  head.append(
+   el("strong","",item.name+" · "+item.batch),
+   pill(stockStatus(item))
+  );
+
+  const bar=el("div","progress");
+  const fill=el("span");
+  fill.style.width=Math.max(0,Math.min(100,percentage))+"%";
+  bar.appendChild(fill);
+
+  card.append(
+   head,
+   el("p","item-description",
+    `${qty.toLocaleString("en-IN")} ${item.unit} available · Alert threshold: ${item.threshold} ${item.unit}`),
+   bar
+  );
+
+  root.appendChild(card);
+ });
+}
+
+function renderExpiry(){
+ const root=$("expiryList");
+ root.replaceChildren();
+
+ const dated=state.items
+  .filter(item=>item.expiry)
+  .sort((a,b)=>a.expiry.localeCompare(b.expiry));
+
+ dated.forEach(item=>{
+  const days=daysUntil(item.expiry);
+  const status=expiryStatus(item);
+
+  const card=el("div","alert-card");
+  const head=el("div","item-head");
+
+  head.append(
+   el("strong","",item.name+" · "+item.batch),
+   pill(status)
+  );
+
+  let description="Expires in "+days+" days";
+  if(days===0)description="Expires today";
+  if(days<0)description="Expired "+Math.abs(days)+" days ago";
+
+  card.append(
+   head,
+   el("p","item-description",item.expiry+" · "+description)
+  );
+
+  root.appendChild(card);
+ });
+
+ if(!dated.length){
+  root.appendChild(el("p","panel-sub","No expiry dates in the synthetic dataset."));
+ }
+}
+
+function renderWarehouses(){
+ const root=$("warehouseSummary");
+ root.replaceChildren();
+
+ WAREHOUSES.forEach(name=>{
+  const items=state.items.filter(item=>item.warehouse===name);
+  const alerts=items.filter(item=>stockStatus(item)!=="healthy").length;
+  const reservedLines=items.filter(item=>item.reserved>0).length;
+
+  const card=el("div","stock-card");
+  const head=el("div","item-head");
+
+  head.append(
+   el("strong","",name),
+   el("span","tag",items.length+" BATCHES")
+  );
+
+  card.append(
+   head,
+   el("p","item-description",
+    `${alerts} low/critical stock alerts · ${reservedLines} reserved stock lines`)
+  );
+
+  root.appendChild(card);
+ });
+}
+
+function renderAll(){
+ renderKPIs();
+ renderTable();
+ renderStockHealth();
+ renderExpiry();
+ renderWarehouses();
+}
+
+function openDetail(id){
+ const item=state.items.find(entry=>entry.id===id);
+ if(!item)return;
+
+ state.selectedId=id;
+ $("detailTitle").textContent=item.name+" · "+item.batch;
+
+ const root=$("detailContent");
+ root.replaceChildren();
+
+ [
+  ["Inventory ID",item.id],
+  ["Batch Number",item.batch],
+  ["Warehouse",item.warehouse],
+  ["Resource",item.name],
+  ["On-Hand Quantity",item.stock+" "+item.unit],
+  ["Reserved Quantity",item.reserved+" "+item.unit],
+  ["Available Quantity",available(item)+" "+item.unit],
+  ["Low Stock Threshold",item.threshold+" "+item.unit],
+  ["Stock Status",stockStatus(item).toUpperCase()],
+  ["Expiry Date",item.expiry||"Not applicable"],
+  ["Expiry Status",expiryStatus(item).toUpperCase()]
+ ].forEach(([label,value])=>{
+  const box=el("div","detail");
+  box.append(el("small","",label),el("strong","",value));
+  root.appendChild(box);
+ });
+
+ $("detailOverlay").classList.add("open");
+ $("closeDetail").focus();
+}
+
+function closeDetail(){
+ $("detailOverlay").classList.remove("open");
+ state.selectedId=null;
+}
+
+function applyMovement(event){
+ event.preventDefault();
+
+ const item=state.items.find(entry=>entry.id===$("movementItem").value);
+ const type=$("movementType").value;
+ const qty=Number($("movementQuantity").value);
+ const reason=$("movementReason").value.trim();
+
+ if(!item||!Number.isInteger(qty)||qty<1||qty>100000||!reason){
+  toast("Enter valid stock movement details.");
+  return;
+ }
+
+ if(!$("demoConfirm").checked){
+  toast("Confirm that this is a fictional movement.");
+  return;
+ }
+
+ if(["remove","reserve"].includes(type)&&qty>available(item)){
+  toast("Quantity exceeds available synthetic stock.");
+  return;
+ }
+
+ if(type==="release"&&qty>item.reserved){
+  toast("Quantity exceeds existing reservations.");
+  return;
+ }
+
+ if(type==="receive")item.stock+=qty;
+ if(type==="remove")item.stock-=qty;
+ if(type==="reserve")item.reserved+=qty;
+ if(type==="release")item.reserved-=qty;
+
+ logEvent(
+  "Inventory movement: "+type,
+  `${item.name} (${item.batch}) · ${qty} ${item.unit}. Reason: ${reason.slice(0,100)}`
+ );
+
+ $("movementForm").reset();
+ renderAll();
+ toast("Fictional stock movement applied");
+}
+
+function csvEscape(value){
+ let text=String(value??"");
+ if(/^\s*[=+\-@]/.test(text))text="'"+text;
+ return '"'+text.replace(/"/g,'""')+'"';
+}
+
+function exportCSV(){
+ const columns=[
+  "id","name","batch","warehouse","unit","stock",
+  "reserved","available","threshold","capacity","expiry","stock_status","expiry_status"
+ ];
+
+ const rows=[
+  columns.map(csvEscape).join(","),
+  ...state.items.map(item=>{
+   const row={
+    ...item,
+    available:available(item),
+    stock_status:stockStatus(item),
+    expiry_status:expiryStatus(item)
+   };
+
+   return columns.map(key=>csvEscape(row[key])).join(",");
+  })
+ ];
+
+ const blob=new Blob(["\uFEFF"+rows.join("\r\n")],{
+  type:"text/csv;charset=utf-8"
+ });
+
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement("a");
+ link.href=url;
+ link.download="relief-inventory-synthetic-demo.csv";
+ document.body.appendChild(link);
+ link.click();
+ link.remove();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ toast("Synthetic inventory CSV exported");
+}
+
+function populateSelects(){
+ WAREHOUSES.forEach(name=>{
+  $("warehouseFilter").appendChild(new Option(name,name));
+ });
+
+ SEED.forEach(item=>{
+  $("movementItem").appendChild(
+   new Option(item.name+" · "+item.batch+" · "+item.warehouse,item.id)
+  );
+ });
+}
+
+function resetDemo(){
+ state.items=structuredClone(SEED);
+ state.events=[{
+  title:"Inventory workspace initialized",
+  detail:"Synthetic warehouse stock and reservation records loaded.",
+  time:"Demo"
+ }];
+
+ $("searchInput").value="";
+ $("warehouseFilter").value="all";
+ $("stockFilter").value="all";
+ $("movementForm").reset();
+
+ closeDetail();
+ renderAll();
+ renderTimeline();
+ toast("Inventory demonstration reset");
+}
+
+function initialize(){
+ populateSelects();
+ resetDemo();
+
+ $("searchInput").addEventListener("input",renderTable);
+ $("warehouseFilter").addEventListener("change",renderTable);
+ $("stockFilter").addEventListener("change",renderTable);
+
+ $("movementForm").addEventListener("submit",applyMovement);
+
+ $("receiveShortcut").addEventListener("click",()=>{
+  $("receiveSection").scrollIntoView({behavior:"smooth",block:"start"});
+  $("movementQuantity").focus();
+ });
+
+ $("useBatchBtn").addEventListener("click",()=>{
+  if(state.selectedId)$("movementItem").value=state.selectedId;
+  closeDetail();
+  $("receiveSection").scrollIntoView({behavior:"smooth",block:"start"});
+  $("movementQuantity").focus();
+ });
+
+ $("resetBtn").addEventListener("click",resetDemo);
+ $("exportBtn").addEventListener("click",exportCSV);
+ $("closeDetail").addEventListener("click",closeDetail);
+
+ $("detailOverlay").addEventListener("click",event=>{
+  if(event.target===$("detailOverlay"))closeDetail();
+ });
+
+ document.addEventListener("keydown",event=>{
+  if(event.key==="Escape")closeDetail();
+ });
+
+ $("menuBtn").addEventListener("click",()=>{
+  $("sidebar").classList.toggle("open");
+ });
+}
+
+initialize();
+</script>
+</body>
+</html>
